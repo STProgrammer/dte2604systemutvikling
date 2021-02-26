@@ -1,0 +1,88 @@
+
+/**----------- sidenavigasjon---------------*/
+.sidenavigasjon {
+    height: 100%;
+    width: 10em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-left: 1.2em;
+    padding-top: 1em;
+    background-color: cadetblue;
+    z-index: 1;
+    font-family: Arial, serif;
+}
+.sidenavigasjon a {
+    color: white;
+    font-family: Arial, serif;
+    font-size: 20px;
+    text-decoration: none;
+    line-height: 35px;
+}
+/**----------- visOversikt---------------*/
+.oversikt {
+    margin-left: 6em;
+    padding-left: 6em;
+    font-family: Arial, serif;
+    position: relative;
+    padding-bottom: 8em;
+}
+.oversikt td {
+    horiz-align: center;
+    text-align: center;
+}
+.oversikt table[id=oversikt] th, td {
+    padding: 10px;
+}
+.oversikt td[id = pil] {
+    width: 130px;
+}
+.oversikt td[id = pil] img {
+    height: 70px;
+    margin-right: 15px;
+}
+.oversikt td[id= katalog] img {
+    height: 150px;
+}
+.oversikt td[id= bilde] img {
+    height: 150px;
+}
+.oversikt td[id= dokument] img {
+    height: 150px;
+}
+.oversikt td[id= dokument] img {
+    height: 120px;
+}
+/**----------- footer---------------*/
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5.5em;
+    background-color: darkslategrey;
+    color: darkgray;
+    vertical-align: bottom;
+    font-size: 12px;
+}
+footer div {
+    padding-right: 2em;
+    color: darkgray;
+    text-align: right;
+    line-height: 0.1em;
+    margin-bottom: 5em;
+}
+footer a {
+    color: darkgray;
+}
+nav {
+    background-color: darkslategray;
+}
+footer p[class = leftText] {
+    text-align: left;
+    margin-left: 16em;
+}
+footer p[class = rightText] {
+    text-align: right;
+    margin-top: 0em;
+}
