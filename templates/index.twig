@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+		<link type="text/css" rel="stylesheet" href="stylesheet.css" />
+      <link rel="stylesheet" href="js/examples/assets/app.css">
+      <link rel="stylesheet" href="js/dist/bootstrap-tagsinput.css">
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+      <title>
+          File archive - showing files from the database
+      </title>
+  </head>
+  <body>
+      {% include 'login2.twig' %}
+      <div class = "content">
+          {% if session.getFlashBag.has('header') %}
+      <div class="flash-notice">
+          {% for header in session.getFlashBag.get('header', []) %}
+          <h3>{{ header }}</h3>
+          {% endfor %}
+          {% for message in session.getFlashBag.get('message', []) %}
+              <p>{{ message }}</p>
+          {% endfor %}
+          <p id="back"><a href = "./"><img src="{{rel}}Images/BackBtn.svg" alt="Back" width="100"></a></p>
+          {% else %}
+      </div>
+          <div id="container">
+          <div class="search form">
+{#              <p>Today's date is: {{ object.date|date("Y-m-d") }}</p>#}
+              <table>
+                  <tr>
+                      <td>
+                          <form method = "get">
+                              <table id="search-form">
+                                  <tr>
+                                      <th colspan="2">
+                                          <label>Search in file database </label>
+                                      </th>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          <br><input type="search" name="query" placeholder="Search" maxlength="45">
+                                          <br><button type="submit" name="search" value="search">Search</button>
+                                      </td>
+                                      <td>
+                                          <label for="from-date">Start date range:</label>
+                                          <br><input type="date" id="from-date" name="from-date">
+                                          <br><label for="to-date">End date range:</label>
+                                          <br><input type="date" id="to-date" name="to-date">
+                                      </td>
+                                  </tr>
+                              </table>
+                          </form>
+                      </td>
+                      <td>
+                          <form method = "get" id="tagssearch">
+                              <table class="search-form">
+                                  <tr>
+                                      <th colspan="2">
+                                          <label>Search by tags</label>
+                                      </th>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          <br><input type="text" name="tags" id="tags" data-role="tagsinput" placeholder="tag1,tag2,tag3" required>
+                                          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                                          <script src="{{ rel }}js/dist/bootstrap-tagsinput.min.js"></script>
+                                          <script src="{{ rel }}typeahead.bundle.js"></script>
+                                          <script>
+                                              //Koden er kopiert og tilpasset fra https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/
+                                              // Initializing the typeahead
+                                              var tags = new Bloodhound({
+                                                  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                                                  queryTokenizer: Bloodhound.tokenizers.whitespace,
+                                                  prefetch: {
+                                                      url: 'tags.json?t=' + Math.random(),
+                                                      filter: function(list) {
+                                                          return $.map(list, function(tags) {
+                                                              return { name: tags }; });
+                                                      }
+                                                  }
+                                              });
+                                              tags.clearPrefetchCache();
+                                              tags.initialize();
+
+                                              $('#tags').tagsinput({
+                                                  trimValue: true,
+                                                  typeaheadjs: {
+                                                      name: 'tags',
+                                                      displayKey: 'name',
+                                                      valueKey: 'name',
+                                                      source: tags.ttAdapter()
+                                                  }
+                                              });
+                                              //Kode tatt fra https://stackoverflow.com/questions/11235622/jquery-disable-form-submit-on-enter
+                                              $('#tagssearch').on('keypress', function(e) {
+                                                  return e.which !== 13;
+                                              });
+                                          </script>
+                                          <br><button type="submit" name="search" value="tagssearch">Search</button>
+                                      </td>
+                                      <td>
+                                          <input type="checkbox" name="andcondition" value="1">
+                                          Check if you want each file to include all tags (AND condition)
+                                      </td>
+                                  </tr>
+                              </table>
+                          </form>
+                      </td>
+                  </tr>
+              </table>
+          </div>
+              <div id="upload-buttons">
+                  <a href="{{rel}}file-upload/" class="button-white">Upload File</a>
+                  <a href="{{rel}}new-catalog/" class="button-white">New Catalog</a>
+              </div>
+          </div>
+          <div class="overview">
+              {% if parentId %}
+                  <a href="./?catalogid={{ parentId }}"><img src="Images/iconfinder_Close_1493281.svg" width="50" alt="one up catalog"></a>
+              {% endif %}
+              <a id="catalogpath">
+                  Catalog path: {{ catalogPath }}
+              </a>
+              <div class="file-list">
+                  {% if elements %}
+              {% for element in elements %}
+                  {% if element.isFile == 0 %}
+                      <div class="element-box">
+                          <a href="{{rel}}?catalogid={{element.id}}"><img src="Images/iconfinder_Blank-Catalog_33986.png" alt="icon_catalog"/></a>
+                          <br><a href="{{rel}}?catalogid={{element.id}}"> {{element.Title}} </a>
+                          <br>Type: {{ element.Type }}
+                          <br>Upload Date: {{ element.Date }}
+                          <br>Author: <a href="profile-page/?username={{ element.Author }}">{{ element.Author }}</a>
+                          <br><a href="{{rel}}catalog/?id={{element.id}}">Details</a>
+                      </div>
+                      {% else %}
+                    <div class="element-box">
+                              {% if element.Type == 'image/jpeg' or  element.Type == 'image/pjpeg' or element.Type == 'image/png' or element.Type == 'image/gif'%}
+                                  <a href="{{rel}}?id={{element.id}}"><img src="{{rel}}thumbnail.php?id={{element.id}}" alt="thumbnail"/></a>
+                              {% elseif element.Type == 'application/msword' or element.Type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' %}
+                                  <a href="{{rel}}?id={{element.id}}"><img src="Images/iconfinder_word_272702.png" alt="icon_word" /></a>
+                              {% elseif element.Type == 'application/mspowerpoint' %}
+                                  <a href="{{rel}}?id={{element.id}}"><img src="Images/iconfinder_powerpoint_272700.png" alt="icon_powerpoint" /></a>
+                              {% elseif element.Type == 'application/vnd.ms-excel' or element.Type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %}
+                                  <a href="{{rel}}?id={{element.id}}"><img src="Images/iconfinder_excel_272697.png" alt="icon_excel" /></a>
+                              {% elseif element.Type == 'application/pdf' %}
+                                  <a href="{{rel}}?id={{element.id}}"><img src="Images/iconfinder_pdf_272699.png" alt="icon_pdf" /></a>
+                              {% elseif element.Type == 'text/plain' %}
+                                  <a href="{{rel}}?id={{element.id}}"><img src="Images/iconfinder_text_272701.png" alt="icon_text" /></a>
+                              {% elseif element.Type == 'video/mp4' or element.Type == 'video/webm' or element.Type == 'video/ogg' %}
+                                  <a href="{{rel}}?id={{element.id}}"><img src="Images/iconfinder_video-alt_383195.png" alt="icon_video" /></a>
+                              {% else %}
+                                  <a href="{{rel}}?id={{element.id}}"><img src="Images/iconfinder_File_104851.png" alt="icon_file" /></a>
+                              {% endif %}
+                              <br><a href="{{rel}}?id={{element.id}}"> {{element.Title}} </a>
+                              <br>Type: {{ element.Type }}
+                              <br>Upload Date: {{ element.Date }}
+                              <br>Author: <a href="profile-page/?username={{ element.Author }}">{{ element.Author }}</a>
+                              <br>Views: {{ element.Views }}
+                              <br><a href="{{rel}}file-details/?id={{element.id}}">Details</a>
+                          </div>
+                      {% endif %}
+              {% endfor %}
+              {% else %}
+              <h3>No elements found</h3>
+      </div>
+  {% endif %}
+  </div>
+      </div>
+              {% if pagination|length > 1 %} <div class="pagination">
+                  {% for page in pagination %}
+                  {% if request.query.get('pageno') == page
+                      or not request.query.has('pageno') and page == 1%} {{ page }}
+                      {% else %} <a href="{{ get_page_url({ 'pageno': page, }) }}" class = "button-white button-pagination">{{ page }}</a>
+                      {% endif %}
+                  {% endfor %}
+              </div>
+          {% endif %}
+      {% endif %}
+  </body>
+</html>

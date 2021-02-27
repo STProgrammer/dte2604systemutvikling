@@ -1,0 +1,264 @@
+
+/* delvis modifisert fra https://stackoverflow.com/questions/710089/how-do-i-make-an-html-link-look-like-a-button */
+
+/*Body and baisc elements */
+
+body {
+    background-image: url("Images/circle-blues.png");
+    color: white;
+    font-family: "Arial", sans-serif;
+    font-size: 1em;
+    margin: auto;
+    max-width: 70em;
+    line-height: 1.5em;
+    padding: 1em 1em 4em 4em;
+    word-break: normal;
+}
+
+h1 {
+    color: white;
+    text-shadow: 5px 5px 5px black;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+a:link {
+    color: lightskyblue;
+}
+
+/* visited link */
+a:visited {
+    color: lightpink;
+}
+
+a:hover {
+    color: lightyellow;
+}
+
+.flash-notice {
+    color: red;
+}
+
+.top-login {
+    float: left;
+}
+
+button, input[type="submit"], .button-white {
+
+    background-color: green;
+    border-top: solid lightgreen;
+    border-right: solid #004200;
+    border-bottom: solid #004200;
+    border-left: solid lightgreen;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 1em;
+    padding: 0.3em 0.3em;
+    margin: 1em 1em;
+    border-radius: 0.3em;
+    cursor: pointer;
+}
+
+input, textarea {
+    margin-bottom: 0.5em;
+    border-radius: 0.3em;
+}
+
+input[type=submit].delete {
+    background-color: red;
+    color: white;
+    border-top: solid #FF7777;
+    border-right: solid darkred;
+    border-bottom: solid darkred;
+    border-left: solid #FF7777;
+    cursor: pointer;
+}
+
+label {
+    margin-top: 0.5em;
+}
+
+table, tr, td {
+    border: 3px solid transparent;
+}
+
+a.button-white  {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*COMMENT*/
+
+.comment {
+    margin: 1px;
+    background-color: rgba(00, 50, 64, 0.5);
+    padding: 0.5em;
+    width: fit-content;
+    height: fit-content;
+}
+
+.comment-text {
+    background-color: #555555;
+    text-align: left;
+    display: inline-block;
+    border: black 1px;
+    border-radius: 0.5em;
+    font-size: 1em;
+    margin: 2px;
+    padding: 0.4em;
+}
+
+#comment-form table, #comment-form td, #comment-form tr {
+    border: 1px;
+    height: fit-content;
+}
+
+input.comment {
+    font-size: 0.9em;
+    margin: 2px;
+    padding: 0.2em;
+}
+
+.comment-date {
+    font-size: 0.8em;
+    color: lightgrey;
+}
+
+/* TAGS */
+
+.tag {
+    font-size: 0.8em;
+     border-radius: 1em;
+     text-align: center;
+     margin: 1px;
+     padding: 0.2em;
+     text-decoration: none;
+     background-color: #7d007d;
+     border: 1px lightpink solid;
+}
+
+.tag:hover {
+    background-color: mediumvioletred;
+}
+
+#container {
+    position: relative;
+    vertical-align: bottom;
+}
+
+/*TWO BASIC FORMS */
+
+.form {
+    width: fit-content;
+    height: fit-content;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 0.5em;
+    display: inline-block;
+    background: rgba(00, 64, 00, 0.5);
+}
+
+.show-data {
+    width: fit-content;
+    height: fit-content;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 0.5em;
+    display: inline-block;
+    background: rgba(00, 50, 64, 0.5);
+}
+
+/*SEARCH*/
+
+.search {
+    float: right;
+    width: 45em;
+    height: fit-content;
+}
+
+.search-form table {
+    float:right;
+    vertical-align: top;
+}
+
+.search-form td, .search-form tr, .search-form th{
+    border-left: solid 0.5em transparent;
+    border-right: solid 0.5em transparent;
+}
+
+/*FILES AND OVERVIEW*/
+
+#upload-buttons {
+    position: absolute;
+    top: 11em;
+    left: 1em;
+}
+
+.overview {
+    clear: both;
+    margin-left: 1em;
+}
+
+#catalogpath {
+    font-size: 2em;
+    color: gold;
+    white-space: nowrap;
+
+}
+
+.file-list {
+    border-style: solid;
+    border-width: 30px 30px 30px 30px;
+    border-image-repeat:stretch stretch;
+   border-image-slice: 100;
+    border-image-repeat: repeat;
+    display: block;
+    margin: 0.5em;
+    padding: 0.5em;
+    border-image-source: url("Images/greenframe.svg");
+}
+
+.element-box {
+    float: none;
+    display: inline-block;
+    margin: 0.3em;
+    padding: 0.3em;
+}
+
+/*PAGINATION*/
+
+.circle {
+    border-radius: 3em;
+}
+
+.button-pagination {
+    border-radius: 1em;
+    color: red;
+    font-size: 1.1em;
+}
+
+.pagination {
+    font-size: 1.2em;
+    color: white;
+    float: bottom;
+    text-align: center;
+}
+
+.edit-user-form {
+    display: block;
+    border-radius: 0.2em;
+    padding: 0.5em;
+    margin: 1em;
+}
+
+
+#back {
+    clear: both;
+}
+
+
+
+
+

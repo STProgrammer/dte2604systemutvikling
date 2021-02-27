@@ -1,0 +1,33 @@
+<div class="top-login">
+{% if user %}
+    <table id="loggedin_top">
+        <tr>
+            <td>You are logged in as <a href="{{rel}}profile-page/?username={{ user.getUsername() }}">{{ user.getUsername() }}</a> ({{user.getFullName()}})</td>
+            <td>
+                <form action="index.php" method="post">
+                    <input type="hidden" value="{{ getMac("Logout") }}" name="XSRFPreventionToken">
+                    <input type="submit" name="logout" value="Logout">
+                </form>
+            </td>
+        </tr>
+    </table>
+{% else %}
+    <form action="index.php" method="post">
+        <table id="loginform_top">
+            <tr><td><label>Email: </label> </td>
+                <td><input type="email" name="email" class="rounded_input" placeholder="email" required id="email"></td>
+                <td><label>Password:</label> </td>
+                <td><input type="password" name="password" size="15" class="rounded_input" placeholder="password" required id="password"></td>
+            <td>
+                <input type="hidden" value="{{ getMac("Login") }}" name="XSRFPreventionToken">
+                <button type="submit" name="login"  value="Login">Sign in</button>
+            </td>
+            <td>
+                <a href="{{rel}}register/" class="button-white">Register </a>
+            </td>
+            </tr>
+        </table>
+    </form>
+{% endif %}
+</div>
+<a href="./{{ rel }}"><img src="{{ rel }}Images/SiteTitle.svg" alt="Project7Drive" height="80"></a>
