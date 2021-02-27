@@ -10,6 +10,7 @@
     }
   ],
   "require": {
-    
+    "twig/twig": "v3.3.0",
+    "symfony/http-foundation": "v5.2.3"
   }
 }
