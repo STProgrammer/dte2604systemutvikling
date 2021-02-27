@@ -1,0 +1,41 @@
+{
+  "name": "vendor_name/dte-2604-1-21v-systemutvikling",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Abdullah",
+      "email": "email@example.com"
+    },
+    {
+      "name": "Are Magnus",
+      "email": "email@example.com"
+    },
+    {
+      "name": "Asbjørn",
+      "email": "email@example.com"
+    },
+    {
+      "name": "Halil",
+      "email": "email@example.com"
+    },
+    {
+      "name": "Jørgen",
+      "email": "email@example.com"
+    },
+    {
+      "name": "Nicholai",
+      "email": "email@example.com"
+    },
+    {
+      "name": "Tore",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "twig/twig": "v3.3.0",
+    "symfony/http-foundation": "5.0.x-dev",
+    "ext-gd": "*"
+  }
+}
