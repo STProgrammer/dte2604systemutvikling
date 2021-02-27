@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '37567eb7e52d3ddd34c1097eb9808814a868eb8e',
+    'reference' => '370856ed359856ed5109a9e9e828e69a79f10a9d',
     'name' => 'vendor_name/dte-2604-1-21v-systemutvikling',
   ),
   'versions' => 
@@ -96,7 +96,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '37567eb7e52d3ddd34c1097eb9808814a868eb8e',
+      'reference' => '370856ed359856ed5109a9e9e828e69a79f10a9d',
     ),
   ),
 );
