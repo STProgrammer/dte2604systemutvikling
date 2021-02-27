@@ -1,0 +1,15 @@
+{
+  "name": "vendor_name/dte-2604-1-21v-systemutvikling",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "abdka",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    
+  }
+}
