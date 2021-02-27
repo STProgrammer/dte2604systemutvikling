@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '29a3c66e53d00ab272722576f2bb79391a4bcfb9',
+    'reference' => '411ed2411372b93fab138a34389740b5beee1e1d',
     'name' => 'vendor_name/dte-2604-1-21v-systemutvikling',
   ),
   'versions' => 
@@ -46,12 +46,12 @@ private static $installed = array (
     ),
     'symfony/http-foundation' => 
     array (
-      'pretty_version' => '5.0.x-dev',
-      'version' => '5.0.9999999.9999999-dev',
+      'pretty_version' => 'v5.0.0',
+      'version' => '5.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '7ad89bbacd90f7bee1a57e61ed5ecaeaba430706',
+      'reference' => 'c5c226b6f164ae4f95c4bffbe940c81050940eda',
     ),
     'symfony/mime' => 
     array (
@@ -132,7 +132,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '29a3c66e53d00ab272722576f2bb79391a4bcfb9',
+      'reference' => '411ed2411372b93fab138a34389740b5beee1e1d',
     ),
   ),
 );

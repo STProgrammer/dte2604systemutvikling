@@ -5,37 +5,12 @@
   "license": "proprietary",
   "authors": [
     {
-      "name": "Abdullah",
-      "email": "email@example.com"
-    },
-    {
-      "name": "Are Magnus",
-      "email": "email@example.com"
-    },
-    {
-      "name": "Asbjørn",
-      "email": "email@example.com"
-    },
-    {
-      "name": "Halil",
-      "email": "email@example.com"
-    },
-    {
-      "name": "Jørgen",
-      "email": "email@example.com"
-    },
-    {
-      "name": "Nicholai",
-      "email": "email@example.com"
-    },
-    {
-      "name": "Tore",
+      "name": "abdka",
       "email": "email@example.com"
     }
   ],
   "require": {
     "twig/twig": "v3.3.0",
-    "symfony/http-foundation": "5.0.x-dev",
-    "ext-gd": "*"
+    "symfony/http-foundation": "v5.0.0"
   }
 }

@@ -72,21 +72,21 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "5.0.x-dev",
-            "version_normalized": "5.0.9999999.9999999-dev",
+            "version": "v5.0.0",
+            "version_normalized": "5.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "7ad89bbacd90f7bee1a57e61ed5ecaeaba430706"
+                "reference": "c5c226b6f164ae4f95c4bffbe940c81050940eda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/7ad89bbacd90f7bee1a57e61ed5ecaeaba430706",
-                "reference": "7ad89bbacd90f7bee1a57e61ed5ecaeaba430706",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/c5c226b6f164ae4f95c4bffbe940c81050940eda",
+                "reference": "c5c226b6f164ae4f95c4bffbe940c81050940eda",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": "^7.2.5",
                 "symfony/mime": "^4.4|^5.0",
                 "symfony/polyfill-mbstring": "~1.1"
             },
@@ -94,14 +94,14 @@
                 "predis/predis": "~1.0",
                 "symfony/expression-language": "^4.4|^5.0"
             },
-            "time": "2020-07-23T10:04:24+00:00",
+            "time": "2019-11-18T17:27:11+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "5.0-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\HttpFoundation\\": ""
@@ -127,22 +127,8 @@
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/5.0"
+                "source": "https://github.com/symfony/http-foundation/tree/v5.0.0"
             },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "install-path": "../symfony/http-foundation"
         },
         {
