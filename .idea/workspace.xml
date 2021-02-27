@@ -20,6 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_02_2021_15_04__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_02_2021_15_04__Default_Changelist_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,8 +48,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../prosjekt4" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -61,11 +64,12 @@
       <updated>1614097690982</updated>
       <workItem from="1614097699296" duration="1225000" />
       <workItem from="1614338266483" duration="710000" />
+      <workItem from="1614369901545" duration="1007000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -82,25 +86,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Hei sann!" />
     <option name="LAST_COMMIT_MESSAGE" value="Hei sann!" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="93" y="93" width="1350" height="678" key="DiffContextDialog" timestamp="1614099268027">
-      <screen x="0" y="0" width="1536" height="864" />
-    </state>
-    <state x="93" y="93" width="1350" height="678" key="DiffContextDialog/0.0.1536.864@0.0.1536.864" timestamp="1614099268027" />
-    <state x="1230" y="312" key="FileChooserDialogImpl" timestamp="1614338331441">
-      <screen x="0" y="0" width="3440" height="1440" />
-    </state>
-    <state x="549" y="187" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1614097833269" />
-    <state x="1230" y="312" key="FileChooserDialogImpl/0.0.3440.1440@0.0.3440.1440" timestamp="1614338331441" />
-    <state x="361" y="165" width="963" height="534" key="Vcs.Push.Dialog.v2" timestamp="1614099151910">
-      <screen x="0" y="0" width="1536" height="864" />
-    </state>
-    <state x="361" y="165" width="963" height="534" key="Vcs.Push.Dialog.v2/0.0.1536.864@0.0.1536.864" timestamp="1614099151910" />
-    <state x="1294" y="577" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614348078892">
-      <screen x="0" y="0" width="3440" height="1440" />
-    </state>
-    <state x="578" y="346" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.864@0.0.1536.864" timestamp="1614099267982" />
-    <state x="1294" y="577" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.3440.1440@0.0.3440.1440" timestamp="1614348078892" />
   </component>
 </project>
