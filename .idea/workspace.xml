@@ -21,9 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/edit-user.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit-user.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profile-page.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile-page.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/register.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/login/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login_form.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login_form.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

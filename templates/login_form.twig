@@ -34,6 +34,7 @@
         </div>
 
         <footer class="login__footer">
+            <input type="hidden" value="{{ getMac("Login") }}" name="XSRFPreventionToken">
             <input type="submit" value="Login">
 
             <p><span class="icon icon--info">?</span><a href="#">Forgot Password</a></p>
