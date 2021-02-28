@@ -6,7 +6,7 @@
     <title>Profile page</title>
 </head>
 <body>
-{% include 'login2.twig' %}
+{% include 'login_header.twig' %}
 <div class="flash-notice">
     {% for header in session.getFlashBag.get('header', []) %}
         <h3>{{ header }}</h3>

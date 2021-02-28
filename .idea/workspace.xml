@@ -21,9 +21,43 @@
   <component name="ChangeListManager">
     <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Db.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Db.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/User.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/User.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/Db.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Db.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/RegisterUser.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/RegisterUser.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/User.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/User.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/XsrfProtection.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/XsrfProtection.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DatabaseScript/AnyOneDBScript.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database-script/AnyOneDBScript.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/BackBtn.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/BackBtn.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/BackBtn.svg" beforeDir="false" afterPath="$PROJECT_DIR$/images/BackBtn.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/SiteTitle.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/SiteTitle.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/SiteTitle.svg" beforeDir="false" afterPath="$PROJECT_DIR$/images/SiteTitle.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/circle-blues.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/circle-blues.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/greenframe.svg" beforeDir="false" afterPath="$PROJECT_DIR$/images/greenframe.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_038_008_youtube_video_social_network_android_material_1646914.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_038_008_youtube_video_social_network_android_material_1646914.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_Blank-Catalog_33986.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_Blank-Catalog_33986.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_Close_1493281.svg" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_Close_1493281.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_File_104851.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_File_104851.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_catalog_60168.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_catalog_60168.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_excel_272697.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_excel_272697.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_folder_images_61610.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_folder_images_61610.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_pdf_272699.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_pdf_272699.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_powerpoint_272700.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_powerpoint_272700.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_text_272701.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_text_272701.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_video-alt_383195.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_video-alt_383195.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/iconfinder_word_272702.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/iconfinder_word_272702.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Login/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/login/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Login/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/login/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Login/login_auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/login/login_auth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Login/login_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/login/login_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Login/login_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/login/login_style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stylesheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/stylesheet.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit-user.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit-user.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login_page.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login2.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login_header.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profile-page.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile-page.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/register.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +75,7 @@
       <list>
         <option value="HTML File" />
         <option value="composer.json" />
+        <option value="Twig template" />
       </list>
     </option>
   </component>

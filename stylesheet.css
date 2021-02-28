@@ -4,7 +4,7 @@
 /*Body and baisc elements */
 
 body {
-    background-image: url("Images/circle-blues.png");
+    background-image: url("images/circle-blues.png");
     color: white;
     font-family: "Arial", sans-serif;
     font-size: 1em;
@@ -217,7 +217,7 @@ input.comment {
     display: block;
     margin: 0.5em;
     padding: 0.5em;
-    border-image-source: url("Images/greenframe.svg");
+    border-image-source: url("images/greenframe.svg");
 }
 
 .element-box {
