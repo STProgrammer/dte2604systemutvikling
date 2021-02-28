@@ -3,9 +3,9 @@
 class Db {
     private static $db = null;
     private $host = "kark.uit.no";
-    private $dbname = "stud_v20_karagoz";
-    private $username = "stud_v20_karagoz";
-    private $password = "vtES9eVsbuwRYjB";
+    private $dbname = "stud_v20_keser";
+    private $username = "stud_v20_keser";
+    private $password = "1rZdFHpmIivUbqyg";
     private $dbh = null;
 
     private function __construct() {

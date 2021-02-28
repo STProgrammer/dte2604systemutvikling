@@ -13,8 +13,8 @@
 
     spl_autoload_register(function ($class_name) {
         $homedir = __DIR__ . '/';
-        if (file_exists($homedir . "classes/". $class_name .".class.php"))
-        require_once ($homedir . "classes/" .$class_name . '.class.php');
+        if (file_exists($homedir . "Classes/". $class_name .".class.php"))
+        require_once ($homedir . "Classes/" .$class_name . '.class.php');
     });
 
     require_once $homedir . 'vendor/autoload.php';
