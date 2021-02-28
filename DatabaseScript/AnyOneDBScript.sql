@@ -19,8 +19,8 @@ DROP TABLE IF EXISTS `Users` ;
 CREATE TABLE IF NOT EXISTS `Users` (
   `UserID` INT NOT NULL,
   `Username` VARCHAR(45) NOT NULL,
-  `Firstname` VARCHAR(90) NOT NULL,
-  `Lastname` VARCHAR(90) NOT NULL,
+  `First name` VARCHAR(90) NOT NULL,
+  `Last name` VARCHAR(90) NOT NULL,
   `Address` VARCHAR(90) NOT NULL,
   `Zip code` INT(6) NOT NULL,
   `City` VARCHAR(45) NOT NULL,
