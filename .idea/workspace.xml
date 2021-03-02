@@ -20,11 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_02_2021_15_04__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_02_2021_15_04__Default_Changelist_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hei.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/morild_logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/morild_logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/header_admin.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_admin.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,6 +105,19 @@
       <workItem from="1614441482935" duration="44000" />
       <workItem from="1614521075727" duration="111000" />
     </task>
+    <task id="LOCAL−00001" summary="Lagt inn logo og twig-admin starter filer.">
+      <created>1614717346100</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1614717346100</updated>
+    </task>
+    <task id="LOCAL−00002" summary="Lagt inn logo og twig-admin starter filer.">
+      <created>1614717456849</created>
+      <option name="number" value="LOCAL−00002" />
+      <option name="presentableId" value="LOCAL−00002" />
+      <updated>1614717456849</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -127,6 +137,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Hei sann!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hei sann!" />
+    <MESSAGE value="Lagt inn logo og twig-admin starter filer." />
+    <option name="LAST_COMMIT_MESSAGE" value="Lagt inn logo og twig-admin starter filer." />
   </component>
 </project>
