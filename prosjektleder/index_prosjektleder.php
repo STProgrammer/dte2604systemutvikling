@@ -10,10 +10,12 @@ $twig = new Environment($loader);
 
 define('FILENAME_TAG', 'image');
 
-//try {
+
+try {
     echo $twig->render('layout_prosjektleder.twig');
-//} catch (\Twig\Error\LoaderError $e) {
-//} catch (\Twig\Error\RuntimeError $e) {
-//} catch (\Twig\Error\SyntaxError $e) {
-//}
+} catch (\Twig\Error\LoaderError $e) {
+} catch (\Twig\Error\RuntimeError $e) {
+} catch (\Twig\Error\SyntaxError $e) {
+}
+
 
