@@ -4,28 +4,80 @@ body {
 
 /**----------- header ---------------*/
 .header {
-    height: 10%;
+    height: 80px;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    padding-left: 1.2em;
-    padding-right: 1.2em;
-    padding-top: 1em;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 20px;
     background-color: #D9D2D2;
     font-family: "Segoe UI", serif;
-    font-size: medium;
+
     border-bottom: 1px solid #387CB7;
 }
 .header a {
     color: #707070;
+    height: 80px;
+    position: relative;
     font-family: Segoe UI, serif;
-    font-size: 1em;
+    font-size: 15px;
     text-decoration: none;
     line-height: 35px;
-    overflow: hidden;
+
 }
+
 /**----------- dashbord_admin ---------------*/
+/* hentet fra  https://jsfiddle.net/g2pzwaou/ */
+.container h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+}
+.container > div {
+    display: inline-block;
+    width: 20%;
+    padding: 15px;
+    max-width: 40%;
+    min-width: 200px;
+    margin-top: 110px;
+    border: 1px solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.container div.text {
+    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
+    height: 100px;
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+}
+.container2 h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+}
+.container2 > div {
+    display: inline-block;
+    margin-top: 5px;
+    width: 35%;
+    padding: 15px;
+    max-width: 40%;
+    min-width: 200px;
+    border: 1px solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+.container2 div.text {
+    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
+    height: 300px;
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+}
 
 /**----------- brukerprofiler_admin ---------------*/
 
