@@ -20,10 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/register/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/register/index.php" afterDir="false" />
+=======
       <change beforePath="$PROJECT_DIR$/templates/layout_admin.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_admin.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout_bruker.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_bruker.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/stilark_admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stilark.css" afterDir="false" />
+>>>>>>> e45cad584d43a2e3f532c1adeb10da42f5ad720a
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,8 +57,12 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+<<<<<<< HEAD
+  <component name="PhpWorkspaceProjectConfiguration">
+=======
   <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4.2">
+>>>>>>> e45cad584d43a2e3f532c1adeb10da42f5ad720a
     <include_path>
       <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
@@ -76,8 +85,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+<<<<<<< HEAD
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="web.server" />
+=======
     <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
     <property name="nodejs_package_manager_path" value="npm" />
+>>>>>>> e45cad584d43a2e3f532c1adeb10da42f5ad720a
     <property name="validate C:/xampp/htdocs/dte-2604-1-21v-systemutvikling/composer.json" value="--no-interaction --ansi --verbose --with-dependencies" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -109,6 +123,7 @@
       <workItem from="1614369901545" duration="1007000" />
       <workItem from="1614441482935" duration="44000" />
       <workItem from="1614521075727" duration="111000" />
+      <workItem from="1614697872328" duration="2269000" />
     </task>
     <task id="LOCAL−00001" summary="Lagt inn logo og twig-admin starter filer.">
       <created>1614717346100</created>
