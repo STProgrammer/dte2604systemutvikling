@@ -3,28 +3,35 @@ body {
     background-color:#E7E7E7;
 }
 
-/**----------- header ---------------*/
+/**----------- header ---------------*//*box-shadow: 1px 2px 3px #888888;*/
 .header {
-    height: 10%;
+    height: 80px;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    padding-left: 1.2em;
-    padding-right: 1.2em;
-    padding-top: 1em;
+    padding: 10px 10px 20px;
     background-color: #D9D2D2;
     font-family: "Segoe UI", serif;
-    font-size: medium;
     border-bottom: 1px solid #387CB7;
 }
 .header a {
     color: #707070;
+    height: 80px;
+    position: relative;
     font-family: Segoe UI, serif;
-    font-size: 1em;
+    font-size: 15px;
     text-decoration: none;
     line-height: 35px;
-    overflow: hidden;
+}
+.header span {
+    color: #707070;
+    height: 80px;
+    position: relative;
+    font-family: Segoe UI, serif;
+    font-size: 15px;
+    text-decoration: none;
+    line-height: 35px;
 }
 /**----------- dashbord_admin ---------------*/
 
@@ -38,7 +45,52 @@ body {
 
 /**----------- timeregistrering_bruker ---------------*/
 
+/**______________PROSJEKTLEDER___________*/
+.prosjektleder.header {
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px 10px 20px;
+    background-color: #D9D2D2;
+    font-family: "Segoe UI", serif;
+    border-bottom: 1px solid #387CB7;
+}
+.prosjektleder.header a {
+    color: #707070;
+    height: 80px;
+    position: relative;
+    font-family: Segoe UI, serif;
+    font-size: 15px;
+    text-decoration: none;
+    line-height: 35px;
+}
+.prosjektleder.header span {
+    color: #707070;
+    height: 80px;
+    position: relative;
+    font-family: Segoe UI, serif;
+    font-size: 15px;
+    text-decoration: none;
+    line-height: 35px;
+}
+.prosjektleder.div1 div {
+    display: inline-block;
+    width: 20%;
+    padding: 15px;
+    max-width: 40%;
+    min-width: 200px;
+    margin-top: 110px;
+    border: 1px solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 1px 2px 3px #888888;
+}
+
+
 /**----------- visOversikt - SOM ET EKSEMPEL----SKAL SLETTES---------------*/
+/*
 .oversikt {
     margin-left: 6em;
     padding-left: 6em;
@@ -72,6 +124,152 @@ body {
 .oversikt td[id= dokument] img {
     height: 120px;
 }
+*/
+/* ---------------visited link -----------------------*/
+a:visited {
+
+}
+
+a:hover {
+    color: lightyellow;
+}
+
+.flash-notice {
+    color: #a82828;
+}
+
+.top-login {
+    float: left;
+}
+
+/*-------------input bokser-------------*/
+/*
+input[type=date] {
+    width: 20em;
+    height: 3em;
+    padding: 0.5em;
+    color: gray;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-left: 1em;
+    border: 0.1em solid gray;
+}
+
+input[type=submit] {
+    width: 20em;
+    padding: 0.5em;
+    border: 1px solid darkslategrey;
+    background: cadetblue;
+    color: white;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-left: 39em;
+    margin-right: 20%;
+}
+input[type=button], button {
+    width: 30em;
+    padding: 0.5em;
+    border: 1px solid darkslategrey;
+    background: cadetblue;
+    color: white;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin: 0.2em;
+}
+input[type=function], button {
+    width: 12em;
+    padding-bottom: 1em;
+    padding-left: 2em;
+    padding-top: 1em;
+    border: 1px solid #ccc;
+    background: forestgreen;
+    color: white;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    resize: vertical;
+}
+input[type=option], select {
+    width: 30em;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    resize: vertical
+}
+input[type=text], select {
+    width: 100%;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    resize: both;
+}
+input[type=password], select {
+    width: 50em;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    resize: vertical
+}
+input[type=submit]:hover {
+    background-color: lightgrey;
+}
+input[type=button]:hover {
+    background-color: lightgrey;
+}
+input[type=email], select {
+    width: 50em;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    resize: vertical
+}
+input[type=number], select {
+    width: 30em;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    resize: vertical
+}
+*/
+/*-----------file upload---------------*/
+input[type=file] {
+    width: 30em;
+    color: white;
+    background-color: darkslategray;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+form {
+    width: 100%;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    resize: vertical;
+    font-family: Calibri, serif;
+}
+
 /**----------- footer---------------*/
 footer {
     position: fixed;
@@ -95,7 +293,7 @@ footer a {
     color: darkgray;
 }
 nav {
-    background-color: darkslategray;
+    background-color: #707070;
 }
 footer p[class = leftText] {
     text-align: left;
