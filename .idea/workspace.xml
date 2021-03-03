@@ -19,10 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_02_2021_15_04__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_02_2021_15_04__Default_Changelist_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prosjektleder/dashbord_prosjektleder.twig" beforeDir="false" afterPath="$PROJECT_DIR$/prosjektleder/dashbord_prosjektleder.twig" afterDir="false" />
-    </list>
+    <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,6 +61,7 @@
   </component>
   <component name="ProjectId" id="1otEsEUSTd2dlvzMi394uiKz93C" />
   <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -81,18 +79,18 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\admin" />
-      <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\images" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\templates" />
       <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling" />
       <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\login" />
       <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\classes" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\admin" />
+      <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\images" />
+    </key>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -133,7 +131,13 @@
       <option name="presentableId" value="LOCAL−00004" />
       <updated>1614766973281</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL−00005" summary="Lagt inn brukerprofiler\prosjekter admin twig\css og icons.">
+      <created>1614811752184</created>
+      <option name="number" value="LOCAL−00005" />
+      <option name="presentableId" value="LOCAL−00005" />
+      <updated>1614811752184</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,24 +159,7 @@
     <MESSAGE value="Hei sann!" />
     <MESSAGE value="Lagt inn logo og twig-admin starter filer." />
     <MESSAGE value="Lagt inn noe layout bruker twig\html." />
-    <option name="LAST_COMMIT_MESSAGE" value="Lagt inn noe layout bruker twig\html." />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="929" y="586" key="#Notifications" timestamp="1614793134118">
-      <screen x="0" y="0" width="3440" height="1440" />
-    </state>
-    <state x="929" y="586" key="#Notifications/0.0.3440.1440@0.0.3440.1440" timestamp="1614793134118" />
-    <state x="391" y="73" width="1732" height="1154" key="DiffContextDialog" timestamp="1614793101393">
-      <screen x="0" y="0" width="3440" height="1440" />
-    </state>
-    <state x="391" y="73" width="1732" height="1154" key="DiffContextDialog/0.0.3440.1440@0.0.3440.1440" timestamp="1614793101393" />
-    <state x="824" y="478" key="FileChooserDialogImpl" timestamp="1614793294020">
-      <screen x="0" y="0" width="3440" height="1440" />
-    </state>
-    <state x="824" y="478" key="FileChooserDialogImpl/0.0.3440.1440@0.0.3440.1440" timestamp="1614793294020" />
-    <state x="545" y="368" key="SettingsEditor" timestamp="1614793299712">
-      <screen x="0" y="0" width="3440" height="1440" />
-    </state>
-    <state x="545" y="368" key="SettingsEditor/0.0.3440.1440@0.0.3440.1440" timestamp="1614793299712" />
+    <MESSAGE value="Lagt inn brukerprofiler\prosjekter admin twig\css og icons." />
+    <option name="LAST_COMMIT_MESSAGE" value="Lagt inn brukerprofiler\prosjekter admin twig\css og icons." />
   </component>
 </project>
