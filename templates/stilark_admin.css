@@ -1,6 +1,7 @@
 body {
     background-color:#E7E7E7;
 }
+
 /**----------- header ---------------*/
 .header {
     height: 10%;
@@ -11,7 +12,7 @@ body {
     padding-left: 1.2em;
     padding-right: 1.2em;
     padding-top: 1em;
-    background-color: #E7E7E7;
+    background-color: #D9D2D2;
     font-family: "Segoe UI", serif;
     font-size: medium;
     border-bottom: 1px solid #387CB7;
@@ -22,6 +23,7 @@ body {
     font-size: 1em;
     text-decoration: none;
     line-height: 35px;
+    overflow: hidden;
 }
 /**----------- dashbord_admin ---------------*/
 
