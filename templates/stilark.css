@@ -46,7 +46,9 @@ body {
     border: 1px solid #387CB7;
     box-sizing: border-box;
     border-radius: 10px;
+    box-shadow: 1px 2px 3px #888888;
 }
+
 
 .container div.text {
     /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
