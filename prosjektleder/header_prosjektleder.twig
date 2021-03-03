@@ -14,10 +14,10 @@
     <a href="">Innstillinger</a>&nbsp;&nbsp;
 
     {% if session.loggetInn %}
-        <a href="../Logout.php">Logg ut</a>
+        <a href="../logout.php">Logg ut</a>
         <h3>Velkommen</h3><p><span class="boldRight">{{ session.brukernavn }}</span></p>
     {%  else %}
-        <a href="../Login.php">Logg inn</a>
+        <a href="../login.php">Logg inn</a>
     {% endif %}
 
 </div>
