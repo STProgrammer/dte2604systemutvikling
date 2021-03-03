@@ -1,25 +1,44 @@
 
-/**----------- sidenavigasjon---------------*/
-.sidenavigasjon {
-    height: 100%;
-    width: 10em;
+body {
+    background-color:#E7E7E7;
+}
+
+/**----------- header ---------------*/
+.header {
+    height: 10%;
+    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
     padding-left: 1.2em;
+    padding-right: 1.2em;
     padding-top: 1em;
-    background-color: cadetblue;
-    z-index: 1;
-    font-family: Arial, serif;
+    background-color: #D9D2D2;
+    font-family: "Segoe UI", serif;
+    font-size: medium;
+    border-bottom: 1px solid #387CB7;
 }
-.sidenavigasjon a {
-    color: white;
-    font-family: Arial, serif;
-    font-size: 20px;
+.header a {
+    color: #707070;
+    font-family: Segoe UI, serif;
+    font-size: 1em;
     text-decoration: none;
     line-height: 35px;
+    overflow: hidden;
 }
-/**----------- visOversikt---------------*/
+/**----------- dashbord_admin ---------------*/
+
+/**----------- brukerprofiler_admin ---------------*/
+
+/**----------- prosjekter_admin ---------------*/
+
+/**----------- statistikk_admin ---------------*/
+
+/**----------- instillinger_admin ---------------*/
+
+/**----------- timeregistrering_bruker ---------------*/
+
+/**----------- visOversikt - SOM ET EKSEMPEL----SKAL SLETTES---------------*/
 .oversikt {
     margin-left: 6em;
     padding-left: 6em;
