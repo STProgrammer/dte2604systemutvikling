@@ -20,11 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/dashbord_admin.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashbord_admin.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header_admin.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_admin.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index_admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index_admin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_admin.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_admin.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/stilark.css" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stilark.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
