@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href="../stilark.css">
     <title>$Title$</title>
 </head>
-<body>
+<body class="prosjektleder">
+
 <div class="header">
-    <a href="index_prosjektleder.php"> <img src="../images/morild_logo_150px.png" width="15%" alt="Logo"/></a>&nbsp;&nbsp;
-    <a href="">Dashbord</a>&nbsp;&nbsp;
-    <a href="">Brukerprofiler</a>&nbsp;&nbsp;
-    <a href="">Prosjekter</a>&nbsp;&nbsp;
-    <a href="">Statistikk</a>&nbsp;&nbsp;
-    <a href="">Innstillinger</a>&nbsp;&nbsp;
+    <a href="index_prosjektleder.php"> <img src="../images/morild_logo_150px.png" width="230px" alt="Logo"/></a>
+    <span>Velkommen</span><span><b>&nbsp;Leder&nbsp;&nbsp;</b></span>
+    <a href="">&nbsp;Dashbord&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Brukerprofiler&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Prosjekter&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Statistikk&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Innstillinger&nbsp;&nbsp;</a>
 
     {% if session.loggetInn %}
         <a href="../logout.php">Logg ut</a>
@@ -19,7 +24,7 @@
     {%  else %}
         <a href="../login.php">Logg inn</a>
     {% endif %}
-
 </div>
+
 </body>
 </html>
