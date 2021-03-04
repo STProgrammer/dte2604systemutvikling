@@ -46,136 +46,32 @@ body {
     line-height: 35px;
 }
 /**____________ADMIN_________________________*/
-/**----------- dashbord_admin ---------------*/
-/* hentet fra  https://jsfiddle.net/g2pzwaou/ */
-.dashbord_admin_container h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
+section.admin_dashboard {
+    margin-top: 10em;
 }
-.dashbord_admin_container > div {
-    display: inline-block;
-    width: 150px;
-    padding: 15px;
-    margin-top: 110px;
-    border: 1px solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #888888;
+/**____________PROSJEKTER___________*/
+section.prosjekter {
+    margin-top: 10em;
 }
-.dashbord_admin_container div.text {
-    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
-    height: 100px;
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-.dashbord2_admin_container h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-.dashbord2_admin_container > div {
-    display: inline-block;
-    margin-top: 5px;
-    width: 305px;
-    padding: 15px;
-    max-width: 50%;
-    min-width: 200px;
-    border: 1px solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #888888;
-}
-.dashbord2_admin_container div.text {
-    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
-    height: 300px;
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-/**----------- brukerprofiler_admin ---------------*/
-.brukerprofiler_buttons {
-    background-color: white;
+/**____________BUTTONS___________*/
+.buttons {
     border-color: #387CB7;
-    margin-top: 110px;
-    padding: 5px;
     font-family: Segoe UI, serif;
     color: #707070;
-    font-size: 12px;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #dbdada;
+    padding: 1em;
+    margin: 1em;
+    border: 0.1em solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 1em;
+    box-shadow: 0.1em 1em 1.5em #888888;
 }
-.brukerprofiler_buttons > img {
 }
-.brukerprofiler_buttons:hover {
+.buttons > img {
+}
+
+.buttons:hover {
     background-color: #ececec;
 }
-.brukerprofiler_admin_container > div {
-    display: inline-block;
-    margin-top: 5px;
-    width: 200px;
-    padding: 15px;
-    border: 1px solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #888888;
-}
-.brukerprofiler_admin_container h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-.brukerprofiler_admin_container div.text {
-    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
-    height: 200px;
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-/**----------- prosjekter_admin ---------------*/
-.prosjekter_buttons {
-    background-color: white;
-    border-color: #387CB7;
-    margin-top: 110px;
-    padding: 5px;
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #dbdada;
-}
-.prosjekter_buttons > img {
-}
-
-.prosjekter_buttons:hover {
-    background-color: #ececec;
-}
-.prosjekter_admin_container div {
-    display: inline-block;
-    margin-top: 5px;
-    width: 600px;
-    padding: 15px;
-    border: 1px solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #888888;
-}
-.prosjekter_admin_container h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-.prosjekter_admin_container div.text {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-/**----------- statistikk_admin ---------------*/
-
-/**----------- instillinger_admin ---------------*/
-
-/**----------- timeregistrering_bruker ---------------*/
 
 /**____________CONTAINERS___________*/
 div.container_medium {
@@ -187,13 +83,11 @@ div.container_medium {
     border: 0.1em solid #387CB7;
     box-sizing: border-box;
     border-radius: 1em;
-    background: white;
     box-shadow: 0.1em 1em 1.5em #888888;
-    overflow: hidden;
 }
 div.container_big {
     display: inline-block;
-    width: 50em;
+    width: 40em;
     height: 40em;
     padding: 1em;
     margin: 1em;
@@ -202,29 +96,22 @@ div.container_big {
     border: 0.1em solid #387CB7;
     box-sizing: border-box;
     border-radius: 1em;
-    background: white;
     box-shadow: 0.1em 1em 1em #888888;
-    overflow: hidden;
 }
 .container_medium h3 {
     font-family: Segoe UI, serif;
     color: #707070;
-    font-size: 0.9rem;
+    font-size: 1rem;
+}
+.container_big h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 1rem;
 }
 .container_medium div.text {
     font-family: Segoe UI, serif;
     color: #707070;
     font-size: 0.8rem;
-}
-.container_medium div.text_bigtime {
-    font-family: Segoe UI, serif;
-    color: #5f5a5a;
-    font-size: 2rem;
-}
-.container_big h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 0.9rem;
 }
 .container_big div.text {
     font-family: Segoe UI, serif;
@@ -233,9 +120,37 @@ div.container_big {
 }
 /**____________PROSJEKTLEDER___________*/
 section.prosjektleder_dashboard {
-    margin-top: 8em;
+    margin-top: 10em;
 }
-
+.prosjektleder.header {
+    height: 80pt;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10pt 10pt 20pt;
+    background-color: #D9D2D2;
+    font-family: "Segoe UI", serif;
+    border-bottom: 1pt solid #387CB7;
+}
+a#prosjektleder.header {
+    color: #707070;
+    height: 80pt;
+    position: relative;
+    font-family: Segoe UI, serif;
+    font-size: 15pt;
+    text-decoration: none;
+    line-height: 35pt;
+}
+span#prosjektleder.header {
+    color: #707070;
+    height: 80pt;
+    position: relative;
+    font-family: Segoe UI, serif;
+    font-size: 15pt;
+    text-decoration: none;
+    line-height: 35pt;
+}
 
 /**----------- visOversikt - SOM ET EKSEMPEL----SKAL SLETTES---------------*/
 /*

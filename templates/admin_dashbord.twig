@@ -1,39 +1,36 @@
-{% extends "admin_layout.twig" %}
+{% extends "layout.twig" %}
 {% block content %}
-    <div id="dashbord_admin" class="dashbord_admin">
-        <div class="dashbord_admin_container">
-            <div>
+    <section class="admin_dashboard" id="admin_dashboard">
+        <div class="container_medium">
                 <h3>Databaseoppføringer i dag</h3>
                 <div class="text">
                     Body text goes here
-                </div>
-            </div>
-            <div>
-                <h3>Total timeregistrering</h3>
-                <div class="text">
-                    Body text goes here
-                </div>
-            </div>
-            <div>
-                <h3>Nye brukere til godkjenning</h3>
-                <div class="text">
-                    Body text goes here
-                </div>
-            </div>
-            <div>
-                <h3>Rapporterte feilmeldinger</h3>
-                <div class="text">
-                    Body text goes here
-                </div>
             </div>
         </div>
-        <div class="dashbord2_admin_container">
-        <div>
-            <h3>Kommentarer fra brukere</h3>
+        <div class="container_medium" id="container_medium">
+            <h3>Total timeregistrering</h3>
+            <div class="text">
+                Body text goes here
+            </div>
+        </div>
+        <div class="container_medium" id="container_medium">
+            <h3>Nye brukere til godkjenning</h3>
+            <div class="text">
+                Body text goes here
+            </div>
+        </div>
+        <div class="container_medium" id="container_medium">
+            <h3>Rapporterte feilmeldinger</h3>
             <div class="text">
                 Body text goes here
             </div>
         </div>
         </div>
-    </div>
+        <div class="container_big">
+            <h3>Kommentarer fra brukere</h3>
+            <div class="text">
+                Body text goes here
+            </div>
+        </div>
+    </section>
 {% endblock %}

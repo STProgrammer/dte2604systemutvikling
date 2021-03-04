@@ -1,20 +1,20 @@
-{% extends "admin_layout.twig" %}
+{% extends "layout.twig" %}
 {% block content %}
 
-    <div id="prosjekter_admin" class="prosjekter_admin">
-        <div class="prosjekter_admin_container">
-            <button class="button brukerprofiler_buttons">
+    <section id="prosjekter" class="prosjekter">
+        <div>
+            <button class="button buttons">
                 <img src=""> Nytt prosjekt</button>
-            <button class="button brukerprofiler_buttons">
+            <button class="button buttons">
                 <img src=""> Slett prosjekt</button>
-            <button class="button brukerprofiler_buttons">
+            <button class="button buttons">
                 <img src=""> Legge inn funksjoner</button>
-            <button class="button brukerprofiler_buttons">
+            <button class="button buttons">
                 <img src=""> Godkjenne prosjekt</button>
-            <button class="button brukerprofiler_buttons">
+            <button class="button buttons">
                 <img src=""> Alle prosjekter</button>
         </div>
-        <div class="prosjekter_admin_container">
+        <div class="container_big">
             <div>
                 <h3>Prosjekter</h3>
                 <div class="text">
@@ -23,5 +23,5 @@
             </div>
         </div>
 
-    </div>
+    </section>
 {% endblock %}
