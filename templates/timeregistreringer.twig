@@ -1,44 +1,95 @@
-{% extends "admin_layout.twig" %}
+{% extends "layout.twig" %}
 {% block content %}
-
-    <div id="brukerprofiler_admin" class="brukerprofiler_admin">
-        <div class="brukerprofiler_admin_container">
-            <button class="button brukerprofiler_buttons">
-                <img src="../images/icon_legg_til_bruker.svg"> Ny bruker</button>
-            <button class="button brukerprofiler_buttons">
-                <img src="../images/icon_slett_bruker.svg"> Slett bruker</button>
-            <button class="button brukerprofiler_buttons">
-                <img src="../images/icon_bruker_sjekk.svg"> Verifiser bruker</button>
-            <button class="button brukerprofiler_buttons">
-                <img src="../images/icon_endre_bruker.svg"> Endre bruker</button>
+    <section id="timeregistreringer" class="timeregistreringer">
+        <div class="container_registrer_inn">
+            <button id="button" class="button">
+                <img src="images/icon_time.png" width="40pt"> Registrer inn
+            </button>
         </div>
-        <div class="brukerprofiler_admin_container">
-            <div>
-                <h3>Administratorer</h3>
-                <div class="text">
-                    Body text goes here
-                </div>
-            </div>
-            <div>
-                <h3>Ledere </h3>
-                <div class="text">
-                    Body text goes here
-                </div>
-            </div>
-            <div>
-                <h3>Brukere</h3>
-                <div class="text">
-                    Body text goes here
-                </div>
-            </div>
-            <div>
-                <h3>Grupper</h3>
-                <div class="text">
-                    Body text goes here
-                </div>
+        <div class="container_pause">
+            <button id="button" class="button">
+                <img src="images/icon_time.png" width="40pt"> Pause
+            </button>
+        </div>
+        <div class="container_registrer_ut">
+            <button id="button" class="button">
+                <img src="images/icon_time.png" width="40pt"> Registrer ut
+            </button>
+        </div>
+    </section>
+    <section>
+        <div class="container_extra_big">
+            <div class="text">
+                <table class="table" id="table_bredt">
+                    <tr>
+                        <th>Dato</th>
+                        <th>Medarbeider</th>
+                        <th>Avdeling</th>
+                        <th>Gruppe</th>
+                        <th>Type</th>
+                        <th>Vaktplantid</th>
+                        <th>Start</th>
+                        <th>Slutt</th>
+                        <th>Pause</th>
+                        <th>Godkjent</th>
+                        <th>Endre</th>
+                    </tr>
+                    <tr>
+                        <td>Ole Nordmann</td>
+                        <td>Prosjektleder</td>
+                        <td>Anyone Ne1</td>
+                        <td>Gruppe4</td>
+                        <td>Hjemmekontor</td>
+                        <td>08:00 - 16:00</td>
+                        <td>08:15</td>
+                        <td>15:20</td>
+                        <td>00:30</td>
+                        <td>Godkjent</td>
+                        <td>endre icon</td>
+                    </tr>
+                    <tr>
+                        <td>Ole Nordmann</td>
+                        <td>Prosjektleder</td>
+                        <td>Anyone Ne1</td>
+                        <td>Gruppe4</td>
+                        <td>Hjemmekontor</td>
+                        <td>08:00 - 16:00</td>
+                        <td>08:15</td>
+                        <td>15:20</td>
+                        <td>00:30</td>
+                        <td>Godkjent</td>
+                        <td>endre icon</td>
+                    </tr>
+                    <tr>
+                        <td>Ole Nordmann</td>
+                        <td>Prosjektleder</td>
+                        <td>Anyone Ne1</td>
+                        <td>Gruppe4</td>
+                        <td>Hjemmekontor</td>
+                        <td>08:00 - 16:00</td>
+                        <td>08:15</td>
+                        <td>15:20</td>
+                        <td>00:30</td>
+                        <td>Godkjent</td>
+                        <td>endre icon</td>
+                    </tr>
+                    <tr>
+                        <td>Ole Nordmann</td>
+                        <td>Prosjektleder</td>
+                        <td>Anyone Ne1</td>
+                        <td>Gruppe4</td>
+                        <td>Hjemmekontor</td>
+                        <td>08:00 - 16:00</td>
+                        <td>08:15</td>
+                        <td>15:20</td>
+                        <td>00:30</td>
+                        <td>Godkjent</td>
+                        <td>endre icon</td>
+                    </tr>
+                </table>
             </div>
         </div>
-
+    </section>
 
     </div>
 {% endblock %}
