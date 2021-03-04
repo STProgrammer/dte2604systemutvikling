@@ -5,24 +5,36 @@ body {
 
 /**----------- HEADER ---------------*/
 .header {
-    height: 80px;
+    display: inline-block;
+    height: 6em;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    padding: 10px 10px 20px;
+    padding: 1em 1em 1em;
     background-color: #D9D2D2;
     font-family: "Segoe UI", serif;
-    border-bottom: 1px solid #387CB7;
+    border-bottom: 0.1em solid #387CB7;
 }
 .header a {
     color: #707070;
-    height: 80px;
+    height: 2em;
     position: relative;
+    padding: 1em;
     font-family: Segoe UI, serif;
-    font-size: 15px;
+    font-size: 1em;
     text-decoration: none;
-    line-height: 35px;
+    line-height: 1.5em;
+}
+.header a:hover {
+    color: lightyellow;
+    height: 2em;
+    position: relative;
+    padding: 1em;
+    font-family: Segoe UI, serif;
+    font-size: 1em;
+    text-decoration: none;
+    line-height: 1.5em;
 }
 .header span {
     color: #707070;
