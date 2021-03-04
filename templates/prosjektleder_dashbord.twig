@@ -1,29 +1,53 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="prosjektleder_dashboard" id="prosjektleder_dashboard">
+
         <div class="container_medium" id="container_medium">
+            <a> <img src="images/icon_databse.png" width="40px" alt="Icon"/></a>
             <h3>Databaseoppføringer i dag</h3>
             <div class="text">
-                Databaseoppføring 1
+                Databaseoppføring i dag: 20 oppføringer
             </div>
         </div>
         <div class="container_medium" id="container_medium">
-            <h3>Databaseoppføringer i dag</h3>
-            <div class="text">
-                Databaseoppføringer
+            <a> <img src="images/icon_clock.png" width="40px" alt="Icon"/></a>
+            <h3>Totale timeregistreringer i dag</h3>
+            <div class="text_bigtime">
+                20:40
             </div>
         </div>
         <div class="container_medium" id="container_medium">
-            <h3>Databaseoppføringer i dag</h3>
+            <a> <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/></a>
+            <h3>Feilmeldinger i dag</h3>
             <div class="text">
-                Databaseoppføringer
+                Feil1: Error ved opplasting av rapport
             </div>
+        </div>
+        <div class="container_medium" id="container_medium">
+            <a> <img src="images/icon_clock.png" width="40px" alt="Icon"/></a>
+            <h3>Registrer fravær / </h3>
+            <h3>Rediger timeføringer</h3>
         </div>
         <div class="container_big" id="container_big">
-            <h3>Databaseoppføringer i dag</h3>
-            <div class="text">
-                Databaseoppføringer
-            </div>
+            <a> <img src="images/icon_kommentar.png" width="40px" alt="Icon"/></a>
+            <h3>Siste kommentarer fra brukere</h3>
+
+            <table>
+                <h3>Halil</h3>
+                <tr>
+                    <div class="text">
+                        I dag har jeg jobbet en del med layout. Den er snart ferdig. Skal oppdatere tidene på oppgaven
+                        legge inn reestimering om det tar lengre tid enn forventet.
+                    </div>
+                </tr>
+                <h3>Are</h3>
+                <tr>
+                    <div class="text">
+                        I dag har jeg jobbet en del med layout. Den er snart ferdig. Skal oppdatere tidene på oppgaven
+                        legge inn reestimering om det tar lengre tid enn forventet.
+                    </div>
+                </tr>
+            </table>
         </div>
     </section>
 {% endblock %}

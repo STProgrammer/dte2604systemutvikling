@@ -9,9 +9,6 @@
     $rel = str_replace('/', '../', $rel);  //Turn "/" into "../"
     $rel = $rel . (basename($_SERVER['SCRIPT_FILENAME']) == "index.php" ? "" :"../");
 
-
-
-
     spl_autoload_register(function ($class_name) {
         $homedir = __DIR__ . '/';
         if (file_exists($homedir . "classes/". $class_name .".class.php"))
@@ -22,6 +19,8 @@
 
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Session\Session;
+    use Twig\Environment;
+    use Twig\Loader\FilesystemLoader;
 
     $request = Request::createFromGlobals();
 
@@ -32,8 +31,8 @@
     error_reporting(E_ALL);
 
     // Twig templates
-    $loader = new \Twig\Loader\FilesystemLoader($homedir . 'templates');
-    $twig = new \Twig\Environment($loader, ['debug' => true]);
+    $loader = new FilesystemLoader($homedir . 'templates');
+    $twig = new Environment($loader, ['debug' => true]);
     $twig->addExtension(new \Twig\Extension\DebugExtension());
 
     $twig->addFunction(new \Twig\TwigFunction('getMac', function($action) {
