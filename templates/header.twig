@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+</head>
+<body class="prosjektleder">
+
+<div class="header">
+    <a href="../prosjektleder_index.php"> <img src="images/morild_logo_150px.png" width="230px" alt="Logo"/></a>
+    <span>Velkommen</span><span><b>&nbsp;Leder&nbsp;&nbsp;</b></span>
+    <a href="">&nbsp;Dashbord&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Timeregistreringer&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Brukerprofiler&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Prosjekter&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Rapporter&nbsp;&nbsp;</a>
+    <a href="">&nbsp;Innstillinger&nbsp;&nbsp;</a>
+
+    {% if session.loggetInn %}
+        <a href="../logout.php">Logg ut</a>
+        <h3>Velkommen</h3><p><span><b>{{ session.brukernavn }}</b></span></p>
+    {%  else %}
+        <a href="../login.php">Logg inn</a>
+    {% endif %}
+</div>
+
+</body>
+</html>
