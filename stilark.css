@@ -55,7 +55,6 @@ section.prosjekter {
 }
 /**____________BUTTONS___________*/
 .buttons {
-    border-color: #387CB7;
     font-family: Segoe UI, serif;
     color: #707070;
     padding: 1em;
@@ -71,11 +70,26 @@ section.prosjekter {
 .buttons:hover {
     background-color: #ececec;
 }
+.button#button.button {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    padding: 0;
+    border: none;
+    background: none;
+
+}
+/**____________TABLES___________*/
+.table {
+    text-align: left;
+    border-color: burlywood;
+    border-spacing: 10pt;
+}
+
 
 /**____________CONTAINERS___________*/
 div.container_small {
     display: inline-block;
-    width: 10em;
+    width: 12em;
     height: 5em;
     padding: 1em;
     margin: 1em;
@@ -88,7 +102,7 @@ div.container_small {
 }
 div.container_small_long {
     display: inline-block;
-    width: 30em;
+    width: 24em;
     height: 5em;
     padding: 1em;
     margin: 1em;
@@ -114,7 +128,7 @@ div.container_medium {
 }
 div.container_medium_high {
     display: inline-block;
-    width: 20em;
+    width: 40em;
     height: 30em;
     padding: 1em;
     margin: 1em;
@@ -140,30 +154,20 @@ div.container_big {
     box-shadow: 0.1em 1em 1em #888888;
     overflow: hidden;
 }
-.container_medium h3 {
+h3 {
     font-family: Segoe UI, serif;
     color: #707070;
     font-size: 0.9rem;
 }
-.container_medium div.text {
+div.text {
     font-family: Segoe UI, serif;
     color: #707070;
     font-size: 0.8rem;
 }
-.container_medium div.text_bigtime {
+div.text_bigtime {
     font-family: Segoe UI, serif;
     color: #5f5a5a;
     font-size: 2rem;
-}
-.container_big h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 0.9rem;
-}
-.container_big div.text {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 0.8rem;
 }
 /**____________PROSJEKTLEDER___________*/
 section.prosjektleder_dashboard {
@@ -174,48 +178,7 @@ section.prosjektleder_dashboard {
 section.brukerprofiler {
     margin-top: 8em;
 }
-.brukerprofiler
 
-.button.button {
-    background-color: white;
-    border-color: #387CB7;
-    margin-top: 110px;
-    padding: 5px;
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #dbdada;
-}
-.b > img {
-}
-/*
-.brukerprofiler.container_small.buttons:hover {
-    background-color: #ececec;
-}
-
-.brukerprofiler_admin_container > div {
-    display: inline-block;
-    margin-top: 5px;
-    width: 200px;
-    padding: 15px;
-    border: 1px solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #888888;
-}
-.brukerprofiler_admin_container h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-.brukerprofiler_admin_container div.text {
-    height: 200px;
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-*/
 /* -------------LINK -----------------------*/
 a:visited {
 

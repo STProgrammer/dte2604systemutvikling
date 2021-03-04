@@ -9,12 +9,14 @@
 <div class="header">
     <a> <img src="images/morild_logo_150px.png" width="230pt" alt="Logo"/></a>
     <span>Velkommen</span><span><b>&nbsp;Leder&nbsp;&nbsp;</b></span>
+
+    <!--TODO if bruker prosjektleder så link til prosjektleder_dashbord-->
     <a href="">&nbsp;Dashbord&nbsp;&nbsp;</a>
-    <a href="">&nbsp;Timeregistreringer&nbsp;&nbsp;</a>
-    <a href="">&nbsp;Brukerprofiler&nbsp;&nbsp;</a>
-    <a href="">&nbsp;Prosjekter&nbsp;&nbsp;</a>
-    <a href="">&nbsp;Rapporter&nbsp;&nbsp;</a>
-    <a href="">&nbsp;Innstillinger&nbsp;&nbsp;</a>
+    <a href="timeregistreringer.php">&nbsp;Timeregistreringer&nbsp;&nbsp;</a>
+    <a href="brukerprofiler.php">&nbsp;Brukerprofiler&nbsp;&nbsp;</a>
+    <a href="prosjekter.php">&nbsp;Prosjekter&nbsp;&nbsp;</a>
+    <a href="rapporter.php">&nbsp;Rapporter&nbsp;&nbsp;</a>
+    <a href="instillinger.php">&nbsp;Innstillinger&nbsp;&nbsp;</a>
 
     {% if session.loggetInn %}
         <a href="../logout.php">Logg ut</a>
