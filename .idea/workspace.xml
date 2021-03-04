@@ -19,7 +19,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="" />
+    <list default="true" id="f88e7e73-a61d-4108-8be5-20a73a90360a" name="Default Changelist" comment="Lagt inn noe layout bruker twig\html.">
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_02_2021_15_04__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_02_2021_15_04__Default_Changelist_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bruker_index.php" beforeDir="false" afterPath="$PROJECT_DIR$/bruker_index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index_admin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/layout_bruker.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/bruker_layout.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/stilark.css" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,7 +51,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="halil_sys" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -61,7 +70,6 @@
   </component>
   <component name="ProjectId" id="1otEsEUSTd2dlvzMi394uiKz93C" />
   <component name="ProjectLevelVcsManager">
-    <OptionsSetting value="false" id="Update" />
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -72,25 +80,27 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../prosjekt4" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="web.server" />
     <property name="validate C:/xampp/htdocs/dte-2604-1-21v-systemutvikling/composer.json" value="--no-interaction --ansi --verbose --with-dependencies" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Program Files\Xampp\htdocs\dte-2604-1-21v-systemutvikling\templates" />
+      <recent name="C:\Program Files\Xampp\htdocs\dte-2604-1-21v-systemutvikling" />
+      <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\admin" />
+      <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\images" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\templates" />
       <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling" />
       <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\login" />
       <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\classes" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\admin" />
-      <recent name="C:\xampp\htdocs\dte-2604-1-21v-systemutvikling\images" />
-    </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -106,6 +116,7 @@
       <workItem from="1614369901545" duration="1007000" />
       <workItem from="1614441482935" duration="44000" />
       <workItem from="1614521075727" duration="111000" />
+      <workItem from="1614852232627" duration="344000" />
     </task>
     <task id="LOCAL−00001" summary="Lagt inn logo og twig-admin starter filer.">
       <created>1614717346100</created>
@@ -131,17 +142,41 @@
       <option name="presentableId" value="LOCAL−00004" />
       <updated>1614766973281</updated>
     </task>
-    <task id="LOCAL−00005" summary="Lagt inn brukerprofiler\prosjekter admin twig\css og icons.">
-      <created>1614811752184</created>
+    <task id="LOCAL−00005" summary="Lagt inn noe layout bruker twig\html.">
+      <created>1614793310062</created>
       <option name="number" value="LOCAL−00005" />
       <option name="presentableId" value="LOCAL−00005" />
-      <updated>1614811752184</updated>
+      <updated>1614793310062</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL−00006" summary="bruker twig\html.">
+      <created>1614802070160</created>
+      <option name="number" value="LOCAL−00006" />
+      <option name="presentableId" value="LOCAL−00006" />
+      <updated>1614802070160</updated>
+    </task>
+    <task id="LOCAL−00007" summary="bruker twig\html/css.">
+      <created>1614813678277</created>
+      <option name="number" value="LOCAL−00007" />
+      <option name="presentableId" value="LOCAL−00007" />
+      <updated>1614813678277</updated>
+    </task>
+    <task id="LOCAL−00008" summary="Endret navn på filer">
+      <created>1614819696102</created>
+      <option name="number" value="LOCAL−00008" />
+      <option name="presentableId" value="LOCAL−00008" />
+      <updated>1614819696102</updated>
+    </task>
+    <task id="LOCAL−00009" summary="Endret navn på filer">
+      <created>1614819859810</created>
+      <option name="number" value="LOCAL−00009" />
+      <option name="presentableId" value="LOCAL−00009" />
+      <updated>1614819859810</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="2" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -159,7 +194,55 @@
     <MESSAGE value="Hei sann!" />
     <MESSAGE value="Lagt inn logo og twig-admin starter filer." />
     <MESSAGE value="Lagt inn noe layout bruker twig\html." />
-    <MESSAGE value="Lagt inn brukerprofiler\prosjekter admin twig\css og icons." />
-    <option name="LAST_COMMIT_MESSAGE" value="Lagt inn brukerprofiler\prosjekter admin twig\css og icons." />
+    <MESSAGE value="bruker twig\html." />
+    <MESSAGE value="bruker twig\html/css." />
+    <MESSAGE value="Endret navn på filer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Endret navn på filer" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="929" y="586" key="#Notifications" timestamp="1614793134118">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="929" y="586" key="#Notifications/0.0.3440.1440@0.0.3440.1440" timestamp="1614793134118" />
+    <state x="774" y="470" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1614852502449">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="774" y="470" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.3440.1440@0.0.3440.1440" timestamp="1614852502449" />
+    <state x="827" y="106" width="1402" height="1095" key="CommitChangelistDialog2" timestamp="1614852613520">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="827" y="106" width="1402" height="1095" key="CommitChangelistDialog2/0.0.3440.1440@0.0.3440.1440" timestamp="1614852613520" />
+    <state x="391" y="73" width="1732" height="1154" key="DiffContextDialog" timestamp="1614793101393">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="391" y="73" width="1732" height="1154" key="DiffContextDialog/0.0.3440.1440@0.0.3440.1440" timestamp="1614793101393" />
+    <state x="824" y="478" key="FileChooserDialogImpl" timestamp="1614817666881">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="824" y="478" key="FileChooserDialogImpl/0.0.3440.1440@0.0.3440.1440" timestamp="1614817666881" />
+    <state x="0" y="129" key="MergeDialog" timestamp="1614852659450">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="0" y="129" key="MergeDialog/0.0.3440.1440@0.0.3440.1440" timestamp="1614852659450" />
+    <state x="877" y="570" width="1297" height="265" key="MultipleFileMergeDialog" timestamp="1614852385421">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="877" y="570" width="1297" height="265" key="MultipleFileMergeDialog/0.0.3440.1440@0.0.3440.1440" timestamp="1614852385421" />
+    <state x="545" y="368" key="SettingsEditor" timestamp="1614793814553">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="545" y="368" key="SettingsEditor/0.0.3440.1440@0.0.3440.1440" timestamp="1614793814553" />
+    <state x="636" y="456" key="Vcs.Push.Dialog.v2" timestamp="1614852622321">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="636" y="456" key="Vcs.Push.Dialog.v2/0.0.3440.1440@0.0.3440.1440" timestamp="1614852622321" />
+    <state x="853" y="637" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614852352729">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="853" y="637" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.3440.1440@0.0.3440.1440" timestamp="1614852352729" />
+    <state x="797" y="436" key="git4idea.branch.GitSmartOperationDialog" timestamp="1614852655730">
+      <screen x="0" y="0" width="3440" height="1440" />
+    </state>
+    <state x="797" y="436" key="git4idea.branch.GitSmartOperationDialog/0.0.3440.1440@0.0.3440.1440" timestamp="1614852655730" />
   </component>
 </project>
