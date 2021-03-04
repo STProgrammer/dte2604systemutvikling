@@ -24,7 +24,7 @@ elseif ($request->request->has('login')) {
     }
 }
 else {
-    echo $twig->render('login_form.twig', array('session' => $session));
+    echo $twig->render('login.twig', array('session' => $session));
 }
 
 ?>
