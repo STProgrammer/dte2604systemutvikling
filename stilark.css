@@ -151,7 +151,7 @@ body {
 .prosjekter_buttons:hover {
     background-color: #ececec;
 }
-.prosjekter_admin_container > div {
+.prosjekter_admin_container div {
     display: inline-block;
     margin-top: 5px;
     width: 600px;
@@ -167,8 +167,6 @@ body {
     font-size: 12px;
 }
 .prosjekter_admin_container div.text {
-    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
-    height: 400px;
     font-family: Segoe UI, serif;
     color: #707070;
     font-size: 12px;
@@ -189,11 +187,13 @@ div.container_medium {
     border: 0.1em solid #387CB7;
     box-sizing: border-box;
     border-radius: 1em;
+    background: white;
     box-shadow: 0.1em 1em 1.5em #888888;
+    overflow: hidden;
 }
 div.container_big {
     display: inline-block;
-    width: 40em;
+    width: 50em;
     height: 40em;
     padding: 1em;
     margin: 1em;
@@ -202,22 +202,29 @@ div.container_big {
     border: 0.1em solid #387CB7;
     box-sizing: border-box;
     border-radius: 1em;
+    background: white;
     box-shadow: 0.1em 1em 1em #888888;
+    overflow: hidden;
 }
 .container_medium h3 {
     font-family: Segoe UI, serif;
     color: #707070;
-    font-size: 1rem;
-}
-.container_big h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 .container_medium div.text {
     font-family: Segoe UI, serif;
     color: #707070;
     font-size: 0.8rem;
+}
+.container_medium div.text_bigtime {
+    font-family: Segoe UI, serif;
+    color: #5f5a5a;
+    font-size: 2rem;
+}
+.container_big h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 0.9rem;
 }
 .container_big div.text {
     font-family: Segoe UI, serif;
@@ -226,37 +233,9 @@ div.container_big {
 }
 /**____________PROSJEKTLEDER___________*/
 section.prosjektleder_dashboard {
-    margin-top: 10em;
+    margin-top: 8em;
 }
-.prosjektleder.header {
-    height: 80pt;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 10pt 10pt 20pt;
-    background-color: #D9D2D2;
-    font-family: "Segoe UI", serif;
-    border-bottom: 1pt solid #387CB7;
-}
-a#prosjektleder.header {
-    color: #707070;
-    height: 80pt;
-    position: relative;
-    font-family: Segoe UI, serif;
-    font-size: 15pt;
-    text-decoration: none;
-    line-height: 35pt;
-}
-span#prosjektleder.header {
-    color: #707070;
-    height: 80pt;
-    position: relative;
-    font-family: Segoe UI, serif;
-    font-size: 15pt;
-    text-decoration: none;
-    line-height: 35pt;
-}
+
 
 /**----------- visOversikt - SOM ET EKSEMPEL----SKAL SLETTES---------------*/
 /*
