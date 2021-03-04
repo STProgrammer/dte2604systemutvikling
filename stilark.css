@@ -3,7 +3,7 @@ body {
     background-color:#E7E7E7;
 }
 
-/**----------- header ---------------*//*box-shadow: 1px 2px 3px #888888;*/
+/**----------- HEADER ---------------*/
 .header {
     height: 80px;
     width: 100%;
@@ -33,8 +33,55 @@ body {
     text-decoration: none;
     line-height: 35px;
 }
+/**____________ADMIN_________________________*/
 /**----------- dashbord_admin ---------------*/
-
+.container h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+}
+.container > div {
+    display: inline-block;
+    width: 20%;
+    padding: 15px;
+    max-width: 40%;
+    min-width: 200px;
+    margin-top: 110px;
+    border: 1px solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 1px 2px 3px #888888;
+}
+.container div.text {
+    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
+    height: 100px;
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+}
+.container2 h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+}
+.container2 > div {
+    display: inline-block;
+    margin-top: 5px;
+    width: 35%;
+    padding: 15px;
+    max-width: 40%;
+    min-width: 200px;
+    border: 1px solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+.container2 div.text {
+    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
+    height: 300px;
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+}
 /**----------- brukerprofiler_admin ---------------*/
 
 /**----------- prosjekter_admin ---------------*/
@@ -45,7 +92,7 @@ body {
 
 /**----------- timeregistrering_bruker ---------------*/
 
-/**______________PROSJEKTLEDER___________*/
+/**____________PROSJEKTLEDER___________*/
 .prosjektleder.header {
     height: 80px;
     width: 100%;
@@ -57,7 +104,7 @@ body {
     font-family: "Segoe UI", serif;
     border-bottom: 1px solid #387CB7;
 }
-.prosjektleder.header a {
+a#prosjektleder.header {
     color: #707070;
     height: 80px;
     position: relative;
@@ -66,7 +113,7 @@ body {
     text-decoration: none;
     line-height: 35px;
 }
-.prosjektleder.header span {
+span#prosjektleder.header {
     color: #707070;
     height: 80px;
     position: relative;
@@ -75,7 +122,8 @@ body {
     text-decoration: none;
     line-height: 35px;
 }
-.prosjektleder.div1 div {
+
+div#prosjektleder_dashboard.prosjektleder_dashboard {
     display: inline-block;
     width: 20%;
     padding: 15px;
