@@ -167,50 +167,84 @@ body {
 
 /**----------- timeregistrering_bruker ---------------*/
 
+/**____________CONTAINERS___________*/
+div.container_medium {
+    display: inline-block;
+    width: 20em;
+    height: 10em;
+    padding: 1em;
+    margin: 1em;
+    border: 0.1em solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 1em;
+    box-shadow: 0.1em 1em 1.5em #888888;
+}
+div.container_big {
+    display: inline-block;
+    width: 40em;
+    height: 40em;
+    padding: 1em;
+    margin: 1em;
+    max-width: 50%;
+    min-width: 20em;
+    border: 0.1em solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 1em;
+    box-shadow: 0.1em 1em 1em #888888;
+}
+.container_medium h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 1rem;
+}
+.container_big h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 1rem;
+}
+.container_medium div.text {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 0.8rem;
+}
+.container_big div.text {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 0.8rem;
+}
 /**____________PROSJEKTLEDER___________*/
+section.prosjektleder_dashboard {
+    margin-top: 10em;
+}
 .prosjektleder.header {
-    height: 80px;
+    height: 80pt;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    padding: 10px 10px 20px;
+    padding: 10pt 10pt 20pt;
     background-color: #D9D2D2;
     font-family: "Segoe UI", serif;
-    border-bottom: 1px solid #387CB7;
+    border-bottom: 1pt solid #387CB7;
 }
 a#prosjektleder.header {
     color: #707070;
-    height: 80px;
+    height: 80pt;
     position: relative;
     font-family: Segoe UI, serif;
-    font-size: 15px;
+    font-size: 15pt;
     text-decoration: none;
-    line-height: 35px;
+    line-height: 35pt;
 }
 span#prosjektleder.header {
     color: #707070;
-    height: 80px;
+    height: 80pt;
     position: relative;
     font-family: Segoe UI, serif;
-    font-size: 15px;
+    font-size: 15pt;
     text-decoration: none;
-    line-height: 35px;
+    line-height: 35pt;
 }
-
-div#prosjektleder_dashboard.prosjektleder_dashboard {
-    display: inline-block;
-    width: 20%;
-    padding: 15px;
-    max-width: 40%;
-    min-width: 200px;
-    margin-top: 110px;
-    border: 1px solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #888888;
-}
-
 
 /**----------- visOversikt - SOM ET EKSEMPEL----SKAL SLETTES---------------*/
 /*
@@ -400,7 +434,7 @@ footer {
     bottom: 0;
     width: 100%;
     height: 5.5em;
-    background-color: darkslategrey;
+    background-color: #D9D2D2;
     color: darkgray;
     vertical-align: bottom;
     font-size: 12px;
@@ -416,7 +450,7 @@ footer a {
     color: darkgray;
 }
 nav {
-    background-color: #707070;
+    background-color: #D9D2D2;
 }
 footer p[class = leftText] {
     text-align: left;
