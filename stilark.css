@@ -94,45 +94,7 @@ body {
     color: #707070;
     font-size: 12px;
 }
-/**----------- brukerprofiler_admin ---------------*/
-.brukerprofiler_buttons {
-    background-color: white;
-    border-color: #387CB7;
-    margin-top: 110px;
-    padding: 5px;
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #dbdada;
-}
-.brukerprofiler_buttons > img {
-}
-.brukerprofiler_buttons:hover {
-    background-color: #ececec;
-}
-.brukerprofiler_admin_container > div {
-    display: inline-block;
-    margin-top: 5px;
-    width: 200px;
-    padding: 15px;
-    border: 1px solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 1px 2px 3px #888888;
-}
-.brukerprofiler_admin_container h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
-.brukerprofiler_admin_container div.text {
-    /* this is the weakness of this layout.  To get all the boxes to be the same height, you have to set this to a fixed height. */
-    height: 200px;
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 12px;
-}
+
 /**----------- prosjekter_admin ---------------*/
 .prosjekter_buttons {
     background-color: white;
@@ -178,10 +140,49 @@ body {
 /**----------- timeregistrering_bruker ---------------*/
 
 /**____________CONTAINERS___________*/
+div.container_small {
+    display: inline-block;
+    width: 10em;
+    height: 5em;
+    padding: 1em;
+    margin: 1em;
+    border: 0.1em solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 1em;
+    background: white;
+    box-shadow: 0.1em 1em 1.5em #888888;
+    overflow: hidden;
+}
+div.container_small_long {
+    display: inline-block;
+    width: 30em;
+    height: 5em;
+    padding: 1em;
+    margin: 1em;
+    border: 0.1em solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 1em;
+    background: white;
+    box-shadow: 0.1em 1em 1.5em #888888;
+    overflow: hidden;
+}
 div.container_medium {
     display: inline-block;
     width: 20em;
     height: 10em;
+    padding: 1em;
+    margin: 1em;
+    border: 0.1em solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 1em;
+    background: white;
+    box-shadow: 0.1em 1em 1.5em #888888;
+    overflow: hidden;
+}
+div.container_medium_high {
+    display: inline-block;
+    width: 20em;
+    height: 30em;
     padding: 1em;
     margin: 1em;
     border: 0.1em solid #387CB7;
@@ -236,44 +237,53 @@ section.prosjektleder_dashboard {
     margin-top: 8em;
 }
 
+/**___________BRUKERPROFILER___________*/
+section.brukerprofiler {
+    margin-top: 8em;
+}
+.brukerprofiler
 
-/**----------- visOversikt - SOM ET EKSEMPEL----SKAL SLETTES---------------*/
+.button.button {
+    background-color: white;
+    border-color: #387CB7;
+    margin-top: 110px;
+    padding: 5px;
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
+    border-radius: 10px;
+    box-shadow: 1px 2px 3px #dbdada;
+}
+.b > img {
+}
 /*
-.oversikt {
-    margin-left: 6em;
-    padding-left: 6em;
-    font-family: Arial, serif;
-    position: relative;
-    padding-bottom: 8em;
+.brukerprofiler.container_small.buttons:hover {
+    background-color: #ececec;
 }
-.oversikt td {
-    horiz-align: center;
-    text-align: center;
+
+.brukerprofiler_admin_container > div {
+    display: inline-block;
+    margin-top: 5px;
+    width: 200px;
+    padding: 15px;
+    border: 1px solid #387CB7;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 1px 2px 3px #888888;
 }
-.oversikt table[id=oversikt] th, td {
-    padding: 10px;
+.brukerprofiler_admin_container h3 {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
 }
-.oversikt td[id = pil] {
-    width: 130px;
-}
-.oversikt td[id = pil] img {
-    height: 70px;
-    margin-right: 15px;
-}
-.oversikt td[id= katalog] img {
-    height: 150px;
-}
-.oversikt td[id= bilde] img {
-    height: 150px;
-}
-.oversikt td[id= dokument] img {
-    height: 150px;
-}
-.oversikt td[id= dokument] img {
-    height: 120px;
+.brukerprofiler_admin_container div.text {
+    height: 200px;
+    font-family: Segoe UI, serif;
+    color: #707070;
+    font-size: 12px;
 }
 */
-/* ---------------visited link -----------------------*/
+/* -------------LINK -----------------------*/
 a:visited {
 
 }
@@ -424,7 +434,7 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 5.5em;
+    height: 2em;
     background-color: #D9D2D2;
     color: darkgray;
     vertical-align: bottom;

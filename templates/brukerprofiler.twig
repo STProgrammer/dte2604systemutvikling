@@ -1,18 +1,26 @@
-{% extends "admin_layout.twig" %}
+{% extends "layout.twig" %}
 {% block content %}
 
-    <div id="brukerprofiler_admin" class="brukerprofiler_admin">
-        <div class="brukerprofiler_admin_container">
-            <button class="button brukerprofiler_buttons">
-                <img src="../images/icon_legg_til_bruker.svg"> Ny bruker</button>
-            <button class="button brukerprofiler_buttons">
+    <section id="brukerprofiler" class="brukerprofiler">
+        <div class="container_small">
+            <button id="button" class="button">
+                <img src="images/icon_user_add.png" width="40pt"> Legg til ny bruker</button>
+        </div>
+        <div class="container_small">
+            <button id="button" class="button">
                 <img src="../images/icon_slett_bruker.svg"> Slett bruker</button>
-            <button class="button brukerprofiler_buttons">
+        </div>
+        <div class="container_small">
+            <button id="button" class="button">
                 <img src="../images/icon_bruker_sjekk.svg"> Verifiser bruker</button>
-            <button class="button brukerprofiler_buttons">
+        </div>
+        <div class="container_small">
+            <button id="button" class="button">
                 <img src="../images/icon_endre_bruker.svg"> Endre bruker</button>
         </div>
-        <div class="brukerprofiler_admin_container">
+        <div class="container_small_long"> </div>
+    <section>
+        <div class="container_medium_high">
             <div>
                 <h3>Administratorer</h3>
                 <div class="text">
@@ -38,7 +46,9 @@
                 </div>
             </div>
         </div>
+    </section>
 
 
-    </div>
+
+    </section>
 {% endblock %}
