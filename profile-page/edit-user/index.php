@@ -2,7 +2,7 @@
 
 require_once '../../includes.php';
 
-require_once "../../login.php";
+require_once "../../loginn.php";
 
 $regUser = new RegisterUser($db, $request, $session);
 

@@ -1,7 +1,7 @@
 <?php
 
     require_once('../includes.php');
-    require_once ('../login.php');
+    require_once('../loginn.php');
     include('process.php');
 
     $reguser = new RegisterUser($db, $request, $session);

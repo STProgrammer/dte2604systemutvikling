@@ -11,7 +11,7 @@ define('FILENAME_TAG', 'image');
 
 
 try {
-    echo $twig->render('prosjektleder_dashbord.twig');
+    echo $twig->render('project_dashbord.twig');
 } catch (LoaderError $e) {
 } catch (RuntimeError $e) {
 } catch (SyntaxError $e) {
