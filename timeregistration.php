@@ -11,7 +11,7 @@ define('FILENAME_TAG', 'image');
 
 
 try {
-    echo $twig->render('timeregistration.twig');
+    echo $twig->render('timeregistrations.twig');
 } catch (LoaderError $e) {
 } catch (RuntimeError $e) {
 } catch (SyntaxError $e) {
