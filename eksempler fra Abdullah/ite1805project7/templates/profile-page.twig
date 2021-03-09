@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="../stylesheet.css" />
+    <title>Profile page</title>
+</head>
+<body>
+{% include 'login2.twig' %}
+<div class="flash-notice">
+    {% for header in session.getFlashBag.get('header', []) %}
+        <h3>{{ header }}</h3>
+    {% endfor %}
+    {% for message in session.getFlashBag.get('message', []) %}
+        <p>{{ message }}</p>
+    {% endfor %}
+</div>
+<h2>Details for {{ userData['username'] }}</h2>
+{% if userData %}
+    <div class = "show-data">
+        <table>
+            <tr>
+                <td>
+                    Username:
+                </td>
+                <td>
+                    {{ userData['username'] }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Full name:
+                </td>
+                <td>
+                    {{ userData['firstname'] }} {{ userData['lastname']  }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    User type:
+                </td>
+                <td>
+                    {% if userData['admin'] == 1 %} Admin {% else %} General user {% endif %}
+                </td>
+            </tr>{% if userData['admin'] == 1 %}
+            <tr>
+                <td>
+                    Email:
+                </td>
+                <td>
+                    {{ userData['email'] }}
+                </td>
+            </tr> {% endif %}
+        </table>
+</div>
+{% endif %}
+
+{% if isOwner or user.isAdmin() %}
+    <p><a href="edit-user/?username={{userData['username']}}" class="button-white">Edit user</a></p>
+{% endif %}
+<p id="back"><a href = "javascript:history.back()"><img src="{{rel}}Images/BackBtn.svg" alt="Back" width="100"></a></p>
+</body>
+</html>
