@@ -3,7 +3,7 @@
 require_once '../includes.php';
 
 //Håndterer login
-require_once "../loginn.php";
+require_once "../login.php";
 
 //First we use reguser
 

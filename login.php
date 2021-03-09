@@ -1,4 +1,7 @@
 <?php
+
+require_once "includes.php";
+
 //logg out
 if ($request->request->has('logout') && XsrfProtection::verifyMac("Logout")) {
     $session->clear();
@@ -8,13 +11,14 @@ if ($request->request->has('logout') && XsrfProtection::verifyMac("Logout")) {
 }
 
 // if logged in
-if ($session->has('loggedin')) {
+elseif ($session->has('loggedin')) {
     $user = $session->get('User'); // get the user data
     if ($user->isVerified() == 0) {
         header("location: ".$rel."register/verify.php?do=verification");
         exit();
     }
 }
+
 // if login submitted
 elseif ($request->request->has('login')) {
     if(XsrfProtection::verifyMac("Login") && User::login($db, $request, $session)) {
@@ -27,10 +31,14 @@ elseif ($request->request->has('login')) {
     } //if login submitted but failed to login
     else {
         $get_info = "?loginfail=1";
-        header("Location: ".$rel."login/".$get_info);
+        header("Location: ".$get_info);
         exit();
     }
 }
-else $user = null;
+
+//just ready to login
+else {
+    echo $twig->render('login.twig', array('session' => $session));
+}
 
 ?>

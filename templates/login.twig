@@ -7,15 +7,15 @@
 </head>
 <body class="align">
 <div class='text-info'>
-{% if session.getFlashBag.has('header') %}
-    {% for header in session.getFlashBag.get('header', []) %}
-        <h4>{{ header }}</h4>
-    {% endfor %}
-{% endif %}
+    {% if session.getFlashBag.has('header') %}
+        {% for header in session.getFlashBag.get('header', []) %}
+            <h4>{{ header }}</h4>
+        {% endfor %}
+    {% endif %}
 </div>
 <div class="grid">
-    <link rel="stylesheet" type="text/css" href="login_style.css">
-    <form action="../login/index.php" method="post" class="form login">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <form action="login.php" method="post" class="form login">
 
         <header class="login__header">
             <h3 class="login__title">Login</h3>

@@ -1,11 +1,7 @@
 <?php
 
-    require_once "includes.php";
-
-    define('FILENAME_TAG', 'image');
-
     //Håndterer login
-    require_once "loginn.php";
+    require_once "login.php";
 
 
 
