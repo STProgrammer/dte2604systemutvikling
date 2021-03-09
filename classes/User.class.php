@@ -28,9 +28,9 @@ class User {
     private $userHits;
 
 
-    function __construct(string $email, string $ip, string $browser, array $row ) {
+    function __construct(string $username, string $ip, string $browser, array $row ) {
         $this->userId = $row['User ID'];
-        $this->userName = $row['Username'];
+        $this->userName = $username;
         $this->firstName = $row['First name'];
         $this->lastName = $row['Last name'];
         $this->address = $row['Address'];
@@ -68,10 +68,10 @@ class User {
 
 
     public static function login(PDO $db,  \Symfony\Component\HttpFoundation\Request $request, \Symfony\Component\HttpFoundation\Session\Session $session) {
-        $email = $request->request->get('Email-address');
+        $username = $request->request->get('Username');
         try {
-            $stmt = $db->prepare("SELECT * FROM Users WHERE `Email address`= :email");
-            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt = $db->prepare("SELECT * FROM Users WHERE `Username`= :username");
+            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
             $stmt->execute();
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {
@@ -79,7 +79,7 @@ class User {
                     $session->set('loggedin', true);
                     $ip = $request->server->get('REMOTE_ADDR');
                     $browser = $request->server->get('HTTP_USER_AGENT');
-                    $session->set('User', new User($request->request->get('Email-address'), $ip, $browser, $row));
+                    $session->set('User', new User($request->request->get('Username'), $ip, $browser, $row));
                     return true;
                 } else {
                     $session->getFlashBag()->add('header', "Wrong username or password");
