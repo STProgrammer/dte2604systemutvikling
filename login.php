@@ -13,9 +13,17 @@ if ($request->request->has('logout') && XsrfProtection::verifyMac("Logout")) {
 // if logged in
 elseif ($session->has('loggedin')) {
     $user = $session->get('User'); // get the user data
-    if ($user->isVerified() == 0) {
+    //Checks if user is verified or not
+    if ($user->getIsEmailVerified() == 0) {
         header("location: ".$rel."register/verify.php?do=verification");
         exit();
+    }
+    elseif ($user->getIsVerifiedByAdmin() == 0) {
+        header("location: ".$rel."register/verify.php?do=verification");
+        exit();
+    }
+    else {
+        echo $twig->render('admin_dashboard.twig', array('session' => $session));
     }
 }
 

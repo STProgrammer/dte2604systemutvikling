@@ -22,8 +22,10 @@
     use Twig\Environment;
     use Twig\Loader\FilesystemLoader;
 
+    //HttpFoundation in $request
     $request = Request::createFromGlobals();
 
+    //Session starts
     if($request->hasPreviousSession()) $session = $request->getSession();
     else $session = new Session();
     $session->start();

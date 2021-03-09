@@ -11,27 +11,25 @@ class User {
     private $city;
     private $phoneNumber;
     private $mobileNumber;
-    private $group;
-    private $project;
     private $emailAddress;
     private $IMAddress;
     private $dateRegistered;
     private $password;
-    private $rights;
     private $isAdmin;
     private $isProjectLeader;
     private $isGroupLeader;
     private $isTemporary;
-    private $isWorking;
     private $isCustomer;
-    private $verified;
+    private $isEmailVerified;
+    private $isVerifiedByAdmin;
+    private $status;
     private $IPAddress;
     private $userAgent;
     private $userHits;
 
 
     function __construct(string $email, string $ip, string $browser, array $row ) {
-        $this->userId = $row['UserID'];
+        $this->userId = $row['User ID'];
         $this->userName = $row['Username'];
         $this->firstName = $row['First name'];
         $this->lastName = $row['Last name'];
@@ -40,20 +38,18 @@ class User {
         $this->city = $row['City'];
         $this->phoneNumber = $row['Phone number'];
         $this->mobileNumber = $row['Mobile number'];
-        $this->group = $row['Group'];
-        $this->project = $row['Project'];
-        $this->emailAddress = $email;
+        $this->emailAddress = $row['Email address'];
         $this->IMAddress = $row['IM address'];
         $this->dateRegistered = $row['Date registered'];
         $this->password = $row['Password'];
-        $this->rights = $row['Rights'];
         $this->isAdmin = $row['Is admin'];
         $this->isProjectLeader = $row['Is project leader'];
         $this->isGroupLeader = $row['Is group leader'];
         $this->isTemporary = $row['Is temporary'];
-        $this->isWorking = $row['Is working'];
         $this->isCustomer = $row['Is customer'];
-        $this->verified = $row['Is verified'];
+        $this->isEmailVerified = $row['Is email verified'];
+        $this->isVerifiedByAdmin = $row['Is verified by admin'];
+        $this->status = $row['Status'];
         $this->IPAddress = $ip;
         $this->userAgent = $browser;
         $this->userHits = 0;
@@ -62,8 +58,8 @@ class User {
 
     public function verifyUser($request) {
         //$request = Request::createFromGlobals();
-        if(($this->IPAddress == $request->server->get('REMOTE_ADDR')) && ($this->UserAgent == $request->server->get('HTTP_USER_AGENT') )){
-            $this->usr_hits++;
+        if(($this->IPAddress == $request->server->get('REMOTE_ADDR')) && ($this->userAgent == $request->server->get('HTTP_USER_AGENT') )){
+            $this->userHits++;
             return true;
         }
         else
@@ -72,9 +68,9 @@ class User {
 
 
     public static function login(PDO $db,  \Symfony\Component\HttpFoundation\Request $request, \Symfony\Component\HttpFoundation\Session\Session $session) {
-        $email = $request->request->get('Email address');
+        $email = $request->request->get('Email-address');
         try {
-            $stmt = $db->prepare("SELECT * FROM Users WHERE `Email address`=:email");
+            $stmt = $db->prepare("SELECT * FROM Users WHERE `Email address`= :email");
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
@@ -83,7 +79,7 @@ class User {
                     $session->set('loggedin', true);
                     $ip = $request->server->get('REMOTE_ADDR');
                     $browser = $request->server->get('HTTP_USER_AGENT');
-                    $session->set('User', new User($request->request->get('Email address'), $ip, $browser, $row));
+                    $session->set('User', new User($request->request->get('Email-address'), $ip, $browser, $row));
                     return true;
                 } else {
                     $session->getFlashBag()->add('header', "Wrong username or password");
@@ -97,7 +93,6 @@ class User {
             $session->getFlashBag()->add('header', "Failed to login because of MySQL error");
         }
     }
-
 
     /**
      * @return mixed
@@ -246,47 +241,15 @@ class User {
     /**
      * @return mixed
      */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
-     * @param mixed $group
-     */
-    public function setGroup($group)
-    {
-        $this->group = $group;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * @param mixed $project
-     */
-    public function setProject($project)
-    {
-        $this->project = $project;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmailAddress(): string
+    public function getEmailAddress()
     {
         return $this->emailAddress;
     }
 
     /**
-     * @param string $emailAddress
+     * @param mixed $emailAddress
      */
-    public function setEmailAddress(string $emailAddress)
+    public function setEmailAddress($emailAddress)
     {
         $this->emailAddress = $emailAddress;
     }
@@ -337,22 +300,6 @@ class User {
     public function setPassword($password)
     {
         $this->password = $password;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRights()
-    {
-        return $this->rights;
-    }
-
-    /**
-     * @param mixed $rights
-     */
-    public function setRights($rights)
-    {
-        $this->rights = $rights;
     }
 
     /**
@@ -422,22 +369,6 @@ class User {
     /**
      * @return mixed
      */
-    public function getIsWorking()
-    {
-        return $this->isWorking;
-    }
-
-    /**
-     * @param mixed $isWorking
-     */
-    public function setIsWorking($isWorking)
-    {
-        $this->isWorking = $isWorking;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getIsCustomer()
     {
         return $this->isCustomer;
@@ -449,6 +380,70 @@ class User {
     public function setIsCustomer($isCustomer)
     {
         $this->isCustomer = $isCustomer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsEmailVerified()
+    {
+        return $this->isEmailVerified;
+    }
+
+    /**
+     * @param mixed $isEmailVerified
+     */
+    public function setIsEmailVerified($isEmailVerified)
+    {
+        $this->isEmailVerified = $isEmailVerified;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsVerifiedByAdmin()
+    {
+        return $this->isVerifiedByAdmin;
+    }
+
+    /**
+     * @param mixed $isVerifiedByAdmin
+     */
+    public function setIsVerifiedByAdmin($isVerifiedByAdmin)
+    {
+        $this->isVerifiedByAdmin = $isVerifiedByAdmin;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIPAddress(): string
+    {
+        return $this->IPAddress;
+    }
+
+    /**
+     * @param string $IPAddress
+     */
+    public function setIPAddress(string $IPAddress)
+    {
+        $this->IPAddress = $IPAddress;
     }
 
     /**
@@ -482,5 +477,6 @@ class User {
     {
         $this->userHits = $userHits;
     }
+
 }
 ?>
