@@ -71,15 +71,15 @@ small screens (display the links vertically instead of horizontally) */
 }
 /**____________ADMIN_________________________*/
 section.admin_dashboard {
-    margin-top: 10em;
+    margin-top: 6em;
 }
 /**____________PROSJEKTER___________*/
 section.prosjekter {
-    margin-top: 10em;
+    margin-top: 6em;
 }
 /**____________TIMEREGISTRERINGER___________*/
 section.timeregistreringer {
-    margin-top: 10em;
+    margin-top: 6em;
 }
 /**____________BUTTONS___________*/
 .buttons {
