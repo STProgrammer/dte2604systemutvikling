@@ -6,7 +6,13 @@
     <link rel="stylesheet" type="text/css" href="login/login_bruker.css">
 
 <body>
-
+<div class='text-info'>
+    {% if session.getFlashBag.has('header') %}
+        {% for header in session.getFlashBag.get('header', []) %}
+            <h4>{{ header }}</h4>
+        {% endfor %}
+    {% endif %}
+</div>
 <div>
     <form action="login.php" method="post" class="form login">
 
@@ -16,7 +22,7 @@
                     <div class="item-username">
                         <div class="field_outline">
                             <label for="user"> </label>
-                            <input type="email" onfocus="this.placeholder = ''" placeholder="Epost"  name="email" id="user" required >
+                            <input type="text" onfocus="this.placeholder = ''" placeholder="Brukernavn"  name="email" id="user" required >
                         </div>
                     </div>
 
