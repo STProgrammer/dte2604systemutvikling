@@ -22,14 +22,14 @@
                     <div class="item-username">
                         <div class="field_outline">
                             <label for="user"> </label>
-                            <input type="text" onfocus="this.placeholder = ''" placeholder="Brukernavn"  name="email" id="user" required >
+                            <input type="text" onfocus="this.placeholder = ''" placeholder="Brukernavn"  name="Username" id="user" required >
                         </div>
                     </div>
 
                     <div class="item-password">
                         <div class="field_outline">
                             <label for="password"> </label>
-                            <input type="password" onfocus="this.placeholder = ''"  placeholder="Passord" name="password" id="password" required >
+                            <input type="password" onfocus="this.placeholder = ''"  placeholder="Passord" name="Password" id="password" required >
                         </div>
                     </div>
 
@@ -43,6 +43,7 @@
 
                         <div class="item-submit">
                             <div class="field_outline">
+                                <input type="hidden" value="{{ getMac("Login") }}" name="XSRFPreventionToken">
                                 <input type="submit" class="btn" name="login" value="Bekreft">
                             </div>
                         </div>
