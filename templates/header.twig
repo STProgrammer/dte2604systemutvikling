@@ -6,25 +6,28 @@
 </head>
 <body>
 
-<div class="header">
-    <a> <img src="images/morild_logo_150px.png" width="230pt" alt="Logo"/></a>
-    <span>Velkommen</span><span><b>&nbsp;Leder&nbsp;&nbsp;</b></span>
+<div class="header" id="myHeader">
+    <a href="#dashboard"><img src="images/morild_logo_150px.png" width="230pt" alt="Logo"/></a>
 
     <!--TODO if bruker prosjektleder så link til prosjektleder_dashbord-->
-    <a href="">&nbsp;Dashbord&nbsp;&nbsp;</a>
-    <a href="timeregistration.php">&nbsp;Timeregistreringer&nbsp;&nbsp;</a>
-    <a href="userprofiles.php">&nbsp;Brukerprofiler&nbsp;&nbsp;</a>
-    <a href="projects.php">&nbsp;Prosjekter&nbsp;&nbsp;</a>
-    <a href="rapports.php">&nbsp;Rapporter&nbsp;&nbsp;</a>
-    <a href="settings.php">&nbsp;Innstillinger&nbsp;&nbsp;</a>
+    <a href="#dashbord" class="active">Dashbord</a>
+    <a href="#timeregistration">Timeregistreringer </a>
+    <a href="#userprofiles">Brukerprofiler</a>
+    <a href="#projects">Prosjekter</a>
+    <a href="#rapports">Rapporter</a>
+    <a href="#settings">Innstillinger</a>
 
     {% if session.loggetInn %}
-        <a href="../logout.php">Logg ut</a>
+        <a href="../logout.php" class="active">Logg ut</a>
         <h3>Velkommen</h3><p><span><b>{{ session.brukernavn }}</b></span></p>
     {%  else %}
-        <a href="../login.php">Logg inn</a>
+        <a href="../login.php" class="active">Logg inn</a>
     {% endif %}
-</div>
 
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+
+</div>
 </body>
 </html>

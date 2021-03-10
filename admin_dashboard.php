@@ -9,6 +9,6 @@ define('FILENAME_TAG', 'image');
 
 
 
-echo $twig->render('projects.twig');
+echo $twig->render('admin_dashboard.twig');
 
 ?>

@@ -6,12 +6,11 @@ body {
 /**----------- HEADER ---------------*/
 .header {
     display: inline-block;
-    height: 6em;
+    height: 5em;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    padding: 1em 1em 1em;
     background-color: #D9D2D2;
     font-family: "Segoe UI", serif;
     border-bottom: 0.1em solid #387CB7;
@@ -36,14 +35,39 @@ body {
     text-decoration: none;
     line-height: 1.5em;
 }
-.header span {
-    color: #707070;
-    height: 80px;
-    position: relative;
-    font-family: Segoe UI, serif;
-    font-size: 15px;
-    text-decoration: none;
-    line-height: 35px;
+.header .icon {
+    display: none;
+}
+
+/* When the screen is less than 600 pixels wide, hide all links, except
+for the first one ("Home"). Show the link that contains should open and
+close the topnav (.icon) */
+@media screen and (max-width: 1200px) {
+    .header a:not(:first-child) {display: none;}
+    .header a.icon {
+        float: right;
+        font-size: 1.5em;
+        display: block;
+        padding: 0.9em;
+    }
+}
+/* The "responsive" class is added to the topnav with JavaScript when
+the user clicks on the icon. This class makes the topnav look good on
+small screens (display the links vertically instead of horizontally) */
+
+@media screen and (max-width: 1200px) {
+    .header.responsive {position: relative;}
+    .header.responsive a.icon {
+        position: fixed;
+        right: 0;
+        top: 0;
+    }
+    .header.responsive a {
+        float: none;
+        position: relative;
+        display: block;
+        text-align: left;
+    }
 }
 /**____________ADMIN_________________________*/
 section.admin_dashboard {
