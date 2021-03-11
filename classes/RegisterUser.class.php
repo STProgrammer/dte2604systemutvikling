@@ -22,6 +22,32 @@ class RegisterUser
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
+    //Register user when user is admin
+    public function registerUserAsAdmin ()
+    {
+        $username = $this->request->request->get('username');
+        $firstname = $this->request->request->get('firstname');
+        $lastname = $this->request->request->get('lastname');
+        $email = $this->request->request->get('email');
+        $password = $this->request->request->get('password');
+        $isAdmin = $this->request->request->get('isAdmin');
+        try{
+            //check if username exists
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $sth = $this->dbase->prepare("insert into Users (email, password, username, firstname, lastname, isAdmin, date, verified) values (:email, :hash, :username, :firstname, :lastname, :isadmin, NOW(), 0);");
+            $sth->bindParam(':email', $email, PDO::PARAM_STR);
+            $sth->bindParam(':hash', $hash, PDO::PARAM_STR);
+            $sth->bindParam(':username', $username, PDO::PARAM_STR);
+            $sth->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+            $sth->bindParam(':lastname',  $lastname, PDO::PARAM_STR);
+            $sth->bindParam(':isAdmin',  $isAdmin, PDO::PARAM_STR);
+            $sth->execute();
+            if ($this->sendEmail($email)) { $this->notifyUser("User registered", "");}
+            else {$this->notifyUser("Failed to send email to verify!", ""); }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to register user!","");
+        }
+    }
 
     //Register user
     public function registerUser ()
