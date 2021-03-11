@@ -7,15 +7,14 @@
 <body>
 
 <div class="header" id="myHeader">
-    <a href="#dashboard"><img src="images/morild_logo_150px.png" width="230pt" alt="Logo"/></a>
-
+    <img src="images/morild_logo_150px.png" width="230pt" alt="Logo"/>
     <!--TODO if bruker prosjektleder så link til prosjektleder_dashbord-->
-    <a href="#dashbord" class="active">Dashbord</a>
-    <a href="#timeregistration">Timeregistreringer </a>
-    <a href="#userprofiles">Brukerprofiler</a>
-    <a href="#projects">Prosjekter</a>
-    <a href="#rapports">Rapporter</a>
-    <a href="#settings">Innstillinger</a>
+    <a href="dashbord.php">Dashbord</a>
+    <a href="timeregistration.php">Timeregistreringer </a>
+    <a href="userprofiles.php">Brukerprofiler</a>
+    <a href="projects.php">Prosjekter</a>
+    <a href="rapports.php">Rapporter</a>
+    <a href="settings.php">Innstillinger</a>
 
     {% if session.loggetInn %}
         <a href="../logout.php" class="active">Logg ut</a>
