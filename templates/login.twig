@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="eng" xmlns="http://www.w3.org/1999/html">
+<meta charset="utf-8">
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+
+<body>
+<!--div class='text-info'>
+    {# % if session.getFlashBag.has('header') %}
+        {% for header in session.getFlashBag.get('header', []) %}
+            <h4>{{ header }}</h4>
+        {% endfor %}
+    {% endif %} #}
+</div-->
+<div>
+    <form action="../login.php" method="post" class="form login">
+        <a class="item-logo"> <img src="../images/morild_logo_150px.png" width="500" alt="Logo"/></a>
+        <div class="form_login">
+
+            <div class="grid-container">
+                <div class="item-username">
+                    <div class="field_outline">
+                        <label for="user"> </label>
+                        <input type="text" onfocus="this.placeholder = ''" placeholder="Brukernavn"  name="email" id="user" required >
+                    </div>
+                </div>
+
+                <div class="item-password">
+                    <div class="field_outline">
+                        <label for="password"> </label>
+                        <input type="password" onfocus="this.placeholder = ''"  placeholder="Passord" name="password" id="password" required >
+                    </div>
+                </div>
+
+
+                <div class="item-forgot">
+                    <div class="field_outline">
+                        <button type="button" class="btn" name="forgotten_password">
+                            Glemt<br/>Passord </button>
+                    </div>
+                </div>
+
+                <div class="item-submit">
+                    <div class="field_outline">
+                        <input type="submit" class="btn" name="login" value="Bekreft">
+                    </div>
+                </div>
+
+            </div>
+
+            <!--footer class="login__footer">
+                <input type="hidden" value="{ #} getMac("Login") }}" name="XSRFPreventionToken">
+                <input type="submit" name="login" value="Login">
+
+                <p><span class="icon icon--info">?</span><a href="#">Forgot Password</a></p>
+            </footer-->
+
+        </div>
+    </form>
+</div>
+</body></html>
