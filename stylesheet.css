@@ -263,6 +263,91 @@ a:hover {
     float: left;
 }
 
+/**----------------LOGIN----------------------*/
+
+.form_login {
+    height: 100vh; /*height of this element is equal to 100% of the viewport height*/
+    display: table;
+    vertical-align: middle;
+    border: #387CB7;
+}
+
+.field_outline {
+    outline: rgb(165, 167, 170) solid 2px;
+    filter: drop-shadow(0px 15px 20px rgba(0, 0, 0, 0.161));
+    margin: 10px;
+}
+
+.field_username, .field_password {
+    text-align: center;
+    width: 331px;
+    height: 57px;
+    padding: 12px 20px;
+    border: transparent;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 21px;
+}
+
+.btn_forgot_password, .btn_confirm {
+    background-color: #ffffff;
+    border: none;
+    color: #707070;
+    width: 100%;
+    height: 57px;
+    text-align: center;
+    cursor: pointer;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 21px;
+    border: transparent;
+}.btn:hover {background: #387CB7; color: #ffffff}
+
+
+input:focus::placeholder {
+    color: transparent;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-container > div { /* target all <div> tags which are immediate children of container .grid container */
+    text-align: center
+}
+
+.item-logo {
+    grid-column: 1 /span 4;
+    grid-row: 1;
+    /*background-image: url("./images/morild_logo_150px.png"); images should be referred to in css code*/
+    background-repeat: no-repeat;
+    /*margin: auto;*/
+
+}
+
+.item-username {
+    grid-column: 2 /span 2;
+    grid-row: 2;
+}
+
+.item-password {
+    grid-column: 2 /span 2;
+    grid-row: 3;
+}
+
+.item-forgot {
+    grid-column: 2;
+    grid-row: 4;
+}
+
+.item-submit {
+    grid-column: 3;
+    grid-row: 4;
+}
+
 /*-------------input bokser-------------*/
 /*
 input[type=date] {
