@@ -1,21 +1,17 @@
 <?php
 
-
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
-
 require_once "includes.php";
 
 define('FILENAME_TAG', 'image');
 
 
-try {
-    echo $twig->render('projectleader_dashbord.twig');
-} catch (LoaderError $e) {
-} catch (RuntimeError $e) {
-} catch (SyntaxError $e) {
+if (!empty($twig)) {
+    echo $twig->render('projectleader_dashboard.twig');
+}
+else {
+    echo $twig->render('Error Twig');
 }
 
+?>
 
 

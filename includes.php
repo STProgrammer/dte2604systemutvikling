@@ -1,5 +1,5 @@
 <?php
-
+    //phpinfo();
     $homedir = __DIR__ . '/';
 
     //Generate relative path string "../" or "../../" depending on where it's loaded
