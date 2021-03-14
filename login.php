@@ -46,7 +46,7 @@ elseif ($request->request->has('login')) {
 
 //just ready to login
 else {
-    echo $twig->render('login_user.twig', array('session' => $session));
+    echo $twig->render('login.twig', array('session' => $session));
 }
 
 ?>
