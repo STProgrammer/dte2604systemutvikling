@@ -1,12 +1,8 @@
-
-body {
-    background-color:#E7E7E7;
+/**Bruk felles containere, buttons og andre felles ting så langt det går----*/
+body { background-color:#E7E7E7;
 }
-
-/**----------- HEADER ---------------*/
-.header img {
-    display: inline-block;
-    padding-left: 1em;
+/**----------- HEADER ------------------------------------------*/
+.header img { display: inline-block; padding-left: 1em;
 }
 .header {
     display: inline-block;
@@ -39,10 +35,9 @@ body {
     text-decoration: none;
     line-height: 1.5em;
 }
-.header .icon {
-    display: none;
+.header .icon { display: none;
 }
-
+/**--------------------------------------------------------------------*/
 /* When the screen is less than 600 pixels wide, hide all links, except
 for the first one ("Home"). Show the link that contains should open and
 close the topnav (.icon) */
@@ -58,7 +53,6 @@ close the topnav (.icon) */
 /* The "responsive" class is added to the topnav with JavaScript when
 the user clicks on the icon. This class makes the topnav look good on
 small screens (display the links vertically instead of horizontally) */
-
 @media screen and (max-width: 1100px) {
     .header.responsive {position: fixed;}
     .header.responsive a.icon {
@@ -74,18 +68,43 @@ small screens (display the links vertically instead of horizontally) */
         text-align: right;
     }
 }
-/**____________ADMIN_________________________*/
-section.admin_dashboard {
-    margin-top: 6em;
+/**____________ADMINISTRATOR_DASHBOARD__________________________*/
+section.admin_dashboard { margin-top: 6em;
 }
-/**____________PROSJEKTER___________*/
-section.prosjekter {
-    margin-top: 6em;
+/**____________PROSJEKTLEDER_DASHBOARD__________________________*/
+section.prosjektleder_dashboard { margin-top: 6em;
 }
-/**____________TIMEREGISTRERINGER___________*/
-section.timeregistreringer {
-    margin-top: 6em;
+/**____________TEAMLEDER_DASHBOARD______________________________*/
+section.teamleder_dashboard { margin-top: 6em;
 }
+/**____________ANSATTE_DASHBOARD________________________________*/
+section.employee_dashboard { margin-top: 6em;
+}
+/**____________KUNDE_DASHBOARD________________________________*/
+section.customer_dashboard { margin-top: 6em;
+}
+/**____________TIMEREGISTRERINGER_______*/
+section.timeregistreringer { margin-top: 6em;
+}
+/**____________BRUKERPROFILER___________*/
+section.brukerprofiler { margin-top: 6em;
+}
+/**____________PROSJEKTER______________*/
+section.prosjekter { margin-top: 6em;
+}
+/**____________RAPPORTER_______________*/
+section.rapporter { margin-top: 6em;
+}
+/**____________INNSTILLINGER___________*/
+section.innstillinger { margin-top: 6em;
+}
+/**____________LOGINN_________________*/
+section.loginn { margin-top: 6em;
+}
+/**____________TERROR_________________*/
+section.error { margin-top: 6em;
+}
+/**--------------------------------------------------------------------------------------------------------*/
 /**____________BUTTONS___________*/
 .buttons {
     font-family: Segoe UI, serif;
@@ -96,11 +115,21 @@ section.timeregistreringer {
     box-sizing: border-box;
     border-radius: 1em;
     box-shadow: 0.1em 1em 1.5em #888888;
+    cursor: pointer;
+}
+.button_small {
+    border: none;
+    color: #b18888;
+    padding: 1em 2em;
+    margin: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0.1em 0.2em 0.2em #888888;
 }
 .buttons > img {
 }
-.buttons:hover {
-    background-color: #ececec;
+.buttons:hover { background-color: #D9D2D2;
 }
 .button#button.button {
     font-family: Segoe UI, serif;
@@ -109,6 +138,7 @@ section.timeregistreringer {
     border: none;
     background: none;
 }
+
 /**____________TABLES___________*/
 .table {
     text-align: left;
@@ -117,183 +147,80 @@ section.timeregistreringer {
     border-bottom: 1pt solid lightslategray;
     width: 100%;
 }
-th {
-    background-color: darkseagreen;
-    color: white;
+th { background-color: darkseagreen; color: white;
+}
+tr:hover { background-color: #f5f5f5;
+}
+tr:nth-child(even) { background-color: #f2f2f2;
 }
 
-tr:hover {
-    background-color: #f5f5f5;
+/**____________TEXT___________*/
+/**padding:top right bottom left; */
+div.text { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem;
 }
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+/**klokkevisning med stort tekst*/
+div.text_bigtime { font-family: Segoe UI, serif; color: #5f5a5a; font-size: 2.0rem;
+}
+h1 { font-family: Segoe UI, serif; font-size: 2.2rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h2 { font-family: Segoe UI, serif; font-size: 1.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h3 { font-family: Segoe UI, serif; font-size: 1.5em; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h4 { font-family: Segoe UI, serif; font-size: 1.2rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h5 { font-family: Segoe UI, serif; font-size: 1rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h6 { font-family: Segoe UI, serif; font-size: 0.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+/* -------------LINK -----------------------*/
+a:visited { color: #707070;
+}
+a:hover { color: lightyellow;
+}
+.flash-notice { color: #a82828;
+}
+.top-login { float: left;
 }
 
 /**____________CONTAINERS___________*/
-div.container_small {
+/**Brukes i <div> , bruk disse etter hverandre feks <div class="container container_big">
+Disse er containere/bokser med bakgrunn og stroke farge.*/
+div.container{
     display: inline-block;
     width: 12em;
     height: 5em;
     padding: 1em;
     margin: 1em;
-    border: 0.1em solid #387CB7;
+    border: 0.1em solid #8f9091;
     box-sizing: border-box;
     border-radius: 1em;
     background: white;
-    box-shadow: 0.1em 1em 1.5em #888888;
+    box-shadow: 0.1em 0.2em 0.2em #888888;
     overflow: hidden;
 }
-div.container_registrer_inn {
-    display: inline-block;
-    width: 20em;
-    height: 5em;
-    padding: 1em;
-    margin: 1em;
-    border: 0.1em solid green;
-    box-sizing: border-box;
-    border-radius: 1em;
-    background: white;
-    box-shadow: 0.1em 1em 1.5em #888888;
-    overflow: hidden;
+div.container_small { width: 12em; height: 5em;
 }
-div.container_pause {
-    display: inline-block;
-    width: 20em;
-    height: 5em;
-    padding: 1em;
-    margin: 1em;
-    border: 0.1em solid cornflowerblue;
-    box-sizing: border-box;
-    border-radius: 1em;
-    background: white;
-    box-shadow: 0.1em 1em 1.5em #888888;
-    overflow: hidden;
+div.container_registrer_inn { width: 20em; height: 5em;
 }
-div.container_registrer_ut {
-    display: inline-block;
-    width: 20em;
-    height: 5em;
-    padding: 1em;
-    margin: 1em;
-    border: 0.1em solid crimson;
-    box-sizing: border-box;
-    border-radius: 1em;
-    background: white;
-    box-shadow: 0.1em 1em 1.5em #888888;
-    overflow: hidden;
+div.container_pause { width: 20em; height: 5em;
 }
-div.container_small_long {
-    display: inline-block;
-    width: 24em;
-    height: 5em;
-    padding: 1em;
-    margin: 1em;
-    border: 0.1em solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 1em;
-    background: white;
-    box-shadow: 0.1em 1em 1.5em #888888;
-    overflow: hidden;
+div.container_registrer_ut { width: 20em; height: 5em;
 }
-div.container_medium {
-    display: inline-block;
-    width: 20em;
-    height: 10em;
-    padding: 1em;
-    margin: 1em;
-    border: 0.1em solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 1em;
-    background: white;
-    box-shadow: 0.1em 1em 1.5em #888888;
-    overflow: hidden;
+div.container_small_long { width: 24em; height: 5em;
 }
-div.container_medium_high {
-    display: inline-block;
-    width: 40em;
-    height: 30em;
-    padding: 1em;
-    margin: 1em;
-    border: 0.1em solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 1em;
-    background: white;
-    box-shadow: 0.1em 1em 1.5em #888888;
-    overflow: hidden;
+div.container_medium { width: 22em; height: 9em;
 }
-div.container_big {
-    display: inline-block;
-    width: 50em;
-    height: 40em;
-    padding: 1em;
-    margin: 1em;
-    max-width: 50%;
-    min-width: 20em;
-    border: 0.1em solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 1em;
-    background: white;
-    box-shadow: 0.1em 1em 1em #888888;
-    overflow: hidden;
+div.container_medium_long { width: 30em; height: 10em;
 }
-div.container_extra_big {
-    display: inline-block;
-    width: 85em;
-    height: 60em;
-    padding: 1em;
-    margin: 1em;
-    min-width: 20em;
-    border: 0.1em solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 1em;
-    background: white;
-    box-shadow: 0.1em 1em 1em #888888;
-    overflow: hidden;
+div.container_medium_high { width: 40em; height: 30em;
 }
-h3 {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 0.9rem;
+div.container_big { width: 50em; height: 40em;
 }
-div.text {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    font-size: 0.8rem;
-}
-div.text_bigtime {
-    font-family: Segoe UI, serif;
-    color: #5f5a5a;
-    font-size: 2rem;
-}
-/**____________PROSJEKTLEDER___________*/
-section.prosjektleder_dashboard {
-    margin-top: 8em;
-}
-
-/**___________BRUKERPROFILER___________*/
-section.brukerprofiler {
-    margin-top: 8em;
-}
-
-/* -------------LINK -----------------------*/
-a:visited {
-
-}
-
-a:hover {
-    color: lightyellow;
-}
-
-.flash-notice {
-    color: #a82828;
-}
-
-.top-login {
-    float: left;
+div.container_extra_big { width: 65em; height: 60em;
 }
 
 /**----------------LOGIN----------------------*/
-
 .form_login {
     height: 100vh; /*height of this element is equal to 100% of the viewport height*/
     display: table;
@@ -330,158 +257,43 @@ a:hover {
     font-weight: bold;
     font-size: 21px;
     border: transparent;
-}.btn:hover {background: #387CB7; color: #ffffff}
-
-
-input:focus::placeholder {
-    color: transparent;
 }
+.btn:hover { background: #387CB7; color: #ffffff}
 
+input:focus::placeholder { color: transparent;
+}
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     align-items: center;
     justify-content: center;
 }
-
 .grid-container > div { /* target all <div> tags which are immediate children of container .grid container */
     text-align: center
 }
-
 .item-logo {
     grid-column: 1 /span 4;
     grid-row: 1;
     /*background-image: url("./images/morild_logo_150px.png"); images should be referred to in css code*/
     background-repeat: no-repeat;
     /*margin: auto;*/
-
 }
-
 .item-username {
     grid-column: 2 /span 2;
     grid-row: 2;
 }
-
 .item-password {
     grid-column: 2 /span 2;
     grid-row: 3;
 }
-
 .item-forgot {
     grid-column: 2;
     grid-row: 4;
 }
-
 .item-submit {
     grid-column: 3;
     grid-row: 4;
 }
-
-/*-------------input bokser-------------*/
-/*
-input[type=date] {
-    width: 20em;
-    height: 3em;
-    padding: 0.5em;
-    color: gray;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-left: 1em;
-    border: 0.1em solid gray;
-}
-
-input[type=submit] {
-    width: 20em;
-    padding: 0.5em;
-    border: 1px solid darkslategrey;
-    background: cadetblue;
-    color: white;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-left: 39em;
-    margin-right: 20%;
-}
-input[type=button], button {
-    width: 30em;
-    padding: 0.5em;
-    border: 1px solid darkslategrey;
-    background: cadetblue;
-    color: white;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin: 0.2em;
-}
-input[type=function], button {
-    width: 12em;
-    padding-bottom: 1em;
-    padding-left: 2em;
-    padding-top: 1em;
-    border: 1px solid #ccc;
-    background: forestgreen;
-    color: white;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    resize: vertical;
-}
-input[type=option], select {
-    width: 30em;
-    padding: 1em;
-    border: 1px solid #ccc;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    resize: vertical
-}
-input[type=text], select {
-    width: 100%;
-    padding: 1em;
-    border: 1px solid #ccc;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    resize: both;
-}
-input[type=password], select {
-    width: 50em;
-    padding: 1em;
-    border: 1px solid #ccc;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    resize: vertical
-}
-input[type=submit]:hover {
-    background-color: lightgrey;
-}
-input[type=button]:hover {
-    background-color: lightgrey;
-}
-input[type=email], select {
-    width: 50em;
-    padding: 1em;
-    border: 1px solid #ccc;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    resize: vertical
-}
-input[type=number], select {
-    width: 30em;
-    padding: 1em;
-    border: 1px solid #ccc;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    resize: vertical
-}
-*/
 /*-----------file upload---------------*/
 input[type=file] {
     width: 30em;
@@ -504,8 +316,7 @@ form {
     resize: vertical;
     font-family: Calibri, serif;
 }
-
-/**----------- footer---------------*/
+/**-----------FOOTER---------------*/
 footer {
     position: fixed;
     left: 0;
@@ -524,14 +335,10 @@ footer div {
     line-height: 0.1em;
     margin-bottom: 5em;
 }
-footer a {
-    color: darkgray;
+footer a { color: darkgray;
 }
-footer p[class = leftText] {
-    text-align: left;
-    margin-left: 16em;
+footer p[class = leftText] { text-align: left; margin-left: 16em;
 }
-footer p[class = rightText] {
-    text-align: right;
-    margin-top: 0em;
+footer p[class = rightText] { text-align: right; margin-top: 0em;
 }
+/**--------------------------------------------------------------------------------------------------------*/
