@@ -11,10 +11,10 @@ define('FILENAME_TAG', 'image');
 
 
 try {
-    echo $twig->render('userprofiles.twig');
-} catch (LoaderError $e) {
-} catch (RuntimeError $e) {
-} catch (SyntaxError $e) {
+    if (!empty($twig)) {
+        echo $twig->render('userprofiles.twig');
+    }
+} catch (LoaderError | RuntimeError | SyntaxError $e) {
 }
 
 

@@ -9,18 +9,18 @@
 <div class="header" id="myHeader">
     <img src="images/morild_logo_150px.png" width="230pt" alt="Logo"/>
     <!--TODO if bruker prosjektleder så link til prosjektleder_dashbord-->
-    <a href="dashbord.php">Dashbord</a>
+    <a href="projectleader_dashboard.php">Dashbord</a>
     <a href="timeregistration.php">Timeregistreringer </a>
     <a href="userprofiles.php">Brukerprofiler</a>
     <a href="projects.php">Prosjekter</a>
-    <a href="rapports.php">Rapporter</a>
+    <a href="reports.php">Rapporter</a>
     <a href="settings.php">Innstillinger</a>
 
     {% if session.loggetInn %}
-        <a href="../logout.php" class="active">Logg ut</a>
+        <a href="logout.php" class="active">Logg ut</a>
         <h3>Velkommen</h3><p><span><b>{{ session.brukernavn }}</b></span></p>
     {%  else %}
-        <a href="../login.php" class="active">Logg inn</a>
+        <a href="login.php" class="active">Logg inn</a>
     {% endif %}
 
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">

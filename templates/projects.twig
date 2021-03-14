@@ -1,9 +1,8 @@
 {% extends "layout.twig" %}
 {% block content %}
-
     <section id="prosjekter" class="prosjekter">
         <div>
-            <button class="button buttons">
+            <button class="button buttons" id="prosjektKnapper">
                 <img src=""> Nytt prosjekt</button>
             <button class="button buttons">
                 <img src=""> Slett prosjekt</button>
@@ -14,14 +13,32 @@
             <button class="button buttons">
                 <img src=""> Alle prosjekter</button>
         </div>
-        <div class="container_big">
-            <div>
-                <h3>Prosjekter</h3>
-                <div class="text">
-                    Insert tabell her
-                </div>
+    </section>
+    <section>
+        <div class="container container_big" id="prosjektTabell">
+            <div class="text">
+                <h3>Prosjekter </h3>
+                <table class="table" id="table">
+                    {% if projects %}
+                    <tr>
+                        <th>Navn</th>
+                        <th>Stilling</th>
+                        <th>Jobber med prosjekt</th>
+                        <th>Jobber i gruppe</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>Ole Nordmann</td>
+                        <td>Prosjektleder</td>
+                        <td>Anyone Ne1</td>
+                        <td>Gruppe4</td>
+                        <td>Hjemmekontor</td>
+                    </tr>
+                    {% endif %}
+                </table>
             </div>
         </div>
-
     </section>
 {% endblock %}
+
+

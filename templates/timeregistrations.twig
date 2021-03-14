@@ -1,24 +1,24 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section id="timeregistreringer" class="timeregistreringer">
-        <div class="container_registrer_inn">
-            <button id="button" class="button">
+        <div class="container container_registrer_inn">
+            <button id="button" class="button" onclick="document.location='userprofiles.php'"> <!--eksempel link-->
                 <img src="images/icon_time.png" width="40pt"> Registrer inn
             </button>
         </div>
-        <div class="container_pause">
-            <button id="button" class="button">
+        <div class="container container_pause">
+            <button id="button" class="button" onclick="">
                 <img src="images/icon_time.png" width="40pt"> Pause
             </button>
         </div>
-        <div class="container_registrer_ut">
-            <button id="button" class="button">
+        <div class="container container_registrer_ut">
+            <button id="button" class="button" onclick="">
                 <img src="images/icon_time.png" width="40pt"> Registrer ut
             </button>
         </div>
     </section>
     <section>
-        <div class="container_extra_big">
+        <div class="container container_extra_big">
             <div class="text">
                 <table class="table" id="table_bredt">
                     <tr>
