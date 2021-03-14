@@ -1,29 +1,47 @@
 <?php
 
 
-class Timereg {
-    private PDO $db;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
-    //__________CONSTRUCTOR_______________//
-    public function __construct(PDO $db) {
+class Timereg {
+    private $db;
+    private $request;
+    private $session;
+
+    //CONSTRUCTOR//
+    function __construct(PDO $db, Request $request, Session $session) {
         $this->db = $db;
+        $this->request = $request;
+        $this->session = $session;
     }
 
-    //___________PROJECT__________________//
-    public function getAllProjects(): array {
-        $projects = array();
-        $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `Start time` DESC");
+    /////////////////////////////////////////////////////////////////////////////
+    /// PROJECTS
+    /////////////////////////////////////////////////////////////////////////////
+
+    public function getAllProjects() :Project {
         try {
+            $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `Start time` DESC");
             $stmt->execute();
-            $projects = $stmt->fetchAll(PDO::FETCH_CLASS, 'Project');
+            if( $projects = $stmt->fetchObject('Project')) {
+                return $projects;
+            }
+            else {
+                $this->notifyUser("Project not found", "");
+                return new Project();
+            }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getAllProjects()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
+            return new Project();
         }
-        return $projects;
     }
 
-    //___________ERROR--------------------//
+    /////////////////////////////////////////////////////////////////////////////
+    /// ERROR
+    /////////////////////////////////////////////////////////////////////////////
+
     private function NotifyUser($strHeader, $strMessage) {
         echo "<h3> $strHeader</h3>";
         echo "<p>$strMessage</p>";

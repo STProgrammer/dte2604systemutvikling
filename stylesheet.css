@@ -37,7 +37,6 @@ body { background-color:#E7E7E7;
 }
 .header .icon { display: none;
 }
-/**--------------------------------------------------------------------*/
 /* When the screen is less than 600 pixels wide, hide all links, except
 for the first one ("Home"). Show the link that contains should open and
 close the topnav (.icon) */
@@ -68,122 +67,50 @@ small screens (display the links vertically instead of horizontally) */
         text-align: right;
     }
 }
-/**____________ADMINISTRATOR_DASHBOARD__________________________*/
+/**header slutt--------------------------------------------------------------------*/
+
+
+/**-------------  ADMINISTRATOR_DASHBOARD  ---------*/
 section.admin_dashboard { margin-top: 6em;
 }
-/**____________PROSJEKTLEDER_DASHBOARD__________________________*/
+/**-------------  PROSJEKTLEDER_DASHBOARD  --------*/
 section.prosjektleder_dashboard { margin-top: 6em;
 }
-/**____________TEAMLEDER_DASHBOARD______________________________*/
+/**-------------  TEAMLEDER_DASHBOARD  ------------*/
 section.teamleder_dashboard { margin-top: 6em;
 }
-/**____________ANSATTE_DASHBOARD________________________________*/
+/**-------------  ANSATTE_DASHBOARD  -------------*/
 section.employee_dashboard { margin-top: 6em;
 }
-/**____________KUNDE_DASHBOARD________________________________*/
+/**-------------  KUNDE_DASHBOARD  ---------------*/
 section.customer_dashboard { margin-top: 6em;
 }
-/**____________TIMEREGISTRERINGER_______*/
+/**-------------  TIMEREGISTRERINGER  ------------*/
 section.timeregistreringer { margin-top: 6em;
 }
-/**____________BRUKERPROFILER___________*/
+/**-------------  BRUKERPROFILER  ---------------*/
 section.brukerprofiler { margin-top: 6em;
 }
-/**____________PROSJEKTER______________*/
+/**-------------  PROSJEKTER  -------------------*/
 section.prosjekter { margin-top: 6em;
 }
-/**____________RAPPORTER_______________*/
+/**-------------  RAPPORTER  -------------------*/
 section.rapporter { margin-top: 6em;
 }
-/**____________INNSTILLINGER___________*/
+/**-------------  INNSTILLINGER  ---------------*/
 section.innstillinger { margin-top: 6em;
 }
-/**____________LOGINN_________________*/
-section.loginn { margin-top: 6em;
+/**-------------  LOGINN  ----------------------*/
+section.loginn { margin-top: 10em
 }
-/**____________TERROR_________________*/
+/**-------------  ERROR  -----------------------*/
 section.error { margin-top: 6em;
 }
-/**--------------------------------------------------------------------------------------------------------*/
-/**____________BUTTONS___________*/
-.buttons {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    padding: 1em;
-    margin: 1em;
-    border: 0.1em solid #387CB7;
-    box-sizing: border-box;
-    border-radius: 1em;
-    box-shadow: 0.1em 1em 1.5em #888888;
-    cursor: pointer;
-}
-.button_small {
-    border: none;
-    color: #b18888;
-    padding: 1em 2em;
-    margin: 1em;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    box-shadow: 0.1em 0.2em 0.2em #888888;
-}
-.buttons > img {
-}
-.buttons:hover { background-color: #D9D2D2;
-}
-.button#button.button {
-    font-family: Segoe UI, serif;
-    color: #707070;
-    padding: 0;
-    border: none;
-    background: none;
-}
 
-/**____________TABLES___________*/
-.table {
-    text-align: left;
-    border-color: burlywood;
-    border-spacing: 10pt;
-    border-bottom: 1pt solid lightslategray;
-    width: 100%;
+section#center {
+    align-self: center;
 }
-th { background-color: darkseagreen; color: white;
-}
-tr:hover { background-color: #f5f5f5;
-}
-tr:nth-child(even) { background-color: #f2f2f2;
-}
-
-/**____________TEXT___________*/
-/**padding:top right bottom left; */
-div.text { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem;
-}
-/**klokkevisning med stort tekst*/
-div.text_bigtime { font-family: Segoe UI, serif; color: #5f5a5a; font-size: 2.0rem;
-}
-h1 { font-family: Segoe UI, serif; font-size: 2.2rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
-}
-h2 { font-family: Segoe UI, serif; font-size: 1.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
-}
-h3 { font-family: Segoe UI, serif; font-size: 1.5em; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
-}
-h4 { font-family: Segoe UI, serif; font-size: 1.2rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
-}
-h5 { font-family: Segoe UI, serif; font-size: 1rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
-}
-h6 { font-family: Segoe UI, serif; font-size: 0.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
-}
-/* -------------LINK -----------------------*/
-a:visited { color: #707070;
-}
-a:hover { color: lightyellow;
-}
-.flash-notice { color: #a82828;
-}
-.top-login { float: left;
-}
-
-/**____________CONTAINERS___________*/
+/**-------------  CONTAINERS  ------------------*/
 /**Brukes i <div> , bruk disse etter hverandre feks <div class="container container_big">
 Disse er containere/bokser med bakgrunn og stroke farge.*/
 div.container{
@@ -219,103 +146,165 @@ div.container_big { width: 50em; height: 40em;
 }
 div.container_extra_big { width: 65em; height: 60em;
 }
-
-/**----------------LOGIN----------------------*/
-.form_login {
-    height: 100vh; /*height of this element is equal to 100% of the viewport height*/
-    display: table;
-    vertical-align: middle;
-    border: #387CB7;
+div.container_center { display:block;
+    height: 5em; box-shadow: none; border: none;
+    margin-left: auto; margin-right: auto; width: 50%;
 }
 
-.field_outline {
-    outline: rgb(165, 167, 170) solid 2px;
-    filter: drop-shadow(0px 15px 20px rgba(0, 0, 0, 0.161));
-    margin: 10px;
-}
-
-.field_username, .field_password {
-    text-align: center;
-    width: 331px;
-    height: 57px;
-    padding: 12px 20px;
-    border: transparent;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 21px;
-}
-
-.btn_forgot_password, .btn_confirm {
-    background-color: #ffffff;
-    border: none;
-    color: #707070;
-    width: 100%;
-    height: 57px;
-    text-align: center;
+/**-----------  BUTTONS  -------------*/
+.buttons {
+    font-family: Segoe UI, serif;
+    color: #5b4e48;
+    padding: 1em;
+    margin: 1em;
+    background: white;
+    border: 0.1em solid #888888;
+    box-sizing: border-box;
+    width: 12em; height: 5em;
+    border-radius: 1.5em;
+    box-shadow: 0.2em 0.2em 0.4em #888888;
     cursor: pointer;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 21px;
-    border: transparent;
+    white-space: nowrap;
 }
-.btn:hover { background: #387CB7; color: #ffffff}
+.button_small {
+    border: none;
+    color: #cac6c6;
+    padding: 1em 2em;
+    margin: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0.1em 0.2em 0.2em #888888;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.button_long {
+    /**padding:top right bottom left; */
+    border: none;
+    color: #cac6c6;
+    padding: 1em 1em 1em 1em;
+    margin: 1em 1em 1em 2em;
+    width: 50%;
+    height: 1.7em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0.1em 0.1em 0.2em #888888;
+    background: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.buttons > img {
+}
+.buttons:hover { background-color: #D9D2D2;
+}
+.button#button.button {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+button#buttonNoBorderOnlyGreenText {
+    display:inline-block;
+    color: #1b9448;
+    border: none;
+    background: none;
+    margin: 1em 1em 1em 2em;
+    width: 10rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: left;
+    cursor: pointer;
+    font-weight: bold;
 
+}
 input:focus::placeholder { color: transparent;
 }
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    align-items: center;
-    justify-content: center;
+label {
+    font-family: Segoe UI, serif;
+    color: #707070;
+    margin-right: 1em;
 }
-.grid-container > div { /* target all <div> tags which are immediate children of container .grid container */
-    text-align: center
+input#user {
+    font-family: Segoe UI, serif;
+    width: 70%;
+    border: none;
+
 }
-.item-logo {
-    grid-column: 1 /span 4;
-    grid-row: 1;
-    /*background-image: url("./images/morild_logo_150px.png"); images should be referred to in css code*/
-    background-repeat: no-repeat;
-    /*margin: auto;*/
-}
-.item-username {
-    grid-column: 2 /span 2;
-    grid-row: 2;
-}
-.item-password {
-    grid-column: 2 /span 2;
-    grid-row: 3;
-}
-.item-forgot {
-    grid-column: 2;
-    grid-row: 4;
-}
-.item-submit {
-    grid-column: 3;
-    grid-row: 4;
-}
-/*-----------file upload---------------*/
-input[type=file] {
-    width: 30em;
-    color: white;
-    background-color: darkslategray;
+input#submit {
+    font-family: Segoe UI, serif;
+    color: #5b4e48;
     padding: 1em;
-    border: 1px solid #ccc;
-    border-radius: 0.5em;
+    margin: 1em;
+    background: white;
+    border: 0.1em solid #888888;
     box-sizing: border-box;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
+    width: 15em; height: 3em;
+    border-radius: 1em;
+    box-shadow: 0.2em 0.2em 0.4em #888888;
+    cursor: pointer;
+    white-space: nowrap;
 }
-form {
+input#password {
+    font-family: Segoe UI, serif;
+    width: 76%;
+    border: none;
+    white-space: nowrap;
+}
+img#innloggLogo {
+    width: 50%;
+    margin: 1em 1em 1em 3.5em;
+    white-space: nowrap;
+}
+
+/**----------- TABLES  ----------------------*/
+.table {
+    text-align: left;
+    border-color: burlywood;
+    border-spacing: 10pt;
+    border-bottom: 1pt solid lightslategray;
     width: 100%;
-    padding: 0.2em;
-    border-radius: 0.5em;
-    box-sizing: border-box;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    resize: vertical;
-    font-family: Calibri, serif;
 }
+th { background-color: darkseagreen; color: white;
+}
+tr:hover { background-color: #f5f5f5;
+}
+tr:nth-child(even) { background-color: #f2f2f2;
+}
+
+/**-----------  TEXT  -----------------------*/
+/**padding:top right bottom left; */
+div.text { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem;
+}
+/**klokkevisning med stort tekst*/
+div.text_bigtime { font-family: Segoe UI, serif; color: #5f5a5a; font-size: 2.0rem;
+}
+h1 { font-family: Segoe UI, serif; font-size: 2.2rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h2 { font-family: Segoe UI, serif; font-size: 1.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h3 { font-family: Segoe UI, serif; font-size: 1.5em; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h4 { font-family: Segoe UI, serif; font-size: 1.2rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h5 { font-family: Segoe UI, serif; font-size: 1rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+h6 { font-family: Segoe UI, serif; font-size: 0.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+
+/* -------------LINK -----------------------*/
+a:visited { color: #707070;
+}
+a:hover { color: lightyellow;
+}
+.flash-notice { color: #a82828;
+}
+.top-login { float: left;
+}
+
 /**-----------FOOTER---------------*/
 footer {
     position: fixed;

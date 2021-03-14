@@ -20,20 +20,27 @@
                 <h3>Prosjekter </h3>
                 <table class="table" id="table">
                     {% if projects %}
-                    <tr>
-                        <th>Navn</th>
-                        <th>Stilling</th>
-                        <th>Jobber med prosjekt</th>
-                        <th>Jobber i gruppe</th>
-                        <th>Status</th>
-                    </tr>
-                    <tr>
-                        <td>Ole Nordmann</td>
-                        <td>Prosjektleder</td>
-                        <td>Anyone Ne1</td>
-                        <td>Gruppe4</td>
-                        <td>Hjemmekontor</td>
-                    </tr>
+                        <tr>
+                            <th>Prosjekt navn</th>
+                            <th>Prosjektleder</th>
+                            <th>Starttid</th>
+                            <th>Slutttid</th>
+                            <th>Status</th>
+                            <th>Kunde</th>
+                            <th>Godkjent av admin</th>
+                        </tr>
+                        <!--
+                        {% for Project in projects %}
+                        <tr>
+                            <td>{{ Project.getProjectName() }}</td>
+                            <td>{{ Project.getProjectLeader() }}</td>
+                            <td>{{ Project.getStartTime() }}</td>
+                            <td>{{ Project.getFinishTime() }}</td>
+                            <td>{{ Project.getStatus() }}</td>
+                            <td>{{ Project.getCustomer() }}</td>
+                            <td>{{ Project.getIsAcceptedbyAdmin() }}</td>
+                        </tr>
+                        {% endfor %}-->
                     {% endif %}
                 </table>
             </div>
@@ -41,4 +48,13 @@
     </section>
 {% endblock %}
 
-
+     {% for katalog in underkataloger %}
+         {% if teller % 5 == 0 %}  <!--Bestemmer antall filer i hver rad -->
+             <tr></tr>
+         {% endif %}
+         <td id="katalog">
+             <a href="{{ skript }}?katalogId={{ katalog.hentKatalogId() }}"><img src="icons8-folder-96.png" alt="Katalog"/></a>
+             <br>{{ katalog.hentNavn() }}
+             {% set teller = teller + 1 %}
+         </td>
+     {% endfor %}

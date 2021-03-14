@@ -7,16 +7,20 @@ class Project {
     private $finishTime;
     private $status;
     private $customer;
+    private $isAcceptedbyAdmin;
 
-    public function __construct(string $projectName, int $projectLeader,  string $startTime,
-                                string $finishTime, int $status, int $customer, array $row) {
-        $this->projectName = $row['Project name'];
-        $this->projectLeader = $row['Project leader'];
-        $this->startTime = $row['Start time'];
-        $this->finishTime = $row['Finish time'];
-        $this->status = $row['Status'];
-        $this->customer = $row['Customer'];
+    public function __construct() {
     }
+
+//    public function __construct(string $projectName, int $projectLeader,  string $startTime,
+//                                string $finishTime, int $status, int $customer, array $row) {
+//        $this->projectName = $row['Project name'];
+//        $this->projectLeader = $row['Project leader'];
+//        $this->startTime = $row['Start time'];
+//        $this->finishTime = $row['Finish time'];
+//        $this->status = $row['Status'];
+//        $this->customer = $row['Customer'];
+//    }
 
     //Getters
     public function getProjectName(): mixed { return $this->projectName; }
@@ -25,6 +29,7 @@ class Project {
     public function getFinishTime(): mixed { return $this->finishTime; }
     public function getStatus(): mixed { return $this->status; }
     public function getCustomer(): mixed { return $this->customer; }
+    public function getIsAcceptedbyAdmin() { return $this->isAcceptedbyAdmin; }
 
     //Setters
     public function setProjectName(mixed $projectName): void { $this->projectName = $projectName; }
@@ -33,6 +38,7 @@ class Project {
     public function setFinishTime(mixed $finishTime): void { $this->finishTime = $finishTime; }
     public function setStatus(mixed $status): void { $this->status = $status; }
     public function setCustomer(mixed $customer): void { $this->customer = $customer; }
+    public function setIsAcceptedbyAdmin($isAcceptedbyAdmin): void{ $this->isAcceptedbyAdmin = $isAcceptedbyAdmin; }
 
 
 
