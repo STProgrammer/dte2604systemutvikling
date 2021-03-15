@@ -21,15 +21,7 @@
             }
         }
     </script>
-    <script>
-        //login skal ikke ha header
-        function isThePageHeader() {
-            var x = document.getElementById("myHeader");
-            if (x.className !== "login") {
-            {{ include('header.twig') }}
-        }
-    }
-    </script>
+    {{ include('header.twig') }}
 </header>
 
 <body>
@@ -41,4 +33,3 @@
 </footer>
 
 </html>
-
