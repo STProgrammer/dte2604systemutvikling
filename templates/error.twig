@@ -7,10 +7,10 @@
     <div class="container_medium_long">
       <div class="text">
         {% if hijaked %}
-        <h1>Session hijaked.....</h1>
+        <h2>Session hijaked.....</h2>
         {% else %}
-        <h1>En feil har oppstått:</h1>
-        <h2>{{msg}}</h2>
+        <h2>En feil har oppstått:</h2>
+        <h3>{{msg}}</h3>
         {% endif %}
         <button id="button_small" class="button_small">
             <a href = "javascript:history.back()">Gå tilbake</a>

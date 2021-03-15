@@ -1,7 +1,6 @@
 <?php
 
 class User {
-
     private $userID;
     private $userName;
     private $firstName;
@@ -26,7 +25,6 @@ class User {
     private $IPAddress;
     private $userAgent;
     private $userHits;
-
 
     function __construct(string $username, string $ip, string $browser, array $row ) {
         $this->userID = $row['userID'];
@@ -55,7 +53,6 @@ class User {
         $this->userHits = 0;
     }
 
-
     public function verifyUser($request) {
         //$request = Request::createFromGlobals();
         if(($this->IPAddress == $request->server->get('REMOTE_ADDR')) && ($this->userAgent == $request->server->get('HTTP_USER_AGENT') )){
@@ -65,7 +62,6 @@ class User {
         else
             return false;
     }
-
 
     public static function login(PDO $db,  \Symfony\Component\HttpFoundation\Request $request, \Symfony\Component\HttpFoundation\Session\Session $session) {
         $username = $request->request->get('username');
@@ -94,389 +90,59 @@ class User {
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUserId()
-    {
-        return $this->userID;
-    }
 
-    /**
-     * @param mixed $userId
-     */
-    public function setUserId($userId)
-    {
-        $this->userID = $userId;
-    }
+    public function getUserId() { return $this->userID; }
+    public function getUserName() { return $this->userName; }
+    public function getFirstName() { return $this->firstName; }
+    public function getLastName() { return $this->lastName; }
+    public function getAddress() { return $this->address; }
+    public function getZipCode() { return $this->zipCode; }
+    public function getCity() { return $this->city; }
+    public function getPhoneNumber() { return $this->phoneNumber; }
+    public function getMobileNumber() { return $this->mobileNumber; }
+    public function getEmailAddress() { return $this->emailAddress; }
+    public function getIMAddress() { return $this->IMAddress; }
+    public function getDateRegistered() { return $this->dateRegistered; }
+    public function getPassword() { return $this->password; }
+    public function getStatus() { return $this->status; }
+    public function getIPAddress(): string { return $this->IPAddress; }
+    public function getUserAgent(): string { return $this->userAgent; }
+    public function getUserHits(): int { return $this->userHits; }
 
-    /**
-     * @return mixed
-     */
-    public function getUserName()
-    {
-        return $this->userName;
-    }
+    public function setUserId($userId) { $this->userID = $userId; }
+    public function setUserName($userName) { $this->userName = $userName; }
+    public function setFirstName($firstName) { $this->firstName = $firstName; }
+    public function setLastName($lastName) { $this->lastName = $lastName; }
+    public function setAddress($address) { $this->address = $address; }
+    public function setZipCode($zipCode) { $this->zipCode = $zipCode; }
+    public function setCity($city) { $this->city = $city; }
+    public function setPhoneNumber($phoneNumber) { $this->phoneNumber = $phoneNumber; }
+    public function setMobileNumber($mobileNumber) { $this->mobileNumber = $mobileNumber; }
+    public function setEmailAddress($emailAddress) { $this->emailAddress = $emailAddress; }
+    public function setIMAddress($IMAddress) { $this->IMAddress = $IMAddress; }
+    public function setDateRegistered($dateRegistered) { $this->dateRegistered = $dateRegistered; }
+    public function setPassword($password) { $this->password = $password; }
+    public function setStatus($status) { $this->status = $status; }
+    public function setIPAddress(string $IPAddress) { $this->IPAddress = $IPAddress; }
+    public function setUserAgent(string $userAgent) { $this->userAgent = $userAgent; }
+    public function setUserHits(int $userHits) { $this->userHits = $userHits; }
 
-    /**
-     * @param mixed $userName
-     */
-    public function setUserName($userName)
-    {
-        $this->userName = $userName;
-    }
+    public function isAdmin() { return $this->isAdmin; }
+    public function isProjectLeader() { return $this->isProjectLeader; }
+    public function isGroupLeader() { return $this->isGroupLeader; }
+    public function isTemporary() { return $this->isTemporary; }
+    public function isCustomer() { return $this->isCustomer; }
 
-    /**
-     * @return mixed
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
+    public function setAdmin($isAdmin) { $this->isAdmin = $isAdmin; }
+    public function setProjectLeader($isProjectLeader) { $this->isProjectLeader = $isProjectLeader; }
+    public function setGroupLeader($isGroupLeader) { $this->isGroupLeader = $isGroupLeader; }
+    public function setTemporary($isTemporary) { $this->isTemporary = $isTemporary; }
+    public function setCustomer($isCustomer) { $this->isCustomer = $isCustomer; }
 
-    /**
-     * @param mixed $firstName
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-    }
+    public function isEmailVerified() { return $this->isEmailVerified; }
+    public function setEmailVerified($isEmailVerified) { $this->isEmailVerified = $isEmailVerified; }
 
-    /**
-     * @return mixed
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
+    public function isVerifiedByAdmin() { return $this->isVerifiedByAdmin; }
+    public function setVerifiedByAdmin($isVerifiedByAdmin) { $this->isVerifiedByAdmin = $isVerifiedByAdmin; }
     }
-
-    /**
-     * @param mixed $lastName
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * @param mixed $address
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getZipCode()
-    {
-        return $this->zipCode;
-    }
-
-    /**
-     * @param mixed $zipCode
-     */
-    public function setZipCode($zipCode)
-    {
-        $this->zipCode = $zipCode;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    /**
-     * @param mixed $city
-     */
-    public function setCity($city)
-    {
-        $this->city = $city;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPhoneNumber()
-    {
-        return $this->phoneNumber;
-    }
-
-    /**
-     * @param mixed $phoneNumber
-     */
-    public function setPhoneNumber($phoneNumber)
-    {
-        $this->phoneNumber = $phoneNumber;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMobileNumber()
-    {
-        return $this->mobileNumber;
-    }
-
-    /**
-     * @param mixed $mobileNumber
-     */
-    public function setMobileNumber($mobileNumber)
-    {
-        $this->mobileNumber = $mobileNumber;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmailAddress()
-    {
-        return $this->emailAddress;
-    }
-
-    /**
-     * @param mixed $emailAddress
-     */
-    public function setEmailAddress($emailAddress)
-    {
-        $this->emailAddress = $emailAddress;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIMAddress()
-    {
-        return $this->IMAddress;
-    }
-
-    /**
-     * @param mixed $IMAddress
-     */
-    public function setIMAddress($IMAddress)
-    {
-        $this->IMAddress = $IMAddress;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDateRegistered()
-    {
-        return $this->dateRegistered;
-    }
-
-    /**
-     * @param mixed $dateRegistered
-     */
-    public function setDateRegistered($dateRegistered)
-    {
-        $this->dateRegistered = $dateRegistered;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isAdmin()
-    {
-        return $this->isAdmin;
-    }
-
-    /**
-     * @param mixed $isAdmin
-     */
-    public function setAdmin($isAdmin)
-    {
-        $this->isAdmin = $isAdmin;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isProjectLeader()
-    {
-        return $this->isProjectLeader;
-    }
-
-    /**
-     * @param mixed $isProjectLeader
-     */
-    public function setProjectLeader($isProjectLeader)
-    {
-        $this->isProjectLeader = $isProjectLeader;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isGroupLeader()
-    {
-        return $this->isGroupLeader;
-    }
-
-    /**
-     * @param mixed $isGroupLeader
-     */
-    public function setGroupLeader($isGroupLeader)
-    {
-        $this->isGroupLeader = $isGroupLeader;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isTemporary()
-    {
-        return $this->isTemporary;
-    }
-
-    /**
-     * @param mixed $isTemporary
-     */
-    public function setTemporary($isTemporary)
-    {
-        $this->isTemporary = $isTemporary;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isCustomer()
-    {
-        return $this->isCustomer;
-    }
-
-    /**
-     * @param mixed $isCustomer
-     */
-    public function setCustomer($isCustomer)
-    {
-        $this->isCustomer = $isCustomer;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isEmailVerified()
-    {
-        return $this->isEmailVerified;
-    }
-
-    /**
-     * @param mixed $isEmailVerified
-     */
-    public function setEmailVerified($isEmailVerified)
-    {
-        $this->isEmailVerified = $isEmailVerified;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isVerifiedByAdmin()
-    {
-        return $this->isVerifiedByAdmin;
-    }
-
-    /**
-     * @param mixed $isVerifiedByAdmin
-     */
-    public function setVerifiedByAdmin($isVerifiedByAdmin)
-    {
-        $this->isVerifiedByAdmin = $isVerifiedByAdmin;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIPAddress(): string
-    {
-        return $this->IPAddress;
-    }
-
-    /**
-     * @param string $IPAddress
-     */
-    public function setIPAddress(string $IPAddress)
-    {
-        $this->IPAddress = $IPAddress;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUserAgent(): string
-    {
-        return $this->userAgent;
-    }
-
-    /**
-     * @param string $userAgent
-     */
-    public function setUserAgent(string $userAgent)
-    {
-        $this->userAgent = $userAgent;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUserHits(): int
-    {
-        return $this->userHits;
-    }
-
-    /**
-     * @param int $userHits
-     */
-    public function setUserHits(int $userHits)
-    {
-        $this->userHits = $userHits;
-    }
-
-}
 ?>

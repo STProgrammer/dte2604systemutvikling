@@ -5,11 +5,11 @@ require_once "includes.php";
 define('FILENAME_TAG', 'image');
 
     if (isset($db)) {
-        $Timereg = new Timereg($db, $request, $session);
+        $ProjectManager = new ProjectManager($db, $request, $session);
     }else echo $twig->render('error.twig', array('msg' => 'No database connected!'));
 
-    $projects = $Timereg->getAllProjects();
-    //$users = $Timereg->getAllProjects();
+    $projects = $ProjectManager->getAllProjects();
+    //
 
     try {
         if (!empty($twig)) {

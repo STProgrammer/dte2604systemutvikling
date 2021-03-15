@@ -2,16 +2,21 @@
 {% block content %}
     <section id="prosjekter" class="prosjekter">
         <div>
+            {% if User.isAdmin() == 1 or User.isProjectLeader() == 1%}
             <button class="button buttons" id="prosjektKnapper">
-                <img src=""> Nytt prosjekt</button>
+                <img src="" alt=""> Nytt prosjekt</button>
+            {% elseif User.isAdmin() == 1 %}
             <button class="button buttons">
-                <img src=""> Slett prosjekt</button>
+                <img src="" alt=""> Slett prosjekt</button>
+            {% elseif User.isAdmin() == 1 or User.isProjectLeader() == 1 %}
             <button class="button buttons">
-                <img src=""> Legge inn funksjoner</button>
+                <img src="" alt=""> Legge inn funksjoner</button>
+            {% elseif User.isAdmin() == 1 %}
             <button class="button buttons">
-                <img src=""> Godkjenne prosjekt</button>
+                <img src="" alt=""> Godkjenne prosjekt</button>
+            {% endif %}
             <button class="button buttons">
-                <img src=""> Alle prosjekter</button>
+                <img src="" alt=""> Alle prosjekter</button>
         </div>
     </section>
     <section>

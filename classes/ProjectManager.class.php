@@ -4,7 +4,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class Timereg {
+class ProjectManager {
     private $db;
     private $request;
     private $session;
