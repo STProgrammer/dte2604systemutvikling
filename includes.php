@@ -22,6 +22,9 @@
     use Symfony\Component\HttpFoundation\Session\Session;
     use Twig\Environment;
     use Twig\Loader\FilesystemLoader;
+    use Twig\Error\LoaderError;
+    use Twig\Error\RuntimeError;
+    use Twig\Error\SyntaxError;
 
     //HttpFoundation in $request
     $request = Request::createFromGlobals();

@@ -20,21 +20,23 @@ class Timereg {
     /// PROJECTS
     /////////////////////////////////////////////////////////////////////////////
 
-    public function getAllProjects() :Project {
+    public function getAllProjects() : array {
         try {
             $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `Start time` DESC");
             $stmt->execute();
-            if( $projects = $stmt->fetchObject('Project')) {
+            if( $projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
             }
             else {
                 $this->notifyUser("Project not found", "");
-                return new Project();
+                //return new Project();
+                return array();
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getAllProjects()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
-            return new Project();
+            //return new Project();
+            return array();
         }
     }
 

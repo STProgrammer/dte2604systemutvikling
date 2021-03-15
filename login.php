@@ -46,7 +46,11 @@ elseif ($request->request->has('login')) {
 
 //just ready to login
 else {
-    echo $twig->render('login.twig', array('session' => $session));
+    try {
+        echo $twig->render('login.twig', array('session' => $session));
+    } catch (LoaderError | RuntimeError | SyntaxError $e) {
+    }
+
 }
 
 ?>
