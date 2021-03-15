@@ -22,7 +22,7 @@ class Timereg {
 
     public function getAllProjects() : array {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `Start time` DESC");
+            $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `startTime` DESC");
             $stmt->execute();
             if( $projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
