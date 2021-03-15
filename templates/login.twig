@@ -1,12 +1,4 @@
-<<<<<<< HEAD
 {% extends "layout.twig" %}
-{% block content %}
-    {% if session.getFlashBag.has('header') %}
-        {% for header in session.getFlashBag.get('header', []) %}
-            <h3>{{ header }}</h3>
-        {% endfor %}
-    {% endif %}
-=======
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +11,12 @@
     <link rel="icon" type="image/png" href="images/favicon.ico">
 </head>
 <body>
->>>>>>> 2e0704fe73dc999a87079362ce5a35f83594f901
+{% block content %}
+{% if session.getFlashBag.has('header') %}
+    {% for header in session.getFlashBag.get('header', []) %}
+        <h3>{{ header }}</h3>
+    {% endfor %}
+{% endif %}
     <section class="loginn">
         <form action="login.php" method="post">
             <div class="container_center">
