@@ -22,9 +22,9 @@
                 <img src="images/icon_endre_bruker.svg" width="40pt"> Endre bruker
             </button>
         </div>
-        <div class="container container_small_long">
+        <div class="container container_small">
             <button id="button" class="button">
-                <img src="images/icon_people.png" width="50pt"> Oversikt over ansatte og hva de jobber med
+                <img src="images/icon_people.png" width="60pt"> Oversikt
             </button>
         </div>
         <section>
@@ -34,39 +34,33 @@
                         <tr>
                             <th>Navn</th>
                             <th>Stilling</th>
-                            <th>Jobber med prosjekt</th>
-                            <th>Jobber i gruppe</th>
                             <th>Status</th>
                         </tr>
                         <tr>
-                            <td>Ole Nordmann</td>
-                            <td>Prosjektleder</td>
-                            <td>Anyone Ne1</td>
-                            <td>Gruppe4</td>
-                            <td>Hjemmekontor</td>
+                            {% for user in users %}
+                                <td>{ user.userName }</td>
+
+                                {% if user.isAdmin %}
+                                    <td>Administrator</td>
+                                {% endif %}
+                                {% if user.isProjectLeader %}
+                                    <td>Prosjektleder</td>
+                                {% endif %}
+                                {% if user.isGroupLeader %}
+                                    <td>Teamleder</td>
+                                {% endif %}
+                                {% if user.isTemporary %}
+                                    <td>Innleid</td>
+                                {% endif %}
+                                {% if user.isCustomer %}
+                                    <td>Kunde</td>
+                                {% endif %}
+
+                                <td>{ user.getId == status.getStatus }</td>
+                            {% endfor %}
                         </tr>
                     </table>
                 </div>
-            </div>
-            <div class="container container_medium_high">
-                <h5>Grupper</h5>
-                <div class="text">
-                    <table class="table" id="table">
-                        <tr>
-                            <th>Gruppenavn</th>
-                            <th>Teamleder</th>
-                            <th>Jobber med prosjekt</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr>
-                            <td>Gruppe Pigs</td>
-                            <td>Ole Nordmann</td>
-                            <td>Anyone Ne1</td>
-                            <td>20%</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
         </section>
 
 
