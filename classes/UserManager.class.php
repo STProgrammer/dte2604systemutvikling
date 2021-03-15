@@ -77,7 +77,7 @@ class UserManager
             $sth->bindParam(':emailAddress', $emailAddress, PDO::PARAM_STR);
             $sth->bindParam(':address', $address, PDO::PARAM_STR);
             $sth->bindParam(':city', $city, PDO::PARAM_STR);
-            $sth->bindParam(':zipCode',  $lastName, PDO::PARAM_STR);
+            $sth->bindParam(':zipCode',  $zipCode, PDO::PARAM_STR);
             $sth->bindParam(':phoneNumber', $phoneNumber, PDO::PARAM_STR);
             $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
             $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);

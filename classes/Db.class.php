@@ -14,7 +14,6 @@ class Db {
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             echo $e->getMessage();
-
         }
     }
     public static function getDBConnection() {
