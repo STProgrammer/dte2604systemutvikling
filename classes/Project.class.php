@@ -12,16 +12,6 @@ class Project {
     public function __construct() {
     }
 
-//    public function __construct(string $projectName, int $projectLeader,  string $startTime,
-//                                string $finishTime, int $status, int $customer, array $row) {
-//        $this->projectName = $row['Project name'];
-//        $this->projectLeader = $row['Project leader'];
-//        $this->startTime = $row['Start time'];
-//        $this->finishTime = $row['Finish time'];
-//        $this->status = $row['Status'];
-//        $this->customer = $row['Customer'];
-//    }
-
     //Getters
     public function getProjectName(): mixed { return $this->projectName; }
     public function getProjectLeader(): mixed { return $this->projectLeader; }
