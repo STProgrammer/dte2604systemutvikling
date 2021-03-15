@@ -48,13 +48,3 @@
     </section>
 {% endblock %}
 
-     {% for katalog in underkataloger %}
-         {% if teller % 5 == 0 %}  <!--Bestemmer antall filer i hver rad -->
-             <tr></tr>
-         {% endif %}
-         <td id="katalog">
-             <a href="{{ skript }}?katalogId={{ katalog.hentKatalogId() }}"><img src="icons8-folder-96.png" alt="Katalog"/></a>
-             <br>{{ katalog.hentNavn() }}
-             {% set teller = teller + 1 %}
-         </td>
-     {% endfor %}
