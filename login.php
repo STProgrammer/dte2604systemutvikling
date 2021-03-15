@@ -3,7 +3,7 @@
 require_once "includes.php";
 
 //logg out
-if ($request->request->has('logout') && XsrfProtection::verifyMac("Logout")) {
+if ($request->request->has('logout') && XsrfProtection::verifyMac("logout")) {
     $session->clear();
     $referer = $request->server->get('HTTP_REFERER');
     header('location: '.$referer);
@@ -29,7 +29,7 @@ elseif ($session->has('loggedin')) {
 
 // if login submitted
 elseif ($request->request->has('login')) {
-    if(XsrfProtection::verifyMac("Login") && User::login($db, $request, $session)) {
+    if(XsrfProtection::verifyMac("login") && User::login($db, $request, $session)) {
         $user = $session->get('User');
         if ($session->get('loggedin') && $user->verifyUser($request)) {
             $referer = $request->server->get('HTTP_REFERER');

@@ -2,7 +2,7 @@
 
 class User {
 
-    private $userId;
+    private $userID;
     private $userName;
     private $firstName;
     private $lastName;
@@ -29,27 +29,27 @@ class User {
 
 
     function __construct(string $username, string $ip, string $browser, array $row ) {
-        $this->userId = $row['User ID'];
+        $this->userID = $row['userID'];
         $this->userName = $username;
-        $this->firstName = $row['First name'];
-        $this->lastName = $row['Last name'];
-        $this->address = $row['Address'];
-        $this->zipCode = $row['Zip code'];
-        $this->city = $row['City'];
-        $this->phoneNumber = $row['Phone number'];
-        $this->mobileNumber = $row['Mobile number'];
-        $this->emailAddress = $row['Email address'];
-        $this->IMAddress = $row['IM address'];
-        $this->dateRegistered = $row['Date registered'];
-        $this->password = $row['Password'];
-        $this->isAdmin = $row['Is admin'];
-        $this->isProjectLeader = $row['Is project leader'];
-        $this->isGroupLeader = $row['Is group leader'];
-        $this->isTemporary = $row['Is temporary'];
-        $this->isCustomer = $row['Is customer'];
-        $this->isEmailVerified = $row['Is email verified'];
-        $this->isVerifiedByAdmin = $row['Is verified by admin'];
-        $this->status = $row['Status'];
+        $this->firstName = $row['firstName'];
+        $this->lastName = $row['lastName'];
+        $this->address = $row['address'];
+        $this->zipCode = $row['zipCode'];
+        $this->city = $row['city'];
+        $this->phoneNumber = $row['phoneNumber'];
+        $this->mobileNumber = $row['mobileNumber'];
+        $this->emailAddress = $row['emailAddress'];
+        $this->IMAddress = $row['IMAddress'];
+        $this->dateRegistered = $row['dateRegistered'];
+        $this->password = $row['password'];
+        $this->isAdmin = $row['isAdmin'];
+        $this->isProjectLeader = $row['isProjectLeader'];
+        $this->isGroupLeader = $row['isGroupLeader'];
+        $this->isTemporary = $row['isTemporary'];
+        $this->isCustomer = $row['isCustomer'];
+        $this->isEmailVerified = $row['isEmailVerified'];
+        $this->isVerifiedByAdmin = $row['isVerifiedByAdmin'];
+        $this->status = $row['status'];
         $this->IPAddress = $ip;
         $this->userAgent = $browser;
         $this->userHits = 0;
@@ -68,18 +68,18 @@ class User {
 
 
     public static function login(PDO $db,  \Symfony\Component\HttpFoundation\Request $request, \Symfony\Component\HttpFoundation\Session\Session $session) {
-        $username = $request->request->get('Username');
+        $username = $request->request->get('username');
         try {
             $stmt = $db->prepare("SELECT * FROM Users WHERE `Username`= :username");
             $stmt->bindParam(':username', $username, PDO::PARAM_STR);
             $stmt->execute();
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {
-                if (password_verify($request->request->get('Password'), $row['Password'])) {
+                if (password_verify($request->request->get('password'), $row['password'])) {
                     $session->set('loggedin', true);
                     $ip = $request->server->get('REMOTE_ADDR');
                     $browser = $request->server->get('HTTP_USER_AGENT');
-                    $session->set('User', new User($request->request->get('Username'), $ip, $browser, $row));
+                    $session->set('User', new User($request->request->get('username'), $ip, $browser, $row));
                     return true;
                 } else {
                     $session->getFlashBag()->add('header', "Wrong username or password");
@@ -99,7 +99,7 @@ class User {
      */
     public function getUserId()
     {
-        return $this->userId;
+        return $this->userID;
     }
 
     /**
@@ -107,7 +107,7 @@ class User {
      */
     public function setUserId($userId)
     {
-        $this->userId = $userId;
+        $this->userID = $userId;
     }
 
     /**
