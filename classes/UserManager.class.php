@@ -1,7 +1,7 @@
 <?php
 
 
-class RegisterUser
+class UserManager
 {
     private $dbase;
     private $request;
@@ -53,22 +53,41 @@ class RegisterUser
     public function registerUser ()
     {
         $username = $this->request->request->get('username');
-        $firstname = $this->request->request->get('firstname');
-        $lastname = $this->request->request->get('lastname');
-        $email = $this->request->request->get('email');
+        $firstName = $this->request->request->get('firstName');
+        $lastName = $this->request->request->get('lastMame');
+        $emailAddress = $this->request->request->get('emailAddress');
         $password = $this->request->request->get('password');
+        $address = $this->request->request->get('address');
+        $city = $this->request->request->get('city');
+        $zipCode = $this->request->request->get('zipCode');
+        $phoneNumber = $this->request->request->get('phoneNumber');
+        $mobileNumber = $this->request->request->get('mobileNumber');
+        $IMAddress = $this->request->request->get('IMAddress');
+        $isCustomer = $this->request->request->getInt('isCustomer');
+        $isTemporary = $this->request->request->getInt('isTemporary', 0);
+        $isVerifiedByAdmin = $this->session->get('User')->isAdmin();
         try{
             //check if username exists
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $sth = $this->dbase->prepare("insert into Users (email, password, username, firstname, lastname, date, verified) values (:email, :hash, :username, :firstname, :lastname, NOW(), 0);");
-            $sth->bindParam(':email', $email, PDO::PARAM_STR);
-            $sth->bindParam(':hash', $hash, PDO::PARAM_STR);
+            $sth = $this->dbase->prepare("insert into Users (username, firstName, lastName, emailAddress, address, city, zipCode, phoneNumber, mobileNumber, IMAddress, password, dateRegistered, isCustomer, isTemporary, isVerifiedByAdmin, 
+                   isEmailVerified, status) values (:username, :firstName, :lastName, :emailAddress, :address, :city, :zipCode, :phoneNumber, :mobileNumber, :IMAddress, :password, NOW(), :isCustomer, :isTemporary, :isVerifiedByAdmin, 1, 'Working');");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
-            $sth->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-            $sth->bindParam(':lastname',  $lastname, PDO::PARAM_STR);
+            $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
+            $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
+            $sth->bindParam(':emailAddress', $emailAddress, PDO::PARAM_STR);
+            $sth->bindParam(':address', $address, PDO::PARAM_STR);
+            $sth->bindParam(':city', $city, PDO::PARAM_STR);
+            $sth->bindParam(':zipCode',  $lastName, PDO::PARAM_STR);
+            $sth->bindParam(':phoneNumber', $phoneNumber, PDO::PARAM_STR);
+            $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
+            $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
+            $sth->bindParam(':password', $hash, PDO::PARAM_STR);
+            $sth->bindParam(':isCustomer',  $isCustomer, PDO::PARAM_INT);
+            $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
+            $sth->bindParam(':isVerifiedByAdmin', $isVerifiedByAdmin, PDO::PARAM_INT);
             $sth->execute();
-            if ($this->sendEmail($email)) { $this->notifyUser("User registered", "");}
-            else {$this->notifyUser("Failed to send email to verify!", ""); }
+            /*if ($this->sendEmail($email)) { $this->notifyUser("User registered", "");}
+            else {$this->notifyUser("Failed to send email to verify!", ""); }*/
         } catch (Exception $e) {
             $this->notifyUser("Failed to register user!","");
         }

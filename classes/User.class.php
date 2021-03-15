@@ -305,7 +305,7 @@ class User {
     /**
      * @return mixed
      */
-    public function getIsAdmin()
+    public function isAdmin()
     {
         return $this->isAdmin;
     }
@@ -313,7 +313,7 @@ class User {
     /**
      * @param mixed $isAdmin
      */
-    public function setIsAdmin($isAdmin)
+    public function setAdmin($isAdmin)
     {
         $this->isAdmin = $isAdmin;
     }
@@ -321,7 +321,7 @@ class User {
     /**
      * @return mixed
      */
-    public function getIsProjectLeader()
+    public function isProjectLeader()
     {
         return $this->isProjectLeader;
     }
@@ -329,7 +329,7 @@ class User {
     /**
      * @param mixed $isProjectLeader
      */
-    public function setIsProjectLeader($isProjectLeader)
+    public function setProjectLeader($isProjectLeader)
     {
         $this->isProjectLeader = $isProjectLeader;
     }
@@ -337,7 +337,7 @@ class User {
     /**
      * @return mixed
      */
-    public function getIsGroupLeader()
+    public function isGroupLeader()
     {
         return $this->isGroupLeader;
     }
@@ -345,7 +345,7 @@ class User {
     /**
      * @param mixed $isGroupLeader
      */
-    public function setIsGroupLeader($isGroupLeader)
+    public function setGroupLeader($isGroupLeader)
     {
         $this->isGroupLeader = $isGroupLeader;
     }
@@ -353,7 +353,7 @@ class User {
     /**
      * @return mixed
      */
-    public function getIsTemporary()
+    public function isTemporary()
     {
         return $this->isTemporary;
     }
@@ -361,7 +361,7 @@ class User {
     /**
      * @param mixed $isTemporary
      */
-    public function setIsTemporary($isTemporary)
+    public function setTemporary($isTemporary)
     {
         $this->isTemporary = $isTemporary;
     }
@@ -369,7 +369,7 @@ class User {
     /**
      * @return mixed
      */
-    public function getIsCustomer()
+    public function isCustomer()
     {
         return $this->isCustomer;
     }
@@ -377,7 +377,7 @@ class User {
     /**
      * @param mixed $isCustomer
      */
-    public function setIsCustomer($isCustomer)
+    public function setCustomer($isCustomer)
     {
         $this->isCustomer = $isCustomer;
     }
@@ -385,7 +385,7 @@ class User {
     /**
      * @return mixed
      */
-    public function getIsEmailVerified()
+    public function isEmailVerified()
     {
         return $this->isEmailVerified;
     }
@@ -393,7 +393,7 @@ class User {
     /**
      * @param mixed $isEmailVerified
      */
-    public function setIsEmailVerified($isEmailVerified)
+    public function setEmailVerified($isEmailVerified)
     {
         $this->isEmailVerified = $isEmailVerified;
     }
@@ -401,7 +401,7 @@ class User {
     /**
      * @return mixed
      */
-    public function getIsVerifiedByAdmin()
+    public function isVerifiedByAdmin()
     {
         return $this->isVerifiedByAdmin;
     }
@@ -409,7 +409,7 @@ class User {
     /**
      * @param mixed $isVerifiedByAdmin
      */
-    public function setIsVerifiedByAdmin($isVerifiedByAdmin)
+    public function setVerifiedByAdmin($isVerifiedByAdmin)
     {
         $this->isVerifiedByAdmin = $isVerifiedByAdmin;
     }
