@@ -10,7 +10,6 @@
 
 
 
-
     spl_autoload_register(function ($class_name) {
         $homedir = __DIR__ . '/';
         if (file_exists($homedir . "classes/". $class_name .".class.php"))
