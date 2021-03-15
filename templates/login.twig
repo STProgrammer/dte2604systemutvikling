@@ -1,7 +1,7 @@
 {% extends "layout.twig" %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" href="images/favicon.ico">
 </head>
 <body>
-{% block content %}
+
 {% if session.getFlashBag.has('header') %}
     {% for header in session.getFlashBag.get('header', []) %}
         <h3>{{ header }}</h3>
@@ -36,6 +36,7 @@
                     <button id="buttonNoBorderOnlyGreenText" class="button" type="button" name="forgotten_password">
                         Glemt passord
                     </button>
+
                     <input type="hidden" value="{{ getMac("login") }}" name="XSRFPreventionToken">
                     <input id="submit" type="submit" name="login" value="Bekreft">
                 </div>
@@ -49,3 +50,4 @@
 </footer>
 
 </html>
+{% endblock %}
