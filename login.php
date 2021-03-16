@@ -10,23 +10,6 @@ if ($request->request->has('logout') && XsrfProtection::verifyMac("logout")) {
     exit();
 }
 
-// if logged in
-elseif ($session->get('loggedin')) {
-    $user = $session->get('User'); // get the user data
-    //Checks if user is verified or not
-    if ($user->isEmailVerified() == 0) {
-        header("location: ".$rel."register/verify.php?do=verification");
-        exit();
-    }
-    elseif ($user->isVerifiedByAdmin() == 0) {
-        header("location: ".$rel."register/verify.php?do=verification");
-        exit();
-    }
-    else {
-        echo $twig->render('admin_dashboard.twig', array('session' => $session));
-    }
-}
-
 // if login submitted
 elseif ($request->request->has('login')) {
     if(XsrfProtection::verifyMac("login") && User::login($db, $request, $session)) {
@@ -42,6 +25,15 @@ elseif ($request->request->has('login')) {
         header("Location: ".$get_info);
         exit();
     }
+}
+
+// if logged in
+elseif ($user) {
+    try {
+        echo $twig->render('admin_dashboard.twig', array('session' => $session));
+    } catch (LoaderError | RuntimeError | SyntaxError $e) {
+    }
+
 }
 
 //just ready to login

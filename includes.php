@@ -52,8 +52,9 @@
 
     $db = Db::getDBConnection();
     if ($db==null) {
-        $session->getFlashBag()->add('header', "ERROR: Unable to connect to the database");
-        echo $twig->render('error.twig', array('msg' => 'Unable to connect to the database!'));
+        try {
+            echo $twig->render('error.twig', array('msg' => 'ERROR: Unable to connect to the database!'));
+        } catch (LoaderError | RuntimeError | SyntaxError $e) { }
         die();  // Abort further execution of the script
     }
 
