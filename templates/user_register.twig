@@ -41,7 +41,7 @@
     {% endfor %}
 {% endif %}
 <div class = "form">
-    <form method="post" id="register-form" onsubmit="return validate();">
+    <form method="post" id="user_register_form" onsubmit="return validate();">
         <div>
             <br><label>Fornavn: </label>
             <br><input type="text" name="firstName" value="" placeholder="Fornavn" maxlength=90 required id="firstname" />
@@ -50,28 +50,28 @@
         </div>
         <div>
             <br><label>Epost:</label>
-            <br><input type="email" name="emailAddress" value="" placeholder="Epost adddresse" maxlength=60 required id="register-email" />
+            <br><input type="email" name="emailAddress" value="" placeholder="Epost adddresse" maxlength=60 required id="emailAddress" />
             <span></span>
         </div>
         <label>Brukernavn:</label>
-        <div id="error_msg"></div>
+        <!--<div id="error_msg"></div>-->
         <div>
             <br><input type="text" name="username" value="" placeholder="" maxlength=45 required id="username" />
             <span></span>
-            <div id="usrnm_msg"></div>
+            <!--<div id="usrnm_msg"></div>-->
         </div>
         <div>
             <br><label>Passord: </label>
-            <br><input type="password" name="password"  required id="password1" placeholder="Passord" minlength=8 maxlength=60 value="" onkeyup='check();'>
+            <br><input type="password" name="password"  required id="password1" placeholder="Passord" minlength=8 maxlength=40 value="" onkeyup='check();'>
             <br><label>Confirm password:</label>
-            <br><input type="password" name="password2" required id="password2" placeholder="Gjenta passord" minlength=8 maxlength=60 value="" onkeyup='check();'/>
+            <br><input type="password" name="password2" required id="password2" placeholder="Gjenta passord" minlength=8 maxlength=40 value="" onkeyup='check();'/>
             <span id='message'></span>
         </div>
         <div>
             <br><label>Kunde eller arbeider: </label>
-            <br><input type="radio" id="isCustomer" name="isCustomer" value="1">
+            <br><input type="radio" id="isCustomer" name="isCustomer" value="1" required>
             <label for="isCustomer">Kunde</label><br>
-            <input type="radio" id="notCustomer" name="isCustomer" value="0">
+            <input type="radio" id="notCustomer" name="isCustomer" value="0" required>
             <label for="arbeider">Arbeider</label><br>
             <br><input type="checkbox" id="isTemporary" name="isTemporary" value="1">
             <label for="vehicle1">Er temporær</label><br>
@@ -89,10 +89,10 @@
             <br><input type="text" name="mobileNumber" value="" placeholder="+471234567" maxlength=45 />
             <br><label>IM addresse:</label>
             <br><input type="text" name="IMAddress" value="" placeholder="IM addresse" maxlength=45 />
-            <input type="hidden" value="{{ getMac("register") }}" name="XSRFPreventionToken">
+            <input type="hidden" value="{{ getMac("user_register") }}" name="XSRFPreventionToken">
             <br><input type="submit" name="register" id="reg_btn" value="registrer">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <script src="../RegisterUser.js"></script>
+            <script src="register_user_check.js"></script>
         </div>
     </form>
 </div>

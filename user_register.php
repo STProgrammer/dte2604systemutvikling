@@ -2,11 +2,13 @@
 
 require_once('includes.php');
 
+include('register_user_check.php');
+
 $userManager = new UserManager($db, $request, $session);
 
 
 if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
-    if ($request->request->has('register') && XsrfProtection::verifyMac("register")) {
+    if ($request->request->has('register') && XsrfProtection::verifyMac("user_register")) {
         $userManager->registerUser($user);
         header("Location: ?registereduser=1");
         exit();
