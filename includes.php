@@ -57,4 +57,28 @@
         die();  // Abort further execution of the script
     }
 
+
+    /*Check if logged in and get the user if he's logged inn
+    $user is null if he's not logged inn, or not verified by
+    admin or email not verified. If everything is OK we get
+    the user from session
+    */
+
+    $user = null;
+    if ($session->get('loggedin') && $session->has('User')
+        && $session->get('User')->verifyUser($request)) {
+        //Checks if user is verified or not
+        if ($session->get('User')->isEmailVerified() == 0) {
+            header("location: ".$rel."register/verify.php?do=verification");
+            exit();
+        }
+        elseif ($session->get('User')->isVerifiedByAdmin() == 0) {
+            header("location: ".$rel."register/verify.php?do=verification");
+            exit();
+        }
+        else {
+            $user = $session->get('User'); // get the user data
+        }
+    }
+
 ?>

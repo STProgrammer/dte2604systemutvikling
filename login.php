@@ -11,14 +11,14 @@ if ($request->request->has('logout') && XsrfProtection::verifyMac("logout")) {
 }
 
 // if logged in
-elseif ($session->has('loggedin')) {
+elseif ($session->get('loggedin')) {
     $user = $session->get('User'); // get the user data
     //Checks if user is verified or not
-    if ($user->getIsEmailVerified() == 0) {
+    if ($user->isEmailVerified() == 0) {
         header("location: ".$rel."register/verify.php?do=verification");
         exit();
     }
-    elseif ($user->getIsVerifiedByAdmin() == 0) {
+    elseif ($user->isVerifiedByAdmin() == 0) {
         header("location: ".$rel."register/verify.php?do=verification");
         exit();
     }
