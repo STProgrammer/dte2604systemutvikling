@@ -22,36 +22,8 @@ class UserManager
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
-    //Register user when user is admin
-    /*
-    public function registerUserAsAdmin ()
-    {
-        $username = $this->request->request->get('username');
-        $firstname = $this->request->request->get('firstname');
-        $lastname = $this->request->request->get('lastname');
-        $email = $this->request->request->get('email');
-        $password = $this->request->request->get('password');
-        $isAdmin = $this->request->request->get('isAdmin');
-        try{
-            //check if username exists
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            $sth = $this->dbase->prepare("insert into Users (email, password, username, firstname, lastname, isAdmin, date, verified) values (:email, :hash, :username, :firstname, :lastname, :isadmin, NOW(), 0);");
-            $sth->bindParam(':email', $email, PDO::PARAM_STR);
-            $sth->bindParam(':hash', $hash, PDO::PARAM_STR);
-            $sth->bindParam(':username', $username, PDO::PARAM_STR);
-            $sth->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-            $sth->bindParam(':lastname',  $lastname, PDO::PARAM_STR);
-            $sth->bindParam(':isAdmin',  $isAdmin, PDO::PARAM_STR);
-            $sth->execute();
-            if ($this->sendEmail($email)) { $this->notifyUser("User registered", "");}
-            else {$this->notifyUser("Failed to send email to verify!", ""); }
-        } catch (Exception $e) {
-            $this->notifyUser("Failed to register user!","");
-        }
-    }*/
-
-    //Register user
-    public function registerUser (User $user)
+    // REGISTER USER
+    public function registerUser (User $user) : bool
     {
         $username = $this->request->request->get('username');
         $firstName = $this->request->request->get('firstName');
@@ -69,7 +41,6 @@ class UserManager
         $isTemporary = $this->request->request->getInt('isTemporary', 0);
         $isVerifiedByAdmin = $user->isAdmin() ? 1:0;
         try{
-            //check if username exists
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $sth = $this->dbase->prepare("insert into Users (username, firstName, lastName, emailAddress, address, city, zipCode, phoneNumber, mobileNumber, IMAddress, password, dateRegistered, isCustomer, isTemporary, isVerifiedByAdmin, 
                    isEmailVerified, status) values (:username, :firstName, :lastName, :emailAddress, :address, :city, :zipCode, :phoneNumber, :mobileNumber, :IMAddress, :password, NOW(), :isCustomer, :isTemporary, :isVerifiedByAdmin, 1, :status);");
@@ -103,10 +74,221 @@ class UserManager
             return false;
         }
     }
+    // END REGISTER USER
+
+
+    // VERIFY USER BY ADMIN
+    public function verifyUserByAdmin($userID) : bool {
+        if($this->session->get('User')->isAdmin()) {
+            try {
+                $sth = $this->dbase->prepare("update Users set isVerifiedByAdmin = 1 where UserID = :UserID");
+                $sth->bindParam(':UserID', $userID, PDO::PARAM_INT);
+                $sth->execute();
+                if($sth->rowCount() == 1) {
+                    $this->notifyUser("User verified by admin", "");
+                    return true;
+                } else {
+                    $this->notifyUser("Failed to verify user", "");
+                    return false;
+                }
+            } catch (Exception $e) {
+                $this->notifyUser("Failed to verify email", $e->getMessage());
+                return false;
+            }
+        } else {return false; }
+    }
+    // END VERIFY USER BY ADMIN
+
+
+    // DELETE USER
+    public function deleteUser($userID) : bool {
+        try
+        {
+            $stmt = $this->dbase->prepare("DELETE FROM Users WHERE userID = :userID");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount()==1) {
+                $this->notifyUser( "User deleted", "");
+                return true;
+            } else {
+                $this->notifyUser( "Failed to delete user!", "");
+                return false;
+            }
+        }
+        catch (Exception $e) {
+            $this->notifyUser( "Failed to delete user!", $e->getMessage());
+            return false;
+        }
+    }
+    // END DELETE USER
+
+
+    // EDIT USER
+    public function editUser(User $user) : bool {
+        $userID = $user->getUserId();
+        $username = $this->request->request->get('username', $user->getUserName());
+        $firstName = $this->request->request->get('firstName', $user->getFirstName());
+        $lastName = $this->request->request->get('lastName', $user->getLastName());
+        $emailAddress = $this->request->request->get('emailAddress', $user->getEmailAddress());
+        $password = $this->request->request->get('password', $user->getPassword());
+        $address = $this->request->request->get('address', $user->getAddress());
+        $city = $this->request->request->get('city', $user->getCity());
+        $zipCode = $this->request->request->get('zipCode', $user->getZipCode());
+        $phoneNumber = $this->request->request->get('phoneNumber', $user->getPhoneNumber());
+        $mobileNumber = $this->request->request->get('mobileNumber', $user->getMobileNumber());
+        $IMAddress = $this->request->request->get('IMAddress', $user->getIMAddress());
+        $status = $this->request->request->get('status', $user->getStatus());
+        $isTemporary = $this->request->request->getInt('isTemporary', $user->isTemporary());
+        $isProjectLeader = $this->request->request->getInt('isProjectLeader', $user->isProjectLeader());
+        $isGroupLeader = $this->request->request->getInt('isGroupLeader', $user->isGroupLeader());
+        if (!$this->isUsernameAvailable($user, $username)) {
+            $this->notifyUser("Failed to edit, username was already taken", "");
+            return false;
+        }
+        if (!$this->isEmailAvailable($userID, $emailAddress)) {
+            {
+                $this->notifyUser("Failed to edit, email was already taken", "");
+                return false;
+            }
+        }
+        try {
+            $hash = password_hash($password,PASSWORD_DEFAULT);
+            $sth = $this->dbase->prepare("update Users set username = :username, firstName = :firstName, 
+    lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
+    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, 
+    isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status;");
+            $sth->bindParam(':username', $username, PDO::PARAM_STR);
+            $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
+            $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
+            $sth->bindParam(':emailAddress', $emailAddress, PDO::PARAM_STR);
+            $sth->bindParam(':address', $address, PDO::PARAM_STR);
+            $sth->bindParam(':city', $city, PDO::PARAM_STR);
+            $sth->bindParam(':zipCode',  $zipCode, PDO::PARAM_STR);
+            $sth->bindParam(':phoneNumber', $phoneNumber, PDO::PARAM_STR);
+            $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
+            $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
+            $sth->bindParam(':password', $hash, PDO::PARAM_STR);
+            $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
+            $sth->bindParam(':isProjectLeader', $isProjectLeader, PDO::PARAM_INT);
+            $sth->bindParam(':isGroupLeader', $isGroupLeader, PDO::PARAM_INT);
+            $sth->bindParam(':status', $status, PDO::PARAM_STR);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser('User details changed', '');
+                return true;
+            } else {
+                $this->notifyUser('Failed to change user details', "");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change user details", $e->getMessage());
+            return false;
+        }
+    }
+    // END EDIT USER
+
+
+    // CHECK IF USERNAME IS AVAILABLE (PRIVATE FUNCTION)
+    private function isUsernameAvailable(User $user, string $newUsername) : bool {
+        if ($user->getUserName() == $newUsername) {
+            return true;
+        }
+        else {
+            try {
+                $stmt = $this->dbase->prepare("SELECT count(*) as cntUser FROM Users WHERE username = :newUsername");
+                $stmt->bindParam(':newUsername', $newUsername, PDO::PARAM_STR);
+                $stmt->execute();
+                $count = $stmt->fetchColumn();
+                if($count > 0){
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception $e) {
+                $this->notifyUser("Something went wrong with isUserNameAvailable()", $e->getMessage());
+                return false;
+            }
+        }
+    }
+    // END CHECK IF USERNAME IS AVAILABLE (PRIVATE FUNCTION)
+
+    // CHECK IF EMAIL ADDRESS IS AVAILABLE (PRIVATE FUNCTION)
+    private function isEmailAvailable(User $user, String $newEmail) : bool {
+        if ($user->getEmailAddress() == $newEmail) {
+            return true;
+        }
+        else {
+            try {
+                $stmt = $this->dbase->prepare("SELECT count(*) as cntUser FROM Users WHERE emailAddress = :newEmail");
+                $stmt->bindParam(':newEmail', $newEmail, PDO::PARAM_STR);
+                $stmt->execute();
+                $count = $stmt->fetchColumn();
+                if($count > 0){
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception $e) {
+                $this->notifyUser("Something went wrong with isEmailAvailable()", $e->getMessage());
+            }
+        }
+    }
+    // END CHECK IF EMAIL ADDRESS AVAILABLE (PRIVATE FUNCTION)
+
+
+    // GET USER
+    public function getUser ($userID) : User {
+        try
+        {
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE userID=:userID");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            if($user = $stmt->fetchObject('User')) {
+                return $user;
+            }
+            else {
+                $this->notifyUser("User not found", "");
+                return new User();
+            }
+        }
+        catch(Exception $e) { $this->notifyUser("Something went wrong!", $e->getMessage());
+            return new User();
+        }
+    }
+    // END GET USER
+
+
+    // GET ALL USERS
+    public function getAllUsers() : array {
+        $allUsers = null;
+        try{
+            $stmt = $this->dbase->prepare("SELECT * FROM Users ORDER BY username ASC");
+            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+            $stmt->execute();
+            if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $allUsers;
+            }
+            else {
+                $this->notifyUser("User not found", "");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllUsers()", $e->getMessage());
+            return array();
+        }
+        return array();
+    }
+    // END GET ALL USERS
 
 
 
 
+
+
+
+
+
+/*
 
     public function sendEmail(string $email) : bool {
         $ch = curl_init();
@@ -146,6 +328,8 @@ class UserManager
         curl_close($ch);
         return true;
     } //END send Email
+
+
 
 
 
@@ -197,72 +381,10 @@ class UserManager
         }
     }
 
-    /*
-    public function getUserObject ($username) : User {
-        try
-        {
-            $stmt = $this->db->prepare("SELECT email, password, username, firstname, lastname, date, verified, admin FROM Users WHERE username=:username");
-            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-            $stmt->execute();
-            if($usr = $stmt->fetchObject('User')) {
-                return $usr;
-            }
-            else {
-                $this->notifyUser("User not found", "");
-                return new User();
-            }
-        }
-        catch(Exception $e) { $this->notifyUser("Something went wrong!", "");
-            return new User();}
-    }
 
-    public function getAllUsers(string $username){
-        $allUsers = null;
-        try{
-            $stmt = $this->dbase->prepare("SELECT email, username, firstname, lastname, date, verified, admin FROM Users WHERE username=:username");
-            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-            $stmt->execute();
-            $allUsers = $stmt->fetchAll();
-        }  catch (Exception $e) { $this->notifyUser("Something went wrong!", ""); return; }
 
-        return $allUsers;
-    }*/
 
-    public function editUser(string $username) : bool {
-        $newUsername = $this->request->request->get('username');
-        $firstname = $this->request->request->get('firstname');
-        $lastname = $this->request->request->get('lastname');
-        $verified = $this->request->request->get('verified');
 
-        if (!$this->isUsernameAvailable($username, $newUsername)) {
-            $this->notifyUser("Failed to edit, username was already taken", "");
-            return false;
-        }
-
-        if ($verified == null) $verified = 1;
-
-        try {
-            $sth = $this->dbase->prepare("update Users set firstname = :firstname, lastname = :lastname, username = :newUsername where username = :username");
-            $sth->bindParam(':newUsername', $newUsername, PDO::PARAM_STR);
-            $sth->bindParam(':username', $username, PDO::PARAM_STR);
-            $sth->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-            $sth->bindParam(':lastname', $lastname, PDO::PARAM_STR);
-            $sth->execute();
-            if ($sth->rowCount() == 1) {
-                $this->session->get('User')->setFirstName($firstname);
-                $this->session->get('User')->setLastName($lastname);
-                $this->session->get('User')->setUsername($newUsername);
-                $this->notifyUser('User details changed', '');
-                return true;
-            } else {
-                $this->notifyUser('Failed to change user details', "");
-                return false;
-            }
-        } catch (Exception $e) {
-            $this->notifyUser("Failed to change user details", "");
-            return false;
-        }
-    }
 
     private function isUsernameAvailable(string $username, string $newUsername) : bool {
         if ($username == $newUsername) {
@@ -331,49 +453,8 @@ class UserManager
             $this->notifyUser("Failed to change email!", "");
             return false;
         }
-    }
+    }*/
 
-
-
-    private function isEmailAvailable(string $newEmail) : bool {
-        $email = $this->session->get('User')->getEmail();
-        if ($email == $newEmail) {
-            return true;
-        }
-        else {
-            try {
-                $stmt = $this->dbase->prepare("SELECT count(*) as cntUser FROM Users WHERE email = :newEmail");
-                $stmt->bindParam(':newEmail', $newEmail, PDO::PARAM_STR);
-                $stmt->execute();
-                $count = $stmt->fetchColumn();
-                if($count > 0){
-                    return false;
-                } else {
-                    return true;
-                }
-            } catch (Exception $e) {
-                $this->notifyUser("Something went wrong", "");
-            }
-        }
-    }
-
-
-    public function deleteUser(string $username) {
-        try
-        {
-            $stmt = $this->dbase->prepare("DELETE FROM Users WHERE username = :username");
-            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-            $stmt->execute();
-            if ($stmt->rowCount()==1) {
-                $this->notifyUser( "User deleted", "");
-            } else {
-                $this->notifyUser( "Failed to delete user!", "");
-            }
-        }
-        catch (Exception $e) {
-            $this->notifyUser( "Failed to delete user!", "");
-        }
-    }
 }
 
 ?>
