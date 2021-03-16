@@ -38,21 +38,17 @@
                         </tr>
                         <tr>
                             {% for user in users %}
-                                <td>{ user.userName }</td>
+                                <td>{ user.firstName || user.lastName }</td>
 
                                 {% if user.isAdmin %}
                                     <td>Administrator</td>
-                                {% endif %}
-                                {% if user.isProjectLeader %}
+                                {% elseif user.isProjectLeader %}
                                     <td>Prosjektleder</td>
-                                {% endif %}
-                                {% if user.isGroupLeader %}
+                                {% elseif user.isGroupLeader %}
                                     <td>Teamleder</td>
-                                {% endif %}
-                                {% if user.isTemporary %}
+                                {% elseif user.isTemporary %}
                                     <td>Innleid</td>
-                                {% endif %}
-                                {% if user.isCustomer %}
+                                {% elseif user.isCustomer %}
                                     <td>Kunde</td>
                                 {% endif %}
 
