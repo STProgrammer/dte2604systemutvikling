@@ -91,15 +91,20 @@ class UserManager
             $sth->execute();
             if ($sth->rowCount() == 1) {
                 $this->notifyUser("Ny bruker ble registrert", "");
+                return true;
             } else {
                 $this->notifyUser("Failed to register user!", "");
+                return false;
             }
             /*if ($this->sendEmail($email)) { $this->notifyUser("User registered", "");}
             else {$this->notifyUser("Failed to send email to verify!", ""); }*/
         } catch (Exception $e) {
             $this->notifyUser("Failed to register user!", $e->getMessage());
+            return false;
         }
     }
+
+
 
 
 

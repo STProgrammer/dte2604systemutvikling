@@ -9,9 +9,14 @@ $userManager = new UserManager($db, $request, $session);
 
 if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     if ($request->request->has('register') && XsrfProtection::verifyMac("user_register")) {
-        $userManager->registerUser($user);
-        header("Location: ?registereduser=1");
-        exit();
+        if ($userManager->registerUser($user)) {
+            header("Location: ?registereduser=1");
+            exit();
+        } else {
+            header("Location: ?failedtoregisteruser=1");
+            exit();
+        }
+
     } else {
         try {
             echo $twig->render('user_register.twig', array('session' => $session,
