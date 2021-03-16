@@ -2,7 +2,7 @@
 
 require_once('includes.php');
 
-include('register_user_check.php');
+include('user_register_check.php');
 
 $userManager = new UserManager($db, $request, $session);
 

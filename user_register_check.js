@@ -11,7 +11,7 @@ $('document').ready(function(){
 			return;
 		}
 		$.ajax({
-			url: 'register_user_check.php',
+			url: 'user_register_check.php',
 			type: 'post',
 			data: {
 				'username_check' : 1,
@@ -39,7 +39,7 @@ $('document').ready(function(){
 			return;
 		}
 		$.ajax({
-			url: 'register_user_check.php',
+			url: 'user_register_check.php',
 			type: 'post',
 			data: {
 				'email_check' : 1,
