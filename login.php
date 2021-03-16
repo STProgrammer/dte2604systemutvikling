@@ -30,7 +30,8 @@ elseif ($request->request->has('login')) {
 // if logged in
 elseif ($user) {
     try {
-        echo $twig->render('admin_dashboard.twig', array('session' => $session));
+        echo $twig->render('admin_dashboard.twig', array('session' => $session, 'user' => $user,
+            'request' => $request));
     } catch (LoaderError | RuntimeError | SyntaxError $e) {
     }
 
