@@ -73,13 +73,11 @@
             header("location: ".$rel."register/verify.php?do=verification");
             exit();
         }
-        elseif ($session->get('User')->isVerifiedByAdmin() == 0) {
+        if ($session->get('User')->isVerifiedByAdmin() == 0) {
             header("location: ".$rel."register/verify.php?do=verification");
             exit();
         }
-        else {
-            $user = $session->get('User'); // get the user data
-        }
+        $user = $session->get('User'); // get the user data
     }
 
 ?>

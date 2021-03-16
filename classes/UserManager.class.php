@@ -23,6 +23,7 @@ class UserManager
     }
 
     //Register user when user is admin
+    /*
     public function registerUserAsAdmin ()
     {
         $username = $this->request->request->get('username');
@@ -47,14 +48,14 @@ class UserManager
         } catch (Exception $e) {
             $this->notifyUser("Failed to register user!","");
         }
-    }
+    }*/
 
     //Register user
-    public function registerUser ()
+    public function registerUser (User $user)
     {
         $username = $this->request->request->get('username');
         $firstName = $this->request->request->get('firstName');
-        $lastName = $this->request->request->get('lastMame');
+        $lastName = $this->request->request->get('lastName');
         $emailAddress = $this->request->request->get('emailAddress');
         $password = $this->request->request->get('password');
         $address = $this->request->request->get('address');
@@ -64,13 +65,14 @@ class UserManager
         $mobileNumber = $this->request->request->get('mobileNumber');
         $IMAddress = $this->request->request->get('IMAddress');
         $isCustomer = $this->request->request->getInt('isCustomer');
+        $status = $isCustomer ? "N/A": "Free";
         $isTemporary = $this->request->request->getInt('isTemporary', 0);
-        $isVerifiedByAdmin = $this->session->get('User')->isAdmin();
+        $isVerifiedByAdmin = $user->isAdmin() ? 1:0;
         try{
             //check if username exists
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $sth = $this->dbase->prepare("insert into Users (username, firstName, lastName, emailAddress, address, city, zipCode, phoneNumber, mobileNumber, IMAddress, password, dateRegistered, isCustomer, isTemporary, isVerifiedByAdmin, 
-                   isEmailVerified, status) values (:username, :firstName, :lastName, :emailAddress, :address, :city, :zipCode, :phoneNumber, :mobileNumber, :IMAddress, :password, NOW(), :isCustomer, :isTemporary, :isVerifiedByAdmin, 1, 'Working');");
+                   isEmailVerified, status) values (:username, :firstName, :lastName, :emailAddress, :address, :city, :zipCode, :phoneNumber, :mobileNumber, :IMAddress, :password, NOW(), :isCustomer, :isTemporary, :isVerifiedByAdmin, 1, :status);");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
             $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
             $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
@@ -85,11 +87,17 @@ class UserManager
             $sth->bindParam(':isCustomer',  $isCustomer, PDO::PARAM_INT);
             $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
             $sth->bindParam(':isVerifiedByAdmin', $isVerifiedByAdmin, PDO::PARAM_INT);
+            $sth->bindParam(':status', $status, PDO::PARAM_STR);
             $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser("Ny bruker ble registrert", "");
+            } else {
+                $this->notifyUser("Failed to register user!", "");
+            }
             /*if ($this->sendEmail($email)) { $this->notifyUser("User registered", "");}
             else {$this->notifyUser("Failed to send email to verify!", ""); }*/
         } catch (Exception $e) {
-            $this->notifyUser("Failed to register user!","");
+            $this->notifyUser("Failed to register user!", $e->getMessage());
         }
     }
 

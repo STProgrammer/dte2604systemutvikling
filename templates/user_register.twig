@@ -32,6 +32,14 @@
 
 </script>
 <h1>Register user</h1>
+{% if session.getFlashBag.has('header') %}
+    {% for header in session.getFlashBag.get('header', []) %}
+        <h3>{{ header }}</h3>
+    {% endfor %}
+    {% for message in session.getFlashBag.get('message', []) %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
 <div class = "form">
     <form method="post" id="register-form" onsubmit="return validate();">
         <div>

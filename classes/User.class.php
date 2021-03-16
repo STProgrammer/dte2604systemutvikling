@@ -86,7 +86,7 @@ class User {
                 return false;
             }
         } catch (Exception $e) {
-            $session->getFlashBag()->add('header', "Failed to login because of MySQL error");
+            $session->getFlashBag()->add('message', $e->getMessage());
         }
     }
 
