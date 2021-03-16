@@ -259,11 +259,12 @@ class UserManager
 
 
     // GET ALL USERS
-    public function getAllUsers() : array {
+    public function getAllUsers($column) : array {
         $allUsers = null;
         try{
-            $stmt = $this->dbase->prepare("SELECT * FROM Users ORDER BY username ASC");
+            $stmt = $this->dbase->prepare("SELECT * FROM Users ORDER BY :column ASC");
             $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+            $stmt->bindParam(':column', $column, PDO::PARAM_STR);
             $stmt->execute();
             if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
                 return $allUsers;
