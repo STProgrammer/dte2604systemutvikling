@@ -1,19 +1,26 @@
 <?php
 
-    //Håndterer login
-    require_once "login.php";
+    require_once "includes.php";
 
 
-
-/* Denne Twig funksjonen er tatt fra https://stackoverflow.com/questions/61407758/how-to-change-one-value-in-get-by-clicking-a-link-or-button-from-twig-with/61407993#61407993 */
-    $twig->addFunction(new \Twig\TwigFunction('get_page_url', function($query = [], $append = true) {
-    $tmp = $append ? $_GET : [];
-    foreach($query as $key => $value) $tmp[$key] = $value;
-
-    return '?' . http_build_query($tmp);
-    }));
-
-    echo $twig->render('index.twig', array('user' => $user,
-        'session' => $session, 'rel' => $rel));
+    if ($user) {
+        if ($user->isAdmin()) {
+            try {
+                echo $twig->render('admin_dashboard.twig', array('session' => $session, 'user' => $user,
+                    'request' => $request));
+            } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            }
+        }
+        elseif ($user->isProjectLeader()) {
+            try {
+                echo $twig->render('projectleader_dashboard.twig', array('session' => $session, 'user' => $user,
+                    'request' => $request));
+            } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            }
+        }
+    } else {
+        header("location: login.php");
+        exit();
+    }
 
 ?>

@@ -15,8 +15,8 @@ elseif ($request->request->has('login')) {
     if(XsrfProtection::verifyMac("login") && User::login($db, $request, $session)) {
         $user = $session->get('User');
         if ($session->get('loggedin') && $user->verifyUser($request)) {
-            $referer = $request->server->get('HTTP_REFERER');
-            header('location: '.$referer);
+            //$referer = $request->server->get('HTTP_REFERER');
+            header('location: index.php');
             exit();
         }
     } //if login submitted but failed to login
@@ -29,12 +29,8 @@ elseif ($request->request->has('login')) {
 
 // if logged in
 elseif ($user) {
-    try {
-        echo $twig->render('admin_dashboard.twig', array('session' => $session, 'user' => $user,
-            'request' => $request));
-    } catch (LoaderError | RuntimeError | SyntaxError $e) {
-    }
-
+    header('location: index.php');
+    exit();
 }
 
 //just ready to login
