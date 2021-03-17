@@ -2,22 +2,19 @@
 
 require_once('includes.php');
 
-
-//$Userprofiles = new Userprofiles($db, $request, $session);
-
 define('FILENAME_TAG', 'image');
 
 
 $userManager = new UserManager($db, $request, $session);
+$user = $session;
 
-$users = $userManager->getAllUsers("lastName");
-
-try {
-    if (!empty($twig)) {
-        echo $twig->render('userprofiles.twig', array('users'=>$users, 'session' => $session));
-    }
-} catch (LoaderError | RuntimeError | SyntaxError $e) {
+if ($user =! null) {
+    $users = $userManager->getAllUsers("lastName");
+    try {
+        echo $twig->render('userprofiles.twig', array('user' => $user, 'users' => $users, 'session' => $session, 'request' => $request));
+    } catch (LoaderError | RuntimeError | SyntaxError $e) {  }
+        }
+else {
+    header("location: login.php");
+    exit();
 }
-
-
-
