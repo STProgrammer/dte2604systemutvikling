@@ -3,16 +3,18 @@
 require_once('includes.php');
 
 
-$Userprofiles = new Userprofiles($db, $request, $session);
+//$Userprofiles = new Userprofiles($db, $request, $session);
 
 define('FILENAME_TAG', 'image');
 
 
-$users = $Userprofiles->getAllEmployees();
+$userManager = new UserManager($db, $request, $session);
+
+$users = $userManager->getAllUsers("lastName");
 
 try {
     if (!empty($twig)) {
-        echo $twig->render('userprofiles.twig', array('users'=>$users));
+        echo $twig->render('userprofiles.twig', array('users'=>$users, 'session' => $session));
     }
 } catch (LoaderError | RuntimeError | SyntaxError $e) {
 }

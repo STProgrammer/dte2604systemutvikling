@@ -259,12 +259,12 @@ class UserManager
 
 
     // GET ALL USERS
-    public function getAllUsers($column) : array {
+    public function getAllUsers($colName) : array {
         $allUsers = null;
         try{
-            $stmt = $this->dbase->prepare("SELECT * FROM Users ORDER BY :column ASC");
-            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-            $stmt->bindParam(':column', $column, PDO::PARAM_STR);
+           // $colName = "`".str_replace("`","``",$colName)."`";
+            $query   = "SELECT * FROM Users ORDER BY `$colName` ASC";
+            $stmt = $this->dbase->prepare($query);
             $stmt->execute();
             if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
                 return $allUsers;
@@ -280,12 +280,6 @@ class UserManager
         return array();
     }
     // END GET ALL USERS
-
-
-
-
-
-
 
 
 

@@ -26,31 +26,38 @@ class User {
     private $userAgent;
     private $userHits;
 
-    function __construct(string $username, string $ip, string $browser, array $row ) {
-        $this->userID = $row['userID'];
-        $this->userName = $username;
-        $this->firstName = $row['firstName'];
-        $this->lastName = $row['lastName'];
-        $this->address = $row['address'];
-        $this->zipCode = $row['zipCode'];
-        $this->city = $row['city'];
-        $this->phoneNumber = $row['phoneNumber'];
-        $this->mobileNumber = $row['mobileNumber'];
-        $this->emailAddress = $row['emailAddress'];
-        $this->IMAddress = $row['IMAddress'];
-        $this->dateRegistered = $row['dateRegistered'];
-        $this->password = $row['password'];
-        $this->isAdmin = $row['isAdmin'];
-        $this->isProjectLeader = $row['isProjectLeader'];
-        $this->isGroupLeader = $row['isGroupLeader'];
-        $this->isTemporary = $row['isTemporary'];
-        $this->isCustomer = $row['isCustomer'];
-        $this->isEmailVerified = $row['isEmailVerified'];
-        $this->isVerifiedByAdmin = $row['isVerifiedByAdmin'];
-        $this->status = $row['status'];
-        $this->IPAddress = $ip;
-        $this->userAgent = $browser;
-        $this->userHits = 0;
+
+    function __construct(string $username = null, string $ip = null, string $browser = null, array $row = null ) {
+        if ($row) {
+            $this->userID = $row['userID'];
+            $this->userName = $username;
+            $this->firstName = $row['firstName'];
+            $this->lastName = $row['lastName'];
+            $this->address = $row['address'];
+            $this->zipCode = $row['zipCode'];
+            $this->city = $row['city'];
+            $this->phoneNumber = $row['phoneNumber'];
+            $this->mobileNumber = $row['mobileNumber'];
+            $this->emailAddress = $row['emailAddress'];
+            $this->IMAddress = $row['IMAddress'];
+            $this->dateRegistered = $row['dateRegistered'];
+            $this->password = $row['password'];
+            $this->isAdmin = $row['isAdmin'];
+            $this->isProjectLeader = $row['isProjectLeader'];
+            $this->isGroupLeader = $row['isGroupLeader'];
+            $this->isTemporary = $row['isTemporary'];
+            $this->isCustomer = $row['isCustomer'];
+            $this->isEmailVerified = $row['isEmailVerified'];
+            $this->isVerifiedByAdmin = $row['isVerifiedByAdmin'];
+            $this->status = $row['status'];
+            $this->IPAddress = $ip;
+            $this->userAgent = $browser;
+            $this->userHits = 0;
+        }
+        else {
+
+        }
+
     }
 
     public function verifyUser($request) {

@@ -11,7 +11,7 @@ class Db {
 
     private function __construct() {
         try {
-            $this->dbh = new PDO("mysql:host=$this->host;dbname=$this->dbname", $this->username, $this->password);
+            $this->dbh = new PDO("mysql:host=$this->host;dbname=$this->dbname", $this->username, $this->password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             $this->errorMsg = $e->getMessage();
