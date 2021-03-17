@@ -6,9 +6,8 @@ define('FILENAME_TAG', 'image');
 
 
 $userManager = new UserManager($db, $request, $session);
-$user = $session;
 
-if ($user =! null) {
+if ($user) {
     $users = $userManager->getAllUsers("lastName");
     try {
         echo $twig->render('userprofiles.twig', array('user' => $user, 'users' => $users, 'session' => $session, 'request' => $request));

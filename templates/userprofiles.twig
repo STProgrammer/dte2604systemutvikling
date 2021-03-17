@@ -51,26 +51,26 @@
 
                             <th>Rediger</th>
                         </tr>
-                        {% for users in users %}
+                        {% for usr in users %}
                             <tr>
-                                <td>{{ users.getLastName}}</td>
-                                <td>{{ users.getFirstName}}</td>
+                                <td>{{ usr.getLastName}}</td>
+                                <td>{{ usr.getFirstName}}</td>
 
-                                {% if users.isAdmin %}
+                                {% if usr.isAdmin %}
                                     <td>Administrator</td>
-                                {% elseif users.isProjectLeader %}
+                                {% elseif usr.isProjectLeader %}
                                     <td>Prosjektleder</td>
-                                {% elseif users.isGroupLeader %}
+                                {% elseif usr.isGroupLeader %}
                                     <td>Teamleder</td>
                                 {% elseif users.isTemporary %}
                                     <td>Innleid</td>
-                                {% elseif users.isCustomer %}
+                                {% elseif usr.isCustomer %}
                                     <td>Kunde</td>
                                 {% endif %}
 
                                 <! -- if admin\leder show this  -->
                                 {% if user.isAdmin %}
-                                    <td>{{ users.getStatus }}</td>
+                                    <td>{{ usr.getStatus }}</td>
                                 {% endif %}
 
                                 <!-- if user is admin or user is username, edit -->
