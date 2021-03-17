@@ -92,7 +92,7 @@ class UserManager
                     return false;
                 }
             } catch (Exception $e) {
-                $this->notifyUser("Failed to verify email", $e->getMessage());
+                $this->notifyUser("Failed to verify user", $e->getMessage());
                 return false;
             }
         } else {return false; }

@@ -17,20 +17,20 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
             $request->request->set('isAdmin', 0);
         }
         if ($userManager->editOtherUser($userToEdit)) {
-            header("Location: ".$request->server->get('REQUEST_URI')."&useredit=1");
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: ".$request->server->get('REQUEST_URI')."&failedtoedituser=1");
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         }
     }
     //Delete user
     elseif ($request->request->has('delete_user') && XsrfProtection::verifyMac("Delete user") && $user->isAdmin()) {
-        if ($userManager->deleteUser($user->getUserId())) {
-            header("Location: ".$request->server->get('REQUEST_URI')."&deleteuser=1");
+        if ($userManager->deleteUser($userToEdit->getUserId())) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: ".$request->server->get('REQUEST_URI')."&failedtodeleteuser=1");
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         }
     }
@@ -38,9 +38,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
         try {
             echo $twig->render('user_edit.twig', array('session' => $session,
                 'request' => $request, 'user' => $user, 'userToEdit' => $userToEdit));
-        } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-
-        }
+        } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {  }
     }
 } else {
     header("location: login.php");
