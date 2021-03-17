@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="../stylesheet.css" />
+    <title>Edit User</title>
+</head>
+<body>
+<h1>Edit user details</h1>
+{% if session.getFlashBag.has('header') %}
+{% for header in session.getFlashBag.get('header', []) %}
+<h3>{{ header }}</h3>
+{% endfor %}
+{% for message in session.getFlashBag.get('message', []) %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+<br>Profilen til {{ userToEdit.getFirstName() }}  {{ userToEdit.getLastName() }}
+<div class = "form">
+    <form method="post" id="user_edit_form">
+            <br><label>Addresse:</label>
+            <br><input type="text" name="address" placeholder="Addresse" maxlength=90 value="{{ userToEdit.getAddress() }}" />
+            <br><label>Postnummer:</label>
+            <br><input type="text" name="zipCode" placeholder="Post nr" maxlength=10 required value="{{ userToEdit.getZipCode() }}"/>
+            <br><label>By:</label>
+            <br><input type="text" name="city" placeholder="By" maxlength=45 required value="{{ userToEdit.getCity() }}"/>
+            <br><label>Telefon nummer: </label>
+            <br><input type="text" name="phoneNumber" placeholder="+471234568" maxlength=45 value="{{ userToEdit.getPhoneNumber() }}"/>
+            <br><label>Mobil nummer:</label>
+            <br><input type="text" name="mobileNumber" placeholder="+4712345678" maxlength=45 value="{{ userToEdit.getMobileNumber() }}" />
+            <br><label>IM addresse:</label>
+            <br><input type="text" name="IMAddress" placeholder="IM addresse" maxlength=45 value="{{ userToEdit.getIMAddress() }}" />
+            <br><input type="checkbox" id="isTemporary" name="isTemporary" value="1" {% if userToEdit.isTemporary() %} checked {% endif %}>
+            <label for="isTemporary">Er temporær</label><br>
+            {% if user.isAdmin() %}
+            <br><input type="checkbox" id="isAdmin" name="isAdmin" value="1" {% if userToEdit.isAdmin() %} checked {% endif %}>
+            <label for="isAdmin">Er admin</label><br>
+            {% endif %}
+            <label for="status">Status</label>
+            {% if not userToEdit.isCustomer() %}
+            <select name="status" id="status">
+                <option value="Sick" {% if userToEdit.getStatus() == "Sick" %} selected {% endif %}>Syk</option>
+                <option value="Travel"{% if userToEdit.getStatus() == "Travel" %} selected {% endif %}>På reise</option>
+                <option value="Meeting"{% if userToEdit.getStatus() == "Meeting" %} selected {% endif %}>På møte</option>
+                <option value="Various"{% if userToEdit.getStatus() == "Various" %} selected {% endif %}>Varierende</option>
+                <option value="Working"{% if userToEdit.getStatus() == "Working" %} selected {% endif %}>På jobb</option>
+                <option value="Free"{% if userToEdit.getStatus() == "Free" %} selected {% endif %}>Fri</option>
+                <option value="N/A"{% if userToEdit.getStatus() == "N/A" %} selected {% endif %}>N/A</option>
+            </select>
+            {% endif %}
+            <input type="hidden" value="{{ getMac("Edit user's information") }}" name="XSRFPreventionToken">
+            <br><input type="submit" name="user_edit" id="edit_btn" value="Endre">
+    </form>
+    {% if user.isAdmin() %}
+    <form method="post" onsubmit="return confirm('Er du sikker på å slette brukeren? \n(Kan ikke angres etterpå)');">
+        <input type="hidden" value="{{ getMac("Deslete  user") }}" name="XSRFPreventionToken">
+        <br><input type="submit" name="delete_user" value="Slett bruker" class="delete" />
+    </form>
+    {% endif %}
+</div>
+
+
+</body>
+</html>
