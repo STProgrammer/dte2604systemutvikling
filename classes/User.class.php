@@ -2,7 +2,7 @@
 
 class User {
     private $userID;
-    private $userName;
+    private $username;
     private $firstName;
     private $lastName;
     private $address;
@@ -30,7 +30,7 @@ class User {
     function __construct(string $username = null, string $ip = null, string $browser = null, array $row = null ) {
         if ($row) {
             $this->userID = $row['userID'];
-            $this->userName = $username;
+            $this->username = $username;
             $this->firstName = $row['firstName'];
             $this->lastName = $row['lastName'];
             $this->address = $row['address'];
@@ -99,7 +99,7 @@ class User {
 
 
     public function getUserId() { return $this->userID; }
-    public function getUserName() { return $this->userName; }
+    public function getUsername() { return $this->username; }
     public function getFirstName() { return $this->firstName; }
     public function getLastName() { return $this->lastName; }
     public function getAddress() { return $this->address; }
@@ -117,7 +117,7 @@ class User {
     public function getUserHits(): int { return $this->userHits; }
 
     public function setUserId($userId) { $this->userID = $userId; }
-    public function setUserName($userName) { $this->userName = $userName; }
+    public function setUsername($username) { $this->username = $username; }
     public function setFirstName($firstName) { $this->firstName = $firstName; }
     public function setLastName($lastName) { $this->lastName = $lastName; }
     public function setAddress($address) { $this->address = $address; }

@@ -126,7 +126,7 @@ class UserManager
     // EDIT USER
     public function editUser(User $user) : bool {
         $userID = $user->getUserId();
-        $username = $this->request->request->get('username', $user->getUserName());
+        $username = $this->request->request->get('username', $user->getUsername());
         $firstName = $this->request->request->get('firstName', $user->getFirstName());
         $lastName = $this->request->request->get('lastName', $user->getLastName());
         $emailAddress = $this->request->request->get('emailAddress', $user->getEmailAddress());
@@ -190,7 +190,7 @@ class UserManager
 
     // CHECK IF USERNAME IS AVAILABLE (PRIVATE FUNCTION)
     private function isUsernameAvailable(User $user, string $newUsername) : bool {
-        if ($user->getUserName() == $newUsername) {
+        if ($user->getUsername() == $newUsername) {
             return true;
         }
         else {
