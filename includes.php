@@ -52,8 +52,10 @@
 
     $db = Db::getDBConnection();
     if ($db==null) {
+        $errorMsg = Db::getErrorMsg();
         try {
-            echo $twig->render('error.twig', array('msg' => 'ERROR: Unable to connect to the database!'));
+            echo $twig->render('error.twig', array('msg' => 'ERROR: Unable to connect to the database!',
+                'errorMsg' => $errorMsg));
         } catch (LoaderError | RuntimeError | SyntaxError $e) { }
         die();  // Abort further execution of the script
     }
