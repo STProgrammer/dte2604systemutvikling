@@ -263,7 +263,7 @@ class UserManager
         $allUsers = null;
         try{
            // $colName = "`".str_replace("`","``",$colName)."`";
-            $query   = "SELECT * FROM Users ORDER BY `$colName` ASC";
+            $query   = "SELECT * FROM Users ORDER BY `$colName` ASC;";
             $stmt = $this->dbase->prepare($query);
             $stmt->execute();
             if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
@@ -279,7 +279,56 @@ class UserManager
         }
         return array();
     }
-    // END GET ALL USERS
+    // END GET ALL CUSTOMERS
+
+
+    // GET ALL CUSTOMERS
+    public function getAllCustomers($colName) : array {
+        $allUsers = null;
+        try{
+            // $colName = "`".str_replace("`","``",$colName)."`";
+            $query   = "SELECT * FROM Users WHERE isCustomer = 1 ORDER BY `$colName` ASC;";
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute();
+            if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $allUsers;
+            }
+            else {
+                $this->notifyUser("User not found", "");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllCustomers()", $e->getMessage());
+            return array();
+        }
+        return array();
+    }
+    // END GET ALL CUSTOMERS
+
+    // GET ALL EMPLOYEES
+    public function getAllEmployees($colName) : array {
+        $allUsers = null;
+        try{
+            // $colName = "`".str_replace("`","``",$colName)."`";
+            $query   = "SELECT * FROM Users WHERE isCustomer = 0 ORDER BY `$colName` ASC;";
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute();
+            if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $allUsers;
+            }
+            else {
+                $this->notifyUser("User not found", "");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllEmployees()", $e->getMessage());
+            return array();
+        }
+        return array();
+    }
+    // END GET ALL EMPLOYEES
+
+
 
 
 
