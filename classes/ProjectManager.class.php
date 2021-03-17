@@ -28,7 +28,7 @@ class ProjectManager {
                 return $projects;
             }
             else {
-                $this->notifyUser("Project not found", "");
+                $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
                 //return new Project();
                 return array();
             }
