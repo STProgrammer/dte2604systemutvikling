@@ -3,28 +3,28 @@
 
     <section id="brukerprofiler" class="brukerprofiler">
         <div class="container container_small">
-            <button id="button" class="button">
-                <img src="images/icon_legg_til_bruker.svg" width="40pt"> Legg til ny bruker
+            <button id="button" class="button" title="Ny bruker">
+                <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
             </button>
         </div>
         <div class="container container_small">
-            <button id="button" class="button">
-                <img src="images/icon_slett_bruker.svg" width="40pt"> Slett bruker
+            <button id="button" class="button" title="Slett bruker">
+                <img src="images/icon_slett_bruker.svg" width="30em"> Slett bruker
             </button>
         </div>
         <div class="container container_small">
-            <button id="button" class="button">
-                <img src="images/icon_bruker_sjekk.svg" width="40pt"> Verifiser bruker
+            <button id="button" class="button" title="Verifiser bruker">
+                <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
             </button>
         </div>
         <div class="container container_small">
-            <button id="button" class="button">
-                <img src="images/icon_endre_bruker.svg" width="40pt"> Endre bruker
+            <button id="button" class="button" title="Endre bruker">
+                <img src="images/icon_endre_bruker.svg" width="30em"> Endre bruker
             </button>
         </div>
         <div class="container container_small">
-            <button id="button" class="button">
-                <img src="images/icon_people.png" width="60pt"> Oversikt
+            <button id="button" class="button" title="Oversikt">
+                <img src="images/icon_people.png" width="50em"> Oversikt
             </button>
         </div>
         <section>
@@ -32,13 +32,17 @@
                 <div class="text">
                     <table class="table" id="table">
                         <tr>
-                            <th>Navn</th>
+                            <th>Etternavn</th>
+                            <th>Fornavn</th>
                             <th>Stilling</th>
+                            <! -- if admin\leder show this  -->
                             <th>Status</th>
+                            <th>Rediger</th>
                         </tr>
-                        <tr>
-                            {% for user in users %}
-                                <td>{ user.firstName || user.lastName }</td>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.lastName}}</td>
+                                <td>{{ user.firstName}}</td>
 
                                 {% if user.isAdmin %}
                                     <td>Administrator</td>
@@ -51,10 +55,12 @@
                                 {% elseif user.isCustomer %}
                                     <td>Kunde</td>
                                 {% endif %}
+                                <! -- if admin\leder show this  -->
+                                <td>{{ user.Status }}</td>
 
-                                <td>{ user.getId == status.getStatus }</td>
-                            {% endfor %}
-                        </tr>
+                                <td><button>Rediger</button></td>
+                            </tr>
+                        {% endfor %}
                     </table>
                 </div>
         </section>

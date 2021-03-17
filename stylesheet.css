@@ -126,7 +126,9 @@ div.container{
     box-shadow: 0.1em 0.2em 0.2em #888888;
     overflow: hidden;
 }
-div.container_small { width: 12em; height: 5em;
+div.container_xxsmall { width: 4em; height: 4em;
+}
+div.container_small { width: 9em; height: 4em;
 }
 div.container_registrer_inn { width: 20em; height: 5em;
 }
@@ -200,6 +202,7 @@ div.container_center { display:block;
 }
 .button#button.button {
     font-family: Segoe UI, serif;
+    font-size: 0.7em;
     color: #707070;
     padding: 0;
     border: none;
