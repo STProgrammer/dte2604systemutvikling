@@ -4,7 +4,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class ProjectManager {
+class GroupManager {
     private $db;
     private $request;
     private $session;
@@ -20,22 +20,20 @@ class ProjectManager {
     /// PROJECTS
     /////////////////////////////////////////////////////////////////////////////
 
-    public function getAllProjects() : array {
+    public function getAllGroup() : array {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `startTime` DESC");
+            $stmt = $this->db->prepare("SELECT * FROM Groups ORDER BY `groupName` ASC");
             $stmt->execute();
-            if( $projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
-                return $projects;
+            if( $groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
+                return $groups;
             }
             else {
-                $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
-                //return new Project();
+                $this->notifyUser("Groups not found", "Kunne ikke hente grupper");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllProjects()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, på getAllGroups()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
-            //return new Project();
             return array();
         }
     }
@@ -49,30 +47,16 @@ class ProjectManager {
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
-    public function newProject() {}
+    public function newGroup() {}
 
-    public function editProject() {}
+    public function editGroup() {}
 
-    public function deleteProject() {}
+    public function deleteGroup() {}
 
-    public function getProject(String $projectName) {}
-
-    public function addGroup(Group $group) {}
+    public function getGroup(int $groupID) {}
 
     public function addEmployee(User $user) {}
 
-    public function addCustomer(User $user) {}
-
     public function assignLeader(User $leader) {}
-
-    public function changeStatus() {}
-
-    public function addTask(Task $task) {}
-
-    public function getTasks() {}
-
-    public function addPhase(Phase $phase) {}
-
-    public function getPhases(Phase $phase) {}
 
 }
