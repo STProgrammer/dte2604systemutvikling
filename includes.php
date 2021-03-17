@@ -1,15 +1,7 @@
 <?php
 
-    //xdebug_info();
+
     $homedir = __DIR__ . '/';
-
-    //Generate relative path string "../" or "../../" depending on where it's loaded
-    $rel = substr( dirname($_SERVER['PHP_SELF']), strrpos($_SERVER['REQUEST_URI'],"dte-2604-1-21v-systemutvikling"));
-    $rel = preg_replace('~[^\/]*~', '', $rel);  //Remove all except "/"
-    $rel = substr($rel, 0, -1);   // remove last "/"
-    $rel = str_replace('/', '../', $rel);  //Turn "/" into "../"
-    $rel = $rel . (basename($_SERVER['SCRIPT_FILENAME']) == "index.php" ? "" :"../");
-
 
     spl_autoload_register(function ($class_name) {
         $homedir = __DIR__ . '/';

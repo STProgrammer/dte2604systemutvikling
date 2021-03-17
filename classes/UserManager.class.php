@@ -145,7 +145,7 @@ class UserManager
             $this->notifyUser("Failed to edit, username was already taken", "");
             return false;
         }
-        if (!$this->isEmailAvailable($userID, $emailAddress)) {
+        if (!$this->isEmailAvailable($user, $emailAddress)) {
             {
                 $this->notifyUser("Failed to edit, email was already taken", "");
                 return false;
@@ -156,7 +156,7 @@ class UserManager
             $sth = $this->dbase->prepare("update Users set username = :username, firstName = :firstName, 
     lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
     phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, 
-    isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status;");
+    isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status WHERE userID = :userID;");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
             $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
             $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
@@ -172,6 +172,7 @@ class UserManager
             $sth->bindParam(':isProjectLeader', $isProjectLeader, PDO::PARAM_INT);
             $sth->bindParam(':isGroupLeader', $isGroupLeader, PDO::PARAM_INT);
             $sth->bindParam(':status', $status, PDO::PARAM_STR);
+            $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
             if ($sth->rowCount() == 1) {
                 $this->notifyUser('User details changed', '');
@@ -186,6 +187,153 @@ class UserManager
         }
     }
     // END EDIT USER
+
+
+    // EDIT USER
+    public function editMyProfile(User $user) : bool {
+        $userID = $user->getUserId();
+        $username = $this->request->request->get('username', $user->getUsername());
+        $firstName = $this->request->request->get('firstName', $user->getFirstName());
+        $lastName = $this->request->request->get('lastName', $user->getLastName());
+        $emailAddress = $this->request->request->get('emailAddress', $user->getEmailAddress());
+        $password = $this->request->request->get('password', $user->getPassword());
+        $address = $this->request->request->get('address', $user->getAddress());
+        $city = $this->request->request->get('city', $user->getCity());
+        $zipCode = $this->request->request->get('zipCode', $user->getZipCode());
+        $phoneNumber = $this->request->request->get('phoneNumber', $user->getPhoneNumber());
+        $mobileNumber = $this->request->request->get('mobileNumber', $user->getMobileNumber());
+        $IMAddress = $this->request->request->get('IMAddress', $user->getIMAddress());
+        $status = $this->request->request->get('status', $user->getStatus());
+        $isTemporary = $this->request->request->getInt('isTemporary', $user->isTemporary());
+        $isProjectLeader = $this->request->request->getInt('isProjectLeader', $user->isProjectLeader());
+        $isGroupLeader = $this->request->request->getInt('isGroupLeader', $user->isGroupLeader());
+        if (!$this->isUsernameAvailable($user, $username)) {
+            $this->notifyUser("Failed to edit, username was already taken", "");
+            return false;
+        }
+        if (!$this->isEmailAvailable($user, $emailAddress)) {
+            {
+                $this->notifyUser("Failed to edit, email was already taken", "");
+                return false;
+            }
+        }
+        try {
+            $hash = password_hash($password,PASSWORD_DEFAULT);
+            $sth = $this->dbase->prepare("update Users set username = :username, firstName = :firstName, 
+    lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
+    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, 
+    isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status WHERE userID = :userID;");
+            $sth->bindParam(':username', $username, PDO::PARAM_STR);
+            $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
+            $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
+            $sth->bindParam(':emailAddress', $emailAddress, PDO::PARAM_STR);
+            $sth->bindParam(':address', $address, PDO::PARAM_STR);
+            $sth->bindParam(':city', $city, PDO::PARAM_STR);
+            $sth->bindParam(':zipCode',  $zipCode, PDO::PARAM_STR);
+            $sth->bindParam(':phoneNumber', $phoneNumber, PDO::PARAM_STR);
+            $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
+            $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
+            $sth->bindParam(':password', $hash, PDO::PARAM_STR);
+            $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
+            $sth->bindParam(':isProjectLeader', $isProjectLeader, PDO::PARAM_INT);
+            $sth->bindParam(':isGroupLeader', $isGroupLeader, PDO::PARAM_INT);
+            $sth->bindParam(':status', $status, PDO::PARAM_STR);
+            $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser('User details changed', '');
+                return true;
+            } else {
+                $this->notifyUser('Failed to change user details', "");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change user details", $e->getMessage());
+            return false;
+        }
+    }
+    // END EDIT USER
+
+
+    // EDIT USERNAME
+    public function editMyUsername(User $user) : bool {
+        $userID = $user->getUserId();
+        $username = $this->request->request->get('username', $user->getUsername());
+        if (!$this->isUsernameAvailable($user, $username)) {
+            $this->notifyUser("Failed to edit, username was already taken", "");
+            return false;
+        }
+        try {
+            $sth = $this->dbase->prepare("update Users set username = :username WHERE userID = :userID;");
+            $sth->bindParam(':username', $username, PDO::PARAM_STR);
+            $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser('Username changed', '');
+                return true;
+            } else {
+                $this->notifyUser('Failed to change username', "");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change username", $e->getMessage());
+            return false;
+        }
+    }
+    // END EDIT USERNAME
+
+    // EDIT EMAIL ADDRESS
+    public function editMyEmailAddress(User $user) : bool {
+        $userID = $user->getUserId();
+        $emailAddress = $this->request->request->get('emailAddress', $user->getEmailAddress());
+        if (!$this->isEmailAvailable($user, $emailAddress)) {
+            {
+                $this->notifyUser("Failed to edit, email was already taken", "");
+                return false;
+            }
+        }
+        try {
+            $sth = $this->dbase->prepare("update Users set emailAddress = :emailAddress WHERE userID = :userID;");
+            $sth->bindParam(':emailAddress', $emailAddress, PDO::PARAM_STR);
+            $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser('Email address changed', '');
+                return true;
+            } else {
+                $this->notifyUser('Failed to change email address', "");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change email address", $e->getMessage());
+            return false;
+        }
+    }
+    // END EDIT EMAIL ADDRESS
+
+    // EDIT PASSWORD
+    public function editPassword(User $user) : bool {
+        $userID = $user->getUserId();
+        $password = $this->request->request->get('password', $user->getPassword());
+        try {
+            $hash = password_hash($password,PASSWORD_DEFAULT);
+            $sth = $this->dbase->prepare("update Users set password = :password WHERE userID = :userID;");
+            $sth->bindParam(':password', $hash, PDO::PARAM_STR);
+            $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser('Password changed', '');
+                return true;
+            } else {
+                $this->notifyUser('Failed to change password', "");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change password", $e->getMessage());
+            return false;
+        }
+    }
+    // END EDIT PASSWORD
 
 
     // CHECK IF USERNAME IS AVAILABLE (PRIVATE FUNCTION)
@@ -259,7 +407,8 @@ class UserManager
 
 
     // GET ALL USERS
-    public function getAllUsers($colName) : array {
+    public function getAllUsers($colName, $isAdmin = null,
+                                $isProjectLeader = null, $isGroupLeader = null, $isTemporary = null) : array {
         $allUsers = null;
         try{
            // $colName = "`".str_replace("`","``",$colName)."`";
@@ -279,7 +428,32 @@ class UserManager
         }
         return array();
     }
-    // END GET ALL CUSTOMERS
+    // END GET ALL USERS
+
+/*
+    // GET ALL USERS
+    public function getAllUsers($colName) : array {
+        $allUsers = null;
+        try{
+            // $colName = "`".str_replace("`","``",$colName)."`";
+            $query   = "SELECT * FROM Users ORDER BY `$colName` ASC;";
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute();
+            if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $allUsers;
+            }
+            else {
+                $this->notifyUser("User not found", "");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllUsers()", $e->getMessage());
+            return array();
+        }
+        return array();
+    }
+    // END GET ALL USERS
+*/
 
 
     // GET ALL CUSTOMERS
