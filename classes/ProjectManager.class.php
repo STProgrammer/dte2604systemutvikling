@@ -51,7 +51,7 @@ class ProjectManager {
 
     public function newProject() {}
 
-    public function editProject() {}
+    public function editProject(Project $project) {}
 
     public function deleteProject() {}
 
@@ -59,20 +59,18 @@ class ProjectManager {
 
     public function addGroup(Group $group) {}
 
-    public function addEmployee(User $user) {}
+    public function acceptByAdmin() {}
 
-    public function addCustomer(User $user) {}
+    public function addEmployee(User $user, Project $project) {}
+
+    public function getEmployees(Project $project) {}
+
+    public function addCustomer(User $user, Project $project) {}
+
+    public function getCustomers(Project $project) {}
 
     public function assignLeader(User $leader) {}
 
     public function changeStatus() {}
-
-    public function addTask(Task $task) {}
-
-    public function getTasks() {}
-
-    public function addPhase(Phase $phase) {}
-
-    public function getPhases(Phase $phase) {}
 
 }

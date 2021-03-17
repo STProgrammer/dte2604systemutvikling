@@ -20,7 +20,7 @@ class GroupManager {
     /// PROJECTS
     /////////////////////////////////////////////////////////////////////////////
 
-    public function getAllGroup() : array {
+    public function getAllGroups() : array {
         try {
             $stmt = $this->db->prepare("SELECT * FROM Groups ORDER BY `groupName` ASC");
             $stmt->execute();
@@ -33,7 +33,6 @@ class GroupManager {
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getAllGroups()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
             return array();
         }
     }
