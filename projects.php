@@ -9,12 +9,13 @@ define('FILENAME_TAG', 'image');
     }else echo $twig->render('error.twig', array('msg' => 'No database connected!'));
 
     $projects = $ProjectManager->getAllProjects();
-    //
+    $user = $session->get('User');
 
     try {
         if (!empty($twig)) {
 
-            echo $twig->render('projects.twig', array('projects' => $projects, 'Timereg' => $Timereg));
+            echo $twig->render('projects.twig', array('projects' => $projects, 'ProjectManager' => $ProjectManager,
+                'User' => $user ));
         }
     } catch (LoaderError | RuntimeError | SyntaxError $e) {
     }

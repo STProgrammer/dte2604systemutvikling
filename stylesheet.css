@@ -101,7 +101,9 @@ section.rapporter { margin-top: 6em;
 section.innstillinger { margin-top: 6em;
 }
 /**-------------  LOGINN  ----------------------*/
-section.loginn { margin-top: 10em
+section.loginn { margin-top: 3em; margin-left: 6em;
+}
+section.loginn2 { margin-left: 6em;
 }
 /**-------------  ERROR  -----------------------*/
 section.error { margin-top: 6em; margin-left: 5em;
@@ -150,7 +152,7 @@ div.container_extra_big { width: 65em; height: 60em;
 }
 div.container_center { display:block;
     height: 5em; box-shadow: none; border: none;
-    margin-left: auto; margin-right: auto; width: 50%;
+    /**margin-left: auto; margin-right: auto; width: 50%;*/
 }
 
 /**-----------  BUTTONS  -------------*/
@@ -186,7 +188,7 @@ div.container_center { display:block;
     color: #cac6c6;
     padding: 1em 1em 1em 1em;
     margin: 1em 1em 1em 2em;
-    width: 50%;
+    width: 25em;
     height: 1.7em;
     text-align: center;
     text-decoration: none;
@@ -258,7 +260,7 @@ input#password {
     white-space: nowrap;
 }
 img#innloggLogo {
-    width: 50%;
+    width: 20em;
     margin: 1em 1em 1em 3.5em;
     white-space: nowrap;
 }

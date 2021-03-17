@@ -16,6 +16,12 @@
                     'request' => $request));
             } catch (LoaderError | RuntimeError | SyntaxError $e) {  }
         }
+        elseif ($user->isGroupLeader()) { //TEAMLEDER
+            try {
+                echo $twig->render('groupleader_dashboard.twig', array('session' => $session, 'user' => $user,
+                    'request' => $request));
+            } catch (LoaderError | RuntimeError | SyntaxError $e) {  }
+        }
     } else {
         header("location: login.php");
         exit();

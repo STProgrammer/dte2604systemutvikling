@@ -22,6 +22,7 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Session\Session;
     use Twig\Environment;
+    use Twig\Extension\DebugExtension;
     use Twig\Loader\FilesystemLoader;
     use Twig\Error\LoaderError;
     use Twig\Error\RuntimeError;
@@ -42,7 +43,7 @@
     // Twig templates
     $loader = new FilesystemLoader($homedir . 'templates');
     $twig = new Environment($loader, ['debug' => true]);
-    $twig->addExtension(new \Twig\Extension\DebugExtension());
+    $twig->addExtension(new DebugExtension());
 
     $twig->addFunction(new \Twig\TwigFunction('getMac', function($action) {
         return XsrfProtection::getMac($action);
