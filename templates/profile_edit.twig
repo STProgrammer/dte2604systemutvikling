@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link type="text/css" rel="stylesheet" href="../stylesheet.css" />
-    <title>Register User</title>
+    <title>Edit User</title>
 </head>
 <body>
 <script>
@@ -41,7 +41,7 @@
 {% endfor %}
 {% endif %}
 <div class = "form">
-    <form method="post" id="profile_edit_form" onsubmit="return validate();">
+    <form method="post" id="profile_edit_form">
         <div>
             <br><label>Addresse:</label>
             <br><input type="text" name="address" placeholder="Addresse" maxlength=90 value="{{ user.getAddress() }}" />
@@ -59,7 +59,7 @@
             <br><input type="submit" name="profile_edit" id="edit_btn" value="Endre">
         </div>
     </form>
-    <form method="post" id="edit_my_email" onsubmit="return validate();">
+    <form method="post" id="edit_my_email">
         <div>
             <br><label>Epost:</label>
             <br><input type="email" name="emailAddress" value="{{ user.getEmailAddress() }}" placeholder="Epost adddresse" maxlength=60 required id="emailAddress" />
@@ -68,7 +68,7 @@
         <input type="hidden" value="{{ getMac("Edit my email address") }}" name="XSRFPreventionToken">
         <br><input type="submit" name="edit_email" id="edit_btn" value="Endre epost addresse">
     </form>
-    <form method="post" id="edit_my_username" onsubmit="return validate();">
+    <form method="post" id="edit_my_username">
         <label>Brukernavn:</label>
         <div>
             <br>

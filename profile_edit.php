@@ -4,10 +4,13 @@ require_once('includes.php');
 
 include('user_register_check.php');
 
+
+//Denne siden er det selve innloggede brukeren skal ha tilgang til
+
 $userManager = new UserManager($db, $request, $session);
 
 
-if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
+if ($user) {
     // Change user details
     if ($request->request->has('profile_edit') && XsrfProtection::verifyMac("Edit my information")) {
         if ($userManager->editMyProfile($user)) {

@@ -156,7 +156,7 @@ class UserManager
             $sth = $this->dbase->prepare("update Users set username = :username, firstName = :firstName, 
     lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
     phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, 
-    isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status WHERE userID = :userID;");
+    isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status, isAdmin = :isADmin WHERE userID = :userID;");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
             $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
             $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
@@ -171,6 +171,7 @@ class UserManager
             $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
             $sth->bindParam(':isProjectLeader', $isProjectLeader, PDO::PARAM_INT);
             $sth->bindParam(':isGroupLeader', $isGroupLeader, PDO::PARAM_INT);
+            $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
             $sth->bindParam(':status', $status, PDO::PARAM_STR);
             $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
@@ -189,7 +190,50 @@ class UserManager
     // END EDIT USER
 
 
-    // EDIT USER
+    // EDIT OTHER USER
+    public function editOtherUser(User $user) : bool {
+        $userID = $user->getUserId();
+        $password = $this->request->request->get('password', $user->getPassword());
+        $address = $this->request->request->get('address', $user->getAddress());
+        $city = $this->request->request->get('city', $user->getCity());
+        $zipCode = $this->request->request->get('zipCode', $user->getZipCode());
+        $phoneNumber = $this->request->request->get('phoneNumber', $user->getPhoneNumber());
+        $mobileNumber = $this->request->request->get('mobileNumber', $user->getMobileNumber());
+        $IMAddress = $this->request->request->get('IMAddress', $user->getIMAddress());
+        $status = $this->request->request->get('status', $user->getStatus());
+        $isTemporary = $this->request->request->getInt('isTemporary', $user->isTemporary());
+        $isAdmin = $this->request->request->getInt('isAdmin', $user->isAdmin());
+        try {
+            $sth = $this->dbase->prepare("update Users set address = :address, city = :city, zipCode = :zipCode, 
+    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, isTemporary = :isTemporary, 
+                 status = :status, isAdmin = :isAdmin WHERE userID = :userID;");
+            $sth->bindParam(':address', $address, PDO::PARAM_STR);
+            $sth->bindParam(':city', $city, PDO::PARAM_STR);
+            $sth->bindParam(':zipCode',  $zipCode, PDO::PARAM_STR);
+            $sth->bindParam(':phoneNumber', $phoneNumber, PDO::PARAM_STR);
+            $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
+            $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
+            $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
+            $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
+            $sth->bindParam(':status', $status, PDO::PARAM_STR);
+            $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser('User details changed', '');
+                return true;
+            } else {
+                $this->notifyUser('Failed to change user details', "");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change user details", $e->getMessage());
+            return false;
+        }
+    }
+    // END EDIT OTHER USER
+
+
+    // EDIT MY PROFILE
     public function editMyProfile(User $user) : bool {
         $userID = $user->getUserId();
         $username = $this->request->request->get('username', $user->getUsername());
@@ -252,7 +296,7 @@ class UserManager
             return false;
         }
     }
-    // END EDIT USER
+    // END EDIT MY PROFILE
 
 
     // EDIT USERNAME
@@ -388,7 +432,7 @@ class UserManager
     public function getUser ($userID) : User {
         try
         {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE userID=:userID");
+            $stmt = $this->dbase->prepare("SELECT * FROM Users WHERE userID=:userID");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if($user = $stmt->fetchObject('User')) {
@@ -405,7 +449,7 @@ class UserManager
     }
     // END GET USER
 
-
+/*
     // GET ALL USERS
     public function getAllUsers($colName, $isAdmin = null,
                                 $isProjectLeader = null, $isGroupLeader = null, $isTemporary = null) : array {
@@ -429,8 +473,8 @@ class UserManager
         return array();
     }
     // END GET ALL USERS
+*/
 
-/*
     // GET ALL USERS
     public function getAllUsers($colName) : array {
         $allUsers = null;
@@ -453,7 +497,7 @@ class UserManager
         return array();
     }
     // END GET ALL USERS
-*/
+
 
 
     // GET ALL CUSTOMERS
