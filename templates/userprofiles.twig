@@ -3,7 +3,8 @@
 
     <section id="brukerprofiler" class="brukerprofiler">
         <div class="container container_small">
-            <button id="button" class="button" title="Ny bruker">
+            <button id="button" class="button" title="Ny bruker"
+            onclick="window.location.href='user_register.php';">
                 <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
             </button>
         </div>
@@ -74,7 +75,7 @@
                                 {% endif %}
 
                                 <!-- if user is admin or user is username, edit -->
-                                <td><button>Rediger</button></td>
+                                <td><a href="user_edit.php/?userid={{ usr.getUserID() }}">Rediger</a></td>
                             </tr>
                         {% endfor %}
                     </table>
