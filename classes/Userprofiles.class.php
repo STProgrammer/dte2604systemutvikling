@@ -1,19 +1,22 @@
 <?php
+require_once("classhelper.php");
+
 class Userprofiles
 {
     private $db;
     private $request;
     private $session;
+    private $typeName = "User";
+    private $status = "Status";
 
     //CONSTRUCTOR//
-    function __construct(PDO $db, Request $request, Session $session) {
+    function __construct(PDO $db) {
         $this->db = $db;
-        $this->request = $request;
-        $this->session = $session;
+
     }
-    public function getUserNames() : array {
-        $user = new User();
-        $stmt = $this->db-prepare("SELECT firstName, lastName FROM 'Users' ");
-        $stmt->bindValue(2, $firstName, $lastName, PDO::PARAM_STR);
+
+    public function getAllEmployees(): array {
+        $stmt = $this->db->prepare("SELECT * FROM Users ORDER BY lastName ASC");
+        return getAll($stmt, $this->typeName);
     }
 }
