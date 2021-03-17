@@ -29,6 +29,14 @@
         </div>
         <section>
                 <h5>Alle brukere og administratorer</h5>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h3>{{ header }}</h3>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
                 <div class="text">
                     <table class="table" id="table">
                         <tr>
@@ -41,8 +49,8 @@
                         </tr>
                         {% for user in users %}
                             <tr>
-                                <td>{{ user.lastName}}</td>
-                                <td>{{ user.firstName}}</td>
+                                <td>{{ user.getLastName}}</td>
+                                <td>{{ user.getFirstName}}</td>
 
                                 {% if user.isAdmin %}
                                     <td>Administrator</td>
@@ -56,7 +64,7 @@
                                     <td>Kunde</td>
                                 {% endif %}
                                 <! -- if admin\leder show this  -->
-                                <td>{{ user.Status }}</td>
+                                <td>{{ user.getStatus }}</td>
 
                                 <td><button>Rediger</button></td>
                             </tr>

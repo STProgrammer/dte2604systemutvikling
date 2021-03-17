@@ -126,7 +126,7 @@ class UserManager
     // EDIT USER
     public function editUser(User $user) : bool {
         $userID = $user->getUserId();
-        $username = $this->request->request->get('username', $user->getUserName());
+        $username = $this->request->request->get('username', $user->getUsername());
         $firstName = $this->request->request->get('firstName', $user->getFirstName());
         $lastName = $this->request->request->get('lastName', $user->getLastName());
         $emailAddress = $this->request->request->get('emailAddress', $user->getEmailAddress());
@@ -190,7 +190,7 @@ class UserManager
 
     // CHECK IF USERNAME IS AVAILABLE (PRIVATE FUNCTION)
     private function isUsernameAvailable(User $user, string $newUsername) : bool {
-        if ($user->getUserName() == $newUsername) {
+        if ($user->getUsername() == $newUsername) {
             return true;
         }
         else {
@@ -259,12 +259,12 @@ class UserManager
 
 
     // GET ALL USERS
-    public function getAllUsers($column) : array {
+    public function getAllUsers($colName) : array {
         $allUsers = null;
         try{
-            $stmt = $this->dbase->prepare("SELECT * FROM Users ORDER BY :column ASC");
-            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-            $stmt->bindParam(':column', $column, PDO::PARAM_STR);
+           // $colName = "`".str_replace("`","``",$colName)."`";
+            $query   = "SELECT * FROM Users ORDER BY `$colName` ASC;";
+            $stmt = $this->dbase->prepare($query);
             $stmt->execute();
             if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
                 return $allUsers;
@@ -279,11 +279,54 @@ class UserManager
         }
         return array();
     }
-    // END GET ALL USERS
+    // END GET ALL CUSTOMERS
 
 
+    // GET ALL CUSTOMERS
+    public function getAllCustomers($colName) : array {
+        $allUsers = null;
+        try{
+            // $colName = "`".str_replace("`","``",$colName)."`";
+            $query   = "SELECT * FROM Users WHERE isCustomer = 1 ORDER BY `$colName` ASC;";
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute();
+            if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $allUsers;
+            }
+            else {
+                $this->notifyUser("User not found", "");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllCustomers()", $e->getMessage());
+            return array();
+        }
+        return array();
+    }
+    // END GET ALL CUSTOMERS
 
-
+    // GET ALL EMPLOYEES
+    public function getAllEmployees($colName) : array {
+        $allUsers = null;
+        try{
+            // $colName = "`".str_replace("`","``",$colName)."`";
+            $query   = "SELECT * FROM Users WHERE isCustomer = 0 ORDER BY `$colName` ASC;";
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute();
+            if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $allUsers;
+            }
+            else {
+                $this->notifyUser("User not found", "");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllEmployees()", $e->getMessage());
+            return array();
+        }
+        return array();
+    }
+    // END GET ALL EMPLOYEES
 
 
 

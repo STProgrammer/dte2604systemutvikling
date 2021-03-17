@@ -2,7 +2,7 @@
 
 class User {
     private $userID;
-    private $userName;
+    private $username;
     private $firstName;
     private $lastName;
     private $address;
@@ -26,31 +26,38 @@ class User {
     private $userAgent;
     private $userHits;
 
-    function __construct(string $username, string $ip, string $browser, array $row ) {
-        $this->userID = $row['userID'];
-        $this->userName = $username;
-        $this->firstName = $row['firstName'];
-        $this->lastName = $row['lastName'];
-        $this->address = $row['address'];
-        $this->zipCode = $row['zipCode'];
-        $this->city = $row['city'];
-        $this->phoneNumber = $row['phoneNumber'];
-        $this->mobileNumber = $row['mobileNumber'];
-        $this->emailAddress = $row['emailAddress'];
-        $this->IMAddress = $row['IMAddress'];
-        $this->dateRegistered = $row['dateRegistered'];
-        $this->password = $row['password'];
-        $this->isAdmin = $row['isAdmin'];
-        $this->isProjectLeader = $row['isProjectLeader'];
-        $this->isGroupLeader = $row['isGroupLeader'];
-        $this->isTemporary = $row['isTemporary'];
-        $this->isCustomer = $row['isCustomer'];
-        $this->isEmailVerified = $row['isEmailVerified'];
-        $this->isVerifiedByAdmin = $row['isVerifiedByAdmin'];
-        $this->status = $row['status'];
-        $this->IPAddress = $ip;
-        $this->userAgent = $browser;
-        $this->userHits = 0;
+
+    function __construct(string $username = null, string $ip = null, string $browser = null, array $row = null ) {
+        if ($row) {
+            $this->userID = $row['userID'];
+            $this->username = $username;
+            $this->firstName = $row['firstName'];
+            $this->lastName = $row['lastName'];
+            $this->address = $row['address'];
+            $this->zipCode = $row['zipCode'];
+            $this->city = $row['city'];
+            $this->phoneNumber = $row['phoneNumber'];
+            $this->mobileNumber = $row['mobileNumber'];
+            $this->emailAddress = $row['emailAddress'];
+            $this->IMAddress = $row['IMAddress'];
+            $this->dateRegistered = $row['dateRegistered'];
+            $this->password = $row['password'];
+            $this->isAdmin = $row['isAdmin'];
+            $this->isProjectLeader = $row['isProjectLeader'];
+            $this->isGroupLeader = $row['isGroupLeader'];
+            $this->isTemporary = $row['isTemporary'];
+            $this->isCustomer = $row['isCustomer'];
+            $this->isEmailVerified = $row['isEmailVerified'];
+            $this->isVerifiedByAdmin = $row['isVerifiedByAdmin'];
+            $this->status = $row['status'];
+            $this->IPAddress = $ip;
+            $this->userAgent = $browser;
+            $this->userHits = 0;
+        }
+        else {
+
+        }
+
     }
 
     public function verifyUser($request) {
@@ -92,7 +99,7 @@ class User {
 
 
     public function getUserId() { return $this->userID; }
-    public function getUserName() { return $this->userName; }
+    public function getUsername() { return $this->username; }
     public function getFirstName() { return $this->firstName; }
     public function getLastName() { return $this->lastName; }
     public function getAddress() { return $this->address; }
@@ -110,7 +117,7 @@ class User {
     public function getUserHits(): int { return $this->userHits; }
 
     public function setUserId($userId) { $this->userID = $userId; }
-    public function setUserName($userName) { $this->userName = $userName; }
+    public function setUsername($username) { $this->username = $username; }
     public function setFirstName($firstName) { $this->firstName = $firstName; }
     public function setLastName($lastName) { $this->lastName = $lastName; }
     public function setAddress($address) { $this->address = $address; }
