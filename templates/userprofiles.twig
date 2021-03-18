@@ -9,13 +9,11 @@
                 <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
             </button>
         </div>
-        {% endif %}
         <div class="container container_small">
             <button id="button" class="button" title="Slett bruker">
                 <img src="images/icon_slett_bruker.svg" width="30em"> Slett bruker
             </button>
         </div>
-        {% if user.isAdmin %}
         <div class="container container_small">
             <button id="button" class="button" title="Verifiser bruker">
                 <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
@@ -58,7 +56,9 @@
                                 <th>Status</th>
                             {% endif %}
 
-                            {% if user.isAdmin or user.isProjectLeader %}
+                            {% if user.isAdmin or user.isProjectLeader  %}
+                                <th>Rediger</th>
+                            {% elseif user.userID == user.getUserID %}
                                 <th>Rediger</th>
                             {% endif %}
                         </tr>
@@ -77,6 +77,10 @@
                                     <td>Innleid</td>
                                 {% elseif usr.isCustomer %}
                                     <td>Kunde</td>
+                                {% elseif usr.isTemporary %}
+                                    <td>Innleid</td>
+                                {% else %}
+                                    <td>Ingen stilling</td>
                                 {% endif %}
 
                                 <! -- if admin\leder show this  -->
@@ -84,8 +88,8 @@
                                     <td>{{ usr.getStatus }}</td>
                                 {% endif %}
 
-                                <!-- if user is admin or user is username, edit Vet ikke om denne funker-->
-                                {% if user.isAdmin or user.userID == usr.getUserID%}
+                                <!-- if user is admin or user is username, edit -->
+                                {% if user.isAdmin or user.userID == usr.getUserID %}
                                     <td><a href="user_edit.php/?userid={{ usr.getUserID() }}">Rediger</a></td>
                                 {% endif %}
                             </tr>
