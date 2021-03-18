@@ -47,7 +47,7 @@ class Group
     /**
      * @return mixed
      */
-    public function getIsAdmin()
+    public function isAdmin()
     {
         return $this->isAdmin;
     }
@@ -55,7 +55,7 @@ class Group
     /**
      * @param mixed $isAdmin
      */
-    public function setIsAdmin($isAdmin): void
+    public function setAdmin($isAdmin): void
     {
         $this->isAdmin = $isAdmin;
     }
