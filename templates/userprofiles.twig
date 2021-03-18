@@ -3,7 +3,8 @@
 
     <section id="brukerprofiler" class="brukerprofiler">
         <div class="container container_small">
-            <button id="button" class="button" title="Ny bruker">
+            <button id="button" class="button" title="Ny bruker"
+            onclick="window.location.href='user_register.php';">
                 <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
             </button>
         </div>
@@ -43,30 +44,38 @@
                             <th>Etternavn</th>
                             <th>Fornavn</th>
                             <th>Stilling</th>
+
                             <! -- if admin\leder show this  -->
-                            <th>Status</th>
+                            {% if user.isAdmin %}
+                                <th>Status</th>
+                            {% endif %}
+
                             <th>Rediger</th>
                         </tr>
-                        {% for user in users %}
+                        {% for usr in users %}
                             <tr>
-                                <td>{{ user.getLastName}}</td>
-                                <td>{{ user.getFirstName}}</td>
+                                <td>{{ usr.getLastName}}</td>
+                                <td>{{ usr.getFirstName}}</td>
 
-                                {% if user.isAdmin %}
+                                {% if usr.isAdmin %}
                                     <td>Administrator</td>
-                                {% elseif user.isProjectLeader %}
+                                {% elseif usr.isProjectLeader %}
                                     <td>Prosjektleder</td>
-                                {% elseif user.isGroupLeader %}
+                                {% elseif usr.isGroupLeader %}
                                     <td>Teamleder</td>
-                                {% elseif user.isTemporary %}
+                                {% elseif users.isTemporary %}
                                     <td>Innleid</td>
-                                {% elseif user.isCustomer %}
+                                {% elseif usr.isCustomer %}
                                     <td>Kunde</td>
                                 {% endif %}
-                                <! -- if admin\leder show this  -->
-                                <td>{{ user.getStatus }}</td>
 
-                                <td><button>Rediger</button></td>
+                                <! -- if admin\leder show this  -->
+                                {% if user.isAdmin %}
+                                    <td>{{ usr.getStatus }}</td>
+                                {% endif %}
+
+                                <!-- if user is admin or user is username, edit -->
+                                <td><a href="user_edit.php/?userid={{ usr.getUserID() }}">Rediger</a></td>
                             </tr>
                         {% endfor %}
                     </table>
