@@ -323,16 +323,21 @@ footer {
     font-size: 12px;
 }
 footer div {
-    padding-right: 2em;
+    padding-right: 1em;
     color: darkgray;
     text-align: right;
-    line-height: 0.1em;
-    margin-bottom: 5em;
+    margin-bottom: 1em;
 }
 footer a { color: darkgray;
 }
-footer p[class = leftText] { text-align: left; margin-left: 16em;
+footer p[class = leftText] {
+    text-align: left;
+    margin-left: 16em;
 }
-footer p[class = rightText] { text-align: right; margin-top: 0em;
+footer p[class = rightText] {
+    text-align: right;
+    margin-top: 0em;
+    font-family: Segoe UI, serif;
+    font-weight: bold;
 }
 /**--------------------------------------------------------------------------------------------------------*/
