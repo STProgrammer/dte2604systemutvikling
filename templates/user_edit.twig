@@ -48,7 +48,7 @@
     </form>
     {% if user.isAdmin() %}
     <form method="post" onsubmit="return confirm('Er du sikker på å slette brukeren? \n(Kan ikke angres etterpå)');">
-        <input type="hidden" value="{{ getMac("Deslete  user") }}" name="XSRFPreventionToken">
+        <input type="hidden" value="{{ getMac("Delete user") }}" name="XSRFPreventionToken">
         <br><input type="submit" name="delete_user" value="Slett bruker" class="delete" />
     </form>
     {% endif %}
