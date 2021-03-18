@@ -27,10 +27,10 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     //Delete user
     else if ($request->request->has('delete_user') && XsrfProtection::verifyMac("Delete user") && $user->isAdmin()) {
         if ($userManager->deleteUser($userToEdit->getUserId())) {
-            header("Location: ".$request->server->get('HTTP_REFERRER'));
+            header("Location: ../userprofiles.php");
             exit();
         } else {
-            header("Location: ".$request->server->get('HTTP_REFERRER'));
+            header("Location: ");
             exit();
         }
     }
