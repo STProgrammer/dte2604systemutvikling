@@ -25,7 +25,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
         }
     }
     //Delete user
-    elseif ($request->request->has('delete_user') && XsrfProtection::verifyMac("Delete user") && $user->isAdmin()) {
+    else if ($request->request->has('delete_user') && XsrfProtection::verifyMac("Delete user") && $user->isAdmin()) {
         if ($userManager->deleteUser($userToEdit->getUserId())) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
