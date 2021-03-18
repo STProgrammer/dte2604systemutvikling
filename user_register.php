@@ -10,7 +10,7 @@ $userManager = new UserManager($db, $request, $session);
 if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     if ($request->request->has('register') && XsrfProtection::verifyMac("user_register")) {
         if ($userManager->registerUser($user)) {
-            header("Location: ?registereduser=1");
+            header("Location: ../userprofiles.php?registereduser=1");
             exit();
         } else {
             header("Location: ?failedtoregisteruser=1");

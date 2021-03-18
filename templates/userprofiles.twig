@@ -2,22 +2,30 @@
 {% block content %}
 
     <section id="brukerprofiler" class="brukerprofiler">
+        {% if user.isAdmin or user.isProjectLeader %}
         <div class="container container_small">
             <button id="button" class="button" title="Ny bruker"
             onclick="window.location.href='user_register.php';">
                 <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
             </button>
         </div>
+
+        <!-- Denne har vi i tabellen??
         <div class="container container_small">
             <button id="button" class="button" title="Slett bruker">
                 <img src="images/icon_slett_bruker.svg" width="30em"> Slett bruker
             </button>
         </div>
+         -->
+
         <div class="container container_small">
             <button id="button" class="button" title="Verifiser bruker">
                 <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
             </button>
         </div>
+        {% endif %}
+
+        <!-- Denne har vi i tabellen??
         <div class="container container_small">
             <button id="button" class="button" title="Endre bruker">
                 <img src="images/icon_endre_bruker.svg" width="30em"> Endre bruker
@@ -28,6 +36,8 @@
                 <img src="images/icon_people.png" width="50em"> Oversikt
             </button>
         </div>
+        -->
+
         <section>
                 <h5>Alle brukere og administratorer</h5>
             {% if session.getFlashBag.has('header') %}
@@ -45,12 +55,20 @@
                             <th>Fornavn</th>
                             <th>Stilling</th>
 
-                            <! -- if admin\leder show this  -->
-                            {% if user.isAdmin %}
+                            <!-- if admin\leder show this  -->
+                            {% if user.isAdmin or user.isProjectLeader %}
                                 <th>Status</th>
                             {% endif %}
 
-                            <th>Rediger</th>
+                            {% if user.isAdmin or user.isProjectLeader  %}
+                                <th>Se detaljer og rediger</th>
+                            {% elseif user.userID == user.getUserID %}
+                                <th>Se detaljer og rediger</th>
+                            {% endif %}
+
+                            {% if user.isAdmin  %}
+                                <th>Slette bruker</th>
+                            {% endif %}
                         </tr>
                         {% for usr in users %}
                             <tr>
@@ -67,21 +85,29 @@
                                     <td>Innleid</td>
                                 {% elseif usr.isCustomer %}
                                     <td>Kunde</td>
+                                {% elseif usr.isTemporary %}
+                                    <td>Innleid</td>
+                                {% else %}
+                                    <td>Ingen stilling</td>
                                 {% endif %}
 
-                                <! -- if admin\leder show this  -->
-                                {% if user.isAdmin %}
+                                <!-- if admin\leder show this  -->
+                                {% if user.isAdmin or user.isProjectLeader %}
                                     <td>{{ usr.getStatus }}</td>
                                 {% endif %}
 
                                 <!-- if user is admin or user is username, edit -->
-                                <td><a href="user_edit.php/?userid={{ usr.getUserID() }}">Rediger</a></td>
+                                {% if user.isAdmin or user.userID == usr.getUserID %}
+                                    <td><a href="user_edit.php/?userid={{ usr.getUserID() }}">Rediger bruker</a></td>
+                                {% endif %}
+                                {% if user.isAdmin %}
+                                    <td><a href="user_delete.php/?userid={{ usr.getUserID() }}">Slett bruker</a></td>
+                                {% endif %}
+
                             </tr>
                         {% endfor %}
                     </table>
                 </div>
         </section>
-
-
     </section>
 {% endblock %}
