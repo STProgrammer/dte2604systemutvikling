@@ -30,26 +30,5 @@ class Project {
     public function setCustomer(mixed $customer): void { $this->customer = $customer; }
     public function setIsAcceptedByAdmin($isAcceptedByAdmin): void{ $this->isAcceptedByAdmin = $isAcceptedByAdmin; }
 
-    /*public function __set(string $name, $value): void
-    {
-        // TODO: Implement __set() method.
-        switch($name) {
-            case "Project name":
-                $this->projectName = $value;
-            case "Project leader":
-                $this->projectLeader = $value;
-            case "Start time":
-                $this->startTime = $value;
-            case "Finish time":
-                $this->finishTime = $value;
-            case "Status":
-                $this->status = $value;
-            case "Customer":
-                $this->customer = $value;
-            case "Is accepted by admin":
-                $this->isAcceptedByAdmin = $value;
-        }
-
-    }*/
 
 }

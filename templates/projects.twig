@@ -2,25 +2,35 @@
 {% block content %}
     <section id="prosjekter" class="prosjekter">
         <div>
-            {% if User.isAdmin() == 1 or User.isProjectLeader() == 1%}
-            <button class="button buttons" id="prosjektKnapper">
+            {% if User.isAdmin() == 1 %}
+            <button class="button buttons" id="prosjektKnapper"
+                    onclick="window.location.href='projects_addProject.twig';">
                 <img src="" alt=""> Nytt prosjekt</button>
-            {% elseif User.isAdmin() == 1 %}
-            <button class="button buttons">
+            {% endif %}
+
+            {% if User.isAdmin() == 1 %}
+            <button class="button buttons" onclick="">
                 <img src="" alt=""> Slett prosjekt</button>
-            {% elseif User.isAdmin() == 1 or User.isProjectLeader() == 1 %}
-            <button class="button buttons">
+            {% endif %}
+
+
+            {% if User.isAdmin() == 1 or User.isProjectLeader() == 1 %}
+            <button class="button buttons"  id="prosjektKnapper" onclick="">
                 <img src="" alt=""> Legge inn funksjoner</button>
-            {% elseif User.isAdmin() == 1 %}
-            <button class="button buttons">
+            {% endif %}
+
+            {% if User.isAdmin() == 1 %}
+            <button class="button buttons" id="prosjektKnapper" onclick="">
                 <img src="" alt=""> Godkjenne prosjekt</button>
             {% endif %}
-            <button class="button buttons">
+
+            <button class="button buttons" id="prosjektKnapper" onclick="">
                 <img src="" alt=""> Alle prosjekter</button>
         </div>
     </section>
+
     <section>
-        <div class="container container_big" id="prosjektTabell">
+        <div class="container container_big text" id="prosjektTabell">
             <div class="text">
                 <h3>Prosjekter </h3>
                 <table class="table" id="table">
@@ -51,4 +61,5 @@
             </div>
         </div>
     </section>
+
 {% endblock %}

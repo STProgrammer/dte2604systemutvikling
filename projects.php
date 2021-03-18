@@ -14,15 +14,15 @@ define('FILENAME_TAG', 'image');
     $projects = $ProjectManager->getAllProjects();
     $user = $session->get('User');
 
-    if (isset($_POST['leggTilProsjekt']) && !empty($_POST['leggTilProsjekt'])) {
+    if (isset($_POST['addProject']) && !empty($_POST['addProject'])) {
         $project = new Bruker();
-        $project->setProjectName(filter_input(INPUT_POST, 'brukernavn', FILTER_SANITIZE_STRING));
-        $project->setProjectLeader(filter_input(INPUT_POST, 'epost', FILTER_SANITIZE_EMAIL));
-        $project->setStartTime(filter_input(INPUT_POST, 'epost2', FILTER_SANITIZE_EMAIL));
-        $project->setFinishTime(filter_input(INPUT_POST, 'passord', FILTER_SANITIZE_STRING));
-        $project->setStatus(filter_input(INPUT_POST, 'passord2', FILTER_SANITIZE_STRING));
-        $project->setCustomer(filter_input(INPUT_POST, 'passord', FILTER_SANITIZE_STRING));
-        $project->setIsAcceptedByAdmin(filter_input(INPUT_POST, 'passord2', FILTER_SANITIZE_STRING));
+        $project->setProjectName(filter_input(INPUT_POST, 'ProjectName', FILTER_SANITIZE_STRING));
+        $project->setProjectName(filter_input(INPUT_POST, 'ProjectName', FILTER_SANITIZE_EMAIL));
+        $project->setStartTime(filter_input(INPUT_POST, 'StartTime', FILTER_SANITIZE_EMAIL));
+        $project->setFinishTime(filter_input(INPUT_POST, 'FinishTime', FILTER_SANITIZE_STRING));
+        $project->setStatus(filter_input(INPUT_POST, 'Status', FILTER_SANITIZE_STRING));
+        $project->setCustomer(filter_input(INPUT_POST, 'Customer', FILTER_SANITIZE_STRING));
+        $project->setIsAcceptedByAdmin(filter_input(INPUT_POST, 'IsAcceptedByAdmin', FILTER_SANITIZE_STRING));
 
         //lage en unik id
         $project->settAktiveringsId($aktiveringsid = md5(uniqid(rand(), 1)));
@@ -32,6 +32,9 @@ define('FILENAME_TAG', 'image');
         $epost = $_POST['epost'];
         $brukernavn = $_POST['brukernavn'];
 
+        echo $twig->render('projects.twig', array('projects' => $projects,
+            'ProjectManager' => $ProjectManager, 'session' => $session, 'User' => $user ));
+    }else{
         echo $twig->render('projects.twig', array('projects' => $projects,
             'ProjectManager' => $ProjectManager, 'session' => $session, 'User' => $user ));
     }
