@@ -22,7 +22,6 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
             echo $twig->render('user_register.twig', array('session' => $session,
                 'request' => $request, 'user' => $user));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-
         }
     }
 } else {

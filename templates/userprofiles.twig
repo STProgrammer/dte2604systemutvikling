@@ -47,6 +47,7 @@
                 {% for message in session.getFlashBag.get('message', []) %}
                     <p>{{ message }}</p>
                 {% endfor %}
+{#                session->getFlashBag->clear(); //sletter flashbagmeldinger#}
             {% endif %}
                 <div class="text">
                     <table class="table" id="table">

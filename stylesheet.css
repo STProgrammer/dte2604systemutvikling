@@ -94,6 +94,10 @@ section.brukerprofiler { margin-top: 6em;
 /**-------------  PROSJEKTER  -------------------*/
 section.prosjekter { margin-top: 6em;
 }
+formProject {
+
+}
+
 /**-------------  RAPPORTER  -------------------*/
 section.rapporter { margin-top: 6em;
 }
@@ -130,7 +134,9 @@ div.container{
 }
 div.container_xxsmall { width: 4em; height: 4em;
 }
-div.container_small { width: 9em; height: 4em;
+div.container_small { width: 11em; height: 4em; box-shadow: 0.1em 0.1em 0.1em #888888;
+}
+div.container_small:hover { border: 0.1em solid #171f28;
 }
 div.container_registrer_inn { width: 20em; height: 5em;
 }
@@ -148,11 +154,16 @@ div.container_medium_high { width: 40em; height: 30em;
 }
 div.container_big { width: 50em; height: 40em;
 }
+div.container_big_long { margin-top: 5em; width: 60em; height: 20em; border: none; box-shadow: none; background: #dbd9d9;
+}
 div.container_extra_big { width: 65em; height: 60em;
 }
 div.container_center { display:block;
     height: 5em; box-shadow: none; border: none;
     /**margin-left: auto; margin-right: auto; width: 50%;*/
+}
+div.openContainerNoBorder {
+    margin-left: 1em;
 }
 
 /**-----------  BUTTONS  -------------*/
@@ -164,11 +175,18 @@ div.container_center { display:block;
     background: white;
     border: 0.1em solid #888888;
     box-sizing: border-box;
-    width: 12em; height: 5em;
-    border-radius: 1.5em;
+    width: 12em; height: 3em;
+    border-radius: 0.5em;
     box-shadow: 0.2em 0.2em 0.4em #888888;
     cursor: pointer;
     white-space: nowrap;
+}
+/**Rediger knapper*/
+.miniButtons { width: 10em; height: 2em;
+    padding: 0em; margin: 0em;
+    border-radius: 0.5em;
+    cursor: pointer; border: none;
+    box-shadow: 0.1em 0.1em 0.1em #888888;
 }
 .button_small {
     border: none;
@@ -209,6 +227,7 @@ div.container_center { display:block;
     padding: 0;
     border: none;
     background: none;
+    width: available;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -265,6 +284,72 @@ img#innloggLogo {
     white-space: nowrap;
 }
 
+input[type=text] {
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    width: 20em;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 30%;
+    border: none;
+}
+input[type=date] {
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    width: 20em;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+}
+input[type=date] {
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    width: 20em;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+}
+input[type=datetime-local] {
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    width: 20em;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+}
+input[type=submit] {
+    font-family: Segoe UI, serif; color: white; font-size: 0.8rem;
+    background: #1b9448;
+    width: 20em;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+label {
+    color: #4c4747;
+}
+select{
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    width: 20em;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+}
 /**----------- TABLES  ----------------------*/
 .table {
     text-align: left;

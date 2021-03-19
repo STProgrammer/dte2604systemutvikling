@@ -1,0 +1,58 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <section id="prosjekter" class="prosjekter">
+        <div>
+            {% if User.isAdmin() == 1 %}
+                <button class="button buttons" id="prosjektKnapper"
+                        onclick="window.location.href='projects.php';">
+                    <img src="" alt=""> Gå tilbake
+                </button>
+            {% endif %}
+
+        </div>
+    </section>
+
+    <section id="addProject" >
+        <div class="openContainerNoBorder text" id="prosjektTabell">
+            <h3>Legg til nytt prosjekt </h3>
+            <form action="projects_addProject.php" enctype="multipart/form-data" method="post" class="formProject" id="formProject">
+                <div id="tekst">
+                    <br><label>Prosjekt Navn: </label>
+                    <br><input type="text" name="projectName" value="" placeholder="Prosjekt Navn" maxlength=90 required id="projectName" />
+                    <br><label>Prosjekt Leder:</label>
+                    <br><select name="projectLeader" id="projectLeader">
+                        {% for users in users %}
+                        <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getUsername() }} </option>
+                        {% endfor %}
+                    </select>
+                    <br><label>Kunde:</label>
+                    <br><select name="customer" id="customer">
+                        {% for users in users %}
+                            <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getUsername() }} </option>
+                        {% endfor %}
+                    </select>
+                    <br><label>Start tid</label>
+                    <br><input type="datetime-local" name="startTime" value="" placeholder="dd.mm.åååå tt:mm" maxlength=90 required id="startTime" />
+                    <br><label>Slutt tid</label>
+                    <br><input type="datetime-local" name="finishTime" value="" placeholder="dd.mm.åååå tt:mm" maxlength=90 />
+                    <br><label>Status tall, Ventende = 0, Pågår = 1, Paused = 2, Avslått = 3</label>
+
+                    <br><input type="text" name="status" value="" placeholder="Status" maxlength=90 required id="status" />
+                    <input type="hidden" value="{{ getMac("addProject") }}" name="XSRFPreventionToken">
+                    <br><input type="submit" name="addProject" id="addProject" value="Legg til prosjektet">
+                </div>
+            </form>
+        </div>
+        <div class="container container_big_long text">
+            <h6>Tilbakemeldinger fra database</h6>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

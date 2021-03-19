@@ -1,65 +1,106 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section id="prosjekter" class="prosjekter">
-        <div>
+        <div class="container container_small">
             {% if User.isAdmin() == 1 %}
-            <button class="button buttons" id="prosjektKnapper"
-                    onclick="window.location.href='projects_addProject.twig';">
-                <img src="" alt=""> Nytt prosjekt</button>
+                <button class="button" id="button"
+                        onclick="window.location.href='projects_addProject.php';">
+                    <img src="images/icon_addproject.png"  width="30em" alt=""> Nytt prosjekt
+                </button>
             {% endif %}
-
-            {% if User.isAdmin() == 1 %}
-            <button class="button buttons" onclick="">
-                <img src="" alt=""> Slett prosjekt</button>
-            {% endif %}
-
-
+        </div>
+        <div class="container container_small">
             {% if User.isAdmin() == 1 or User.isProjectLeader() == 1 %}
-            <button class="button buttons"  id="prosjektKnapper" onclick="">
-                <img src="" alt=""> Legge inn funksjoner</button>
+                <button class="button" id="button" onclick="">
+                    <img src="images/icon_addproject.png"  width="30em" alt=""> Legge inn funksjoner
+                </button>
             {% endif %}
-
-            {% if User.isAdmin() == 1 %}
-            <button class="button buttons" id="prosjektKnapper" onclick="">
-                <img src="" alt=""> Godkjenne prosjekt</button>
-            {% endif %}
-
-            <button class="button buttons" id="prosjektKnapper" onclick="">
-                <img src="" alt=""> Alle prosjekter</button>
         </div>
     </section>
 
     <section>
-        <div class="container container_big text" id="prosjektTabell">
-            <div class="text">
-                <h3>Prosjekter </h3>
-                <table class="table" id="table">
-                    {% if projects %}
+        <div class="openContainerNoBorder text" id="prosjektTabell">
+            <h3>Prosjekter </h3>
+            <table class="table" id="table">
+                {% if projects %}
+                    <tr>
+                        <th>Prosjekt navn</th>
+                        <th>Prosjektleder</th>
+                        <th>Starttid</th>
+                        <th>Slutttid</th>
+                        <th>Status</th>
+                        <th>Kunde</th>
+                        <th>Godkjent av admin</th>
+                        <th>Rediger</th>
+                    </tr>
+                    {% for Project in projects %}
                         <tr>
-                            <th>Prosjekt navn</th>
-                            <th>Prosjektleder</th>
-                            <th>Starttid</th>
-                            <th>Slutttid</th>
-                            <th>Status</th>
-                            <th>Kunde</th>
-                            <th>Godkjent av admin</th>
-                        </tr>
-
-                        {% for Project in projects %}
-                        <tr>
+                            {#PROSJEKTNAVN#}
                             <td>{{ Project.getProjectName() }}</td>
-                            <td>{{ Project.getProjectLeader() }}</td>
+
+                            {#PROSJEKTLEDER#}
+                            {% for users in users %}
+                                {% if Project.getProjectLeader() == users.getUserId() %}
+                                    <td>{{ users.firstName }} {{ users.lastName }}</td>
+                                {% endif %}
+                            {% endfor %}
                             <td>{{ Project.getStartTime() }}</td>
                             <td>{{ Project.getFinishTime() }}</td>
-                            <td>{{ Project.getStatus() }}</td>
-                            <td>{{ Project.getCustomer() }}</td>
-                            <td>{{ Project.getIsAcceptedByAdmin() }}</td>
+
+                            {#PROSJEKT STATUS#}
+                            {% if Project.getStatus() == 0 %}
+                                <td>Ventende</td>
+                            {% endif %}
+                            {% if Project.getStatus() == 1 %}
+                                <td>Pågår</td>
+                            {% endif %}
+                            {% if Project.getStatus() == 2 %}
+                                <td>Pauset</td>
+                            {% endif %}
+                            {% if Project.getStatus() == 3 %}
+                                <td>Avslått</td>
+                            {% endif %}
+
+                            {#PROSJEKT KUNDE#}
+                            {% for users in users %}
+                                {% if Project.getCustomer() == users.getUserId() %}
+                                    <td>{{ users.username }}</td>
+                                {% endif %}
+                            {% endfor %}
+
+                            {#PROSJEKT GODKJENT AV ADMIN#}
+                            {% if Project.getIsAcceptedByAdmin() == 0 %}
+                                <td>Ventende</td>
+                            {% endif %}
+                            {% if Project.getIsAcceptedByAdmin() == 1 %}
+                                <td>Godkjent</td>
+                            {% endif %}
+                            {% if Project.getIsAcceptedByAdmin() == 2 %}
+                                <td>Avslått</td>
+                            {% endif %}
+
+                            {#HVIS ADMIN, REDIGER KNAPP#}
+                            {% if User.isAdmin %}
+                            <td><button class="buttons miniButtons" id="miniButtons"
+                                        onclick="window.location.href='projects_editProject.php';">
+                                    <img src="" alt=""> Rediger
+                                </button></td>
+                            {% endif %}
                         </tr>
-                        {% endfor %}
-                    {% endif %}
-                </table>
-            </div>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+        <div class="container container_big_long text">
+            <h5>Tilbakemeldinger fra database</h5>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
         </div>
     </section>
-
 {% endblock %}
