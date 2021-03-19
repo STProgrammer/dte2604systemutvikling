@@ -12,9 +12,12 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     // Change user details
     $userToEdit = $userManager->getUser($request->query->getInt('userid'));
     if ($request->request->has('user_edit') && XsrfProtection::verifyMac("Edit user's information")) {
-        //ONLY ADMIN CAN MAKE ANOTHER USER ADMIN
-        if (!$user->isAdmin()) {
+        //ONLY ADMIN CAN MAKE ANOTHER USER ADMIN, CUSTOMER CAN'T BE ADMIN
+        if (!$user->isAdmin() or $user->isCustomer()) {
             $request->request->set('isAdmin', 0);
+        }
+        if ($user->isCustomer()) {
+            $request->request->set('isTemporary', 0);
         }
         if ($userManager->editOtherUser($userToEdit)) {
             header("Location: ".$request->server->get('REQUEST_URI'));

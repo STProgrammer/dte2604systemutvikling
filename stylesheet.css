@@ -40,7 +40,7 @@ body { background-color:#E7E7E7;
 /* When the screen is less than 600 pixels wide, hide all links, except
 for the first one ("Home"). Show the link that contains should open and
 close the topnav (.icon) */
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
     .header a:not(:first-child) {display: none;}
     .header a.icon {
         float: right;
@@ -52,7 +52,7 @@ close the topnav (.icon) */
 /* The "responsive" class is added to the topnav with JavaScript when
 the user clicks on the icon. This class makes the topnav look good on
 small screens (display the links vertically instead of horizontally) */
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
     .header.responsive {position: fixed;}
     .header.responsive a.icon {
         position: fixed;
@@ -94,8 +94,7 @@ section.brukerprofiler { margin-top: 6em;
 /**-------------  PROSJEKTER  -------------------*/
 section.prosjekter { margin-top: 6em;
 }
-formProject {
-
+.formProject {
 }
 
 /**-------------  RAPPORTER  -------------------*/
@@ -105,9 +104,13 @@ section.rapporter { margin-top: 6em;
 section.innstillinger { margin-top: 6em;
 }
 /**-------------  LOGINN  ----------------------*/
-section.loginn { margin-top: 3em; margin-left: 6em;
+section.loginn { margin-top: 10em
 }
-section.loginn2 { margin-left: 6em;
+/**-------------  EDIT_USER  ----------------------*/
+section.edit_user { margin-top: 6em
+}
+/**-------------  PROFILE_EDIT  ----------------------*/
+section.profile_edit { margin-top: 6em
 }
 /**-------------  ERROR  -----------------------*/
 section.error { margin-top: 6em; margin-left: 5em;
@@ -154,7 +157,8 @@ div.container_medium_high { width: 40em; height: 30em;
 }
 div.container_big { width: 50em; height: 40em;
 }
-div.container_big_long { margin-top: 5em; width: 60em; height: 20em; border: none; box-shadow: none; background: #dbd9d9;
+div.container_big_long { margin-top: 5em; width: 60em; height: 20em;
+    border: none; box-shadow: none; background: #dbd9d9;
 }
 div.container_extra_big { width: 65em; height: 60em;
 }
@@ -165,7 +169,6 @@ div.container_center { display:block;
 div.openContainerNoBorder {
     margin-left: 1em;
 }
-
 /**-----------  BUTTONS  -------------*/
 .buttons {
     font-family: Segoe UI, serif;
@@ -190,7 +193,8 @@ div.openContainerNoBorder {
 }
 .button_small {
     border: none;
-    color: #cac6c6;
+    font-family: Segoe UI, serif;
+    color: #5b4e48;
     padding: 1em 2em;
     margin: 1em;
     text-align: center;
@@ -227,7 +231,7 @@ div.openContainerNoBorder {
     padding: 0;
     border: none;
     background: none;
-    width: available;
+    border-radius: 0.3em;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -356,6 +360,10 @@ select{
     border-color: burlywood;
     border-spacing: 10pt;
     border-bottom: 1pt solid lightslategray;
+    padding: 0.5em;
+    margin: 0.5em;
+    cursor: pointer;
+    white-space: nowrap;
     width: 100%;
 }
 th { background-color: darkseagreen; color: white;
@@ -364,6 +372,22 @@ tr:hover { background-color: #f5f5f5;
 }
 tr:nth-child(even) { background-color: #f2f2f2;
 }
+.table_edit {
+    text-align: left;
+    border-color: burlywood;
+    border-spacing: 10pt;
+    padding: 0.5em;
+    margin: 0.5em;
+    cursor: pointer;
+    width: 20em;
+}
+th { background-color: darkseagreen; color: white;
+}
+tr:hover { background-color: #f5f5f5;
+}
+tr:nth-child(even) { background-color: #f2f2f2;
+}
+
 
 /**-----------  TEXT  -----------------------*/
 /**padding:top right bottom left; */

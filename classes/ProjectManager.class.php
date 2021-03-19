@@ -88,6 +88,7 @@ class ProjectManager {
     /////////////////////////////////////////////////////////////////////////////
 
     private function NotifyUser($strHeader, $strMessage) {
+        $this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
         $this->session->getFlashBag()->add('message', $strMessage);
     }
