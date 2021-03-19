@@ -16,15 +16,7 @@
                 {% endif %}
             </div>
             <form method="post" id="edit_form">
-                <div id="text">
-                    {% if user.isAdmin() %}
-                        <form method="post"
-                              onsubmit="return confirm('Er du sikker på å slette brukeren? \n(Kan ikke angres etterpå)');">
-                            <input type="hidden" value="{{ getMac("Delete user") }}" name="XSRFPreventionToken">
-                            <br><input type="submit" name="delete_user" value="Slett bruker" class="delete"/>
-                        </form>
-                    {% endif %}
-
+                <br id="text">
                     <br><label for="address">Adresse:</label>
                     <br><input type="text" id="address" name="address" placeholder="Adresse" maxlength=90
                                value="{{ userToEdit.getAddress() }}" required/>
@@ -49,18 +41,36 @@
                     <br><input type="text" id="IMAddress" name="IMAddress" placeholder="IM adresse" maxlength=45
                                value="{{ userToEdit.getIMAddress() }}" required/>
 
-                    <br><label for="isTemporary">Er innleid</label>
-                    <br><input type="checkbox" id="isTemporary" name="isTemporary"
-                               value="1" {% if userToEdit.isTemporary() %} checked {% endif %}>
 
+                {% if userToEdit.isAdmin %}
+                    <br>Stilling: Administrator
+                {% elseif userToEdit.isProjectLeader %}
+                    <br>Stilling: Prosjektleder
+                {% elseif userToEdit.isGroupLeader %}
+                    <br>Stilling: Teamleder
+                {% elseif userToEdit.isTemporary %}
+                    <br>Stilling: Innleid
+                {% elseif userToEdit.isCustomer %}
+                    <br>Stilling: Kunde
+                {% else %}
+                    <br>Stilling: Ingen stilling
+                {% endif %}
+                    {% if not userToEdit.isCustomer() %}
+                    <br><label>Endre stilling: </label>
+                    <br><input type="radio" id="worker" name="userType" value="2">
+                    <label for="worker">Fast arbeider</label><br>
+                    <br><input type="radio" id="temporary" name="userType" value="1">
+                    <label for="temporary">Innleid arbeider</label><br>
                     {% if user.isAdmin() %}
-                        <br><label for="isAdmin">Er admin</label>
-                        <br><input type="checkbox" id="isAdmin" name="isAdmin"
-                                   value="1" {% if userToEdit.isAdmin() %} checked {% endif %}>
+                        <input type="radio" id="admin" name="userType" value="3">
+                        <label for="admin">Admin</label><br>
+                    {% endif %}
                     {% endif %}
 
-                    <br><label for="status">Status</label>
-                    {% if not userToEdit.isCustomer() %}
+
+                {% if not userToEdit.isCustomer() %}
+                    <br>Status: {{ userToEdit.getStatus() }}
+                    <br><label for="status">Endre status</label>
                         <br><select name="status" id="status">
                         <option value="Sick" {% if userToEdit.getStatus() == "Sick" %} selected {% endif %}>
                             Syk
@@ -86,9 +96,15 @@
                 </div>
                 <input type="hidden" value="{{ getMac("Edit user's information") }}" name="XSRFPreventionToken">
                 <br><input type="submit" name="user_edit" id="edit_btn" value="Send inn endringer"><br>
-
             </form>
             <br>
+        {% if user.isAdmin() %}
+            <form method="post"
+                  onsubmit="return confirm('Er du sikker på å slette brukeren? \n(Kan ikke angres etterpå)');">
+                <input type="hidden" value="{{ getMac("Delete user") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="delete_user" value="Slett bruker" class="delete"/>
+            </form>
+        {% endif %}
             <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
         </div>
     </section>

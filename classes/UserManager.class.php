@@ -37,16 +37,17 @@ class UserManager
         $phoneNumber = $this->request->request->get('phoneNumber');
         $mobileNumber = $this->request->request->get('mobileNumber');
         $IMAddress = $this->request->request->get('IMAddress');
-        $userType = $this->request->request->get('userType', 1);
-        $isCustomer = $userType == 3 ? 1: 0;
-        $status = $isCustomer ? "N/A": "Free";
-        $isTemporary = $userType == 2 ? 1: 0;
-        $isAdmin = ($userType == 4 && $user->isAdmin()) ? 1: 0;
+        $userType = $this->request->request->get('userType', 2);
+        //Bare admin kan registrere admin
+        if (!$user->isAdmin() && $userType == 3) {
+            $userType = 2;
+        }
+        $status = $userType == 0 ? "N/A": "Free";
         $isVerifiedByAdmin = $user->isAdmin() ? 1:0;
         try{
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $sth = $this->dbase->prepare("insert into Users (username, firstName, lastName, emailAddress, address, city, zipCode, phoneNumber, mobileNumber, IMAddress, password, dateRegistered, isCustomer, isTemporary, isVerifiedByAdmin, 
-                   isEmailVerified, isAdmin, status) values (:username, :firstName, :lastName, :emailAddress, :address, :city, :zipCode, :phoneNumber, :mobileNumber, :IMAddress, :password, NOW(), :isCustomer, :isTemporary, :isVerifiedByAdmin, 1, :isAdmin, :status);");
+            $sth = $this->dbase->prepare("insert into Users (username, firstName, lastName, emailAddress, address, city, zipCode, phoneNumber, mobileNumber, IMAddress, password, dateRegistered, userType, isVerifiedByAdmin, 
+                   isEmailVerified, status) values (:username, :firstName, :lastName, :emailAddress, :address, :city, :zipCode, :phoneNumber, :mobileNumber, :IMAddress, :password, NOW(), :userType, :isVerifiedByAdmin, 1, :status);");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
             $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
             $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
@@ -58,10 +59,8 @@ class UserManager
             $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
             $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
             $sth->bindParam(':password', $hash, PDO::PARAM_STR);
-            $sth->bindParam(':isCustomer',  $isCustomer, PDO::PARAM_INT);
-            $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
+            $sth->bindParam(':userType',  $userType, PDO::PARAM_INT);
             $sth->bindParam(':isVerifiedByAdmin', $isVerifiedByAdmin, PDO::PARAM_INT);
-            $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
             $sth->bindParam(':status', $status, PDO::PARAM_STR);
             $sth->execute();
             if ($sth->rowCount() == 1) {
@@ -142,9 +141,6 @@ class UserManager
         $mobileNumber = $this->request->request->get('mobileNumber', $user->getMobileNumber());
         $IMAddress = $this->request->request->get('IMAddress', $user->getIMAddress());
         $status = $this->request->request->get('status', $user->getStatus());
-        $isTemporary = $this->request->request->getInt('isTemporary', $user->isTemporary());
-        $isProjectLeader = $this->request->request->getInt('isProjectLeader', $user->isProjectLeader());
-        $isGroupLeader = $this->request->request->getInt('isGroupLeader', $user->isGroupLeader());
         if (!$this->isUsernameAvailable($user, $username)) {
             $this->notifyUser("Failed to edit, username was already taken");
             return false;
@@ -159,8 +155,7 @@ class UserManager
             $hash = password_hash($password,PASSWORD_DEFAULT);
             $sth = $this->dbase->prepare("update Users set username = :username, firstName = :firstName, 
     lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
-    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, 
-    isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status, isAdmin = :isADmin WHERE userID = :userID;");
+    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, status = :status WHERE userID = :userID;");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
             $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
             $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
@@ -172,10 +167,6 @@ class UserManager
             $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
             $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
             $sth->bindParam(':password', $hash, PDO::PARAM_STR);
-            $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
-            $sth->bindParam(':isProjectLeader', $isProjectLeader, PDO::PARAM_INT);
-            $sth->bindParam(':isGroupLeader', $isGroupLeader, PDO::PARAM_INT);
-            $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
             $sth->bindParam(':status', $status, PDO::PARAM_STR);
             $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
@@ -197,7 +188,6 @@ class UserManager
     // EDIT OTHER USER
     public function editOtherUser(User $user) : bool {
         $userID = $user->getUserId();
-        $password = $this->request->request->get('password', $user->getPassword());
         $address = $this->request->request->get('address', $user->getAddress());
         $city = $this->request->request->get('city', $user->getCity());
         $zipCode = $this->request->request->get('zipCode', $user->getZipCode());
@@ -205,20 +195,25 @@ class UserManager
         $mobileNumber = $this->request->request->get('mobileNumber', $user->getMobileNumber());
         $IMAddress = $this->request->request->get('IMAddress', $user->getIMAddress());
         $status = $this->request->request->get('status', $user->getStatus());
-        $isTemporary = $this->request->request->getInt('isTemporary', $user->isTemporary());
-        $isAdmin = $this->request->request->getInt('isAdmin', $user->isAdmin());
+        $userType = $this->request->request->getInt('userType', $user->getUserType());
+        //Kunde skal ikke få bli arbeider eller vica versa
+        if ($user->isCustomer()) {
+            $userType = 0;
+            $status = "N/A";
+        } else if ($userType == 0) {
+            $userType = $user->getUserType();
+        }
         try {
             $sth = $this->dbase->prepare("update Users set address = :address, city = :city, zipCode = :zipCode, 
-    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, isTemporary = :isTemporary, 
-                 status = :status, isAdmin = :isAdmin WHERE userID = :userID;");
+    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, userType = :userType, 
+                 status = :status WHERE userID = :userID;");
             $sth->bindParam(':address', $address, PDO::PARAM_STR);
             $sth->bindParam(':city', $city, PDO::PARAM_STR);
             $sth->bindParam(':zipCode',  $zipCode, PDO::PARAM_STR);
             $sth->bindParam(':phoneNumber', $phoneNumber, PDO::PARAM_STR);
             $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
             $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
-            $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
-            $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
+            $sth->bindParam(':userType', $userType, PDO::PARAM_INT);
             $sth->bindParam(':status', $status, PDO::PARAM_STR);
             $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
