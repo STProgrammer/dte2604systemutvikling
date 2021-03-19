@@ -5,41 +5,13 @@
         {% if user.isAdmin or user.isProjectLeader %}
             <div class="container container_small">
                 <button id="button" class="button" title="Ny bruker"
-                        onclick="window.location.href='user_register.php';">
-                    <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
-                </button>
-            </div>
-
-            <!-- Denne har vi i tabellen??
-            <div class="container container_small">
-                <button id="button" class="button" title="Slett bruker">
-                    <img src="images/icon_slett_bruker.svg" width="30em"> Slett bruker
-                </button>
-            </div>
-             -->
-
-            <div class="container container_small">
-                <button id="button" class="button" title="Verifiser bruker">
-                    <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
+                        onclick="window.location.href='group_register.php';">
+                    <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny gruppe
                 </button>
             </div>
         {% endif %}
-
-        <!-- Denne har vi i tabellen??
-        <div class="container container_small">
-            <button id="button" class="button" title="Endre bruker">
-                <img src="images/icon_endre_bruker.svg" width="30em"> Endre bruker
-            </button>
-        </div>
-        <div class="container container_small">
-            <button id="button" class="button" title="Oversikt">
-                <img src="images/icon_people.png" width="50em"> Oversikt
-            </button>
-        </div>
-        -->
-
         <section>
-            <h5>Alle grupper</h5>
+            <h5>Alle brukere og administratorer</h5>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
                     <h3>{{ header }}</h3>
@@ -47,37 +19,48 @@
                 {% for message in session.getFlashBag.get('message', []) %}
                     <p>{{ message }}</p>
                 {% endfor %}
+                {# session->getFlashBag->clear(); //sletter flashbagmeldinger #}
             {% endif %}
             <div class="text">
                 <table class="table" id="table">
                     <tr>
-                        <th>Gruppenavn</th>
-                        <th>Gruppeleder</th>
-                        <th>Admin eller ikke</th>
+                        <th>Gruppenavn </th>
+                        <th>Gruppeleder </th>
 
                         <!-- if admin\leder show this  -->
+                        {% if user.isAdmin or user.isProjectLeader %}
+                            <th>Status</th>
+                        {% endif %}
                         {% if user.isAdmin %}
-                            <th>Se detaljer og rediger</th>
-                        {% elseif user.getUserID == group.getGroupLeader%}
                             <th>Se detaljer og rediger</th>
                         {% endif %}
                     </tr>
-                    {% for grp in groups %}
+                    {% for usr in users %}
                         <tr>
-                            <td>{{ grp.getGroupName}}</td>
-                            <td>{{ grp.getGroupLeader}}</td>
+                            <td>{{ grp.getGroupName }}</td>
+                            <td>{{ grp.getFirstName }}  {{ grp.getLastName }}</td>
 
-                            {% if grp.isAdmin %}
-                                <td>Administrator</td>
+
+                            <!-- if admin\leder show this  -->
+                            {% if user.isAdmin or user.isProjectLeader %}
+                                <td>{{ grp.getStatus }}</td>
+                            {% endif %}
+
+                            <!-- Bruker godkjent av admin-->
+                            {% if usr.isVerifiedByAdmin %}
+                                <td>Verifisert</td>
                             {% else %}
-                                <td>Ingen stilling</td>
+                                <td>Ikke Verifisert</td>
                             {% endif %}
-                            <!-- if user is admin or user is username, edit -->
-                            {% if user.isAdmin or user.userID == usr.getUserID %}
-                                <td><a href="group_edit.php/?userid={{ usr.getUserID() }}">Rediger bruker</a></td>
-                            {% endif %}
+
+                            <!-- if user is admin  -->
                             {% if user.isAdmin %}
-                                <td><a href="user_delete.php/?userid={{ usr.getUserID() }}">Slett bruker</a></td>
+                                <td>
+                                    <button class="buttons miniButtons" id="miniButtons"
+                                            onclick="window.location.href='group_edit.php?userid={{ grp.getGroupID() }}';">
+                                        <img src="" alt=""> Rediger
+                                    </button>
+                                </td>
                             {% endif %}
                         </tr>
                     {% endfor %}

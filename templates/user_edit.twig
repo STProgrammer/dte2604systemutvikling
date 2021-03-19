@@ -56,20 +56,20 @@
                     <br>Stilling: Ingen stilling
                 {% endif %}
                     {% if not userToEdit.isCustomer() %}
-                    <br><label>Endre stilling: </label>
+                    <p><label>Endre stilling: </label>
                     <br><input type="radio" id="worker" name="userType" value="2">
-                    <label for="worker">Fast arbeider</label><br>
+                    <label for="worker">Fast arbeider</label>
                     <br><input type="radio" id="temporary" name="userType" value="1">
-                    <label for="temporary">Innleid arbeider</label><br>
+                    <label for="temporary">Innleid arbeider</label>
                     {% if user.isAdmin() %}
-                        <input type="radio" id="admin" name="userType" value="3">
-                        <label for="admin">Admin</label><br>
+                        <br><input type="radio" id="admin" name="userType" value="3">
+                        <label for="admin">Admin</label>
                     {% endif %}
                     {% endif %}
 
 
                 {% if not userToEdit.isCustomer() %}
-                    <br>Status: {{ userToEdit.getStatus() }}
+                    <p>Status: {{ userToEdit.getStatus() }}
                     <br><label for="status">Endre status</label>
                         <br><select name="status" id="status">
                         <option value="Sick" {% if userToEdit.getStatus() == "Sick" %} selected {% endif %}>

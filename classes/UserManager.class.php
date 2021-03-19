@@ -527,7 +527,7 @@ class UserManager
         $allUsers = null;
         try{
             // $colName = "`".str_replace("`","``",$colName)."`";
-            $query   = "SELECT * FROM Users WHERE isCustomer = 0 ORDER BY `$colName` ASC;";
+            $query   = "SELECT * FROM Users WHERE userType > 0 ORDER BY `$colName` ASC;";
             $stmt = $this->dbase->prepare($query);
             $stmt->execute();
             if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
