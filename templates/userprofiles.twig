@@ -3,20 +3,20 @@
 
     <section id="brukerprofiler" class="brukerprofiler">
         {% if user.isAdmin or user.isProjectLeader %}
-        <div class="container container_small">
-            <button id="button" class="button" title="Ny bruker"
-            onclick="window.location.href='user_register.php';">
-                <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
-            </button>
-        </div>
-        <div class="container container_small">
-            <button id="button" class="button" title="Verifiser bruker">
-                <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
-            </button>
-        </div>
+            <div class="container container_small">
+                <button id="button" class="button" title="Ny bruker"
+                        onclick="window.location.href='user_register.php';">
+                    <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
+                </button>
+            </div>
+            <div class="container container_small">
+                <button id="button" class="button" title="Verifiser bruker">
+                    <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
+                </button>
+            </div>
         {% endif %}
         <section>
-                <h5>Alle brukere og administratorer</h5>
+            <h5>Alle brukere og administratorer</h5>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
                     <h3>{{ header }}</h3>
@@ -24,58 +24,72 @@
                 {% for message in session.getFlashBag.get('message', []) %}
                     <p>{{ message }}</p>
                 {% endfor %}
-{#                session->getFlashBag->clear(); //sletter flashbagmeldinger#}
+                {# session->getFlashBag->clear(); //sletter flashbagmeldinger #}
             {% endif %}
-                <div class="text">
-                    <table class="table" id="table">
+            <div class="text">
+                <table class="table" id="table">
+                    <tr>
+                        <th>Etternavn</th>
+                        <th>Fornavn</th>
+                        <th>Stilling</th>
+
+                        <!-- if admin\leder show this  -->
+                        {% if user.isAdmin or user.isProjectLeader %}
+                            <th>Status</th>
+                        {% endif %}
+
+                        <th>Godkjent av admin</th>
+
+                        {% if user.isAdmin %}
+                            <th>Se detaljer og rediger</th>
+                        {% endif %}
+                    </tr>
+                    {% for usr in users %}
                         <tr>
-                            <th>Etternavn</th>
-                            <th>Fornavn</th>
-                            <th>Stilling</th>
+                            <td>{{ usr.getLastName }}</td>
+                            <td>{{ usr.getFirstName }}</td>
+
+                            {% if usr.isAdmin %}
+                                <td>Administrator</td>
+                            {% elseif usr.isProjectLeader %}
+                                <td>Prosjektleder</td>
+                            {% elseif usr.isGroupLeader %}
+                                <td>Teamleder</td>
+                            {% elseif users.isTemporary %}
+                                <td>Innleid</td>
+                            {% elseif usr.isCustomer %}
+                                <td>Kunde</td>
+                            {% elseif usr.isTemporary %}
+                                <td>Innleid</td>
+                            {% else %}
+                                <td>Ingen stilling</td>
+                            {% endif %}
 
                             <!-- if admin\leder show this  -->
                             {% if user.isAdmin or user.isProjectLeader %}
-                                <th>Status</th>
+                                <td>{{ usr.getStatus }}</td>
                             {% endif %}
 
+                            <!-- Bruker godkjent av admin-->
+                            {% if usr.isVerifiedByAdmin %}
+                                <td>Verifisert</td>
+                            {% else %}
+                                <td>Ikke Verifisert</td>
+                            {% endif %}
+
+                            <!-- if user is admin  -->
                             {% if user.isAdmin %}
-                                <th>Se detaljer og rediger</th>
+                                <td>
+                                    <button class="buttons miniButtons" id="miniButtons"
+                                            onclick="window.location.href='user_edit.php?userid={{ usr.getUserID() }}';">
+                                        <img src="" alt=""> Rediger
+                                    </button>
+                                </td>
                             {% endif %}
                         </tr>
-                        {% for usr in users %}
-                            <tr>
-                                <td>{{ usr.getLastName}}</td>
-                                <td>{{ usr.getFirstName}}</td>
-
-                                {% if usr.isAdmin %}
-                                    <td>Administrator</td>
-                                {% elseif usr.isProjectLeader %}
-                                    <td>Prosjektleder</td>
-                                {% elseif usr.isGroupLeader %}
-                                    <td>Teamleder</td>
-                                {% elseif users.isTemporary %}
-                                    <td>Innleid</td>
-                                {% elseif usr.isCustomer %}
-                                    <td>Kunde</td>
-                                {% elseif usr.isTemporary %}
-                                    <td>Innleid</td>
-                                {% else %}
-                                    <td>Ingen stilling</td>
-                                {% endif %}
-
-                                <!-- if admin\leder show this  -->
-                                {% if user.isAdmin or user.isProjectLeader %}
-                                    <td>{{ usr.getStatus }}</td>
-                                {% endif %}
-
-                                <!-- if user is admin  -->
-                                {% if user.isAdmin  %}
-                                    <td><a href="user_edit.php?userid={{ usr.getUserID() }}">Rediger bruker</a></td>
-                                {% endif %}
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
+                    {% endfor %}
+                </table>
+            </div>
         </section>
     </section>
 {% endblock %}
