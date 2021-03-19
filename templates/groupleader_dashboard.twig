@@ -1,0 +1,54 @@
+{% extends "layout.twig" %}
+{% block content %}
+    <section class="prosjektleder_dashboard" id="prosjektleder_dashboard">
+        <div class="container container_medium">
+            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
+            <h6>Databaseoppføringer i dag</h6>
+            <div class="text">
+                Databaseoppføring i dag: 20 oppføringer
+            </div>
+        </div>
+        <div class="container container_medium">
+            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
+            <h6>Totale timeregistreringer i dag</h6>
+            <div class="text_bigtime">
+                20:40
+            </div>
+        </div>
+        <div class="container container_medium">
+            <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/>
+            <h6>Feilmeldinger i dag</h6>
+            <div class="text">
+                Feil1: Error ved opplasting av rapport
+            </div>
+        </div>
+        <div class="container container_medium">
+            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
+            <h6>Registrer fravær / </h6>
+            <h6>Rediger timeføringer</h6>
+        </div>
+    </section>
+    <section>
+        <div class="container container_big">
+            <img src="images/icon_kommentar.png" width="40px" alt="Icon"/>
+            <h6>Siste kommentarer fra brukere</h6>
+
+            <table>
+                <h6>Halil</h6>
+                <tr>
+                    <div class="text">
+                        I dag har jeg jobbet en del med layout. Den er snart ferdig. Skal oppdatere tidene på oppgaven
+                        legge inn reestimering om det tar lengre tid enn forventet.
+                    </div>
+                </tr>
+                <h6>Are</h6>
+                <tr>
+                    <div class="text">
+                        I dag har jeg jobbet en del med layout. Den er snart ferdig. Skal oppdatere tidene på oppgaven
+                        legge inn reestimering om det tar lengre tid enn forventet.
+                    </div>
+                </tr>
+            </table>
+        </div>
+    </section>
+{% endblock %}
