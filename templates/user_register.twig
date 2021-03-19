@@ -66,6 +66,7 @@
                                minlength=8 maxlength=40 value="" onkeyup='check();'/>
                     <span id='message'></span>
 
+<<<<<<< HEAD
                     <br><label>Type bruker: </label>
                     <input type="radio" id="worker" name="userType" value="1" required>
                     <label for="worker">Fast arbeider</label><br>
@@ -78,6 +79,20 @@
                     <label for="admin">Admin</label><br>
                     {% endif %}
 
+=======
+                    <br><label>Kunde eller ansatt: </label>
+                    <br><input type="radio" id="isCustomer" name="isCustomer" value="1" required>
+                    <label for="isCustomer">Kunde</label><br>
+                    <input type="radio" id="notCustomer" name="isCustomer" value="0" required>
+                    <label for="arbeider">Ansatt</label><br>
+                    <br><input type="checkbox" id="isTemporary" name="isTemporary" value="1">
+                    <label for="isTemporary">Er innleid</label><br>
+                    {% if user.isAdmin %}
+                        <br><label for="arbeider">Administrator:</label><br>
+                        <input type="checkbox" id="isAdmin" name="isAdmin" value="1">
+                        <label for="isAdmin">Gi brukeren admin rettigheter</label><br>
+                    {% endif %}
+>>>>>>> 9327e389a396aff569d217471855217af938f9e2
                     <br><label>Addresse:</label>
                     <br><input type="text" name="address" value="" placeholder="Addresse" maxlength=90 required/>
                     <br><label>Postnummer:</label>
