@@ -73,10 +73,11 @@
                     <label for="arbeider">Ansatt</label><br>
                     <br><input type="checkbox" id="isTemporary" name="isTemporary" value="1">
                     <label for="isTemporary">Er innleid</label><br>
-                    <br><label for="arbeider">Administrator:</label><br>
-                    <input type="checkbox" id="isAdmin" name="isAdmin" value="1">
-                    <label for="isAdmin">Gi brukeren admin rettigheter</label><br>
-
+                    {% if user.isAdmin %}
+                        <br><label for="arbeider">Administrator:</label><br>
+                        <input type="checkbox" id="isAdmin" name="isAdmin" value="1">
+                        <label for="isAdmin">Gi brukeren admin rettigheter</label><br>
+                    {% endif %}
                     <br><label>Addresse:</label>
                     <br><input type="text" name="address" value="" placeholder="Addresse" maxlength=90 required/>
                     <br><label>Postnummer:</label>
