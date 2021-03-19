@@ -5,14 +5,14 @@
         {% if user.isAdmin or user.isProjectLeader %}
             <div class="container container_small">
                 <button id="button" class="button" title="Ny bruker"
-                        onclick="window.location.href='user_register.php';">
+                        onclick="window.location.href='userprofiles.php?verify=1';">
                     <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny bruker
                 </button>
             </div>
-            {% if user.isADmin %}
+            {% if user.isAdmin %}
             <div class="container container_small">
                 <button id="button" class="button" title="Verifiser bruker"
-                onclick="window.location.href='userprofiles.php?verify=1';">
+                onclick="window.location.href='user_register.php?verify=1';">
                     <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
                 </button>
             </div>
@@ -34,59 +34,32 @@
                     <tr>
                         <th>Etternavn</th>
                         <th>Fornavn</th>
-                        <th>Stilling</th>
+                        <th>Epost addresse</th>
 
-                        <!-- if admin\leder show this  -->
-                        {% if user.isAdmin or user.isProjectLeader %}
-                            <th>Status</th>
-                        {% endif %}
+                        <th>Verifiser</th>
 
-                        <th>Godkjent av admin</th>
-
-                        {% if user.isAdmin %}
                             <th>Se detaljer og rediger</th>
-                        {% endif %}
                     </tr>
                     {% for usr in users %}
                         <tr>
                             <td>{{ usr.getLastName }}</td>
                             <td>{{ usr.getFirstName }}</td>
-
-                            {% if usr.isAdmin %}
-                                <td>Administrator</td>
-                            {% elseif usr.isProjectLeader %}
-                                <td>Prosjektleder</td>
-                            {% elseif usr.isGroupLeader %}
-                                <td>Teamleder</td>
-                            {% elseif usr.isCustomer %}
-                                <td>Kunde</td>
-                            {% elseif usr.isTemporary %}
-                                <td>Innleid</td>
-                            {% else %}
-                                <td>Ingen stilling</td>
-                            {% endif %}
-
-                            <!-- if admin\leder show this  -->
-                            {% if user.isAdmin or user.isProjectLeader %}
-                                <td>{{ usr.getStatus }}</td>
-                            {% endif %}
-
-                            <!-- Bruker godkjent av admin-->
-                            {% if usr.isVerifiedByAdmin %}
-                                <td>Verifisert</td>
-                            {% else %}
-                                <td>Ikke Verifisert</td>
-                            {% endif %}
-
+                            <td>{{ usr.getEmailAddress }}</td>
                             <!-- if user is admin  -->
-                            {% if user.isAdmin %}
                                 <td>
                                     <button class="buttons miniButtons" id="miniButtons"
                                             onclick="window.location.href='user_edit.php?userid={{ usr.getUserID() }}';">
                                         <img src="" alt=""> Rediger
                                     </button>
                                 </td>
-                            {% endif %}
+                                <td>
+                                    <form method="post" action="user_verify.php?userid={{ usr.getUserID }}">
+                                        <input type="hidden" value="{{ getMac("Verify user") }}" name="XSRFPreventionToken">
+                                        <button type="submit" name="user_verify" class="buttons miniButtons" id="miniButtons">
+                                        <img src="" alt=""> Verifiser
+                                    </button>
+                                    </form>
+                                </td>
                         </tr>
                     {% endfor %}
                 </table>

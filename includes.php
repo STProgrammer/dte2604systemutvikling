@@ -65,12 +65,16 @@
         && $session->get('User')->verifyUser($request)) {
         //Checks if user is verified or not
         if ($session->get('User')->isEmailVerified() == 0) {
-            header("location: ".$rel."register/verify.php?do=verification");
-            exit();
+            try {
+                echo $twig->render('error.twig', array('msg' => 'Brukeren har ikke verifisert sin epost!'));
+            } catch (LoaderError | RuntimeError | SyntaxError $e) { }
+            die();
         }
         if ($session->get('User')->isVerifiedByAdmin() == 0) {
-            header("location: ".$rel."register/verify.php?do=verification");
-            exit();
+            try {
+                echo $twig->render('error.twig', array('msg' => 'Brukeren er ikke verifisert av admin!'));
+            } catch (LoaderError | RuntimeError | SyntaxError $e) { }
+            die();
         }
         $user = $session->get('User'); // get the user data
     }

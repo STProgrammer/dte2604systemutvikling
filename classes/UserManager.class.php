@@ -546,6 +546,28 @@ class UserManager
     // END GET ALL EMPLOYEES
 
 
+    // GET ALL UNVERIFIED USERS
+    public function getUnverifiedUsers($colName) : array {
+        $allUsers = null;
+        try{
+            // $colName = "`".str_replace("`","``",$colName)."`";
+            $query   = "SELECT * FROM Users WHERE isVerifiedByAdmin = 0 ORDER BY `$colName` ASC;";
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute();
+            if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $allUsers;
+            }
+            else {
+                $this->notifyUser("User not found", "");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllEmployees()", $e->getMessage());
+            return array();
+        }
+        return array();
+    }
+    // END GET ALL UNVERIFIED USERS
 
 
 
