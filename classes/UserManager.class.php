@@ -16,7 +16,7 @@ class UserManager
 
 
 
-    private function notifyUser($strHeader, $strMessage)
+    private function notifyUser($strHeader, $strMessage = "")
     {
         $this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
@@ -37,14 +37,16 @@ class UserManager
         $phoneNumber = $this->request->request->get('phoneNumber');
         $mobileNumber = $this->request->request->get('mobileNumber');
         $IMAddress = $this->request->request->get('IMAddress');
-        $isCustomer = $this->request->request->getInt('isCustomer');
+        $userType = $this->request->request->get('userType', 1);
+        $isCustomer = $userType == 3 ? 1: 0;
         $status = $isCustomer ? "N/A": "Free";
-        $isTemporary = $this->request->request->getInt('isTemporary', 0);
+        $isTemporary = $userType == 2 ? 1: 0;
+        $isAdmin = ($userType == 4 && $user->isAdmin()) ? 1: 0;
         $isVerifiedByAdmin = $user->isAdmin() ? 1:0;
         try{
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $sth = $this->dbase->prepare("insert into Users (username, firstName, lastName, emailAddress, address, city, zipCode, phoneNumber, mobileNumber, IMAddress, password, dateRegistered, isCustomer, isTemporary, isVerifiedByAdmin, 
-                   isEmailVerified, status) values (:username, :firstName, :lastName, :emailAddress, :address, :city, :zipCode, :phoneNumber, :mobileNumber, :IMAddress, :password, NOW(), :isCustomer, :isTemporary, :isVerifiedByAdmin, 1, :status);");
+                   isEmailVerified, isAdmin, status) values (:username, :firstName, :lastName, :emailAddress, :address, :city, :zipCode, :phoneNumber, :mobileNumber, :IMAddress, :password, NOW(), :isCustomer, :isTemporary, :isVerifiedByAdmin, 1, :isAdmin, :status);");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
             $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
             $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
@@ -59,6 +61,7 @@ class UserManager
             $sth->bindParam(':isCustomer',  $isCustomer, PDO::PARAM_INT);
             $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
             $sth->bindParam(':isVerifiedByAdmin', $isVerifiedByAdmin, PDO::PARAM_INT);
+            $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
             $sth->bindParam(':status', $status, PDO::PARAM_STR);
             $sth->execute();
             if ($sth->rowCount() == 1) {
@@ -143,12 +146,12 @@ class UserManager
         $isProjectLeader = $this->request->request->getInt('isProjectLeader', $user->isProjectLeader());
         $isGroupLeader = $this->request->request->getInt('isGroupLeader', $user->isGroupLeader());
         if (!$this->isUsernameAvailable($user, $username)) {
-            $this->notifyUser("Failed to edit, username was already taken", "");
+            $this->notifyUser("Failed to edit, username was already taken");
             return false;
         }
         if (!$this->isEmailAvailable($user, $emailAddress)) {
             {
-                $this->notifyUser("Failed to edit, email was already taken", "");
+                $this->notifyUser("Failed to edit, email was already taken");
                 return false;
             }
         }

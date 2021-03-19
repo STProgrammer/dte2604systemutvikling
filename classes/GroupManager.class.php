@@ -52,7 +52,7 @@ class GroupManager
     public function newGroup(): bool //returns boolean value
     {
         $groupName = $this->request->request->get('groupName');
-        $isAdmin = $this->request->request->getInt('isAdmin');
+        $isAdmin = $this->request->request->getInt('isAdmin', 0);
         $groupLeader = $this->request->request->getInt('GroupLeader');
         try {
             $stmt = $this->db->prepare("INSERT INTO `Groups` (groupName, isAdmin, groupLeader)
@@ -94,7 +94,7 @@ WHERE NOT EXISTS
             $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
             $sth->bindParam(':oldGroupLeader', $oldGroupLeader, PDO::PARAM_INT);
             $sth->execute();
-            if ($sth->rowCount() == 1) {
+            if ($sth->rowCount() >= 1) {
                 $this->notifyUser('Group details changed');
                 $this->updateLeadershipStatus();
                 return true;
@@ -109,12 +109,32 @@ WHERE NOT EXISTS
     }
 
 
-
-
-
-
-    public function deleteGroup()
+    public function deleteGroup(Group $group) : bool
     {
+        $groupID = $group->getGroupID();
+        $groupLeader = $group->getGroupLeader();
+        try
+        {
+            $stmt = $this->dbase->prepare("DELETE FROM Groups WHERE groupID = :groupID;
+    UPDATE Users SET Users.isGroupLeader = 0
+WHERE NOT EXISTS
+  (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
+            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
+            $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() >= 1) {
+                $this->notifyUser( "Group deleted");
+                return true;
+            } else {
+                $this->notifyUser( "Failed to delete group!");
+                return false;
+            }
+        }
+        catch (Exception $e) {
+            $this->notifyUser( "Failed to delete group!", $e->getMessage());
+            return false;
+        }
+
     }
 
     public function getGroup(int $groupID)
@@ -122,10 +142,6 @@ WHERE NOT EXISTS
     }
 
     public function addEmployee(User $user)
-    {
-    }
-
-    public function assignLeader(User $leader)
     {
     }
 
