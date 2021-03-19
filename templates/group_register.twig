@@ -19,13 +19,6 @@
                     <br><label>Gruppenavn: </label>
                     <br><input type="text" name="groupName" value="" placeholder="Gruppenavn" maxlength=45 required
                                id="groupName"/>
-                    <br><label>Gruppeleder:</label>
-                    <br><div class="wrapper">
-                        <select name="groupLeader" id="" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
-                            {% for empl in employees %}
-                            <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }} (ID: {{ empl.getUserId }})</option>
-                            {% endfor %}
-                        </select></div>
                     {% if user.isAdmin %}
                     <br><label>Admin eller vanlig gruppe: </label>
                     <br><input type="radio" name="isAdmin" value="1" required>

@@ -33,7 +33,7 @@ class GroupManager
     public function getAllGroups(): array
     {
         try {
-            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName FROM Groups INNER JOIN Users ON Groups.groupLeader=Users.UserID ORDER BY `groupName` ASC;");
+            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName FROM Groups LEFT JOIN Users ON Groups.groupLeader=Users.UserID ORDER BY `groupName` ASC;");
             $stmt->execute();
             if ($groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
                 return $groups;
@@ -53,15 +53,11 @@ class GroupManager
     {
         $groupName = $this->request->request->get('groupName');
         $isAdmin = $this->request->request->getInt('isAdmin', 0);
-        $groupLeader = $this->request->request->getInt('groupLeader');
         try {
-            $stmt = $this->db->prepare("INSERT INTO `Groups` (groupName, isAdmin, groupLeader)
-              VALUES (:groupName, :isAdmin, :groupLeader); 
-              UPDATE Users SET isGroupLeader = 1 WHERE UserID = :groupLeader;
-              INSERT IGNORE INTO UsersAndGroups (groupID, userID) VALUES (:groupID, :groupLeader);");
+            $stmt = $this->db->prepare("INSERT INTO `Groups` (groupName, isAdmin)
+              VALUES (:groupName, :isAdmin);");
             $stmt->bindParam(':groupName', $groupName, PDO::PARAM_STR, 100);
             $stmt->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT, 100);
-            $stmt->bindParam(':groupLeader',  $groupLeader, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
                 $this->NotifyUser("Group added");
                 return true;
@@ -80,7 +76,7 @@ class GroupManager
     {
         $groupID = $group->getGroupID();
         $groupName = $this->request->request->get('groupName', $group->getGroupName());
-        $groupLeader = $this->request->request->getInt('groupLeader', $group->getGroupLeader());
+        $groupLeader = $this->request->request->getInt('groupLeader');
         $oldGroupLeader = $group->getGroupLeader();
         $isAdmin = $this->request->request->getInt('isAdmin', $group->isAdmin());
         try {
@@ -143,13 +139,13 @@ WHERE NOT EXISTS
     public function getGroup(int $groupID)
     {
         try {
-            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName FROM Groups INNER JOIN Users ON Groups.groupLeader=Users.UserID WHERE Groups.groupID = :groupID;");
+            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName FROM Groups LEFT JOIN Users ON Groups.groupLeader=Users.UserID WHERE Groups.groupID = :groupID;");
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($group = $stmt->fetchObject("Group")) {
                 return $group;
             } else {
-                $this->notifyUser("Ingne grupper funnet", "Kunne ikke gruppee");
+                $this->notifyUser("Ingne grupper funnet", "Kunne ikke hente gruppe");
                 return new Group();
             }
         } catch (Exception $e) {
