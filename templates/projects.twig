@@ -82,7 +82,7 @@
                             {#HVIS ADMIN, REDIGER KNAPP#}
                             {% if User.isAdmin %}
                             <td><button class="buttons miniButtons" id="miniButtons"
-                                        onclick="window.location.href='projects_editProject.php';">
+                                        onclick="location.href='projects_editProject.php?projectName={{ Project.getProjectName() }}';">
                                     <img src="" alt=""> Rediger
                                 </button></td>
                             {% endif %}
