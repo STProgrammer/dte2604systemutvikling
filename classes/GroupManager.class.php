@@ -95,9 +95,9 @@ WHERE NOT EXISTS
             $sth->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
             $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
             $sth->bindParam(':oldGroupLeader', $oldGroupLeader, PDO::PARAM_INT);
-            $sth->execute();
-            if ($sth->rowCount() >= 1) {
-                $this->addEmployees($groupID, $this->request->request->get('groupMembers[]'));
+            if ($sth->execute()) {
+                $sth->closeCursor();
+                $this->addEmployees($groupID, $this->request->request->get('groupMembers'));
                 $this->notifyUser('Group details changed');
                 return true;
             } else {
@@ -158,16 +158,18 @@ WHERE NOT EXISTS
         }
     }
 
-    public function addEmployees($groupID, array $users)
+    public function addEmployees($groupID)
     {
+        $users = $this->request->request->get('groupMembers');
         try {
             $stmt = $this->db->prepare("INSERT IGNORE INTO UsersAndGroups (groupID, userID) VALUES (:groupID, :userID);");
             if(is_array($users)){
                 foreach ($users as $userID) {
-                    $stmt->bindParam(':groupID', $userID, PDO::PARAM_INT);
-                    $stmt->bindParam(':userID', $groupID, PDO::PARAM_INT);
+                    $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
+                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
                     $stmt->execute();
                 }
+                $this->notifyUser("Medlemmer ble lagt til");
             } else {
                 $this->notifyUser("Failed to add tags"); return false;
             }
@@ -193,8 +195,9 @@ WHERE NOT EXISTS
     }
 
 
-    public function removeEmployees(Group $group, array $users)
+    public function removeEmployees(Group $group)
     {
+        $users = $this->request->request->get('groupMembers');
         $groupID = $group->getGroupID();
         $groupLeader = $group->getGroupLeader();
         try {
@@ -205,8 +208,8 @@ WHERE NOT EXISTS
   (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
             if(is_array($users)){
                 foreach ($users as $userID) {
-                    $stmt->bindParam(':groupID', $userID, PDO::PARAM_INT);
-                    $stmt->bindParam(':userID', $groupID, PDO::PARAM_INT);
+                    $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
+                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
                     $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
                     $stmt->execute();
                 }
@@ -215,6 +218,24 @@ WHERE NOT EXISTS
             }
         } catch (Exception $e) { $this->notifyUser("Failed to add tags", $e->getMessage()); return false;}
         return true;
+    }
+
+    public function getGroupMembers($groupID) : array {
+        $members = array();
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID);");
+            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
+            $stmt->execute();
+            if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
+                return $members;
+            } else {
+                $this->notifyUser("Ingne medlemmer funnet", "Kunne ikke hente medlemmer av gruppa");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getGroupMembers()", $e->getMessage());
+            return array();
+        }
     }
 
 }
