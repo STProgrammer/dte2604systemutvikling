@@ -197,8 +197,8 @@ WHERE NOT EXISTS
         $groupID = $group->getGroupID();
         $groupLeader = $group->getGroupLeader();
         try {
-            $stmt = $this->db->prepare("DELETE FROM UsersAndGroups WHERE groupID = :groupID AND userId = :userID);
-UPDATE Groups SET Groups.groupLeader = null WHERE groupID = :groupID AND Groups.groupLeader = :userID;
+            $stmt = $this->db->prepare("DELETE FROM UsersAndGroups WHERE groupID = :groupID AND userId = :userID;
+UPDATE Groups SET Groups.groupLeader = NULL WHERE groupID = :groupID AND Groups.groupLeader = :userID;
     UPDATE Users SET Users.isGroupLeader = 0
 WHERE NOT EXISTS
   (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
@@ -208,6 +208,7 @@ WHERE NOT EXISTS
                     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
                     $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
                     $stmt->execute();
+                    $stmt->closeCursor();
                 }
             } else {
                 $this->notifyUser("Failed to add tags"); return false;
