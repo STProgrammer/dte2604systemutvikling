@@ -8,6 +8,7 @@ class Group
     private $isAdmin;
     private $groupLeader;
     private $firstName;
+    private $lastName;
 
 
     /**
@@ -41,7 +42,6 @@ class Group
     {
         $this->lastName = $lastName;
     }
-    private $lastName;
 
     /**
      * @return mixed

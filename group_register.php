@@ -15,7 +15,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
             $request->request->set('isAdmin', 0);
         }
         if ($groupManager->newGroup()) {
-            header("Location: ../groups.php?registeredgroup=1");
+            header("Location: groups.php?registeredgroup=1");
             exit();
         } else {
             header("Location: ?failedtoregistergroup=1");

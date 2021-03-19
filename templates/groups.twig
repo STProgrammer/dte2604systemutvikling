@@ -35,7 +35,7 @@
                             <th>Se detaljer og rediger</th>
                         {% endif %}
                     </tr>
-                    {% for usr in users %}
+                    {% for grp in groups %}
                         <tr>
                             <td>{{ grp.getGroupName }}</td>
                             <td>{{ grp.getFirstName }}  {{ grp.getLastName }}</td>
@@ -46,18 +46,11 @@
                                 <td>{{ grp.getStatus }}</td>
                             {% endif %}
 
-                            <!-- Bruker godkjent av admin-->
-                            {% if usr.isVerifiedByAdmin %}
-                                <td>Verifisert</td>
-                            {% else %}
-                                <td>Ikke Verifisert</td>
-                            {% endif %}
-
                             <!-- if user is admin  -->
                             {% if user.isAdmin %}
                                 <td>
                                     <button class="buttons miniButtons" id="miniButtons"
-                                            onclick="window.location.href='group_edit.php?userid={{ grp.getGroupID() }}';">
+                                            onclick="window.location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
                                         <img src="" alt=""> Rediger
                                     </button>
                                 </td>
