@@ -1,99 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link type="text/css" rel="stylesheet" href="../stylesheet.css" />
-    <title>Register User</title>
-</head>
-<body>
-<script>
-    //Delvis modifisert fra https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page
-    var check = function() {
-        var pass1 = document.getElementById("password1").value;
-        var pass2 = document.getElementById("password2").value;
-        if (pass1 != "" && pass2 != "") {
-            if (pass1 === pass2) {
-                document.getElementById('message').style.color = 'green';
-                document.getElementById('message').innerHTML = 'matching';
-                return true;
-            } else {
-                document.getElementById('message').style.color = 'red';
-                document.getElementById('message').innerHTML = 'not matching';
-                return false;
-            }
+{% extends "layout.twig" %}
+{% block content %}
+
+
+    <script>
+        //Delvis modifisert fra https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page
+        var check = function () {
+            var pass1 = document.getElementById("password1").value;
+            var pass2 = document.getElementById("password2").value;
+            if (pass1 != "" && pass2 != "") {
+                if (pass1 === pass2) {
+                    document.getElementById('message').style.color = 'green';
+                    document.getElementById('message').innerHTML = 'matching';
+                    return true;
+                } else {
+                    document.getElementById('message').style.color = 'red';
+                    document.getElementById('message').innerHTML = 'not matching';
+                    return false;
+                }
+            } else document.getElementById('message').innerHTML = '';
+            return false;
         }
-        else document.getElementById('message').innerHTML = '';
-        return false;
-    }
 
-    function validate(){
-        return check();
-    }
+        function validate() {
+            return check();
+        }
 
-</script>
-<h1>Register user</h1>
-{% if session.getFlashBag.has('header') %}
-    {% for header in session.getFlashBag.get('header', []) %}
-        <h3>{{ header }}</h3>
-    {% endfor %}
-    {% for message in session.getFlashBag.get('message', []) %}
-        <p>{{ message }}</p>
-    {% endfor %}
-{% endif %}
-<div class = "form">
-    <form method="post" id="user_register_form" onsubmit="return validate();">
-        <div>
-            <br><label>Fornavn: </label>
-            <br><input type="text" name="firstName" value="" placeholder="Fornavn" maxlength=90 required id="firstname" />
-            <br><label>Etternavn:</label>
-            <br><input type="text" name="lastName" value="" placeholder="Etternavn" maxlength=90 required id="lastname" />
-        </div>
-        <div>
-            <br><label>Epost:</label>
-            <br><input type="email" name="emailAddress" value="" placeholder="Epost adddresse" maxlength=60 required id="emailAddress" />
-            <span></span>
-        </div>
-        <label>Brukernavn:</label>
-        <div>
-            <br><input type="text" name="username" value="" placeholder="" maxlength=45 required id="username" />
-            <span></span>
-        </div>
-        <div>
-            <br><label>Passord: </label>
-            <br><input type="password" name="password"  required id="password1" placeholder="Passord" minlength=8 maxlength=40 value="" onkeyup='check();'>
-            <br><label>Confirm password:</label>
-            <br><input type="password" name="password2" required id="password2" placeholder="Gjenta passord" minlength=8 maxlength=40 value="" onkeyup='check();'/>
-            <span id='message'></span>
-        </div>
-        <div>
-            <br><label>Kunde eller arbeider: </label>
-            <br><input type="radio" id="isCustomer" name="isCustomer" value="1" required>
-            <label for="isCustomer">Kunde</label><br>
-            <input type="radio" id="notCustomer" name="isCustomer" value="0" required>
-            <label for="arbeider">Arbeider</label><br>
-            <br><input type="checkbox" id="isTemporary" name="isTemporary" value="1">
-            <label for="isTemporary">Er temporær</label><br>
-        </div>
-        <div>
-            <br><label>Addresse:</label>
-            <br><input type="text" name="address" value="" placeholder="Addresse" maxlength=90 required />
-            <br><label>Postnummer:</label>
-            <br><input type="text" name="zipCode" value="" placeholder="Post nr" maxlength=10 required />
-            <br><label>By:</label>
-            <br><input type="text" name="city" value="" placeholder="By" maxlength=45 required />
-            <br><label>Telefon nummer: </label>
-            <br><input type="text" name="phoneNumber" value="" placeholder="+471234568" maxlength=45 />
-            <br><label>Mobil nummer:</label>
-            <br><input type="text" name="mobileNumber" value="" placeholder="+471234567" maxlength=45 />
-            <br><label>IM addresse:</label>
-            <br><input type="text" name="IMAddress" value="" placeholder="IM addresse" maxlength=45 />
-            <input type="hidden" value="{{ getMac("user_register") }}" name="XSRFPreventionToken">
-            <br><input type="submit" name="register" id="reg_btn" value="registrer">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <script src="user_register_check.js"></script>
-        </div>
-    </form>
-</div>
-<p id="back"><a href = "javascript:history.back()"><img src="{{rel}}Images/BackBtn.svg" alt="Back" width="100"></a></p>
-</body>
-</html>
+    </script>
+    <section class="register_user" id="register_user">
+        <div class="openContainerNoBorder text" id="table_edit">
+            <h3>Lag ny bruker</h3>
+            <div class>
+                {% if session.getFlashBag.has('header') %}
+                    {% for header in session.getFlashBag.get('header', []) %}
+                        <h3>{{ header }}</h3>
+                    {% endfor %}
+                    {% for message in session.getFlashBag.get('message', []) %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div id="text">
+                <form method="post" id="user_register_form" onsubmit="return validate();">
+                    <br><label>Fornavn: </label>
+                    <br><input type="text" name="firstName" value="" placeholder="Fornavn" maxlength=90 required
+                               id="firstname"/>
+
+                    <br><label>Etternavn:</label>
+                    <br><input type="text" name="lastName" value="" placeholder="Etternavn" maxlength=90 required
+                               id="lastname"/>
+
+                    <br><label>Epost:</label>
+                    <br><input type="email" name="emailAddress" value="" placeholder="Epost" maxlength=60
+                               required id="emailAddress"/>
+
+                    <br><label>Brukernavn:</label>
+                    <br><input type="text" name="username" value="" placeholder="Brukernavn" maxlength=45 required
+                               id="username"/>
+
+                    <br><label>Passord: </label>
+                    <br><input type="password" name="password" required id="password1" placeholder="Passord"
+                               minlength=8 maxlength=40 value="" onkeyup='check();'>
+
+                    <br><label>Gjenta passord:</label>
+                    <br><input type="password" name="password2" required id="password2" placeholder="Gjenta passord"
+                               minlength=8 maxlength=40 value="" onkeyup='check();'/>
+                    <span id='message'></span>
+
+                    <br><label>Kunde eller arbeider: </label>
+                    <br><input type="radio" id="isCustomer" name="isCustomer" value="1" required>
+                    <label for="isCustomer">Kunde</label><br>
+                    <input type="radio" id="notCustomer" name="isCustomer" value="0" required>
+                    <label for="arbeider">Arbeider</label><br>
+                    <br><input type="checkbox" id="isTemporary" name="isTemporary" value="1">
+                    <label for="isTemporary">Er innleid</label><br>
+
+                    <br><label>Addresse:</label>
+                    <br><input type="text" name="address" value="" placeholder="Addresse" maxlength=90 required/>
+                    <br><label>Postnummer:</label>
+                    <br><input type="text" name="zipCode" value="" placeholder="Post nr" maxlength=10 required/>
+                    <br><label>By:</label>
+                    <br><input type="text" name="city" value="" placeholder="By" maxlength=45 required/>
+                    <br><label>Telefon nummer: </label>
+                    <br><input type="text" name="phoneNumber" value="" placeholder="+471234568" maxlength=45/>
+                    <br><label>Mobil nummer:</label>
+                    <br><input type="text" name="mobileNumber" value="" placeholder="+471234567" maxlength=45/>
+                    <br><label>IM addresse:</label>
+                    <br><input type="text" name="IMAddress" value="" placeholder="IM addresse" maxlength=45/>
+                    <input type="hidden" value="{{ getMac("user_register") }}" name="XSRFPreventionToken">
+                    <br><input type="submit" name="register" id="reg_btn" value="Lag ny bruker">
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                    <script src="user_register_check.js"></script>
+
+                </form>
+            </div>
+            <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
+
+{% endblock %}

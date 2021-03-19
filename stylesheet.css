@@ -109,6 +109,11 @@ section.loginn { margin-top: 10em
 /**-------------  EDIT_USER  ----------------------*/
 section.edit_user { margin-top: 6em; margin-bottom: 4em;
 }
+/**-------------  REGISTER_USER  ----------------------*/
+section.register_user {
+    margin-top: 6em;
+    margin-bottom: 4em;
+}
 /**-------------  PROFILE_EDIT  ----------------------*/
 section.profile_edit { margin-top: 6em; margin-bottom: 4em;
 }
