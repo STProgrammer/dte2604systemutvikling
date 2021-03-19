@@ -1,0 +1,42 @@
+{% extends "layout.twig" %}
+{% block content %}
+
+    <section class="register_group" id="register_group">
+        <div class="openContainerNoBorder text" id="table_register">
+            <h3>Lag ny bruker</h3>
+            <div class>
+                {% if session.getFlashBag.has('header') %}
+                    {% for header in session.getFlashBag.get('header', []) %}
+                        <h3>{{ header }}</h3>
+                    {% endfor %}
+                    {% for message in session.getFlashBag.get('message', []) %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div id="text">
+                <form method="post" id="group_register_form">
+                    <br><label>Gruppenavn: </label>
+                    <br><input type="text" name="groupName" value="" placeholder="Gruppenavn" maxlength=45 required
+                               id="groupName"/>
+                    <br><label>Gruppeleder:</label>
+                    <br><div class="wrapper">
+                        <select name="groupLeader" id="" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+                            {% for empl in employees %}
+                            <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }} (ID: {{ empl.getUserId }})</option>
+                            {% endfor %}
+                        </select></div>
+                    {% if user.isAdmin %}
+                    <br><label>Admin eller vanlig gruppe: </label>
+                    <br><input type="radio" name="isAdmin" value="1" required>
+                    <label>Admin</label><br>
+                    <input type="radio" name="isAdmin" value="0" required>
+                    <label>Vanlig</label><br>
+                    {% endif %}
+                    <input type="hidden" value="{{ getMac("Group register") }}" name="XSRFPreventionToken">
+                    <br><input type="submit" name="group_register" id="reg_btn" value="Ny gruppe">
+                </form>
+            </div>
+            <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
+
+{% endblock %}

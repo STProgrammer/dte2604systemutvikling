@@ -3,7 +3,7 @@
 
     <script>
         //Delvis modifisert fra https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page
-        var check = function() {
+        var check = function () {
             var pass1 = document.getElementById("password1").value;
             var pass2 = document.getElementById("password2").value;
             if (pass1 != "" && pass2 != "") {
@@ -16,100 +16,101 @@
                     document.getElementById('message').innerHTML = 'not matching';
                     return false;
                 }
-            }
-            else document.getElementById('message').innerHTML = '';
+            } else document.getElementById('message').innerHTML = '';
             return false;
         }
 
-        function validate(){
+        function validate() {
             return check();
         }
     </script>
-    {% if session.getFlashBag.has('header') %}
-        {% for header in session.getFlashBag.get('header', []) %}
-            <h3>{{ header }}</h3>
-        {% endfor %}
-        {% for message in session.getFlashBag.get('message', []) %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+
     <section id="profile_edit" class="profile_edit">
-    <h4>Min profil</h4>
-    <div class>
-        <form method="post" id="profile_edit_form">
-            <table class="table_edit" id="table_edit">
-                <tr>
-                    <td><label for="address">Adresse:</label></td>
-                    <td><input type="text" id="address" name="address" placeholder="Adresse" maxlength=90 value="{{ user.getAddress() }}" required /></td>
-                </tr>
-                <tr>
-                    <td><label for="zipCode ">Postnummer:</label></td>
-                    <td><input type="text" id="zipCode "name="zipCode" placeholder="Postnummer" maxlength=10 required value="{{ user.getZipCode() }}" /></td>
-                </tr>
-                <tr>
-                    <td><label for="city">Poststed:</label></td>
-                    <td><input type="text" id="city" name="city" placeholder="Poststed" maxlength=45 required value="{{ user.getCity() }}" /></td>
-                </tr>
-                <tr>
-                    <td><label for="phoneNumber">Telefon:</label></td>
-                    <td><input type="text" id="phoneNumber" name="phoneNumber" placeholder="Telefon" maxlength=45 value="{{ user.getPhoneNumber() }}" required/></td>
-                </tr>
-                <tr>
-                    <td><label for="mobileNumber">Mobil:</label></td>
-                    <td><input type="text" name="mobileNumber" id="mobileNumber" placeholder="Mobil" maxlength=45 value="{{ user.getMobileNumber() }}" required/></td>
-                </tr>
-                <tr>
-                    <td><label for="IMAddress">IM adresse:</label></td>
-                    <td><input type="text" id="IMAddress" name="IMAddress" placeholder="IM adresse" maxlength=45 value="{{ user.getIMAddress() }}" required/></td>
-                </tr>
-                <tr>
-                    <input type="hidden" value="{{ getMac("Edit my information") }}" name="XSRFPreventionToken">
-                    <td><input type="submit" name="profile_edit" id="edit_btn" value="Endre personalia"></td>
-                </tr>
-        </form>
-    </div>
-        <div>
-            <form method="post" id="edit_my_email">
-                    <tr>
-                        <td><label for="emailAddress">Epost:</label></td>
-                        <td><input type="email" name="emailAddress" value="{{ user.getEmailAddress() }}" placeholder="Epost adddresse" maxlength=60 required id="emailAddress" /></td>
-                    </tr>
-                    <tr>
-                    <input type="hidden" value="{{ getMac("Edit my email address") }}" name="XSRFPreventionToken">
-                    <td><input type="submit" name="edit_email" id="edit_btn" value="Endre epost"></td>
-                    </tr>
-            </form>
-        </div>
-        <div>
-        <form method="post" id="edit_my_username">
-                <tr>
-                    <td><label>Brukernavn:</label></td>
-                    <td><input type="text" name="username" value="{{ user.getUsername() }}" placeholder="Brukernavn" maxlength=45 required id="username" /></td>
-                </tr>
-                <tr>
-                    <input type="hidden" value="{{ getMac("Edit my username") }}" name="XSRFPreventionToken">
-                    <td><input type="submit" name="edit_username" id="edit_btn" value="Endre brukernavn"></td>
-                </tr>
-        </form>
-        </div>
-        <div>
-        <form method="post" id="edit_my_password" onsubmit="return validate();">
-                <tr>
-                    <td><label>Passord: </label></td>
-                    <td><input type="password" name="password"  required id="password1" placeholder="Passord" minlength=8 maxlength=40 value="" onkeyup='check();'></td>
-                </tr>
-                <tr>
-                    <td><label>Bekreft passord:</label></td>
-                    <td><input type="password" name="password2" required id="password2" placeholder="Gjenta passord" minlength=8 maxlength=40 value="" onkeyup='check();'/></td>
-                </tr>
-                <span id='message'></span>
-                <input type="hidden" value="{{ getMac("Edit my password") }}" name="XSRFPreventionToken">
-                <tr>
-                    <td><input type="submit" name="edit_password" id="edit_btn" value="Endre passord"></td>
-                </tr>
-            </table>
-        </form>
-    </div>
+        <div class="openContainerNoBorder text" id="table_edit">
+            <h3>Min profil</h3>
+            <div class>
+                {% if session.getFlashBag.has('header') %}
+                    {% for header in session.getFlashBag.get('header', []) %}
+                        <h3>{{ header }}</h3>
+                    {% endfor %}
+                    {% for message in session.getFlashBag.get('message', []) %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+                <form method="post" id="profile_edit_form">
+                    <div id="text">
+                        <h5>Endre personalia</h5>
+                        <br><label for="address">Adresse:</label>
+                        <br><input type="text" id="address" name="address" placeholder="Adresse" maxlength=90
+                                   value="{{ user.getAddress() }}" required/>
+
+                        <br><label for="zipCode ">Postnummer:</label>
+                        <br><input type="text" id="zipCode " name="zipCode" placeholder="Postnummer" maxlength=10
+                                   required value="{{ user.getZipCode() }}"/>
+
+                        <br><label for="city">Poststed:</label>
+                        <br><input type="text" id="city" name="city" placeholder="Poststed" maxlength=45 required
+                                   value="{{ user.getCity() }}"/>
+
+                        <br><label for="phoneNumber">Telefon:</label>
+                        <br><input type="text" id="phoneNumber" name="phoneNumber" placeholder="Telefon"
+                                   maxlength=45 value="{{ user.getPhoneNumber() }}" required/>
+
+                        <br><label for="mobileNumber">Mobil:</label>
+                        <br><input type="text" name="mobileNumber" id="mobileNumber" placeholder="Mobil"
+                                   maxlength=45 value="{{ user.getMobileNumber() }}" required/>
+
+                        <br><label for="IMAddress">IM adresse:</label>
+                        <br><input type="text" id="IMAddress" name="IMAddress" placeholder="IM adresse" maxlength=45
+                                   value="{{ user.getIMAddress() }}" required/>
+
+                        <input type="hidden" value="{{ getMac("Edit my information") }}" name="XSRFPreventionToken">
+                        <br><input type="submit" name="profile_edit" id="edit_btn" value="Endre personalia">
+                    </div>
+                </form>
+                <h5>Endre E-post</h5>
+                <form method="post" id="edit_my_email">
+                    <div id="text">
+                        <br><label for="emailAddress">Epost:</label>
+                        <br><input type="email" name="emailAddress" value="{{ user.getEmailAddress() }}"
+                                   placeholder="Epost adddresse" maxlength=60 required id="emailAddress"/>
+                        <input type="hidden" value="{{ getMac("Edit my email address") }}"
+                               name="XSRFPreventionToken">
+                        <br><input type="submit" name="edit_email" id="edit_btn" value="Endre epost">
+                    </div>
+                </form>
+                    <form method="post" id="edit_my_username">
+                        <div id="text">
+                            <h5>Endre brukernavn</h5>
+                            <br><label for="username">Brukernavn:</label>
+                            <br><input type="text" name="username" value="{{ user.getUsername() }}"
+                                       placeholder="Brukernavn" maxlength=45 required id="username"/>
+                            <input type="hidden" value="{{ getMac("Edit my username") }}" name="XSRFPreventionToken">
+                            <br><input type="submit" name="edit_username" id="edit_btn" value="Endre brukernavn">
+                        </div>
+                    </form>
+
+                    <form method="post" id="edit_my_password" onsubmit="return validate();">
+                        <div id="text">
+                            <h5>Endre passord</h5>
+                            <br><label for="password1">Passord: </label>
+                            <br><input type="password" name="password" required id="password1" placeholder="Passord"
+                                       minlength=8 maxlength=40 value="" onkeyup='check();'>
+                            <br><label for="password2">Bekreft passord:</label>
+                            <br><input type="password" name="password2" required id="password2"
+                                       placeholder="Gjenta passord" minlength=8 maxlength=40 value=""
+                                       onkeyup='check();'/>
+
+                            <span id='message'></span>
+                            <input type="hidden" value="{{ getMac("Edit my password") }}" name="XSRFPreventionToken">
+
+                            <br><input type="submit" name="edit_password" id="edit_btn" value="Endre passord">
+                        </div>
+
+                    </form>
+            <br><button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
+                </div>
     </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="user_register_check.js"></script>

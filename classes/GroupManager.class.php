@@ -21,7 +21,7 @@ class GroupManager
 
     private function NotifyUser($strHeader, $strMessage = "")
     {
-        $this->session->getFlashBag()->clear();
+        //$this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
         $this->session->getFlashBag()->add('message', $strMessage);
     }
@@ -33,7 +33,7 @@ class GroupManager
     public function getAllGroups(): array
     {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Groups ORDER BY `groupName` ASC");
+            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName FROM Groups INNER JOIN Users ON Groups.groupLeader=Users.UserID ORDER BY `groupName` ASC;");
             $stmt->execute();
             if ($groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
                 return $groups;
@@ -52,12 +52,13 @@ class GroupManager
     public function newGroup(): bool //returns boolean value
     {
         $groupName = $this->request->request->get('groupName');
-        $isAdmin = $this->request->request->getInt('isAdmin');
-        $groupLeader = $this->request->request->getInt('GroupLeader');
+        $isAdmin = $this->request->request->getInt('isAdmin', 0);
+        $groupLeader = $this->request->request->getInt('groupLeader');
         try {
             $stmt = $this->db->prepare("INSERT INTO `Groups` (groupName, isAdmin, groupLeader)
               VALUES (:groupName, :isAdmin, :groupLeader); 
-              UPDATE Users SET isGroupLeader = 1 WHERE UserID = :groupLeader;");
+              UPDATE Users SET isGroupLeader = 1 WHERE UserID = :groupLeader;
+              INSERT IGNORE INTO UsersAndGroups (groupID, userID) VALUES (:groupID, :groupLeader);");
             $stmt->bindParam(':groupName', $groupName, PDO::PARAM_STR, 100);
             $stmt->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT, 100);
             $stmt->bindParam(':groupLeader',  $groupLeader, PDO::PARAM_INT, 100);
@@ -83,20 +84,21 @@ class GroupManager
         $oldGroupLeader = $group->getGroupLeader();
         $isAdmin = $this->request->request->getInt('isAdmin', $group->isAdmin());
         try {
-            $sth = $this->dbase->prepare("update Users set groupName = :groupName, groupLeader = :groupLeader, 
+            $sth = $this->db->prepare("update Groups set groupName = :groupName, groupLeader = :groupLeader, 
     isAdmin = :isAdmin WHERE groupID = :groupID;
-    UPDATE Users SET Users.isGroupLeader = 0
+      UPDATE Users SET Users.isGroupLeader = 0
 WHERE NOT EXISTS
-  (SELECT groupLeader FROM Groups WHERE groupLeader = :oldGroupLeader) AND Users.userID = :oldGroupLeader;");
+  (SELECT groupLeader FROM Groups WHERE groupLeader = :oldGroupLeader) AND Users.userID = :oldGroupLeader;
+      UPDATE Users SET Users.isGroupLeader = 1 WHERE Users.userID = :groupLeader;");
             $sth->bindParam(':groupID', $groupID, PDO::PARAM_INT);
             $sth->bindParam(':groupName', $groupName, PDO::PARAM_STR);
             $sth->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
             $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
             $sth->bindParam(':oldGroupLeader', $oldGroupLeader, PDO::PARAM_INT);
             $sth->execute();
-            if ($sth->rowCount() == 1) {
+            if ($sth->rowCount() >= 1) {
+                $this->addEmployees($groupID, $this->request->request->get('groupMembers[]'));
                 $this->notifyUser('Group details changed');
-                $this->updateLeadershipStatus();
                 return true;
             } else {
                 $this->notifyUser('Failed to change group details');
@@ -109,24 +111,110 @@ WHERE NOT EXISTS
     }
 
 
-
-
-
-
-    public function deleteGroup()
+    public function deleteGroup(Group $group) : bool
     {
+        $groupID = $group->getGroupID();
+        $groupLeader = $group->getGroupLeader();
+        try
+        {
+            $stmt = $this->db->prepare("DELETE FROM Groups WHERE groupID = :groupID;
+  DELETE FROM UsersAndGroups WHERE groupID = :groupID;
+      UPDATE Users SET Users.isGroupLeader = 0
+WHERE NOT EXISTS
+  (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
+            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
+            $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() >= 1) {
+                $this->notifyUser( "Group deleted");
+                return true;
+            } else {
+                $this->notifyUser( "Failed to delete group!");
+                return false;
+            }
+        }
+        catch (Exception $e) {
+            $this->notifyUser( "Failed to delete group!", $e->getMessage());
+            return false;
+        }
+
     }
 
     public function getGroup(int $groupID)
     {
+        try {
+            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName FROM Groups INNER JOIN Users ON Groups.groupLeader=Users.UserID WHERE Groups.groupID = :groupID;");
+            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
+            $stmt->execute();
+            if ($group = $stmt->fetchObject("Group")) {
+                return $group;
+            } else {
+                $this->notifyUser("Ingne grupper funnet", "Kunne ikke gruppee");
+                return new Group();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllGroups()", $e->getMessage());
+            return new Group();
+        }
     }
 
-    public function addEmployee(User $user)
+    public function addEmployees($groupID, array $users)
     {
+        try {
+            $stmt = $this->db->prepare("INSERT IGNORE INTO UsersAndGroups (groupID, userID) VALUES (:groupID, :userID);");
+            if(is_array($users)){
+                foreach ($users as $userID) {
+                    $stmt->bindParam(':groupID', $userID, PDO::PARAM_INT);
+                    $stmt->bindParam(':userID', $groupID, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+            } else {
+                $this->notifyUser("Failed to add tags"); return false;
+            }
+        } catch (Exception $e) { $this->notifyUser("Failed to add tags", $e->getMessage()); return false;}
+        return true;
     }
 
-    public function assignLeader(User $leader)
+    public function removeAllEmployees(Group $group)
     {
+        $groupID = $group->getGroupID();
+        $groupLeader = $group->getGroupLeader();
+        try {
+            $stmt = $this->db->prepare("DELETE FROM UsersAndGroups WHERE groupID = :groupID;
+UPDATE Groups SET Groups.groupLeader = null WHERE groupID = :groupID;
+    UPDATE Users SET Users.isGroupLeader = 0
+WHERE NOT EXISTS
+  (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
+            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
+            $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (Exception $e) { $this->notifyUser("Failed to add employees",  $e->getMessage()); return false;}
+        return true;
+    }
+
+
+    public function removeEmployees(Group $group, array $users)
+    {
+        $groupID = $group->getGroupID();
+        $groupLeader = $group->getGroupLeader();
+        try {
+            $stmt = $this->db->prepare("DELETE FROM UsersAndGroups WHERE groupID = :groupID AND userId = :userID);
+UPDATE Groups SET Groups.groupLeader = null WHERE groupID = :groupID AND Groups.groupLeader = :userID;
+    UPDATE Users SET Users.isGroupLeader = 0
+WHERE NOT EXISTS
+  (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
+            if(is_array($users)){
+                foreach ($users as $userID) {
+                    $stmt->bindParam(':groupID', $userID, PDO::PARAM_INT);
+                    $stmt->bindParam(':userID', $groupID, PDO::PARAM_INT);
+                    $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+            } else {
+                $this->notifyUser("Failed to add tags"); return false;
+            }
+        } catch (Exception $e) { $this->notifyUser("Failed to add tags", $e->getMessage()); return false;}
+        return true;
     }
 
 }

@@ -12,12 +12,10 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     // Change user details
     $userToEdit = $userManager->getUser($request->query->getInt('userid'));
     if ($request->request->has('user_edit') && XsrfProtection::verifyMac("Edit user's information")) {
-        //ONLY ADMIN CAN MAKE ANOTHER USER ADMIN, CUSTOMER CAN'T BE ADMIN
-        if (!$user->isAdmin() or $user->isCustomer()) {
-            $request->request->set('isAdmin', 0);
-        }
-        if ($user->isCustomer()) {
-            $request->request->set('isTemporary', 0);
+        //Only admins can make other users admin, cheating not allowed
+        $userType = $request->request->getInt('userType');
+        if (!$user->isAdmin() && $userType == 3) {
+            $request->request->set('userType', 2);
         }
         if ($userManager->editOtherUser($userToEdit)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
@@ -30,7 +28,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     //Delete user
     else if ($request->request->has('delete_user') && XsrfProtection::verifyMac("Delete user") && $user->isAdmin()) {
         if ($userManager->deleteUser($userToEdit->getUserId())) {
-            header("Location: ../userprofiles.php");
+            header("Location: userprofiles.php");
             exit();
         } else {
             header("Location: ");
