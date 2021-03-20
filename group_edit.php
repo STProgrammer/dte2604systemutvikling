@@ -44,7 +44,7 @@ if ($user && $group && ($user->isAdmin() or $user->getUserID() == $group->getGro
         }
     }
     else if ($request->request->has('group_delete') && $user->isAdmin()) {
-        if ($groupManager->deleteGoup($group) && XsrfProtection::verifyMac("Delete group")) {
+        if ($groupManager->deleteGroup($group) && XsrfProtection::verifyMac("Delete group")) {
             header("Location: groups.php?deleteddgroup=1");
             exit();
         } else {

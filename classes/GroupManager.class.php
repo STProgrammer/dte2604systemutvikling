@@ -73,7 +73,7 @@ class GroupManager
     {
         $groupID = $group->getGroupID();
         $groupName = $this->request->request->get('groupName', $group->getGroupName());
-        $groupLeader = $this->request->request->getInt('groupLeader');
+        $groupLeader = $this->request->request->get('groupLeader', null);
         $oldGroupLeader = $group->getGroupLeader();
         $isAdmin = $this->request->request->getInt('isAdmin', $group->isAdmin());
         try {
@@ -163,9 +163,9 @@ WHERE NOT EXISTS
                 }
                 $this->notifyUser("Medlemmer ble lagt til");
             } else {
-                $this->notifyUser("Failed to add tags"); return false;
+                $this->notifyUser("Fikk ikke legge til brukere"); return false;
             }
-        } catch (Exception $e) { $this->notifyUser("Failed to add tags", $e->getMessage()); return false;}
+        } catch (Exception $e) { $this->notifyUser("Fikk ikke legge til brukere", $e->getMessage()); return false;}
         return true;
     }
 
@@ -207,9 +207,9 @@ WHERE NOT EXISTS
                     $stmt->closeCursor();
                 }
             } else {
-                $this->notifyUser("Failed to add tags"); return false;
+                $this->notifyUser("Ikke klarte å fjerning brukere"); return false;
             }
-        } catch (Exception $e) { $this->notifyUser("Failed to add tags", $e->getMessage()); return false;}
+        } catch (Exception $e) { $this->notifyUser("Feil med fjerning av brukere", $e->getMessage()); return false;}
         return true;
     }
 
@@ -222,7 +222,7 @@ WHERE NOT EXISTS
             if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
                 return $members;
             } else {
-                $this->notifyUser("Ingne medlemmer funnet", "Kunne ikke hente medlemmer av gruppa");
+                $this->notifyUser("Ingen medlemmer funnet", "Kunne ikke hente medlemmer av gruppa");
                 return array();
             }
         } catch (Exception $e) {
