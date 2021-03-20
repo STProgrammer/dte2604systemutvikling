@@ -1,22 +1,10 @@
 {% extends "layout.twig" %}
 {% block content %}
 
-
-<br>
-    <br><br>
-    <br>
-    <br>
-    <br>
-    <br><br><br>
-    <br>
-
-
-
-
     <section class="edit_group" id="edit_group">
         <div class="openContainerNoBorder text" id="table_register">
             <h3>Lag ny gruppe</h3>
-            <div class>
+            <div>
                 {% if session.getFlashBag.has('header') %}
                     {% for header in session.getFlashBag.get('header', []) %}
                         <h3>{{ header }}</h3>
@@ -30,57 +18,78 @@
                 <br>Gruppenavn: {{ group.getGroupName }}
                 <br>Gruppeleder: {{ group.getFirstName }} {{ group.getLastName }}
                 {% if group.isAdmin %}
-                <br>Gruppe type: admin gruppe
+                    <br>Gruppe type: admin gruppe
                 {% else %}
-                <br>Gruppe type: vanlig gruppe
+                    <br>Gruppe type: vanlig gruppe
                 {% endif %}
-
-
-                <p><form method="post" id="group_edit_form">
+                <p>
+            </div>
+            <div id="text">
+                <form method="post" id="group_edit_form">
                     <br><label>Gruppenavn: </label>
                     <br><input type="text" name="groupName" value="" placeholder="Gruppenavn" maxlength=45 required
                                id="groupName"/>
                     <br><label>Velg gruppeleder:</label>
-                    <br><div class="wrapper">
-                        <select name="groupLeader" id="" class="form-control" onfocus='this.size=10;' onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                    <br>
+                    <div class="wrapper">
+                        <select name="groupLeader" id="" class="form-control" onfocus='this.size=10;'
+                                onblur='this.size=10;'
+                                onchange='this.size=10; this.blur();'>
                             {% for empl in members %}
-                            <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }} (ID: {{ empl.getUserId }})</option>
+                                <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }}
+                                    (ID: {{ empl.getUserId }})
+                                </option>
                             {% endfor %}
                         </select></div>
                     {% if user.isAdmin %}
-                    <br><label>Admin eller vanlig gruppe: </label>
-                    <br><input type="radio" name="isAdmin" value="1" required>
-                    <label>Admin</label><br>
-                    <input type="radio" name="isAdmin" value="0" required>
-                    <label>Vanlig</label><br>
+                        <br><label>Admin eller vanlig gruppe: </label>
+                        <br><input type="radio" name="isAdmin" value="1" required>
+                        <label>Admin</label><br>
+                        <input type="radio" name="isAdmin" value="0" required>
+                        <label>Vanlig</label><br>
                     {% endif %}
                     <input type="hidden" value="{{ getMac("Group edit") }}" name="XSRFPreventionToken">
                     <br><input type="submit" name="group_edit" id="reg_btn" value="Endre gruppe">
-                </form></p>
+                </form>
+            </div>
+            <div id="text">
+                </p>
                 <form method="post" id="add_group_members_form">
-                <br><label>Legg til brukere på gruppen: </label>
-                <br><div class="wrapper">
-                    <select name="groupMembers[]" id="" class="form-control" multiple onfocus='this.size=10;' onblur='this.size=10;' onchange='this.size=10; this.blur();'>
-                        {% for empl in employees %}
-                            <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }} (ID: {{ empl.getUserId }})</option>
-                        {% endfor %}
-                    </select></div>
+                    <br><label>Legg til brukere på gruppen: </label>
+                    <br>
+                    <div class="wrapper">
+                        <select name="groupMembers[]" id="" class="form-control" multiple onfocus='this.size=10;'
+                                onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                            {% for empl in employees %}
+                                <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }}
+                                    (ID: {{ empl.getUserId }})
+                                </option>
+                            {% endfor %}
+                        </select></div>
                     <input type="hidden" value="{{ getMac("Group add members") }}" name="XSRFPreventionToken">
                     <br><input type="submit" name="add_members" id="reg_btn" value="Legg til medlemmer">
-                </form></p>
+                </form>
+            </div>
+            <div id="text">
+                </p>
                 <form method="post" id="remove_group_members_form">
-                <br><label>Fjerne brukere fra gruppen: </label>
-                <br><div class="wrapper">
-                    <select name="groupMembers[]" id="" class="form-control" multiple onfocus='this.size=10;' onblur='this.size=10;' onchange='this.size=10; this.blur();'>
-                        {% for empl in members %}
-                            <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }} (ID: {{ empl.getUserId }})</option>
-                        {% endfor %}
-                    </select></div>
-                <input type="hidden" value="{{ getMac("Group remove members") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="remove_members" id="reg_btn" value="Fjern medlemmer">
-                </form></p>
-
-
+                    <br><label>Fjerne brukere fra gruppen: </label>
+                    <br>
+                    <div class="wrapper">
+                        <select name="groupMembers[]" id="" class="form-control" multiple onfocus='this.size=10;'
+                                onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                            {% for empl in members %}
+                                <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }}
+                                    (ID: {{ empl.getUserId }})
+                                </option>
+                            {% endfor %}
+                        </select></div>
+                    <input type="hidden" value="{{ getMac("Group remove members") }}" name="XSRFPreventionToken">
+                    <br><input type="submit" name="remove_members" id="reg_btn" value="Fjern medlemmer">
+                </form>
+                </p>
+            </div>
+            <div id="text">
                 {% if user.isAdmin() %}
                     <form method="post"
                           onsubmit="return confirm('Er du sikker på å slette gruppen? \n(Kan ikke angres etterpå)');">
@@ -90,4 +99,7 @@
                 {% endif %}
             </div>
             <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
+        </div>
+    </section>
+
 {% endblock %}

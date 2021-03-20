@@ -18,7 +18,6 @@ class GroupManager
         $this->session = $session;
     }
 
-
     private function NotifyUser($strHeader, $strMessage = "")
     {
         //$this->session->getFlashBag()->clear();
@@ -46,8 +45,6 @@ class GroupManager
             return array();
         }
     }
-
-
 
     public function newGroup(): bool //returns boolean value
     {
@@ -93,7 +90,6 @@ WHERE NOT EXISTS
             $sth->bindParam(':oldGroupLeader', $oldGroupLeader, PDO::PARAM_INT);
             if ($sth->execute()) {
                 $sth->closeCursor();
-                $this->addEmployees($groupID, $this->request->request->get('groupMembers'));
                 $this->notifyUser('Group details changed');
                 return true;
             } else {
@@ -145,7 +141,7 @@ WHERE NOT EXISTS
             if ($group = $stmt->fetchObject("Group")) {
                 return $group;
             } else {
-                $this->notifyUser("Ingne grupper funnet", "Kunne ikke hente gruppe");
+                $this->notifyUser("Ingen grupper funnet", "Kunne ikke hente gruppe");
                 return new Group();
             }
         } catch (Exception $e) {

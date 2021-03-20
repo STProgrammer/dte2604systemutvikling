@@ -71,59 +71,60 @@ small screens (display the links vertically instead of horizontally) */
 
 
 /**-------------  ADMINISTRATOR_DASHBOARD  ---------*/
-section.admin_dashboard { margin-top: 6em; margin-bottom: 4em;
-}
+section.admin_dashboard { margin-top: 6em; margin-bottom: 4em; }
+
 /**-------------  PROSJEKTLEDER_DASHBOARD  --------*/
-section.prosjektleder_dashboard { margin-top: 6em;
-}
+section.prosjektleder_dashboard { margin-top: 6em; }
+
 /**-------------  TEAMLEDER_DASHBOARD  ------------*/
-section.teamleder_dashboard { margin-top: 6em;
-}
+section.teamleder_dashboard { margin-top: 6em; }
+
 /**-------------  ANSATTE_DASHBOARD  -------------*/
-section.employee_dashboard { margin-top: 6em;
-}
+section.employee_dashboard { margin-top: 6em; }
+
 /**-------------  KUNDE_DASHBOARD  ---------------*/
-section.customer_dashboard { margin-top: 6em;
-}
+section.customer_dashboard { margin-top: 6em; }
+
 /**-------------  TIMEREGISTRERINGER  ------------*/
-section.timeregistreringer { margin-top: 6em;
-}
+section.timeregistreringer { margin-top: 6em; }
+
 /**-------------  BRUKERPROFILER  ---------------*/
-section.brukerprofiler { margin-top: 6em;
-}
+section.brukerprofiler { margin-top: 6em; }
+
 /**-------------  PROSJEKTER  -------------------*/
-section.prosjekter { margin-top: 6em;
-}
-.formProject {
-}
+section.prosjekter { margin-top: 6em; }
+
+section.edit_project {margin-top: 6em;}
+
+/**-------------  GRUPPER  -------------------*/
+section.grupper { margin-top: 6em; }
+
+section.edit_group {margin-top: 6em;}
 
 /**-------------  RAPPORTER  -------------------*/
-section.rapporter { margin-top: 6em;
-}
-/**-------------  INNSTILLINGER  ---------------*/
-section.innstillinger { margin-top: 6em;
-}
-/**-------------  LOGINN  ----------------------*/
-section.loginn { margin-top: 10em
-}
-/**-------------  EDIT_USER  ----------------------*/
-section.edit_user { margin-top: 6em; margin-bottom: 4em;
-}
-/**-------------  REGISTER_USER  ----------------------*/
-section.register_user {
-    margin-top: 6em;
-    margin-bottom: 4em;
-}
-/**-------------  PROFILE_EDIT  ----------------------*/
-section.profile_edit { margin-top: 6em; margin-bottom: 4em;
-}
-/**-------------  ERROR  -----------------------*/
-section.error { margin-top: 6em; margin-left: 5em;
-}
+section.rapporter { margin-top: 6em; }
 
-section#center {
-    align-self: center;
-}
+/**-------------  INNSTILLINGER  ---------------*/
+section.innstillinger { margin-top: 6em; }
+
+/**-------------  LOGINN  ----------------------*/
+section.loginn { margin-top: 10em }
+
+/**-------------  EDIT_USER  ----------------------*/
+section.edit_user { margin-top: 6em; margin-bottom: 4em; }
+
+/**-------------  REGISTER_USER  ----------------------*/
+section.register_user { margin-top: 6em; margin-bottom: 4em; }
+
+/**-------------  PROFILE_EDIT  ----------------------*/
+section.profile_edit { margin-top: 6em; margin-bottom: 4em; }
+
+/**-------------  ERROR  -----------------------*/
+section.error { margin-top: 6em; margin-left: 5em; }
+
+section#center { align-self: center; }
+
+
 /**-------------  CONTAINERS  ------------------*/
 /**Brukes i <div> , bruk disse etter hverandre feks <div class="container container_big">
 Disse er containere/bokser med bakgrunn og stroke farge.*/
@@ -137,7 +138,7 @@ div.container{
     box-sizing: border-box;
     border-radius: 1em;
     background: white;
-    box-shadow: 0.1em 0.2em 0.2em #888888;
+    box-shadow: 0.1em 0.1em 0.1em #acabab;
     overflow: hidden;
 }
 div.container_xxsmall { width: 4em; height: 4em;
@@ -174,6 +175,13 @@ div.container_center { display:block;
 div.openContainerNoBorder {
     margin-left: 1em;
 }
+div.container_menu { width: 30em; height: 20em; background-color: #eeeeee; border: none;
+}
+div.container_menu_form { width: 30em; height: 20em; background-color: #eeeeee; border: none;
+}
+div.container_menu_lang { width: 60em; height: 20em; background-color: #eeeeee; border: none;
+    overflow-y: scroll; scroll-behavior: smooth;
+}
 /**-----------  BUTTONS  -------------*/
 .buttons {
     font-family: Segoe UI, serif;
@@ -195,6 +203,22 @@ div.openContainerNoBorder {
     border-radius: 0.5em;
     cursor: pointer; border: none;
     box-shadow: 0.1em 0.1em 0.1em #888888;
+}
+.miniButtons_green  {
+    color: white;
+    font-size: 0.8rem;
+    background: #1b9448;
+    padding: 1em;
+    margin: 0.5em 0.5em 0.5em 0em;
+    width: 20em;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+.miniButtons_green:hover  {
+    color: #8adda7;
 }
 .button_small {
     border: none;
@@ -281,6 +305,7 @@ input#submit {
     cursor: pointer;
     white-space: nowrap;
 }
+
 input#password {
     font-family: Segoe UI, serif;
     width: 76%;
@@ -296,8 +321,8 @@ img#innloggLogo {
 input[type=text] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
-    padding: 12px 20px;
-    margin: 8px 0;
+    padding: 0.4em 0.4em;
+    margin: 1em 0;
     box-sizing: border-box;
     border-radius: 0.5em;
     border: none;
@@ -316,8 +341,8 @@ input[type=email] {
 input[type=password] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
-    padding: 12px 20px;
-    margin: 8px 0;
+    padding: 0.4em 0.4em;
+    margin: 1em 0;
     box-sizing: border-box;
     border-radius: 0.5em;
     border: none;
@@ -359,12 +384,15 @@ input[type=submit] {
     background: #1b9448;
     width: 20em;
     padding: 12px 20px;
-    margin: 8px 0;
+    margin: 0.5em 0.5em 0.5em 0em;
     box-sizing: border-box;
     border-radius: 0.5em;
     border: none;
     cursor: pointer;
     font-weight: bold;
+}
+input[type=submit] :hover {
+      color: #8adda7;
 }
 label {
     color: #4c4747;
@@ -425,6 +453,7 @@ h5 { font-family: Segoe UI, serif; font-size: 1rem; color: #5f5a5a; margin: 0; p
 }
 h6 { font-family: Segoe UI, serif; font-size: 0.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
 }
+b { margin-left: 1em}
 
 /* -------------LINK -----------------------*/
 a { font-family: Segoe UI, serif; color: #5f5a5a; font-size: 1rem;
