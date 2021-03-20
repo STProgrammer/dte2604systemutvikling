@@ -108,7 +108,16 @@ section.rapporter { margin-top: 6em; }
 section.innstillinger { margin-top: 6em; }
 
 /**-------------  LOGINN  ----------------------*/
-section.loginn { margin-top: 10em }
+section.loginn {
+    margin-top: 10em;
+    /* HTML 5 syntax */
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
 
 /**-------------  EDIT_USER  ----------------------*/
 section.edit_user { margin-top: 6em; margin-bottom: 4em; }
@@ -284,6 +293,7 @@ label {
     font-family: Segoe UI, serif;
     color: #707070;
     margin-right: 1em;
+    float: left;
 }
 input#user {
     font-family: Segoe UI, serif;
@@ -299,7 +309,7 @@ input#submit {
     background: white;
     border: 0.1em solid #888888;
     box-sizing: border-box;
-    width: 15em; height: 3em;
+    width: 15em; /*height: 3em;*/
     border-radius: 1em;
     box-shadow: 0.2em 0.2em 0.4em #888888;
     cursor: pointer;
@@ -308,17 +318,19 @@ input#submit {
 
 input#password {
     font-family: Segoe UI, serif;
-    width: 76%;
+    width: 70%;
     border: none;
-    white-space: nowrap;
+    position: relative;
+    left: 13px; /* relative to username input above*/
+
 }
 img#innloggLogo {
-    width: 20em;
+    width: 30em;
     margin: 1em 1em 1em 3.5em;
     white-space: nowrap;
 }
 
-input[type=text] {
+/*input[type=text] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
     padding: 0.4em 0.4em;
@@ -327,7 +339,7 @@ input[type=text] {
     border-radius: 0.5em;
     border: none;
     transition: width 0.4s ease-in-out;
-}
+}*/
 input[type=email] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
@@ -338,7 +350,7 @@ input[type=email] {
     border: none;
     transition: width 0.4s ease-in-out;
 }
-input[type=password] {
+/*input[type=password] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
     padding: 0.4em 0.4em;
@@ -347,7 +359,7 @@ input[type=password] {
     border-radius: 0.5em;
     border: none;
     transition: width 0.4s ease-in-out;
-}
+}*/
 input[type=text]:focus {
     width: 30%;
     border: none;
