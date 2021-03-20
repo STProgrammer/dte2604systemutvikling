@@ -49,13 +49,15 @@
                     <br><input type="text" name="lastName" value="" placeholder="Etternavn" maxlength=90 required
                                id="lastname"/>
 
-                    <br><label>Epost:</label>
+                    <div><br><label>Epost:</label>
                     <br><input type="email" name="emailAddress" value="" placeholder="Epost" maxlength=60
                                required id="emailAddress"/>
+                    <span></span></div>
 
-                    <br><label>Brukernavn:</label>
+                    <div><br><label>Brukernavn:</label>
                     <br><input type="text" name="username" value="" placeholder="Brukernavn" maxlength=45 required
                                id="username"/>
+                    <span></span></div>
 
                     <br><label>Passord: </label>
                     <br><input type="password" name="password" required id="password1" placeholder="Passord"
@@ -66,16 +68,16 @@
                                minlength=8 maxlength=40 value="" onkeyup='check();'/>
                     <span id='message'></span>
 
-                    <br><label>Type bruker: </label>
-                    <input type="radio" id="worker" name="userType" value="2" required>
-                    <label for="worker">Fast arbeider</label><br>
+                    <p><br><label>Type bruker: </label><br>
+                    <br><input type="radio" id="worker" name="userType" value="2" required>
+                    <label for="worker">Fast arbeider</label>
                     <br><input type="radio" id="temporary" name="userType" value="1" required>
-                    <label for="temporary">Innleid arbeider</label><br>
+                    <label for="temporary">Innleid arbeider</label>
                     <br><input type="radio" id="customer" name="userType" value="0" required>
-                    <label for="customer">Kunde</label><br>
+                    <label for="customer">Kunde</label>
                     {% if user.isAdmin() %}
-                    <input type="radio" id="admin" name="userType" value="3" required>
-                    <label for="admin">Admin</label><br>
+                    <br><input type="radio" id="admin" name="userType" value="3" required>
+                    <label for="admin">Admin</label></p>
                     {% endif %}
 
                     <br><label>Addresse:</label>
