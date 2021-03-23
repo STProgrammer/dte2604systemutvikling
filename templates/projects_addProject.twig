@@ -1,26 +1,28 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section id="prosjekter" class="prosjekter">
+
         <div>
             {% if User.isAdmin() == 1 %}
-                <button class="button buttons" id="prosjektKnapper"
-                        onclick="goBack()">
-                    <img src="" alt=""> Gå tilbake
-                </button>
+                <button class="button buttons" id="prosjektKnapper" onclick="goBack()"> <img src="" alt=""> Gå tilbake</button>
             {% endif %}
-
         </div>
+
     </section>
 
     <section id="addProject" >
+
         <div class="openContainerNoBorder text" id="prosjektTabell">
             <h3>Legg til nytt prosjekt </h3>
+
             <form action="projects_addProject.php" enctype="multipart/form-data" method="post" class="formProject" id="formProject">
                 <div id="tekst">
                     <br><label>Prosjekt Navn: </label>
                     <br><input type="text" name="projectName" value="" placeholder="Prosjekt Navn" maxlength=90 required id="projectName" />
-                    <br><label>Prosjekt Leder:</label>
-                    <br><select name="projectLeader" id="projectLeader">
+                    <br>
+                    <label>Prosjekt Leder:</label>
+                    <br>
+                    <select name="projectLeader" id="projectLeader">
                         {% for users in users %}
                         <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getFirstName() }} </option>
                         {% endfor %}
@@ -42,7 +44,9 @@
                     <br><input type="submit" name="addProject" id="addProject" value="Legg til prosjektet">
                 </div>
             </form>
+
         </div>
+
         <div class="container container_big_long text">
             <h6>Tilbakemeldinger fra database</h6>
             {% if session.getFlashBag.has('header') %}
@@ -54,5 +58,6 @@
                 {% endfor %}
             {% endif %}
         </div>
+
     </section>
 {% endblock %}

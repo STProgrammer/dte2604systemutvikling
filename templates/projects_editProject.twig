@@ -1,7 +1,9 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="edit_project" id="edit_project">
+
         <button class="button buttons" onclick="goBack()">Gå tilbake</button>
+
         <div>
             {% if User.isAdmin() == 1 %}
                 <button class="button buttons" id="prosjektKnapper"
@@ -10,6 +12,7 @@
                 </button>
             {% endif %}
         </div>
+
         <div class="container container_menu text" id="projekt_info">
             <h3>Rediger prosjekt</h3>
             <br>Prosjekt: <b>{{ project.getProjectName }}</b></br>
@@ -39,7 +42,9 @@
                 {% endfor %}
             </table>
         </div>
+
     </section>
+
     <section>
 
         <div class="container container_menu_form text" id="edit_project">
@@ -106,9 +111,10 @@
                     <input type="submit" name="project_delete" value="Slett prosjekt" class="delete"/>
                 </form>
             {% endif %}
-
         </div>
+
     </section>
+
     <div class="container container_big_long text">
         <h5>Tilbakemeldinger fra database</h5>
         {% if session.getFlashBag.has('header') %}
@@ -120,4 +126,5 @@
             {% endfor %}
         {% endif %}
     </div>
+
 {% endblock %}
