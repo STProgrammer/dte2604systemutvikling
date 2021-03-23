@@ -2,17 +2,14 @@
 {% block content %}
     <section class="edit_project" id="edit_project">
 
-        <button class="button buttons" onclick="goBack()">Gå tilbake</button>
-
+        {#TILBAKE KNAPP#}
         <div>
-            {% if User.isAdmin() == 1 %}
-                <button class="button buttons" id="prosjektKnapper"
-                        onclick="goBack()">
-                    <img src="" alt=""> Gå tilbake
-                </button>
+            {% if user.isAdmin() == 1 %}
+                <button class="button buttons" id="prosjektKnapper" onclick="goBack()"> <img src="" alt=""> Gå tilbake</button>
             {% endif %}
         </div>
 
+        {#REDIGER PROSJEKT#}
         <div class="container container_menu text" id="projekt_info">
             <h3>Rediger prosjekt</h3>
             <br>Prosjekt: <b>{{ project.getProjectName }}</b></br>
@@ -25,6 +22,7 @@
             <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b></br>
         </div>
 
+        {#LISTE OVER MEDLEMMER I DETTE PROSJEKT#}
         <div class="container container_menu_lang text" id="project_members">
             <br><label>Medlemmer i dette prosjektet: </label></br>
             <table class="table">
@@ -47,6 +45,7 @@
 
     <section>
 
+        {#FORM ENDRE PROSJEKT#}
         <div class="container container_menu_form text" id="edit_project">
             <form method="post" id="project_edit_form">
                 <br><label>Prosjektnavn: </label>
@@ -70,6 +69,7 @@
             </form>
         </div>
 
+        {#LEGG TIL MEDLEMMER#}
         <div class="container container_menu_form text" id="add_user_to_project">
             <form method="post" id="add_project_members_form">
                 <br><label>Legg til brukere i prosjektet: </label></br>
@@ -87,6 +87,7 @@
             </form>
         </div>
 
+        {#FJERN MEDLEMMER#}
         <div class="container container_menu_form text" id="remove_users_from_project">
             <form method="post" id="remove_group_members_form">
                 <br><label>Fjerne brukere fra prosjektet: </label>
@@ -104,6 +105,7 @@
             </form>
         </div>
 
+        {#SLETT PROSJEKT#}
         <div class="openContainerNoBorder text" id="delete_project">
             {% if user.isAdmin() %}
                 <form method="post" onsubmit="return confirm('Er du sikker på å slette prosjektet?\n(Kan ikke angres i etterkant!)');">
@@ -115,6 +117,7 @@
 
     </section>
 
+    {#FEILMELDINGER FRA DATABASE#}
     <div class="container container_big_long text">
         <h5>Tilbakemeldinger fra database</h5>
         {% if session.getFlashBag.has('header') %}
