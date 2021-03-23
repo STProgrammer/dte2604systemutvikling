@@ -4,13 +4,15 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class ProjectManager {
+class ProjectManager
+{
     private $db;
     private $request;
     private $session;
 
     //CONSTRUCTOR//
-    function __construct(PDO $db, Request $request, Session $session) {
+    function __construct(PDO $db, Request $request, Session $session)
+    {
         $this->db = $db;
         $this->request = $request;
         $this->session = $session;
@@ -21,14 +23,14 @@ class ProjectManager {
     /////////////////////////////////////////////////////////////////////////////
 
     // GET ALL PROJECTS
-    public function getAllProjects() : array {
+    public function getAllProjects(): array
+    {
         try {
             $stmt = $this->db->prepare(query: "SELECT * FROM Projects ORDER BY `startTime` DESC");
             $stmt->execute();
-            if( $projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
+            if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
-            }
-            else {
+            } else {
                 $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
                 //return new Project();
                 return array();
@@ -42,7 +44,8 @@ class ProjectManager {
     }
 
     //GET PROJECT
-    public function getProject(string $projectName) {
+    public function getProject(string $projectName)
+    {
         try {
             $stmt = $this->db->prepare(query: "SELECT projectName, projectLeader, startTime, finishTime, Projects.status, customer 
                                                 FROM Projects LEFT JOIN Users ON Projects.projectLeader=Users.UserID 
@@ -62,7 +65,7 @@ class ProjectManager {
     }
 
     // ADD PROJECT
-    public function addProject (Project $project) : bool
+    public function addProject(Project $project): bool
     {
         //TODO disse variablene nedenfor bør hentes fra objektet som sendes med i kallet. Halil
         $projectName = $this->request->request->get('projectName');
@@ -73,21 +76,21 @@ class ProjectManager {
         if ($dateTime1 != null) {
             $dateTimeStr1 = date('Y-m-d\TH:i:s', strtotime($dateTime1));
             $startTime = $dateTimeStr1;
-        }else {
+        } else {
             $startTime = $dateTime1;
         }
         $dateTime2 = $this->request->request->get('startTime');
         if ($dateTime2 != null) {
             $dateTimeStr2 = date('Y-m-d\TH:i:s', strtotime($dateTime2));
             $finishTime = $dateTimeStr2;
-        }else {
+        } else {
             $finishTime = $dateTime2;
         }
 
         $status = $this->request->request->get('status');
         $customer = $this->request->request->get('customer');
 
-        try{
+        try {
             $stmt = $this->db->prepare(
                 query: "insert into Projects (projectName, projectLeader, startTime, finishTime, status, customer) 
                 values (:projectName, :projectLeader, :startTime, :finishTime, :status, :customer);");
@@ -112,8 +115,9 @@ class ProjectManager {
     }
 
     //EDIT PROJECT
-    public function editProject(Project $project) : bool {
-        $projectName =  $this->request->request->get('projectName', $project->getProjectName());
+    public function editProject(Project $project): bool
+    {
+        $projectName = $this->request->request->get('projectName', $project->getProjectName());
         $projectLeader = $this->request->request->getInt('projectLeader', $project->getProjectLeader());
         $startTime = $this->request->request->get('startTime', $project->getStartTime());
         $finishTime = $this->request->request->get('finishTime', $project->getFinishTime());
@@ -148,12 +152,13 @@ class ProjectManager {
             return false;
         }
     }
+
     public function addEmployees($projectName)
     {
         $users = $this->request->request->get('projectMembers');
         try {
             $stmt = $this->db->prepare(query: "INSERT IGNORE INTO UsersAndProjects (userID, projectName) VALUES (:userID, :projectName);");
-            if(is_array($users)){
+            if (is_array($users)) {
                 foreach ($users as $userID) {
                     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
                     $stmt->bindParam(':projectName', $projectName);
@@ -164,9 +169,13 @@ class ProjectManager {
                 $this->notifyUser("Kunne ikke legge til medlemmer", '..........');
                 return false;
             }
-        } catch (Exception $e) { $this->notifyUser("Kunne ikke legge til medlemmer", $e->getMessage()); return false;}
+        } catch (Exception $e) {
+            $this->notifyUser("Kunne ikke legge til medlemmer", $e->getMessage());
+            return false;
+        }
         return true;
     }
+
     public function removeEmployees(Project $project)
     {
         $users = $this->request->request->get('projectMembers');
@@ -180,7 +189,7 @@ class ProjectManager {
                     UPDATE Users SET Users.isProjectLeader = 0
                     WHERE NOT EXISTS
                     (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");
-            if(is_array($users)){
+            if (is_array($users)) {
                 foreach ($users as $userID) {
                     $stmt->bindParam(':projectName', $projectName);
                     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
@@ -189,15 +198,18 @@ class ProjectManager {
                     $stmt->closeCursor();
                 }
             } else {
-                $this->notifyUser("Failed to remove employee", '..........'); return false;
+                $this->notifyUser("Failed to remove employee", '..........');
+                return false;
             }
-        } catch (Exception $e) { $this->notifyUser("Failed to remove employee", $e->getMessage()); return false;}
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to remove employee", $e->getMessage());
+            return false;
+        }
         return true;
     }
 
     //GET MEMBERS
     public function getProjectMembers(string $projectName) {
-        $members = array();
         try {
             $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndProjects.userID FROM UsersAndProjects WHERE UsersAndProjects.projectName = :projectName AND Users.userID = UsersAndProjects.userID);");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
@@ -214,33 +226,80 @@ class ProjectManager {
         }
     }
 
+    //DELETE PROJECT
+    public function deleteProject(string $projectName)
+    {
+        $projectLeader = $this->request->request->get('projectLeader');
+        try {
+            $stmt = $this->db->prepare(query: "DELETE FROM Projects WHERE projectName = :projectName; 
+                                    DELETE FROM UsersAndProjects WHERE projectName = :projectName;
+                                    UPDATE Users SET Users.isProjectLeader = 0
+                                    WHERE NOT EXISTS
+                                    (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");
+            $stmt->bindParam(':projectName', $projectName);
+            $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() >= 1) {
+                $this->notifyUser("Project deleted", "Det var ikke noe svar fra databasen");
+                return true;
+            } else {
+                $this->notifyUser("Failed to delete group!", "Det var ikke noe svar fra databasen");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to delete project!", $e->getMessage());
+            return false;
+        }
+    }
 
     /////////////////////////////////////////////////////////////////////////////
     /// ERROR
     /////////////////////////////////////////////////////////////////////////////
 
-    private function NotifyUser($strHeader, $strMessage) {
+    private function NotifyUser($strHeader, $strMessage)
+    {
         $this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
     //TODO
-    public function newProject() {}
+    public function newProject()
+    {
+    }
+
     //TODO
-    public function deleteProject() {}
+    public function addGroup(Group $group)
+    {
+    }
+
     //TODO
-    public function addGroup(Group $group) {}
+    public function acceptByAdmin()
+    {
+    }
+
     //TODO
-    public function acceptByAdmin() {}
+    public function getEmployees(Project $project)
+    {
+    }
+
     //TODO
-    public function getEmployees(Project $project) {}
+    public function addCustomer(User $user, Project $project)
+    {
+    }
+
     //TODO
-    public function addCustomer(User $user, Project $project) {}
+    public function getCustomers(Project $project)
+    {
+    }
+
     //TODO
-    public function getCustomers(Project $project) {}
+    public function assignLeader(User $leader)
+    {
+    }
+
     //TODO
-    public function assignLeader(User $leader) {}
-    //TODO
-    public function changeStatus() {}
+    public function changeStatus()
+    {
+    }
 }

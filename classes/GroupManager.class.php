@@ -69,7 +69,7 @@ class GroupManager
     }
 
 
-    public function editGroup(Group $group) : bool
+    public function editGroup(Group $group): bool
     {
         $groupID = $group->getGroupID();
         $groupName = $this->request->request->get('groupName', $group->getGroupName());
@@ -103,30 +103,28 @@ WHERE NOT EXISTS
     }
 
 
-    public function deleteGroup(Group $group) : bool
+    public function deleteGroup(Group $group): bool
     {
         $groupID = $group->getGroupID();
         $groupLeader = $group->getGroupLeader();
-        try
-        {
+        try {
             $stmt = $this->db->prepare("DELETE FROM Groups WHERE groupID = :groupID;
-  DELETE FROM UsersAndGroups WHERE groupID = :groupID;
-      UPDATE Users SET Users.isGroupLeader = 0
-WHERE NOT EXISTS
-  (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
+                                    DELETE FROM UsersAndGroups WHERE groupID = :groupID;
+                                    UPDATE Users SET Users.isGroupLeader = 0
+                                    WHERE NOT EXISTS
+                                    (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
             $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() >= 1) {
-                $this->notifyUser( "Group deleted");
+                $this->notifyUser("Group deleted");
                 return true;
             } else {
-                $this->notifyUser( "Failed to delete group!");
+                $this->notifyUser("Failed to delete group!");
                 return false;
             }
-        }
-        catch (Exception $e) {
-            $this->notifyUser( "Failed to delete group!", $e->getMessage());
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to delete group!", $e->getMessage());
             return false;
         }
 
@@ -155,7 +153,7 @@ WHERE NOT EXISTS
         $users = $this->request->request->get('groupMembers');
         try {
             $stmt = $this->db->prepare("INSERT IGNORE INTO UsersAndGroups (groupID, userID) VALUES (:groupID, :userID);");
-            if(is_array($users)){
+            if (is_array($users)) {
                 foreach ($users as $userID) {
                     $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
                     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
@@ -163,9 +161,13 @@ WHERE NOT EXISTS
                 }
                 $this->notifyUser("Medlemmer ble lagt til");
             } else {
-                $this->notifyUser("Fikk ikke legge til brukere"); return false;
+                $this->notifyUser("Fikk ikke legge til brukere");
+                return false;
             }
-        } catch (Exception $e) { $this->notifyUser("Fikk ikke legge til brukere", $e->getMessage()); return false;}
+        } catch (Exception $e) {
+            $this->notifyUser("Fikk ikke legge til brukere", $e->getMessage());
+            return false;
+        }
         return true;
     }
 
@@ -182,7 +184,10 @@ WHERE NOT EXISTS
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
             $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
             $stmt->execute();
-        } catch (Exception $e) { $this->notifyUser("Failed to add employees",  $e->getMessage()); return false;}
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to add employees", $e->getMessage());
+            return false;
+        }
         return true;
     }
 
@@ -198,7 +203,7 @@ UPDATE Groups SET Groups.groupLeader = NULL WHERE groupID = :groupID AND Groups.
     UPDATE Users SET Users.isGroupLeader = 0
 WHERE NOT EXISTS
   (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
-            if(is_array($users)){
+            if (is_array($users)) {
                 foreach ($users as $userID) {
                     $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
                     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
@@ -207,13 +212,18 @@ WHERE NOT EXISTS
                     $stmt->closeCursor();
                 }
             } else {
-                $this->notifyUser("Ikke klarte å fjerning brukere"); return false;
+                $this->notifyUser("Ikke klarte å fjerning brukere");
+                return false;
             }
-        } catch (Exception $e) { $this->notifyUser("Feil med fjerning av brukere", $e->getMessage()); return false;}
+        } catch (Exception $e) {
+            $this->notifyUser("Feil med fjerning av brukere", $e->getMessage());
+            return false;
+        }
         return true;
     }
 
-    public function getGroupMembers($groupID) : array {
+    public function getGroupMembers($groupID): array
+    {
         $members = array();
         try {
             $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID);");

@@ -12,6 +12,8 @@ define('FILENAME_TAG', 'image');
 
     $ProjectManager = new ProjectManager($db, $request, $session);
     $projects = $ProjectManager->getAllProjects();
+    //$members = $ProjectManager->getProjectMembers($request->query->get('projectName'));
+    //$membersCount = count($members);
 
     $user = $session->get('User');
 
@@ -20,7 +22,7 @@ define('FILENAME_TAG', 'image');
 
     echo $twig->render('projects.twig',
         array('projects' => $projects, 'ProjectManager' => $ProjectManager, 'session' => $session,
-            'User' => $user,  'users' => $users));
+            'User' => $user,  'users' => $users, ));
 
 
 
