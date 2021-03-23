@@ -14,11 +14,9 @@ class User {
     private $IMAddress;
     private $dateRegistered;
     private $password;
-    private $isAdmin;
+    private $userType;
     private $isProjectLeader;
     private $isGroupLeader;
-    private $isTemporary;
-    private $isCustomer;
     private $isEmailVerified;
     private $isVerifiedByAdmin;
     private $status;
@@ -42,11 +40,9 @@ class User {
             $this->IMAddress = $row['IMAddress'];
             $this->dateRegistered = $row['dateRegistered'];
             $this->password = $row['password'];
-            $this->isAdmin = $row['isAdmin'];
+            $this->userType = $row['userType'];
             $this->isProjectLeader = $row['isProjectLeader'];
             $this->isGroupLeader = $row['isGroupLeader'];
-            $this->isTemporary = $row['isTemporary'];
-            $this->isCustomer = $row['isCustomer'];
             $this->isEmailVerified = $row['isEmailVerified'];
             $this->isVerifiedByAdmin = $row['isVerifiedByAdmin'];
             $this->status = $row['status'];
@@ -115,6 +111,7 @@ class User {
     public function getIPAddress(): string { return $this->IPAddress; }
     public function getUserAgent(): string { return $this->userAgent; }
     public function getUserHits(): int { return $this->userHits; }
+    public function getUserType(): int { return $this->userType; }
 
     public function setUserId($userId) { $this->userID = $userId; }
     public function setUsername($username) { $this->username = $username; }
@@ -133,18 +130,16 @@ class User {
     public function setIPAddress(string $IPAddress) { $this->IPAddress = $IPAddress; }
     public function setUserAgent(string $userAgent) { $this->userAgent = $userAgent; }
     public function setUserHits(int $userHits) { $this->userHits = $userHits; }
+    public function setUserType(int $userType) { $this->userType = $userType; }
 
-    public function isAdmin() { return $this->isAdmin; }
+    public function isAdmin() : bool { return ($this->userType == 3); }
     public function isProjectLeader() { return $this->isProjectLeader; }
     public function isGroupLeader() { return $this->isGroupLeader; }
-    public function isTemporary() { return $this->isTemporary; }
-    public function isCustomer() { return $this->isCustomer; }
+    public function isTemporary() : bool { return ($this->userType == 1); }
+    public function isCustomer() : bool { return ($this->userType == 0); }
 
-    public function setAdmin($isAdmin) { $this->isAdmin = $isAdmin; }
     public function setProjectLeader($isProjectLeader) { $this->isProjectLeader = $isProjectLeader; }
     public function setGroupLeader($isGroupLeader) { $this->isGroupLeader = $isGroupLeader; }
-    public function setTemporary($isTemporary) { $this->isTemporary = $isTemporary; }
-    public function setCustomer($isCustomer) { $this->isCustomer = $isCustomer; }
 
     public function isEmailVerified() { return $this->isEmailVerified; }
     public function setEmailVerified($isEmailVerified) { $this->isEmailVerified = $isEmailVerified; }

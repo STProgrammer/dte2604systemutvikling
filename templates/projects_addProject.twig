@@ -4,7 +4,7 @@
         <div>
             {% if User.isAdmin() == 1 %}
                 <button class="button buttons" id="prosjektKnapper"
-                        onclick="window.location.href='projects.php';">
+                        onclick="goBack()">
                     <img src="" alt=""> Gå tilbake
                 </button>
             {% endif %}
@@ -22,13 +22,13 @@
                     <br><label>Prosjekt Leder:</label>
                     <br><select name="projectLeader" id="projectLeader">
                         {% for users in users %}
-                        <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getUsername() }} </option>
+                        <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getFirstName() }} </option>
                         {% endfor %}
                     </select>
                     <br><label>Kunde:</label>
                     <br><select name="customer" id="customer">
                         {% for users in users %}
-                            <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getUsername() }} </option>
+                            <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getFirstName() }} </option>
                         {% endfor %}
                     </select>
                     <br><label>Start tid</label>

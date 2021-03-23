@@ -1,0 +1,14 @@
+{% extends "layout.twig" %}
+{% block content %}
+  <head>
+    <title>Error</title>
+  </head>
+  <section id="error" class="error">
+    <div class="container_medium_long">
+      <div class="text">
+        <h2>{{ msg }}</h2>
+        <a href="logout.php">Logg ut</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

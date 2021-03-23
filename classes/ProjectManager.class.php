@@ -23,7 +23,7 @@ class ProjectManager {
     // GET ALL PROJECTS
     public function getAllProjects() : array {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `startTime` DESC");
+            $stmt = $this->db->prepare(query: "SELECT * FROM Projects ORDER BY `startTime` DESC");
             $stmt->execute();
             if( $projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
@@ -41,26 +41,55 @@ class ProjectManager {
         }
     }
 
+    //GET PROJECT
+    public function getProject(string $projectName) {
+        try {
+            $stmt = $this->db->prepare(query: "SELECT projectName, projectLeader, startTime, finishTime, Projects.status, customer 
+                                                FROM Projects LEFT JOIN Users ON Projects.projectLeader=Users.UserID 
+                                                    WHERE Projects.projectName = :projectName;");
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
+            $stmt->execute();
+            if ($project = $stmt->fetchObject("Project")) {
+                return $project;
+            } else {
+                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
+                return new Project();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            return new Project();
+        }
+    }
+
     // ADD PROJECT
     public function addProject (Project $project) : bool
     {
+        //TODO disse variablene nedenfor bør hentes fra objektet som sendes med i kallet. Halil
         $projectName = $this->request->request->get('projectName');
         $projectLeader = $this->request->request->get('projectLeader');
 
+        //Ungå initsialisering av 01.01.1970 00:00:00 om starttid og slutttid ikke er lagt inn av bruker.
         $dateTime1 = $this->request->request->get('startTime');
-        $dateTimeStr1 = date('Y-m-d\TH:i:s', strtotime($dateTime1));
-        $startTime = $dateTimeStr1;
-
+        if ($dateTime1 != null) {
+            $dateTimeStr1 = date('Y-m-d\TH:i:s', strtotime($dateTime1));
+            $startTime = $dateTimeStr1;
+        }else {
+            $startTime = $dateTime1;
+        }
         $dateTime2 = $this->request->request->get('startTime');
-        $dateTimeStr2 = date('Y-m-d\TH:i:s', strtotime($dateTime2));
-        $finishTime = $dateTimeStr2;
+        if ($dateTime2 != null) {
+            $dateTimeStr2 = date('Y-m-d\TH:i:s', strtotime($dateTime2));
+            $finishTime = $dateTimeStr2;
+        }else {
+            $finishTime = $dateTime2;
+        }
 
         $status = $this->request->request->get('status');
         $customer = $this->request->request->get('customer');
 
         try{
             $stmt = $this->db->prepare(
-                "insert into Projects (projectName, projectLeader, startTime, finishTime, status, customer) 
+                query: "insert into Projects (projectName, projectLeader, startTime, finishTime, status, customer) 
                 values (:projectName, :projectLeader, :startTime, :finishTime, :status, :customer);");
             $stmt->bindParam(':projectName', $projectName);
             $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
@@ -81,7 +110,110 @@ class ProjectManager {
             return false;
         }
     }
-    // END - ADD PROJECT
+
+    //EDIT PROJECT
+    public function editProject(Project $project) : bool {
+        $projectName =  $this->request->request->get('projectName', $project->getProjectName());
+        $projectLeader = $this->request->request->getInt('projectLeader', $project->getProjectLeader());
+        $startTime = $this->request->request->get('startTime', $project->getStartTime());
+        $finishTime = $this->request->request->get('finishTime', $project->getFinishTime());
+        $status = $this->request->request->getInt('status', $project->getStatus());
+        $customer = $this->request->request->getInt('customer', $project->getCustomer());
+        $oldProjectLeader = $project->getProjectLeader();
+        try {
+            $stmt = $this->db->prepare(query: "update Projects set projectName = :projectName, projectLeader = :projectLeader, startTime = :startTime, 
+                        finishTime = :finishTime, status = :status, customer = :customer 
+                        WHERE projectName = :projectName;
+                        UPDATE Users SET Users.isProjectLeader = 0
+                        WHERE NOT EXISTS
+                        (SELECT projectLeader FROM Projects WHERE projectLeader = :oldProjectLeader) AND Users.userID = :oldProjectLeader;
+                        UPDATE Users SET Users.isProjectLeader = 1 WHERE Users.userID = :projectLeader;");
+            $stmt->bindParam(':projectName', $projectName);
+            $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
+            $stmt->bindParam(':startTime', $startTime);
+            $stmt->bindParam(':finishTime', $finishTime);
+            $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+            $stmt->bindParam(':customer', $customer, PDO::PARAM_INT);
+            $stmt->bindParam(':oldProjectLeader', $oldProjectLeader, PDO::PARAM_INT);
+            if ($stmt->execute()) {
+                $stmt->closeCursor();
+                $this->notifyUser('Project details changed', '..........');
+                return true;
+            } else {
+                $this->notifyUser('Failed to change project details', '..........');
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change project details", $e->getMessage());
+            return false;
+        }
+    }
+    public function addEmployees($projectName)
+    {
+        $users = $this->request->request->get('projectMembers');
+        try {
+            $stmt = $this->db->prepare(query: "INSERT IGNORE INTO UsersAndProjects (userID, projectName) VALUES (:userID, :projectName);");
+            if(is_array($users)){
+                foreach ($users as $userID) {
+                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+                    $stmt->bindParam(':projectName', $projectName);
+                    $stmt->execute();
+                }
+                $this->notifyUser("Medlemmer ble lagt til", '..........');
+            } else {
+                $this->notifyUser("Kunne ikke legge til medlemmer", '..........');
+                return false;
+            }
+        } catch (Exception $e) { $this->notifyUser("Kunne ikke legge til medlemmer", $e->getMessage()); return false;}
+        return true;
+    }
+    public function removeEmployees(Project $project)
+    {
+        $users = $this->request->request->get('projectMembers');
+        $projectName = $project->getProjectName();
+        $projectLeader = $project->getProjectLeader();
+        try {
+            $stmt = $this->db->prepare(query: "DELETE FROM UsersAndProjects 
+                    WHERE projectName = :projectName AND userId = :userID;
+                    UPDATE Projects SET Projects.projectLeader = NULL 
+                    WHERE projectName = :projectName AND Projects.projectLeader = :userID;
+                    UPDATE Users SET Users.isProjectLeader = 0
+                    WHERE NOT EXISTS
+                    (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");
+            if(is_array($users)){
+                foreach ($users as $userID) {
+                    $stmt->bindParam(':projectName', $projectName);
+                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+                    $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $stmt->closeCursor();
+                }
+            } else {
+                $this->notifyUser("Failed to remove employee", '..........'); return false;
+            }
+        } catch (Exception $e) { $this->notifyUser("Failed to remove employee", $e->getMessage()); return false;}
+        return true;
+    }
+
+    //GET MEMBERS
+    public function getProjectMembers(string $projectName) {
+        $members = array();
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndProjects.userID FROM UsersAndProjects WHERE UsersAndProjects.projectName = :projectName AND Users.userID = UsersAndProjects.userID);");
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
+            $stmt->execute();
+            if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
+                return $members;
+            } else {
+                $this->notifyUser("Ingen medlemmer funnet", "Kunne ikke hente medlemmer av prosjektet");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getProjectMembers()", $e->getMessage());
+            return array();
+        }
+    }
+
 
     /////////////////////////////////////////////////////////////////////////////
     /// ERROR
@@ -93,28 +225,22 @@ class ProjectManager {
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
+    //TODO
     public function newProject() {}
-
-    public function editProject(Project $project) {}
-
+    //TODO
     public function deleteProject() {}
-
-    public function getProject(String $projectName) {}
-
+    //TODO
     public function addGroup(Group $group) {}
-
+    //TODO
     public function acceptByAdmin() {}
-
-    public function addEmployee(User $user, Project $project) {}
-
+    //TODO
     public function getEmployees(Project $project) {}
-
+    //TODO
     public function addCustomer(User $user, Project $project) {}
-
+    //TODO
     public function getCustomers(Project $project) {}
-
+    //TODO
     public function assignLeader(User $leader) {}
-
+    //TODO
     public function changeStatus() {}
-
 }
