@@ -267,7 +267,7 @@ class ProjectManager
         return true;
     }
 
-/*
+
     public function removeGroups(Project $project)
     {
         $users = $this->request->request->get('projectMembers');
@@ -299,7 +299,7 @@ class ProjectManager
         }
         return true;
     }
-*/
+
 
 
     //DELETE PROJECT
@@ -327,6 +327,9 @@ class ProjectManager
             return false;
         }
     }
+
+
+    
 
 
     //TODO
