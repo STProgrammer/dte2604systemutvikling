@@ -15,6 +15,12 @@ class TaskManager {
         $this->session = $session;
     }
 
+    private function NotifyUser($strHeader, $strMessage = "") {
+        //$this->session->getFlashBag()->clear();
+        $this->session->getFlashBag()->add('header', $strHeader);
+        $this->session->getFlashBag()->add('message', $strMessage);
+    }
+
     // GET ALL COMMENTS
     public function getAllTasks() : array {
         try {
@@ -24,7 +30,7 @@ class TaskManager {
                 return $tasks;
             }
             else {
-                $this->notifyUser("Tasks not found", "Kunne ikke hente tasks");
+                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
                 return array();
             }
         } catch (Exception $e) {
@@ -33,9 +39,5 @@ class TaskManager {
             return array();
         }
     }
-    private function NotifyUser($strHeader, $strMessage) {
-        $this->session->getFlashBag()->clear();
-        $this->session->getFlashBag()->add('header', $strHeader);
-        $this->session->getFlashBag()->add('message', $strMessage);
-    }
+
 }

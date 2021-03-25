@@ -329,7 +329,138 @@ class ProjectManager
     }
 
 
-    
+
+    // ADD PHASE
+    public function addPhase ($projectName) : bool
+    {
+        $phaseName = $this->request->request->get('phaseName');
+        $startTime = $this->request->request->get('startTime');
+        $finishTime = $this->request->request->get('finishTime');
+        try{
+            $sth = $this->db->prepare("insert into Phases (phaseName, projectName, startTime, finishTime, status) 
+                values (:phaseName, :projectName, :startTime, :finishTime, 0);");
+            $sth->bindParam(':phaseName', $phaseName, PDO::PARAM_STR);
+            $sth->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            $sth->bindParam(':startTime',  $startTime, PDO::PARAM_STR);
+            $sth->bindParam(':finishTime', $finishTime, PDO::PARAM_STR);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser("Ny fase ble lagt til");
+                return true;
+            } else {
+                $this->notifyUser("Feil ve registrering av fase!");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Feil ved registrering av fase!", $e->getMessage());
+            return false;
+        }
+    }
+    // END ADD PHASE
+
+
+    // EDIT PHASE
+    public function editPhase (Phase $phase) : bool
+    {
+        $phaseId = $phase->getPhaseID();
+        $phaseName = $this->request->request->get('phaseName', $phase->getPhaseName());
+        $startTime = $this->request->request->get('startTime', $phase->getStartTime());
+        $finishTime = $this->request->request->get('finishTime', $phase->getFinishTime());
+        $status = $this->request->request->getInt('status', $phase->getStatus());
+        try{
+            $sth = $this->db->prepare("update Phases set phaseName = :phaseName, startTime = :startTime, 
+                  finishTime = :finishTime, status = :status where phaseID = :phaseID;");
+            $sth->bindParam(':phaseName', $phaseName, PDO::PARAM_STR);
+            $sth->bindParam(':startTime',  $startTime, PDO::PARAM_STR);
+            $sth->bindParam(':finishTime', $finishTime, PDO::PARAM_STR);
+            $sth->bindParam(':status', $status, PDO::PARAM_INT);
+            $sth->bindParam(":phaseID", $phaseId, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser("Fase ble endret");
+                return true;
+            } else {
+                $this->notifyUser("Feil ve endring av fase!");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Feil ved endring av fase!", $e->getMessage());
+            return false;
+        }
+    }
+    // END EDIT PHASE
+
+
+
+    // DELETE PHASE
+    public function deletePhase ($phaseId) : bool
+    {
+        try{
+            $sth = $this->db->prepare("delete from Phases where phaseID = :phaseID;");
+            $sth->bindParam(":phaseID", $phaseId, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                $this->notifyUser("Fase ble slettet");
+                return true;
+            } else {
+                $this->notifyUser("Feil ve sletting av fase!");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Feil ved sletting av fase!", $e->getMessage());
+            return false;
+        }
+    }
+    // END DELETE PHASE
+
+
+    // GET PHASE WITH TASKS
+    /*public function getPhase ($phaseId) : array
+    {
+        try{
+            $sth = $this->db->prepare("select * from Phases where projcetName = :projectName;");
+            $sth->bindParam(":projectName", $projectName, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                return true;
+            } else {
+                $this->notifyUser("Feil ve henting av faser!");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Feil ved henting av faser!", $e->getMessage());
+            return false;
+        }
+    }*/
+    // END GET PHASE WITH TASKS
+
+
+
+    // GET ALL PHASES
+    public function getAllPhases ($projectName) : array
+    {
+        try{
+            $sth = $this->db->prepare("select * from Phases where projcetName = :projectName;");
+            $sth->bindParam(":projectName", $projectName, PDO::PARAM_INT);
+            $sth->execute();
+            if ($sth->rowCount() == 1) {
+                return true;
+            } else {
+                $this->notifyUser("Feil ve henting av faser!");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Feil ved henting av faser!", $e->getMessage());
+            return false;
+        }
+    }
+    // END GET ALL PHASES
+
+
+
+
+
+
 
 
     //TODO
@@ -338,9 +469,24 @@ class ProjectManager
 
     }
 
-    //TODO
-    public function acceptByAdmin()
-    {
+    public function verifyProjectByAdmin($projectName) : bool {
+        if($this->session->get('User')->isAdmin()) {
+            try {
+                $sth = $this->dbase->prepare("update Projects set isAcceptedByAdmin = 1 where projectName = :projectName");
+                $sth->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+                $sth->execute();
+                if($sth->rowCount() == 1) {
+                    $this->notifyUser("Project verified by admin", "");
+                    return true;
+                } else {
+                    $this->notifyUser("Failed to verify project", "");
+                    return false;
+                }
+            } catch (Exception $e) {
+                $this->notifyUser("Failed to verify project", $e->getMessage());
+                return false;
+            }
+        } else {return false; }
     }
 
     //TODO
@@ -355,11 +501,6 @@ class ProjectManager
 
     //TODO
     public function getCustomers(Project $project)
-    {
-    }
-
-    //TODO
-    public function changeStatus()
     {
     }
 }
