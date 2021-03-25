@@ -20,12 +20,21 @@
                 {% for Hour in hours %}
                     <tr>
                         {#PROSJEKTNAVN#}
-                        <td>{{ Hour.getHourID() }}</td>
+                        {% for Task in tasks %}
+                            {% if Hour.getTaskID() == Task.getTaskID() %}
+                                <td>{{ Task.getProjectName() }}</td>
+                            {% endif %}
+                        {% endfor %}
 
                         {#Navn#}
-                        <td>{{ Hour.getWhoworked }}</td>
-                        <td>{{ Hour.getComment() }}</td>
+                        {% for users in users %}
+                            {% if Hour.getWhoworked() == users.getUserId() %}
+                                <td>{{ users.firstName }} {{ users.lastName }}</td>
+                            {% endif %}
+                        {% endfor %}
 
+                        {#Kommentar#}
+                        <td>{{ Hour.getComment() }}</td>
                     </tr>
                 {% endfor %}
             {% endif %}

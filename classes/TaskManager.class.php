@@ -3,7 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class CommentsManager {
+class TaskManager {
     private $db;
     private $request;
     private $session;
@@ -16,22 +16,20 @@ class CommentsManager {
     }
 
     // GET ALL COMMENTS
-    public function getAllHours() : array {
+    public function getAllTasks() : array {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Hours");
+            $stmt = $this->db->prepare("SELECT * FROM Tasks");
             $stmt->execute();
-            if( $hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-                return $hours;
+            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $tasks;
             }
             else {
-                $this->notifyUser("Comments not found", "Kunne ikke hente kommentarer");
-                //return new Project();
+                $this->notifyUser("Tasks not found", "Kunne ikke hente tasks");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllComments()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
-            //return new Project();
             return array();
         }
     }
