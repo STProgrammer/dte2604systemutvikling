@@ -188,8 +188,8 @@ div.container_menu { width: 30em; height: 20em; background-color: #eeeeee; borde
 }
 div.container_menu_form { width: 30em; height: 20em; background-color: #eeeeee; border: none;
 }
-div.container_menu_lang { width: 60em; height: 20em; background-color: #eeeeee; border: none;
-    overflow-y: scroll; scroll-behavior: smooth;
+div.container_menu_lang { width: 65em; height: 20em;  border: none;
+    overflow-y: scroll; scroll-behavior: smooth; box-shadow: none; background: none;
 }
 /**-----------  BUTTONS  -------------*/
 .buttons {
@@ -299,7 +299,7 @@ input#user {
     font-family: Segoe UI, serif;
     width: 70%;
     border: none;
-
+    margin-top: 0em;
 }
 input#submit {
     font-family: Segoe UI, serif;
@@ -322,15 +322,10 @@ input#password {
     border: none;
     position: relative;
     left: 13px; /* relative to username input above*/
-
-}
-img#innloggLogo {
-    width: 30em;
-    margin: 1em 1em 1em 3.5em;
-    white-space: nowrap;
+    margin-top: 0em;
 }
 
-/*input[type=text] {
+input[type=text] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
     padding: 0.4em 0.4em;
@@ -338,8 +333,8 @@ img#innloggLogo {
     box-sizing: border-box;
     border-radius: 0.5em;
     border: none;
-    transition: width 0.4s ease-in-out;
-}*/
+    transition: width 0.4s ease-out;
+}
 input[type=email] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
@@ -350,7 +345,7 @@ input[type=email] {
     border: none;
     transition: width 0.4s ease-in-out;
 }
-/*input[type=password] {
+input[type=password] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
     padding: 0.4em 0.4em;
@@ -359,7 +354,7 @@ input[type=email] {
     border-radius: 0.5em;
     border: none;
     transition: width 0.4s ease-in-out;
-}*/
+}
 input[type=text]:focus {
     width: 30%;
     border: none;
@@ -393,8 +388,8 @@ input[type=datetime-local] {
 }
 input[type=submit] {
     font-family: Segoe UI, serif; color: white; font-size: 0.8rem;
-    background: #1b9448;
-    width: 20em;
+    background: #599871;
+    width: 15em;
     padding: 12px 20px;
     margin: 0.5em 0.5em 0.5em 0em;
     box-sizing: border-box;
@@ -404,7 +399,7 @@ input[type=submit] {
     font-weight: bold;
 }
 input[type=submit] :hover {
-      color: #8adda7;
+      color: #11b54a;
 }
 label {
     color: #4c4747;

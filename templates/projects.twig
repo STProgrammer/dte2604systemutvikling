@@ -30,6 +30,7 @@
                         <th>Slutttid</th>
                         <th>Status</th>
                         <th>Kunde</th>
+                        <th>Antall medlemmer</th>
                         <th>Godkjent av admin</th>
                         <th>Detaljer & rediger</th>
                     </tr>
@@ -67,6 +68,9 @@
                                     <td>{{ users.username }}</td>
                                 {% endif %}
                             {% endfor %}
+
+                            {#PROSJEKT ANTALL MEDLEMMER#}
+                            <td>{{ membersCount }}</td>
 
                             {#PROSJEKT GODKJENT AV ADMIN#}
                             {% if Project.getIsAcceptedByAdmin() == 0 %}

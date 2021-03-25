@@ -10,7 +10,7 @@ $project = $ProjectManager->getProject($request->query->get('projectName'));
 $projectName = $project->getProjectName();
 $employees = $userManager->getAllEmployees("firstName"); //alle som ikke er kunde
 $users = $userManager->getAllUsers("firstName"); //alle brukere
-$members = $ProjectManager->getProjectMembers($project->getProjectName());
+$members = $ProjectManager->getProjectMembers($request->query->get('projectName'));
 
 if ($user && $project && ($user->isAdmin() or $user->isProjectLeader())) {
     if ($request->request->has('project_edit') && XsrfProtection::verifyMac("Project edit")) {
@@ -18,37 +18,37 @@ if ($user && $project && ($user->isAdmin() or $user->isProjectLeader())) {
             $request->request->set('isAdmin', 0);
         }
         if ($ProjectManager->editProject($project)) {
-            header("Location: projects_editProject.php?projectName="+$projectName);
+            header("Location: projects_editProject.php?projectName=".$projectName);
             exit();
         } else {
-            header("Location: ?failedtoeditproject=1");
+            header("Location: ?failedtoeditproject");
             exit();
         }
     }
     else if ($request->request->has('add_members') && $user->isAdmin()) {
-        if ($ProjectManager->addEmployees($projectName) && XsrfProtection::verifyMac("Project add members")) {
-            header("Location: projects.php?addmembers=1");
+        if ($ProjectManager->addEmployees($request->query->get('projectName')) && XsrfProtection::verifyMac("Project add members")) {
+            header("Location: projects_editProject.php?projectName=".$projectName);
             exit();
         } else {
-            header("Location: ?failedtoaddmembers=1");
+            header("Location: ?failedtoaddmembers");
             exit();
         }
     }
     else if ($request->request->has('remove_members') && $user->isAdmin()) {
         if ($ProjectManager->removeEmployees($project) && XsrfProtection::verifyMac("Project remove members")) {
-            header("Location: projects.php?removemembers=1");
+            header("Location: projects_editProject.php?projectName=".$projectName);
             exit();
         } else {
-            header("Location: ?failedtoremovemembers=1");
+            header("Location: ?failedtoremovemembers");
             exit();
         }
     }
     else if ($request->request->has('project_delete') && $user->isAdmin()) {
-        if ($ProjectManager->deleteGoup($project) && XsrfProtection::verifyMac("Delete project")) {
-            header("Location: projects.php?deleteddproject=1");
+        if ($ProjectManager->deleteProject($request->query->get('projectName')) && XsrfProtection::verifyMac("Delete project")) {
+            header("Location: projects_editProject.php?projectName=".$projectName);
             exit();
         } else {
-            header("Location: ?failedtodeleteprojects=1");
+            header("Location: ?failedtodeleteprojects");
             exit();
         }
     }
