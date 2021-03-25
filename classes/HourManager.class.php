@@ -24,7 +24,22 @@ class HourManager
     }
 
     // GET ALL HOURS FOR USER
-    public function getAllHoursForUser(): array    {
+    public function getAllHoursForUser($userID): array    {
+        try {
+            $stmt = $this->dbase->prepare(query: "SELECT startTime, endtime FROM Hours Where WhoWorked={$userID}");
+            $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR, 100);
+            $stmt->bindParam(':endTime', $endTime, PDO::PARAM_STR, 100);
+            $stmt->execute();
+            if ($hours = $stmt->fetchObject("Hours")) {
+                return $hours;
+            } else {
+                $this->notifyUser("Ingen timer funnet.", "Kunne ikke hente timene.");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllHoursForUser()", $e->getMessage());
+            return array();
+        }
     }
     //END GET ALL TIMES
 

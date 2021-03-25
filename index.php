@@ -24,7 +24,7 @@
         }
         elseif ($user->isUser()) { //BRUKER TEMP and WORKER
             try {
-                echo $twig->render('timeregistrations.twig', array('session' => $session, 'user' => $user,
+                echo $twig->render('employee_dashboard.twig', array('session' => $session, 'user' => $user,
                     'request' => $request));
             } catch (LoaderError | RuntimeError | SyntaxError $e) {  }
         }
