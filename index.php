@@ -22,6 +22,12 @@
                     'request' => $request));
             } catch (LoaderError | RuntimeError | SyntaxError $e) {  }
         }
+        elseif ($user->isUser()) { //BRUKER TEMP and WORKER
+            try {
+                echo $twig->render('timeregistrations.twig', array('session' => $session, 'user' => $user,
+                    'request' => $request));
+            } catch (LoaderError | RuntimeError | SyntaxError $e) {  }
+        }
     } else {
         header("location: login.php");
         exit();
