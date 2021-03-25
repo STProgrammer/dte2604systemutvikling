@@ -1,18 +1,17 @@
 <?php
 
 
-class Task
-{
-    private int $taskID;
-    private String $category;
-    private int $parentTask;
-    private String $taskName;
+class Task {
+    private $taskID;
+    private $category;
+    private $parentTask;
+    private $taskName;
     private $startTime;
     private $finishTime;
-    private int $status;
-    private String $projectName;
-    private int $estimatedTime;
-    private int $timeLeft;
+    private $status;
+    private $projectName;
+    private $estimatedTime;
+    private $timeLeft;
     private $hasSubtasks;
 
     public function __construct() {
