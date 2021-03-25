@@ -3,11 +3,26 @@
 require_once "includes.php";
 define('FILENAME_TAG', 'image');
 
+if (!isset($db)) {
+    echo $twig->render('error.twig', array('msg' => 'No database connected!'));
+}
+if (empty($twig)) {
+    echo $twig->render('error.twig', array('msg' => 'Twig not working!'));
+}
+
 $commentsManager = new CommentsManager($db, $request, $session);
 $hours = $commentsManager->getAllHours();
 
+$user = $session->get('User');
+
+$userManager = new UserManager($db, $request, $session);
+$users = $userManager->getAllUsers("lastName");
+
+$TaskManager = new TaskManager($db, $request, $session);
+$tasks = $TaskManager->getAllTasks();
+
 echo $twig->render('comments.twig',
-    array('session' => $session, 'hours' => $hours));
+    array('session' => $session, 'hours' => $hours, 'user' => $user, 'users' => $users, 'tasks' => $tasks));
 
 
 

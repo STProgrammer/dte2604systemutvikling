@@ -1,20 +1,41 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
-class Task
-{
-    private int $TaskID;
-    private String $category;
-    private int $parentTask;
-    private String $taskName;
-    private $startTime;
-    private $finishTime;
-    private int $status;
-    private String $projectName;
-    private int $estimatedTime;
-    private int $timeLeft;
-    private $hasSubtasks;
+class TaskManager {
+    private $db;
+    private $request;
+    private $session;
 
+    //CONSTRUCTOR//
+    function __construct(PDO $db, Request $request, Session $session) {
+        $this->db = $db;
+        $this->request = $request;
+        $this->session = $session;
+    }
 
-
+    // GET ALL COMMENTS
+    public function getAllTasks() : array {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Tasks");
+            $stmt->execute();
+            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $tasks;
+            }
+            else {
+                $this->notifyUser("Tasks not found", "Kunne ikke hente tasks");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return array();
+        }
+    }
+    private function NotifyUser($strHeader, $strMessage) {
+        $this->session->getFlashBag()->clear();
+        $this->session->getFlashBag()->add('header', $strHeader);
+        $this->session->getFlashBag()->add('message', $strMessage);
+    }
 }
