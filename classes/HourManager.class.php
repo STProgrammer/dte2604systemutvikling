@@ -15,7 +15,6 @@ class HourManager
     }
 
 
-
     private function notifyUser($strHeader, $strMessage = "")
     {
         $this->session->getFlashBag()->clear();
@@ -24,7 +23,8 @@ class HourManager
     }
 
     // GET LAST HOURS FOR LOGGED IN USER
-    public function getLastHoursForUser($userID): array    {
+    public function getLastHoursForUser($userID): array
+    {
         $lastHoursForUser = null;
         try {
             $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where WhoWorked='$userID' ORDER BY endTime DESC LIMIT 5");
@@ -43,7 +43,8 @@ class HourManager
     //END GET LAST HOURS FOR LOGGED IN USER
 
     // GET ALL HOURS FOR LOGGED IN USER
-    public function getAllHoursForUser($userID): array    {
+    public function getAllHoursForUser($userID): array
+    {
         $allHoursForUser = null;
         try {
             $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where WhoWorked='$userID' ORDER BY endTime DESC");
@@ -62,13 +63,25 @@ class HourManager
     //END GET ALL HOURS FOR LOGGED IN USER
 
     // REGISTER TIME FOR USER
-    public function registerTimeForUser() {
-    }
-    //END REGISTER TIME
+    public function registerTimeForUser($userID)
+    {
+        try {
+            $stmt = $this->dbase->prepare("INSERT INTO Hours (startTime, WhoWorked) VALUES (NOW(), '$userID')");
+            $stmt->execute();
 
-    //CHANGE TIME USER
-    public function changeTimeForUser() {
-
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på registerTimeForUser()", $e->getMessage());
+            return array();
+        }
     }
-    //END CHANGE TIME USER
+
+//END REGISTER TIME
+
+//CHANGE TIME USER
+public
+function changeTimeForUser()
+{
+
+}
+//END CHANGE TIME USER
 }
