@@ -6,7 +6,7 @@ class Hour {
     private $taskID;
     private $WhoWorked;
     private $startTime;
-    private $finishTime;
+    private $endTime;
     private $activated;
     private $location;
     private $phaseID;
@@ -24,7 +24,7 @@ class Hour {
     public function getTaskID(): mixed { return $this->taskID; }
     public function getWhoWorked(): mixed { return $this->WhoWorked; }
     public function getStartTime(): mixed { return $this->startTime; }
-    public function getFinishTime(): mixed { return $this->finishTime; }
+    public function getEndTime(): mixed { return $this->endTime; }
     public function getActivated(): mixed { return $this->activated; }
     public function getLocation(): mixed { return $this->location; }
     public function getPhaseID(): mixed { return $this->phaseID; }
@@ -39,7 +39,7 @@ class Hour {
     public function setTaskID(mixed $taskID): void { $this->taskID = $taskID; }
     public function setWhoWorked(mixed $WhoWorked): void { $this->WhoWorked = $WhoWorked; }
     public function setStartTime(mixed $startTime): void { $this->startTime = $startTime; }
-    public function setFinishTime(mixed $finishTime): void { $this->finishTime = $finishTime; }
+    public function setEndTime(mixed $endTime): void { $this->endTime = $endTime; }
     public function setActivated(mixed $activated): void { $this->activated = $activated; }
     public function setLocation(mixed $location): void { $this->location = $location; }
     public function setPhaseID(mixed $phaseID): void { $this->phaseID = $phaseID; }

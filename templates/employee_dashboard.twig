@@ -28,21 +28,21 @@
         </div>
     </section>
     <section>
-    <div class="openContainerNoBorder text" id="timeTabell">
-        <h4>Mine timeregistreringer</h4>
-        <table class="table" id="table">
-            <tr>
-                <th>Starttid</th>
-                <th>Slutttid</th>
-            </tr>
-            {% for hours in hour %}
-            <tr>
-                <td> {{ hours.startTime }}</td>
-                <td> {{ hours.finishTime }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+        <div class="openContainerNoBorder text" id="timeTabell">
+            <h4>Mine timeregistreringer</h4>
+            <table class="table" id="table">
+                <tr>
+                    <th>Starttid</th>
+                    <th>Slutttid</th>
+                </tr>
+                {% for hours in Hour %}
+                    <tr>
+                        <td> {{ hours.startTime }}</td>
+                        <td> {{ hours.endTime }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </section>
 
 {% endblock %}
