@@ -1,6 +1,16 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="employee_dashboard" id="employee_dashboard">
+        <div class>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h3>{{ header }}</h3>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
         <div class="container container_registrer_inn">
             <button id="button" class="button" onclick="">
                 <img src="images/icon_time.png" width="40pt"> Registrer inn
@@ -25,10 +35,10 @@
                 <th>Starttid</th>
                 <th>Slutttid</th>
             </tr>
-            {% for hours in hour %}
+            {% for hour in hours %}
             <tr>
-                <td> {{ hours.startTime }}</td>
-                <td> {{ hours.endTime }}</td>
+                <td> {{ hour.getStartTime }}</td>
+                <td> {{ hour.getFinishTime }}</td>
             </tr>
             {% endfor %}
         </table>

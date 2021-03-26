@@ -24,14 +24,13 @@ class HourManager
     }
 
     // GET ALL HOURS FOR USER
-    public function getAllHoursForUser($userID): array    {
+    public function getAllHoursForUser($userID, $colName): array    {
+        $allHoursForUser = null;
         try {
-            $stmt = $this->dbase->prepare(query: "SELECT startTime, endtime FROM Hours Where WhoWorked={$userID}");
-            $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR, 100);
-            $stmt->bindParam(':endTime', $endTime, PDO::PARAM_STR, 100);
+            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where WhoWorked='$userID' ORDER BY '$colName' ASC");
             $stmt->execute();
-            if ($hours = $stmt->fetchObject("Hours")) {
-                return $hours;
+            if ($hour = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $allHoursForUser;
             } else {
                 $this->notifyUser("Ingen timer funnet.", "Kunne ikke hente timene.");
                 return array();
