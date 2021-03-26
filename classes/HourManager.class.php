@@ -23,11 +23,30 @@ class HourManager
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
-    // GET ALL HOURS FOR USER
-    public function getAllHoursForUser($userID, $colName): array    {
+    // GET LAST HOURS FOR LOGGED IN USER
+    public function getLastHoursForUser($userID): array    {
+        $lastHoursForUser = null;
+        try {
+            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where WhoWorked='$userID' ORDER BY endTime DESC LIMIT 5");
+            $stmt->execute();
+            if ($lastHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $lastHoursForUser;
+            } else {
+                $this->notifyUser("Ingen timer funnet.", "Kunne ikke hente timene.");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllHoursForUser()", $e->getMessage());
+            return array();
+        }
+    }
+    //END GET LAST HOURS FOR LOGGED IN USER
+
+    // GET ALL HOURS FOR LOGGED IN USER
+    public function getAllHoursForUser($userID): array    {
         $allHoursForUser = null;
         try {
-            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where WhoWorked='$userID' ORDER BY '$colName' ASC");
+            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where WhoWorked='$userID' ORDER BY endTime DESC");
             $stmt->execute();
             if ($allHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $allHoursForUser;
@@ -40,7 +59,7 @@ class HourManager
             return array();
         }
     }
-    //END GET ALL TIMES
+    //END GET ALL HOURS FOR LOGGED IN USER
 
     // REGISTER TIME FOR USER
     public function registerTimeForUser() {

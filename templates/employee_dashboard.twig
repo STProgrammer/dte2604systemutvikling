@@ -29,16 +29,22 @@
     </section>
     <section>
         <div class="openContainerNoBorder text" id="timeTabell">
-            <h4>Mine timeregistreringer</h4>
+            <h4>Mine siste fem timeregistreringer</h4>
             <table class="table" id="table">
                 <tr>
+                    <th>ID</th>
+                    <th>Task</th>
                     <th>Starttid</th>
                     <th>Slutttid</th>
+                    <th>Kommentar</th>
                 </tr>
                 {% for hours in Hour %}
                     <tr>
+                        <td> {{ hours.hourID }}</td>
+                        <td> {{ hours.taskID }}</td>
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
+                        <td> {{ hours.Comment }}</td>
                     </tr>
                 {% endfor %}
             </table>
