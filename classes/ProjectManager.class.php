@@ -107,8 +107,7 @@ class ProjectManager
             $stmt = $this->db->prepare(
                 query: "insert into Projects (projectName, projectLeader, startTime, finishTime, status, customer) 
                 values (:projectName, :projectLeader, :startTime, :finishTime, :status, :customer);
-                update Users set isProjectLeader = 0 where userID = :projectLeader;
-                INSERT IGNORE INTO UsersAndProjects (userID, projectName) VALUES (:projectLeader, :projectName);");
+                update Users set isProjectLeader = 0 where userID = :projectLeader;");
             $stmt->bindParam(':projectName', $projectName);
             $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
             $stmt->bindParam(':startTime', $startTime);
@@ -307,8 +306,7 @@ class ProjectManager
     {
         $projectLeader = $this->request->request->get('projectLeader');
         try {
-            $stmt = $this->db->prepare(query: "DELETE FROM Projects WHERE projectName = :projectName; 
-                                    DELETE FROM UsersAndProjects WHERE projectName = :projectName;
+            $stmt = $this->db->prepare(query: "DELETE FROM Projects WHERE projectName = :projectName;
                                     UPDATE Users SET Users.isProjectLeader = 0
                                     WHERE NOT EXISTS
                                     (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");

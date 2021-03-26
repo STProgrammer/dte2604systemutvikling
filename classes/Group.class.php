@@ -140,6 +140,6 @@ class Group
         $this->lastName = $lastName;
     }
 
-    
+
 
 }

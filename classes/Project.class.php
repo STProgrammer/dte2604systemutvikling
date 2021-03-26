@@ -1,13 +1,18 @@
 <?php
 
+use User;
+
+
 class Project {
     private String $projectName;
-    private String $projectLeader;
+    private User $projectLeader;
     private String $startTime;
     private String $finishTime;
     private int $status;
-    private int $customer;
+    private User $customer;
     private bool $isAcceptedByAdmin;
+    private array $groups;
+    private array $phases;
 
     public function __construct() {
     }
@@ -29,17 +34,17 @@ class Project {
     }
 
     /**
-     * @return String
+     * @return \User
      */
-    public function getProjectLeader(): string
+    public function getProjectLeader(): \User
     {
         return $this->projectLeader;
     }
 
     /**
-     * @param String $projectLeader
+     * @param \User $projectLeader
      */
-    public function setProjectLeader(string $projectLeader): void
+    public function setProjectLeader(\User $projectLeader): void
     {
         $this->projectLeader = $projectLeader;
     }
@@ -93,17 +98,17 @@ class Project {
     }
 
     /**
-     * @return int
+     * @return \User
      */
-    public function getCustomer(): int
+    public function getCustomer(): \User
     {
         return $this->customer;
     }
 
     /**
-     * @param int $customer
+     * @param \User $customer
      */
-    public function setCustomer(int $customer): void
+    public function setCustomer(\User $customer): void
     {
         $this->customer = $customer;
     }
@@ -124,6 +129,39 @@ class Project {
         $this->isAcceptedByAdmin = $isAcceptedByAdmin;
     }
 
+    /**
+     * @return array
+     */
+    public function getGroups(): array
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param array $groups
+     */
+    public function setGroups(array $groups): void
+    {
+        $this->groups = $groups;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPhases(): array
+    {
+        return $this->phases;
+    }
+
+    /**
+     * @param array $phases
+     */
+    public function setPhases(array $phases): void
+    {
+        $this->phases = $phases;
+    }
+
+    
 
 
 
