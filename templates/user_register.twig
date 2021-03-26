@@ -68,17 +68,47 @@
                                minlength=8 maxlength=40 value="" onkeyup='check();'/>
                     <span id='message'></span>
 
-                    <p><br><label>Type bruker: </label><br>
-                    <br><input type="radio" id="worker" name="userType" value="2" required>
-                    <label for="worker">Fast arbeider</label>
-                    <br><input type="radio" id="temporary" name="userType" value="1" required>
-                    <label for="temporary">Innleid arbeider</label>
-                    <br><input type="radio" id="customer" name="userType" value="0" required>
-                    <label for="customer">Kunde</label>
-                    {% if user.isAdmin() %}
-                    <br><input type="radio" id="admin" name="userType" value="3" required>
-                    <label for="admin">Admin</label></p>
-                    {% endif %}
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <label>Bruker type: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" id="worker" name="status" value="2" required>
+                            </td>
+                            <td>
+                                <label for="wroker">Fast arbeider </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" id="temporary" name="status" value="1" required>
+                            </td>
+                            <td>
+                                <label for="temporary">Innleid arbeider </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="status" id="customer" value="0" required>
+                            </td>
+                            <td>
+                                <label for="customer">Kunde </label>
+                            </td>
+                        </tr>
+                        {% if user.isAdmin() %}
+                        <tr>
+                            <td>
+                                <input type="radio" name="status" id="admin" value="3" required>
+                            </td>
+                            <td>
+                                <label for="admin">Admin </label>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </table>
 
                     <br><label>Addresse:</label>
                     <br><input type="text" name="address" value="" placeholder="Addresse" maxlength=90 required/>

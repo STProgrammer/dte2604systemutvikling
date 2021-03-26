@@ -8,9 +8,6 @@ class Group
     private String $groupName;
     private bool $isAdmin;
     private int $groupLeader;
-    private String $username;
-    private String $firstName;
-    private String $lastName;
 
     /**
      * @return int

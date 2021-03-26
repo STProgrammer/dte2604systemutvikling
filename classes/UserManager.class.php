@@ -37,9 +37,9 @@ class UserManager
         $phoneNumber = $this->request->request->get('phoneNumber');
         $mobileNumber = $this->request->request->get('mobileNumber');
         $IMAddress = $this->request->request->get('IMAddress');
-        $userType = $this->request->request->get('userType', 2);
+        $userType = $this->request->request->getInt('userType');
         //Bare admin kan registrere admin
-        if (!$user->isAdmin() && $userType == 3) {
+        if (!$user->isAdmin() && $userType >= 3 | $userType < 0) {
             $userType = 2;
         }
         $status = $userType == 0 ? "N/A": "Free";
@@ -504,18 +504,18 @@ class UserManager
         $allUsers = null;
         try{
             // $colName = "`".str_replace("`","``",$colName)."`";
-            $query   = "SELECT * FROM Users WHERE isCustomer = 1 ORDER BY `$colName` ASC;";
+            $query   = "SELECT * FROM Users WHERE userType = 0 ORDER BY `$colName` ASC;";
             $stmt = $this->dbase->prepare($query);
             $stmt->execute();
             if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
                 return $allUsers;
             }
             else {
-                $this->notifyUser("User not found", "");
+                $this->notifyUser("Ingen registrert kunde ble funnet");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllCustomers()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod på getAllCustomers()", $e->getMessage());
             return array();
         }
         return array();

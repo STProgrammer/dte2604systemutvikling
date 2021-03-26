@@ -11,35 +11,53 @@
     </section>
 
     <section id="addProject" >
-
         <div class="openContainerNoBorder text" id="prosjektTabell">
             <h3>Legg til nytt prosjekt </h3>
-
             <form action="projects_addProject.php" enctype="multipart/form-data" method="post" class="formProject" id="formProject">
                 <div id="tekst">
-                    <br><label>Prosjekt Navn: </label>
+                    <br><label for="projectName">Prosjekt Navn: </label>
                     <br><input type="text" name="projectName" value="" placeholder="Prosjekt Navn" maxlength=90 required id="projectName" />
-                    <br>
-                    <label>Prosjekt Leder:</label>
-                    <br>
-                    <select name="projectLeader" id="projectLeader">
-                        {% for users in users %}
-                        <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getFirstName() }} </option>
-                        {% endfor %}
-                    </select>
-                    <br><label>Kunde:</label>
+                    <br><label for="customer">Kunde:</label>
                     <br><select name="customer" id="customer">
-                        {% for users in users %}
-                            <option value="{{ users.getUserId() }}">{{ users.getLastName() }}, {{ users.getFirstName() }} </option>
+                        {% for customer in customers %}
+                            <option value="{{ customer.getUserId() }}">{{ customer.getLastName() }}, {{ customer.getFirstName() }} </option>
                         {% endfor %}
                     </select>
-                    <br><label>Start tid</label>
-                    <br><input type="datetime-local" name="startTime" value="" placeholder="dd.mm.åååå tt:mm" maxlength=90 required id="startTime" />
-                    <br><label>Slutt tid</label>
-                    <br><input type="datetime-local" name="finishTime" value="" placeholder="dd.mm.åååå tt:mm" maxlength=90 />
-                    <br><label>Status tall, Ventende = 0, Pågår = 1, Paused = 2, Avslått = 3</label>
-
-                    <br><input type="text" name="status" value="" placeholder="Status" maxlength=90 required id="status" />
+                    <br><label for="startTime">Start tid</label>
+                    <br><input id="startTime" type="date" name="startTime" value="" placeholder="dd.mm.åååå" maxlength=90 required />
+                    <br><label for="finishTime">Slutt tid</label>
+                    <br><input id="finishTime" type="date" name="finishTime" value="" placeholder="dd.mm.åååå" maxlength=90 required />
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <label>Status på prosjektet: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                        <input type="radio" id="waiting" name="status" value="0" required>
+                            </td>
+                            <td>
+                                <label for="waiting">Ventende </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" id="active" name="status" value="1" required>
+                            </td>
+                            <td>
+                                <label for="active">Pågår </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="status" id="paused" value="2" required>
+                            </td>
+                            <td>
+                                <label for="paused">På pause </label>
+                            </td>
+                        </tr>
+                    </table>
                     <input type="hidden" value="{{ getMac("addProject") }}" name="XSRFPreventionToken">
                     <br><input type="submit" name="addProject" id="addProject" value="Legg til prosjektet">
                 </div>

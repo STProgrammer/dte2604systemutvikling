@@ -37,9 +37,9 @@ class ProjectManager
     public function getAllProjects(): array
     {
         try {
-            $stmt = $this->db->prepare(query: "SELECT * FROM Projects ORDER BY `startTime` DESC");
+            $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `startTime` DESC");
             $stmt->execute();
-            if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
+            if ($projects = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
                 return $projects;
             } else {
                 $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
@@ -80,13 +80,20 @@ class ProjectManager
     // ADD PROJECT
     public function addProject(): bool
     {
-        //TODO disse variablene nedenfor bør hentes fra objektet som sendes med i kallet. Halil
+
+        $isAcceptedByAdmin = 0;
+        if ($this->session->get('User')->isAdmin()) {
+            $isAcceptedByAdmin = 1;
+        }
+
         $projectName = $this->request->request->get('projectName');
-        $projectLeader = $this->request->request->get('projectLeader');
 
         //Ungå initsialisering av 01.01.1970 00:00:00 om starttid og slutttid ikke er lagt inn av bruker.
         $dateTime1 = $this->request->request->get('startTime');
-        if ($dateTime1 != null) {
+        $startTime = $dateTime1;
+        $dateTime2 = $this->request->request->get('finishTime');
+        $finishTime = $dateTime2;
+        /*if ($dateTime1 != null) {
             $dateTimeStr1 = date('Y-m-d\TH:i:s', strtotime($dateTime1));
             $startTime = $dateTimeStr1;
         } else {
@@ -98,33 +105,31 @@ class ProjectManager
             $finishTime = $dateTimeStr2;
         } else {
             $finishTime = $dateTime2;
-        }
-
+        }*/
         $status = $this->request->request->get('status');
         $customer = $this->request->request->get('customer');
 
         try {
             $stmt = $this->db->prepare(
-                query: "insert into Projects (projectName, projectLeader, startTime, finishTime, status, customer) 
-                values (:projectName, :projectLeader, :startTime, :finishTime, :status, :customer);
-                update Users set isProjectLeader = 0 where userID = :projectLeader;");
-            $stmt->bindParam(':projectName', $projectName);
-            $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
-            $stmt->bindParam(':startTime', $startTime);
-            $stmt->bindParam(':finishTime', $finishTime);
+                query: "insert into Projects (projectName, startTime, finishTime, status, customer, isAcceptedByAdmin) 
+                values (:projectName, :startTime, :finishTime, :status, :customer, :isAcceptedByAdmin);");
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
+            $stmt->bindParam(':finishTime', $finishTime, PDO::PARAM_STR);
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
             $stmt->bindParam(':customer', $customer, PDO::PARAM_INT);
+            $stmt->bindParam(':isAcceptedByAdmin', $isAcceptedByAdmin, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Nytt prosjekt ble registrert", "Fullført!");
+                $this->notifyUser("Nytt prosjekt ble opprettet", "Fullført!");
 
                 return true;
             } else {
-                $this->notifyUser("Failed to register project!", "Ikke fullført");
+                $this->notifyUser("Feil ved opprettelse av nytt prosjekt");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to register project!", $e->getMessage());
+            $this->notifyUser("Feil ved opprettelse av nytt prosjekt!", $e->getMessage());
             return false;
         }
     }

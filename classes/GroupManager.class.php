@@ -32,9 +32,9 @@ class GroupManager
     public function getAllGroups(): array
     {
         try {
-            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName FROM Groups LEFT JOIN Users ON Groups.groupLeader=Users.UserID ORDER BY `groupName` ASC;");
+            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName, Users.username FROM Groups LEFT JOIN Users ON Groups.groupLeader=Users.UserID ORDER BY `groupName` ASC;");
             $stmt->execute();
-            if ($groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
+            if ($groups = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
                 return $groups;
             } else {
                 $this->notifyUser("Groups not found", "Kunne ikke hente grupper");
@@ -133,7 +133,7 @@ WHERE NOT EXISTS
     public function getGroup(int $groupID)
     {
         try {
-            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName FROM Groups LEFT JOIN Users ON Groups.groupLeader=Users.UserID WHERE Groups.groupID = :groupID;");
+            $stmt = $this->db->prepare("SELECT * FROM Groups WHERE groupID = :groupID;");
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($group = $stmt->fetchObject("Group")) {
