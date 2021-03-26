@@ -3,26 +3,143 @@
 
 class Group
 {
-    private $groupID;
-    private $groupName;
-    private $isAdmin;
-    private $groupLeader;
-    private $firstName;
-    private $lastName;
+    private int $groupID;
+    private String $projectName;
+    private String $groupName;
+    private bool $isAdmin;
+    private int $groupLeader;
+    private String $username;
+    private String $firstName;
+    private String $lastName;
 
+    /**
+     * @return int
+     */
+    public function getGroupID(): int
+    {
+        return $this->groupID;
+    }
 
-    public function getFirstName(){return $this->firstName;}
-    public function getLastName(){return $this->lastName;}
-    public function getGroupID(){return $this->groupID;}
-    public function getGroupName(){return $this->groupName;}
-    public function getGroupLeader(){return $this->groupLeader;}
+    /**
+     * @param int $groupID
+     */
+    public function setGroupID(int $groupID): void
+    {
+        $this->groupID = $groupID;
+    }
 
-    public function setFirstName($firstName): void{$this->firstName = $firstName;}
-    public function setLastName($lastName): void{$this->lastName = $lastName;}
-    public function setGroupID($groupID): void{$this->groupID = $groupID;}
-    public function setGroupName($groupName): void{$this->groupName = $groupName;}
-    public function setGroupLeader($groupLeader): void{$this->groupLeader = $groupLeader;}
-    public function setAdmin($isAdmin): void{$this->isAdmin = $isAdmin;}
+    /**
+     * @return String
+     */
+    public function getProjectName(): string
+    {
+        return $this->projectName;
+    }
 
-    public function isAdmin(){return $this->isAdmin;}
+    /**
+     * @param String $projectName
+     */
+    public function setProjectName(string $projectName): void
+    {
+        $this->projectName = $projectName;
+    }
+
+    /**
+     * @return String
+     */
+    public function getGroupName(): string
+    {
+        return $this->groupName;
+    }
+
+    /**
+     * @param String $groupName
+     */
+    public function setGroupName(string $groupName): void
+    {
+        $this->groupName = $groupName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * @param bool $isAdmin
+     */
+    public function setIsAdmin(bool $isAdmin): void
+    {
+        $this->isAdmin = $isAdmin;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGroupLeader(): int
+    {
+        return $this->groupLeader;
+    }
+
+    /**
+     * @param int $groupLeader
+     */
+    public function setGroupLeader(int $groupLeader): void
+    {
+        $this->groupLeader = $groupLeader;
+    }
+
+    /**
+     * @return String
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param String $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return String
+     */
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param String $firstName
+     */
+    public function setFirstName(string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return String
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param String $lastName
+     */
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    
+
 }

@@ -312,7 +312,7 @@ class ProjectManager
                                     UPDATE Users SET Users.isProjectLeader = 0
                                     WHERE NOT EXISTS
                                     (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");
-            $stmt->bindParam(':projectName', $projectName);
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() >= 1) {

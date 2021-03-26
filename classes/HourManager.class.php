@@ -17,7 +17,7 @@ class HourManager
 
     private function notifyUser($strHeader, $strMessage = "")
     {
-        $this->session->getFlashBag()->clear();
+        //$this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
         $this->session->getFlashBag()->add('message', $strMessage);
     }
@@ -27,7 +27,8 @@ class HourManager
     {
         $lastHoursForUser = null;
         try {
-            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where WhoWorked='$userID' ORDER BY endTime DESC LIMIT 5");
+            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID ORDER BY endTime DESC LIMIT 5");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if ($lastHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $lastHoursForUser;
@@ -47,8 +48,8 @@ class HourManager
     {
         $allHoursForUser = null;
         try {
-            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where WhoWorked='$userID' ORDER BY endTime DESC");
-            $stmt->execute();
+            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID ORDER BY endTime DESC");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             if ($allHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $allHoursForUser;
             } else {
@@ -66,7 +67,8 @@ class HourManager
     public function registerTimeForUser($userID)
     {
         try {
-            $stmt = $this->dbase->prepare("INSERT INTO Hours (startTime, WhoWorked) VALUES (NOW(), '$userID')");
+            $stmt = $this->dbase->prepare("INSERT INTO Hours (startTime, whoWorked) VALUES (NOW(), :userID)");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
 
         } catch (Exception $e) {

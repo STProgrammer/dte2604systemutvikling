@@ -26,7 +26,7 @@ if ($user) {
         $project->setFinishTime($request->request->get('finishTime'));
         $project->setStatus($request->request->getInt('status'));
         $project->setCustomer($request->request->getInt('customer'));
-        $project->setIsAcceptedByAdmin($request->request->getInt('isAcceptedByAdmin'));
+        $project->setAcceptedByAdmin($request->request->getInt('isAcceptedByAdmin'));
 
         $ProjectManager->addProject($project);
     }

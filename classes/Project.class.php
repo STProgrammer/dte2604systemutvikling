@@ -1,34 +1,132 @@
 <?php
 
 class Project {
-    private $projectName;
-    private $projectLeader;
-    private $startTime;
-    private $finishTime;
-    private $status;
-    private $customer;
-    private $isAcceptedByAdmin;
+    private String $projectName;
+    private String $projectLeader;
+    private String $startTime;
+    private String $finishTime;
+    private int $status;
+    private int $customer;
+    private bool $isAcceptedByAdmin;
 
     public function __construct() {
     }
 
-    //Getters
-    public function getProjectName(): mixed { return $this->projectName; }
-    public function getProjectLeader(): mixed { return $this->projectLeader; }
-    public function getStartTime(): mixed { return $this->startTime; }
-    public function getFinishTime(): mixed { return $this->finishTime; }
-    public function getStatus(): mixed { return $this->status; }
-    public function getCustomer(): mixed { return $this->customer; }
-    public function getIsAcceptedByAdmin() { return $this->isAcceptedByAdmin; }
+    /**
+     * @return String
+     */
+    public function getProjectName(): string
+    {
+        return $this->projectName;
+    }
 
-    //Setters
-    public function setProjectName(mixed $projectName): void { $this->projectName = $projectName; }
-    public function setProjectLeader(mixed $projectLeader): void { $this->projectLeader = $projectLeader; }
-    public function setStartTime(mixed $startTime): void { $this->startTime = $startTime; }
-    public function setFinishTime(mixed $finishTime): void { $this->finishTime = $finishTime; }
-    public function setStatus(mixed $status): void { $this->status = $status; }
-    public function setCustomer(mixed $customer): void { $this->customer = $customer; }
-    public function setIsAcceptedByAdmin($isAcceptedByAdmin): void{ $this->isAcceptedByAdmin = $isAcceptedByAdmin; }
+    /**
+     * @param String $projectName
+     */
+    public function setProjectName(string $projectName): void
+    {
+        $this->projectName = $projectName;
+    }
+
+    /**
+     * @return String
+     */
+    public function getProjectLeader(): string
+    {
+        return $this->projectLeader;
+    }
+
+    /**
+     * @param String $projectLeader
+     */
+    public function setProjectLeader(string $projectLeader): void
+    {
+        $this->projectLeader = $projectLeader;
+    }
+
+    /**
+     * @return String
+     */
+    public function getStartTime(): string
+    {
+        return $this->startTime;
+    }
+
+    /**
+     * @param String $startTime
+     */
+    public function setStartTime(string $startTime): void
+    {
+        $this->startTime = $startTime;
+    }
+
+    /**
+     * @return String
+     */
+    public function getFinishTime(): string
+    {
+        return $this->finishTime;
+    }
+
+    /**
+     * @param String $finishTime
+     */
+    public function setFinishTime(string $finishTime): void
+    {
+        $this->finishTime = $finishTime;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus(int $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCustomer(): int
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param int $customer
+     */
+    public function setCustomer(int $customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAcceptedByAdmin(): bool
+    {
+        return $this->isAcceptedByAdmin;
+    }
+
+    /**
+     * @param bool $isAcceptedByAdmin
+     */
+    public function setIsAcceptedByAdmin(bool $isAcceptedByAdmin): void
+    {
+        $this->isAcceptedByAdmin = $isAcceptedByAdmin;
+    }
+
+
+
+
 
 
 }

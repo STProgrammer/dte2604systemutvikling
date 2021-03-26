@@ -6,11 +6,16 @@ class Phase
     private int $phaseID;
     private String $phaseName;
     private String $projectName;
-    private $startTime;
-    private $finishTime;
+    private String $startTime;
+    private String $finishTime;
     private int $status;
 
-
+    /**
+     * Phase constructor.
+     */
+    public function __construct()
+    {
+    }
 
     /**
      * @return int
@@ -61,33 +66,33 @@ class Phase
     }
 
     /**
-     * @return mixed
+     * @return String
      */
-    public function getStartTime()
+    public function getStartTime(): string
     {
         return $this->startTime;
     }
 
     /**
-     * @param mixed $startTime
+     * @param String $startTime
      */
-    public function setStartTime($startTime): void
+    public function setStartTime(string $startTime): void
     {
         $this->startTime = $startTime;
     }
 
     /**
-     * @return mixed
+     * @return String
      */
-    public function getFinishTime()
+    public function getFinishTime(): string
     {
         return $this->finishTime;
     }
 
     /**
-     * @param mixed $finishTime
+     * @param String $finishTime
      */
-    public function setFinishTime($finishTime): void
+    public function setFinishTime(string $finishTime): void
     {
         $this->finishTime = $finishTime;
     }
@@ -107,7 +112,6 @@ class Phase
     {
         $this->status = $status;
     }
-
 
 
 }
