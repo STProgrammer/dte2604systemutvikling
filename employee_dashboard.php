@@ -13,7 +13,7 @@ $userManager = new UserManager($db, $request, $session);
 
 if ($user) {
     $userID = $user->getUserId($user);
-    $hour = $hourManager->getAllHoursForUser($userID, 'startTime');
+    $hour = $hourManager->getAllHoursForUser('startTime');
 
     echo $twig->render('employee_dashboard.twig',
         array('Hour' => $hour, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session, 'User' => $user));
