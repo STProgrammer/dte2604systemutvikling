@@ -35,10 +35,10 @@
                 <th>Starttid</th>
                 <th>Slutttid</th>
             </tr>
-            {% for hour in hours %}
+            {% for hours in hour %}
             <tr>
-                <td> {{ hour.getStartTime }}</td>
-                <td> {{ hour.getFinishTime }}</td>
+                <td> {{ hours.getStartTime() }}</td>
+                <td> {{ hours.getFinishTime() }}</td>
             </tr>
             {% endfor %}
         </table>
