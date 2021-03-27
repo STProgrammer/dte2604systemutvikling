@@ -129,7 +129,8 @@ class ProjectManager
     //EDIT PROJECT
     public function editProject(Project $project): bool
     {
-        $projectLeader = $this->request->request->getInt('projectLeader');
+        $projectName = $project->getProjectName();
+        $projectLeader = $this->request->request->get('projectLeader');
         $startTime = $this->request->request->get('startTime', $project->getStartTime());
         $finishTime = $this->request->request->get('finishTime', $project->getFinishTime());
         $status = $this->request->request->getInt('status', $project->getStatus());
@@ -164,6 +165,19 @@ class ProjectManager
         }
     }
 
+
+
+
+
+
+/*
+    public function getAllPotentialLeaders($projectId) {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE ")
+        }
+
+    }*/
+/*
     public function addEmployees($projectName)
     {
         $users = $this->request->request->get('projectMembers');
@@ -185,7 +199,7 @@ class ProjectManager
             return false;
         }
         return true;
-    }
+    }*/
 
 
     public function removeEmployees(Project $project)
@@ -238,29 +252,102 @@ class ProjectManager
         }
     }
 
-
-  /*  public function addGroup($projectID)
+    public function addGroup($projectName): bool //returns boolean value
     {
-        $groups = $this->request->request->get('groups');
+        $groupName = $this->request->request->get('groupName');
+        $isAdmin = $this->request->request->getInt('isAdmin', 0);
         try {
-            $stmt = $this->db->prepare(query: "INSERT IGNORE INTO GroupsAndProjects (groupID, projectName) VALUES (:groupID, :projectName);");
-            if (is_array($groups)) {
-                foreach ($groups as $groupID) {
+            $stmt = $this->db->prepare("INSERT INTO `Groups` (groupName, isAdmin, projectName)
+              VALUES (:groupName, :isAdmin, :projectName);");
+            $stmt->bindParam(':groupName', $groupName, PDO::PARAM_STR, 100);
+            $stmt->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
+            if ($stmt->execute()) {
+                $groupId = $this->db->lastInsertId();
+                if ($this->addEmployees($groupId)) {
+                    $this->NotifyUser("En gruppe ble lagt til prosjektet");
+                    return true;
+                }
+            } else {
+                $this->NotifyUser("Feil ved å legge til gruppe");
+                return false;
+            }
+        } catch (PDOException $e) {
+            $this->NotifyUser("Feil ved å legge til gruppe", $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getGroups($projectName) {
+        $groups = array();
+        try {
+            $stmt = $this->db->prepare("SELECT Groups.*, count(UsersAndGroups.groupID) as nrOfUsers
+    FROM Groups
+    JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+    WHERE Groups.projectName = :projectName GROUP BY Groups.groupID;");
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            if ($stmt->execute()) {
+                $groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group");
+                return $groups;
+            } else {
+                $this->notifyUser("Feil i getGroups()");
+                return $groups;
+            }
+        } catch (Exceptopn $e) {
+            $this->notifyUser("Feil i getGroups()", $e->getMessage());
+            return $groups;}
+    }
+
+
+    public function getLeadersCandidates(Group $group) : array
+    {
+        $candidates = array();
+        $projectName = $group->getProjectName();
+        $groupLeader = $group->getGroupLeader();
+        $groupID = $group->getGroupID();
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID)
+                    AND NOT EXISTS (SELECT projectLeader FROM Projects WHERE Projects.projectName = :projectName);");
+            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
+                return $members;
+            } else {
+                $this->notifyUser("Ingen kandidater funnet", "Kunne ikke hente kandidater for gruppeleder");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getLeaderCandidates()", $e->getMessage());
+            return array();
+        }
+    }
+
+
+
+    public function addEmployees($groupID)
+    {
+        $users = $this->request->request->get('groupMembers');
+        try {
+            $stmt = $this->db->prepare("INSERT IGNORE INTO UsersAndGroups (groupID, userID) VALUES (:groupID, :userID);");
+            if (is_array($users)) {
+                foreach ($users as $userID) {
                     $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
-                    $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
                     $stmt->execute();
                 }
-                $this->notifyUser("Grupper ble lagt til", '..........');
+                $this->notifyUser("Medlemmer ble lagt til");
             } else {
-                $this->notifyUser("Kunne ikke legge til grupper", '..........');
+                $this->notifyUser("Fikk ikke legge til brukere");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Kunne ikke legge til grupper", $e->getMessage());
+            $this->notifyUser("Fikk ikke legge til brukere", $e->getMessage());
             return false;
         }
         return true;
-    }*/
+    }
 
 
     public function removeGroups(Project $project)
@@ -455,13 +542,6 @@ class ProjectManager
 
 
 
-
-
-    //TODO
-    public function addGroup(Group $group)
-    {
-
-    }
 
     public function verifyProjectByAdmin($projectName) : bool {
         if($this->session->get('User')->isAdmin()) {

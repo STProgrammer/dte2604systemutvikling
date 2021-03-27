@@ -76,15 +76,18 @@ class GroupManager
         $groupLeader = $this->request->request->get('groupLeader', null);
         $oldGroupLeader = $group->getGroupLeader();
         $isAdmin = $this->request->request->getInt('isAdmin', $group->isAdmin());
+        $projectName = $group->getProjectName();
         try {
             $sth = $this->db->prepare("update Groups set groupName = :groupName, groupLeader = :groupLeader, 
-    isAdmin = :isAdmin WHERE groupID = :groupID;
+    isAdmin = :isAdmin WHERE groupID = :groupID AND NOT EXISTS
+    (SELECT projectLeader FROM Projects WHERE projectLeader = :groupLeader AND projectName = :projectName);
       UPDATE Users SET Users.isGroupLeader = 0
 WHERE NOT EXISTS
   (SELECT groupLeader FROM Groups WHERE groupLeader = :oldGroupLeader) AND Users.userID = :oldGroupLeader;
       UPDATE Users SET Users.isGroupLeader = 1 WHERE Users.userID = :groupLeader;");
             $sth->bindParam(':groupID', $groupID, PDO::PARAM_INT);
             $sth->bindParam(':groupName', $groupName, PDO::PARAM_STR);
+            $sth->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             $sth->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
             $sth->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT);
             $sth->bindParam(':oldGroupLeader', $oldGroupLeader, PDO::PARAM_INT);
@@ -237,6 +240,31 @@ WHERE NOT EXISTS
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getGroupMembers()", $e->getMessage());
+            return array();
+        }
+    }
+
+    public function getLeadersCandidates(Group $group) : array
+    {
+        $candidates = array();
+        $projectName = $group->getProjectName();
+        $groupLeader = $group->getGroupLeader();
+        $groupID = $group->getGroupID();
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID)
+                    AND NOT EXISTS (SELECT projectLeader FROM Projects WHERE Projects.projectName = :projectName);");
+            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
+                return $members;
+            } else {
+                $this->notifyUser("Ingen kandidater funnet", "Kunne ikke hente kandidater for gruppeleder");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getLeaderCandidates()", $e->getMessage());
             return array();
         }
     }
