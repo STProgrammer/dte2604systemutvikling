@@ -2,212 +2,212 @@
 
 
 class Task {
-    private int $taskID;
-    private String $category;
-    private int $phaseID;
-    private int $groupID;
-    private int $parentTask;
-    private String $taskName;
-    private String $startTime;
-    private String $finishTime;
-    private int $status;
-    private String $projectName;
-    private int $timeSpent;
-    private int $estimatedTime;
+    private $taskID;
+    private $category;
+    private $phaseID;
+    private $groupID;
+    private $parentTask;
+    private $taskName;
+    private $startTime;
+    private $finishTime;
+    private $status;
+    private $projectName;
+    private $timeSpent;
+    private $estimatedTime;
     private bool $hasSubtasks;
-    private int $mainResponsible;
+    private $mainResponsible;
 
     public function __construct() {
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getTaskID(): int
+    public function getTaskID()
     {
         return $this->taskID;
     }
 
     /**
-     * @param int $taskID
+     * @param mixed $taskID
      */
-    public function setTaskID(int $taskID): void
+    public function setTaskID($taskID): void
     {
         $this->taskID = $taskID;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getCategory(): string
+    public function getCategory()
     {
         return $this->category;
     }
 
     /**
-     * @param String $category
+     * @param mixed $category
      */
-    public function setCategory(string $category): void
+    public function setCategory($category): void
     {
         $this->category = $category;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getPhaseID(): int
+    public function getPhaseID()
     {
         return $this->phaseID;
     }
 
     /**
-     * @param int $phaseID
+     * @param mixed $phaseID
      */
-    public function setPhaseID(int $phaseID): void
+    public function setPhaseID($phaseID): void
     {
         $this->phaseID = $phaseID;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getGroupID(): int
+    public function getGroupID()
     {
         return $this->groupID;
     }
 
     /**
-     * @param int $groupID
+     * @param mixed $groupID
      */
-    public function setGroupID(int $groupID): void
+    public function setGroupID($groupID): void
     {
         $this->groupID = $groupID;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getParentTask(): int
+    public function getParentTask()
     {
         return $this->parentTask;
     }
 
     /**
-     * @param int $parentTask
+     * @param mixed $parentTask
      */
-    public function setParentTask(int $parentTask): void
+    public function setParentTask($parentTask): void
     {
         $this->parentTask = $parentTask;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getTaskName(): string
+    public function getTaskName()
     {
         return $this->taskName;
     }
 
     /**
-     * @param String $taskName
+     * @param mixed $taskName
      */
-    public function setTaskName(string $taskName): void
+    public function setTaskName($taskName): void
     {
         $this->taskName = $taskName;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getStartTime(): string
+    public function getStartTime()
     {
         return $this->startTime;
     }
 
     /**
-     * @param String $startTime
+     * @param mixed $startTime
      */
-    public function setStartTime(string $startTime): void
+    public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getFinishTime(): string
+    public function getFinishTime()
     {
         return $this->finishTime;
     }
 
     /**
-     * @param String $finishTime
+     * @param mixed $finishTime
      */
-    public function setFinishTime(string $finishTime): void
+    public function setFinishTime($finishTime): void
     {
         $this->finishTime = $finishTime;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getStatus(): int
+    public function getStatus()
     {
         return $this->status;
     }
 
     /**
-     * @param int $status
+     * @param mixed $status
      */
-    public function setStatus(int $status): void
+    public function setStatus($status): void
     {
         $this->status = $status;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getProjectName(): string
+    public function getProjectName()
     {
         return $this->projectName;
     }
 
     /**
-     * @param String $projectName
+     * @param mixed $projectName
      */
-    public function setProjectName(string $projectName): void
+    public function setProjectName($projectName): void
     {
         $this->projectName = $projectName;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getTimeSpent(): int
+    public function getTimeSpent()
     {
         return $this->timeSpent;
     }
 
     /**
-     * @param int $timeSpent
+     * @param mixed $timeSpent
      */
-    public function setTimeSpent(int $timeSpent): void
+    public function setTimeSpent($timeSpent): void
     {
         $this->timeSpent = $timeSpent;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getEstimatedTime(): int
+    public function getEstimatedTime()
     {
         return $this->estimatedTime;
     }
 
     /**
-     * @param int $estimatedTime
+     * @param mixed $estimatedTime
      */
-    public function setEstimatedTime(int $estimatedTime): void
+    public function setEstimatedTime($estimatedTime): void
     {
         $this->estimatedTime = $estimatedTime;
     }
@@ -229,21 +229,18 @@ class Task {
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getMainResponsible(): int
+    public function getMainResponsible()
     {
         return $this->mainResponsible;
     }
 
     /**
-     * @param int $mainResponsible
+     * @param mixed $mainResponsible
      */
-    public function setMainResponsible(int $mainResponsible): void
+    public function setMainResponsible($mainResponsible): void
     {
         $this->mainResponsible = $mainResponsible;
     }
-
-
-
 }

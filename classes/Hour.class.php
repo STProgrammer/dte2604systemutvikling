@@ -2,17 +2,17 @@
 
 
 class Hour {
-    private int $hourID;
-    private int $taskID;
-    private int $whoWorked;
-    private String $startTime;
-    private String $endTime;
+    private $hourID;
+    private $taskID;
+    private $whoWorked;
+    private $startTime;
+    private $endTime;
     private bool $activated;
-    private String $location;
-    private int $phaseID;
-    private String $absenceType;
-    private int $overtimeType;
-    private String $comment;
+    private $location;
+    private $phaseID;
+    private $absenceType;
+    private $overtimeType;
+    private $comment;
     private bool $isChanged;
     private bool $stampingStatus;
 
@@ -20,81 +20,81 @@ class Hour {
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getHourID(): int
+    public function getHourID()
     {
         return $this->hourID;
     }
 
     /**
-     * @param int $hourID
+     * @param mixed $hourID
      */
-    public function setHourID(int $hourID): void
+    public function setHourID($hourID): void
     {
         $this->hourID = $hourID;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getTaskID(): int
+    public function getTaskID()
     {
         return $this->taskID;
     }
 
     /**
-     * @param int $taskID
+     * @param mixed $taskID
      */
-    public function setTaskID(int $taskID): void
+    public function setTaskID($taskID): void
     {
         $this->taskID = $taskID;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getWhoWorked(): int
+    public function getWhoWorked()
     {
         return $this->whoWorked;
     }
 
     /**
-     * @param int $whoWorked
+     * @param mixed $whoWorked
      */
-    public function setWhoWorked(int $whoWorked): void
+    public function setWhoWorked($whoWorked): void
     {
         $this->whoWorked = $whoWorked;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getStartTime(): string
+    public function getStartTime()
     {
         return $this->startTime;
     }
 
     /**
-     * @param String $startTime
+     * @param mixed $startTime
      */
-    public function setStartTime(string $startTime): void
+    public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getEndTime(): string
+    public function getEndTime()
     {
         return $this->endTime;
     }
 
     /**
-     * @param String $endTime
+     * @param mixed $endTime
      */
-    public function setEndTime(string $endTime): void
+    public function setEndTime($endTime): void
     {
         $this->endTime = $endTime;
     }
@@ -116,81 +116,81 @@ class Hour {
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getLocation(): string
+    public function getLocation()
     {
         return $this->location;
     }
 
     /**
-     * @param String $location
+     * @param mixed $location
      */
-    public function setLocation(string $location): void
+    public function setLocation($location): void
     {
         $this->location = $location;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getPhaseID(): int
+    public function getPhaseID()
     {
         return $this->phaseID;
     }
 
     /**
-     * @param int $phaseID
+     * @param mixed $phaseID
      */
-    public function setPhaseID(int $phaseID): void
+    public function setPhaseID($phaseID): void
     {
         $this->phaseID = $phaseID;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getAbsenceType(): string
+    public function getAbsenceType()
     {
         return $this->absenceType;
     }
 
     /**
-     * @param String $absenceType
+     * @param mixed $absenceType
      */
-    public function setAbsenceType(string $absenceType): void
+    public function setAbsenceType($absenceType): void
     {
         $this->absenceType = $absenceType;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getOvertimeType(): int
+    public function getOvertimeType()
     {
         return $this->overtimeType;
     }
 
     /**
-     * @param int $overtimeType
+     * @param mixed $overtimeType
      */
-    public function setOvertimeType(int $overtimeType): void
+    public function setOvertimeType($overtimeType): void
     {
         $this->overtimeType = $overtimeType;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getComment(): string
+    public function getComment()
     {
         return $this->comment;
     }
 
     /**
-     * @param String $comment
+     * @param mixed $comment
      */
-    public function setComment(string $comment): void
+    public function setComment($comment): void
     {
         $this->comment = $comment;
     }
@@ -226,8 +226,5 @@ class Hour {
     {
         $this->stampingStatus = $stampingStatus;
     }
-
-
-
 
 }

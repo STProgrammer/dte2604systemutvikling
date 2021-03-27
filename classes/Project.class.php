@@ -1,114 +1,127 @@
 <?php
 
-use User;
-
 
 class Project {
-    private String $projectName;
-    private User $projectLeader;
-    private String $startTime;
-    private String $finishTime;
-    private int $status;
-    private User $customer;
+    private $projectID;
+    private $projectName;
+    private $projectLeader;
+    private $startTime;
+    private $finishTime;
+    private $status;
+    private $customer;
     private bool $isAcceptedByAdmin;
-    private array $groups;
-    private array $phases;
 
     public function __construct() {
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getProjectName(): string
+    public function getProjectID()
+    {
+        return $this->projectID;
+    }
+
+    /**
+     * @param mixed $projectID
+     */
+    public function setProjectID($projectID): void
+    {
+        $this->projectID = $projectID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProjectName()
     {
         return $this->projectName;
     }
 
     /**
-     * @param String $projectName
+     * @param mixed $projectName
      */
-    public function setProjectName(string $projectName): void
+    public function setProjectName($projectName): void
     {
         $this->projectName = $projectName;
     }
 
     /**
-     * @return \User
+     * @return mixed
      */
-    public function getProjectLeader(): \User
+    public function getProjectLeader()
     {
         return $this->projectLeader;
     }
 
     /**
-     * @param \User $projectLeader
+     * @param mixed $projectLeader
      */
-    public function setProjectLeader(\User $projectLeader): void
+    public function setProjectLeader($projectLeader): void
     {
         $this->projectLeader = $projectLeader;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getStartTime(): string
+    public function getStartTime()
     {
         return $this->startTime;
     }
 
     /**
-     * @param String $startTime
+     * @param mixed $startTime
      */
-    public function setStartTime(string $startTime): void
+    public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getFinishTime(): string
+    public function getFinishTime()
     {
         return $this->finishTime;
     }
 
     /**
-     * @param String $finishTime
+     * @param mixed $finishTime
      */
-    public function setFinishTime(string $finishTime): void
+    public function setFinishTime($finishTime): void
     {
         $this->finishTime = $finishTime;
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getStatus(): int
+    public function getStatus()
     {
         return $this->status;
     }
 
     /**
-     * @param int $status
+     * @param mixed $status
      */
-    public function setStatus(int $status): void
+    public function setStatus($status): void
     {
         $this->status = $status;
     }
 
     /**
-     * @return \User
+     * @return mixed
      */
-    public function getCustomer(): \User
+    public function getCustomer()
     {
         return $this->customer;
     }
 
     /**
-     * @param \User $customer
+     * @param mixed $customer
      */
-    public function setCustomer(\User $customer): void
+    public function setCustomer($customer): void
     {
         $this->customer = $customer;
     }
@@ -128,43 +141,5 @@ class Project {
     {
         $this->isAcceptedByAdmin = $isAcceptedByAdmin;
     }
-
-    /**
-     * @return array
-     */
-    public function getGroups(): array
-    {
-        return $this->groups;
-    }
-
-    /**
-     * @param array $groups
-     */
-    public function setGroups(array $groups): void
-    {
-        $this->groups = $groups;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPhases(): array
-    {
-        return $this->phases;
-    }
-
-    /**
-     * @param array $phases
-     */
-    public function setPhases(array $phases): void
-    {
-        $this->phases = $phases;
-    }
-
-    
-
-
-
-
 
 }

@@ -37,7 +37,7 @@
                     {% for Project in projects %}
                         <tr>
                             {#PROSJEKTNAVN#}
-                            <td>{{ Project.getProjectName() }}</td>
+                            <td>{{ Project['projectName'] }}</td>
 
                             {#PROSJEKTLEDER#}
                             {% for users in users %}
@@ -49,16 +49,16 @@
                             <td>{{ Project.getFinishTime() }}</td>
 
                             {#PROSJEKT STATUS#}
-                            {% if Project.getStatus() == 0 %}
+                            {% if Project['status']== 0 %}
                                 <td>Ventende</td>
                             {% endif %}
-                            {% if Project.getStatus() == 1 %}
+                            {% if Project['status'] == 1 %}
                                 <td>Pågår</td>
                             {% endif %}
-                            {% if Project.getStatus() == 2 %}
+                            {% if Project['status'] == 2 %}
                                 <td>Pauset</td>
                             {% endif %}
-                            {% if Project.getStatus() == 3 %}
+                            {% if Project['status'] == 3 %}
                                 <td>Avslått</td>
                             {% endif %}
 
@@ -73,20 +73,16 @@
                             <td>{{ membersCount }}</td>
 
                             {#PROSJEKT GODKJENT AV ADMIN#}
-                            {% if Project.getIsAcceptedByAdmin() == 0 %}
-                                <td>Ventende</td>
-                            {% endif %}
-                            {% if Project.getIsAcceptedByAdmin() == 1 %}
+                            {% if Project['isAcceptedByAdmin'] %}
                                 <td>Godkjent</td>
-                            {% endif %}
-                            {% if Project.getIsAcceptedByAdmin() == 2 %}
-                                <td>Avslått</td>
+                            {% else %}
+                                <td>Ikke godkjent</td>
                             {% endif %}
 
                             {#HVIS ADMIN, REDIGER KNAPP#}
                             {% if User.isAdmin %}
                             <td><button class="buttons miniButtons" id="miniButtons"
-                                        onclick="location.href='projects_editProject.php?projectName={{ Project.getProjectName() }}';">
+                                        onclick="location.href='projects_editProject.php?projectid={{ Project['projectID'] }}';">
                                     <img src="" alt=""> Rediger
                                 </button></td>
                             {% endif %}

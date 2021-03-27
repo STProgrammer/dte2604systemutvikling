@@ -15,7 +15,7 @@ if ($user) {
     if ($request->request->has('addProject') && $user->isAdmin() | $user->isProjectLeader()
         && XsrfProtection::verifyMac("addProject")) {
         $ProjectManager->addProject();
-        header("projects.php");
+        header("location: projects.php");
         exit();
 
     } else {

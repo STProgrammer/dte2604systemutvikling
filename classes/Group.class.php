@@ -3,56 +3,64 @@
 
 class Group
 {
-    private int $groupID;
-    private String $projectName;
-    private String $groupName;
+    private $groupID;
+    private $projectName;
+    private $groupName;
     private bool $isAdmin;
-    private int $groupLeader;
+    private $groupLeader;
 
     /**
-     * @return int
+     * Group constructor.
      */
-    public function getGroupID(): int
+    public function __construct()
+    {
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getGroupID()
     {
         return $this->groupID;
     }
 
     /**
-     * @param int $groupID
+     * @param mixed $groupID
      */
-    public function setGroupID(int $groupID): void
+    public function setGroupID($groupID): void
     {
         $this->groupID = $groupID;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getProjectName(): string
+    public function getProjectName()
     {
         return $this->projectName;
     }
 
     /**
-     * @param String $projectName
+     * @param mixed $projectName
      */
-    public function setProjectName(string $projectName): void
+    public function setProjectName($projectName): void
     {
         $this->projectName = $projectName;
     }
 
     /**
-     * @return String
+     * @return mixed
      */
-    public function getGroupName(): string
+    public function getGroupName()
     {
         return $this->groupName;
     }
 
     /**
-     * @param String $groupName
+     * @param mixed $groupName
      */
-    public function setGroupName(string $groupName): void
+    public function setGroupName($groupName): void
     {
         $this->groupName = $groupName;
     }
@@ -74,68 +82,21 @@ class Group
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getGroupLeader(): int
+    public function getGroupLeader()
     {
         return $this->groupLeader;
     }
 
     /**
-     * @param int $groupLeader
+     * @param mixed $groupLeader
      */
-    public function setGroupLeader(int $groupLeader): void
+    public function setGroupLeader($groupLeader): void
     {
         $this->groupLeader = $groupLeader;
     }
 
-    /**
-     * @return String
-     */
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param String $username
-     */
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @return String
-     */
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @param String $firstName
-     */
-    public function setFirstName(string $firstName): void
-    {
-        $this->firstName = $firstName;
-    }
-
-    /**
-     * @return String
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param String $lastName
-     */
-    public function setLastName(string $lastName): void
-    {
-        $this->lastName = $lastName;
-    }
 
 
 

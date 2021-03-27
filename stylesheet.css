@@ -186,7 +186,7 @@ div.openContainerNoBorder {
 }
 div.container_menu { width: 30em; height: 20em; background-color: #eeeeee; border: none;
 }
-div.container_menu_form { width: 30em; height: 20em; background-color: #eeeeee; border: none;
+div.container_menu_form { width: auto; height: auto; background-color: #eeeeee; border: none;
 }
 div.container_menu_lang { width: 65em; height: 20em;  border: none;
     overflow-y: scroll; scroll-behavior: smooth; box-shadow: none; background: none;

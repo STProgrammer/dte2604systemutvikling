@@ -6,13 +6,14 @@ define('FILENAME_TAG', 'image');
 $ProjectManager = new ProjectManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 
-$project = $ProjectManager->getProject($request->query->get('projectName'));
-$projectName = $project->getProjectName();
-$employees = $userManager->getAllEmployees("firstName"); //alle som ikke er kunde
-$users = $userManager->getAllUsers("firstName"); //alle brukere
-$members = $ProjectManager->getProjectMembers($request->query->get('projectName'));
+$project = $ProjectManager->getProject($request->query->getInt('projectid'));
 
-if ($user && $project && ($user->isAdmin() or $user->isProjectLeader())) {
+
+if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProjectLeader())) {
+    $projectName = $project->getProjectName();
+    $employees = $userManager->getAllEmployees("firstName"); //alle som ikke er kunde
+    $users = $userManager->getAllUsers("firstName"); //alle brukere
+    $members = $ProjectManager->getProjectMembers($project->getProjectName());
     if ($request->request->has('project_edit') && XsrfProtection::verifyMac("Project edit")) {
         if (!$user->isAdmin()) {
             $request->request->set('isAdmin', 0);
@@ -25,8 +26,8 @@ if ($user && $project && ($user->isAdmin() or $user->isProjectLeader())) {
             exit();
         }
     }
-    else if ($request->request->has('add_members') && $user->isAdmin()) {
-        if ($ProjectManager->addEmployees($request->query->get('projectName')) && XsrfProtection::verifyMac("Project add members")) {
+    else if ($request->request->has('add_group') && $user->isAdmin()) {
+        if ($ProjectManager->addGroup($project->getProjectID()) && XsrfProtection::verifyMac("Project add group")) {
             header("Location: projects_editProject.php?projectName=".$projectName);
             exit();
         } else {
@@ -36,7 +37,7 @@ if ($user && $project && ($user->isAdmin() or $user->isProjectLeader())) {
     }
     else if ($request->request->has('remove_members') && $user->isAdmin()) {
         if ($ProjectManager->removeEmployees($project) && XsrfProtection::verifyMac("Project remove members")) {
-            header("Location: projects_editProject.php?projectName=".$projectName);
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
             header("Location: ?failedtoremovemembers");

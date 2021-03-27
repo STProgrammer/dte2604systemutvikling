@@ -48,30 +48,27 @@ class ProjectManager
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getAllProjects()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
             //return new Project();
             return array();
         }
     }
 
     //GET PROJECT
-    public function getProject(string $projectName)
+    public function getProject(int $projectID)
     {
         try {
-            $stmt = $this->db->prepare(query: "SELECT projectName, projectLeader, startTime, finishTime, Projects.status, customer 
-                                                FROM Projects LEFT JOIN Users ON Projects.projectLeader=Users.UserID 
-                                                    WHERE Projects.projectName = :projectName;");
-            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
+            $stmt = $this->db->prepare(query: "SELECT * FROM Projects WHERE projectID = :projectID;");
+            $stmt->bindParam(':projectID', $projectID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($project = $stmt->fetchObject("Project")) {
                 return $project;
             } else {
                 $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
-                return new Project();
+                return null;
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
-            return new Project();
+            return null;
         }
     }
 
@@ -80,32 +77,25 @@ class ProjectManager
     // ADD PROJECT
     public function addProject(): bool
     {
-
-        $isAcceptedByAdmin = 0;
-        if ($this->session->get('User')->isAdmin()) {
-            $isAcceptedByAdmin = 1;
-        }
-
+        $isAcceptedByAdmin = $this->session->get('User')->isAdmin() ? 1:0;
         $projectName = $this->request->request->get('projectName');
 
         //Ungå initsialisering av 01.01.1970 00:00:00 om starttid og slutttid ikke er lagt inn av bruker.
         $dateTime1 = $this->request->request->get('startTime');
-        $startTime = $dateTime1;
         $dateTime2 = $this->request->request->get('finishTime');
-        $finishTime = $dateTime2;
-        /*if ($dateTime1 != null) {
+        if ($dateTime1 != null) {
             $dateTimeStr1 = date('Y-m-d\TH:i:s', strtotime($dateTime1));
             $startTime = $dateTimeStr1;
         } else {
             $startTime = $dateTime1;
         }
-        $dateTime2 = $this->request->request->get('startTime');
+
         if ($dateTime2 != null) {
             $dateTimeStr2 = date('Y-m-d\TH:i:s', strtotime($dateTime2));
             $finishTime = $dateTimeStr2;
         } else {
             $finishTime = $dateTime2;
-        }*/
+        }
         $status = $this->request->request->get('status');
         $customer = $this->request->request->get('customer');
 
@@ -134,11 +124,12 @@ class ProjectManager
         }
     }
 
+
+
     //EDIT PROJECT
     public function editProject(Project $project): bool
     {
-        $projectName = $this->request->request->get('projectName', $project->getProjectName());
-        $projectLeader = $this->request->request->getInt('projectLeader', $project->getProjectLeader());
+        $projectLeader = $this->request->request->getInt('projectLeader');
         $startTime = $this->request->request->get('startTime', $project->getStartTime());
         $finishTime = $this->request->request->get('finishTime', $project->getFinishTime());
         $status = $this->request->request->getInt('status', $project->getStatus());
@@ -248,7 +239,7 @@ class ProjectManager
     }
 
 
-    public function addGroups($projectName)
+  /*  public function addGroup($projectID)
     {
         $groups = $this->request->request->get('groups');
         try {
@@ -269,7 +260,7 @@ class ProjectManager
             return false;
         }
         return true;
-    }
+    }*/
 
 
     public function removeGroups(Project $project)

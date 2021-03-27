@@ -1,28 +1,28 @@
 <?php
 
 class User {
-    private int $userID;
-    private String $username;
-    private String $firstName;
-    private String $lastName;
-    private String $address;
-    private String $zipCode;
-    private String $city;
-    private String $phoneNumber;
-    private String $mobileNumber;
-    private String $emailAddress;
-    private String $IMAddress;
-    private String $dateRegistered;
-    private String $password;
-    private int $userType;
-    private bool $isProjectLeader;
-    private bool $isGroupLeader;
-    private bool $isEmailVerified;
-    private bool $isVerifiedByAdmin;
-    private String $status;
-    private String $IPAddress;
-    private String $userAgent;
-    private int $userHits;
+    private $userID;
+    private $username;
+    private $firstName;
+    private $lastName;
+    private $address;
+    private $zipCode;
+    private $city;
+    private $phoneNumber;
+    private $mobileNumber;
+    private $emailAddress;
+    private $IMAddress;
+    private $dateRegistered;
+    private $password;
+    private $userType;
+    private $isProjectLeader;
+    private $isGroupLeader;
+    private $isEmailVerified;
+    private $isVerifiedByAdmin;
+    private $status;
+    private $IPAddress;
+    private $userAgent;
+    private $userHits;
 
 
     function __construct(string $username = null, string $ip = null, string $browser = null, array $row = null ) {
