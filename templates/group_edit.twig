@@ -3,7 +3,7 @@
 
     <section class="edit_group" id="edit_group">
         <div class="openContainerNoBorder text" id="table_register">
-            <h3>Lag ny gruppe</h3>
+            <h3>Gruppe profil</h3>
             <div>
                 {% if session.getFlashBag.has('header') %}
                     {% for header in session.getFlashBag.get('header', []) %}
@@ -16,13 +16,19 @@
             </div>
             <div id="text">
                 <br>Gruppenavn: {{ group.getGroupName }}
-                <br>Gruppeleder: {{ group.getFirstName }} {{ group.getLastName }}
+                <br>Gruppeleder: {{ group.firstName }} {{ group.lastName }} ({{ group.username }}
+                <br>Prosjekt: {{ group.getProjectName }}
                 {% if group.isAdmin %}
                     <br>Gruppe type: admin gruppe
                 {% else %}
                     <br>Gruppe type: vanlig gruppe
                 {% endif %}
-                <p>
+                <br>
+                    <br><b>Medlemmer:</b>
+                    {% for empl in members %}
+                        <br>{{ empl.getFirstName }} {{ empl.getLastName }} ({{ empl.getUsername }})
+                    {% endfor %}
+
             </div>
             <div id="text">
                 <form method="post" id="group_edit_form">
@@ -35,18 +41,12 @@
                         <select name="groupLeader" id="" class="form-control" onfocus='this.size=10;'
                                 onblur='this.size=10;'
                                 onchange='this.size=10; this.blur();'>
-                            {% for empl in members %}
-                                <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }}
-                                    (ID: {{ empl.getUserId }})
+                            {% for candidate in candidates %}
+                                <option value="{{ candidate.getUserID() }}" {% if candidate.getUserID() == group.getGroupLeader() %} selected {% endif %}>{{ candidate.getLastName }} {{ candidate.getFirstName }} ({{ candidate.getUsername }})
                                 </option>
                             {% endfor %}
                         </select></div>
                     {% if user.isAdmin %}
-                        <br><label>Admin eller vanlig gruppe: </label>
-                        <br><input type="radio" name="isAdmin" value="1" required>
-                        <label>Admin</label><br>
-                        <input type="radio" name="isAdmin" value="0" required>
-                        <label>Vanlig</label><br>
                     <br><label>Admin eller vanlig gruppe: </label>
                     <br><input type="radio" name="isAdmin" value="1" {% if group.isAdmin() %} checked {% endif %}>
                     <label>Admin</label><br>

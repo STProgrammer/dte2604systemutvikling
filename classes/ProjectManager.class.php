@@ -59,7 +59,8 @@ LEFT JOIN Users ON Users.userID = Projects.projectLeader WHERE 1 ORDER BY `start
     public function getProject(int $projectID)
     {
         try {
-            $stmt = $this->db->prepare(query: "SELECT * FROM Projects WHERE projectID = :projectID;");
+            $stmt = $this->db->prepare(query: "SELECT Projects.*, Users.firstName, Users.lastName, Users.username FROM Projects LEFT JOIN 
+    Users ON Projects.projectLeader=Users.userID WHERE projectID = :projectID;");
             $stmt->bindParam(':projectID', $projectID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($project = $stmt->fetchObject("Project")) {

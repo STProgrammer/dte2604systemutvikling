@@ -6,12 +6,15 @@ require_once('includes.php');
 $groupManager = new GroupManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 
-$employees = $userManager->getAllEmployees("firstName");
+//$employees = $userManager->getAllEmployees("firstName");
 $group = $groupManager->getGroup($request->query->getInt('groupid'));
-$groupID = $group->getGroupID();
 
-if ($user && $group && ($user->isAdmin() or $user->getUserID() == $group->getGroupLeader())) {
-    $members = $groupManager->getGroupMembers($group->getGroupID());
+
+if (!is_null($user) && !is_null($group) && ($user->isAdmin() or $user->getUserID() == $group->getGroupLeader())) {
+    $groupID = $group->getGroupID();
+    $employees = $groupManager->getAllNonMembers($groupID);
+    $members = $groupManager->getGroupMembers($groupID);
+    $candidates = $groupManager->getLeaderCandidates($groupID);
     if ($request->request->has('group_edit') && XsrfProtection::verifyMac("Group edit")) {
         if (!$user->isAdmin()) {
             $request->request->set('isAdmin', 0);
@@ -56,7 +59,7 @@ if ($user && $group && ($user->isAdmin() or $user->getUserID() == $group->getGro
         try {
             echo $twig->render('group_edit.twig', array('session' => $session,
                 'request' => $request, 'user' => $user, 'employees' => $employees,
-                'group' => $group, 'members' => $members));
+                'group' => $group, 'members' => $members, 'candidates' => $candidates));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }

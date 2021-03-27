@@ -21,8 +21,17 @@
                     <br>Prosjekt Leder: <b>{{ users.getFirstName }} {{ users.getLastName }}</b></br>
                 {% endif %}
             {% endfor %}
-            <br>Prosjekt starttid: <b>{{ project.getStartTime }} </b></br>
-            <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b></br>
+            <br>Prosjekt starttid: <b>{{ project.getStartTime }} </b>
+            <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b>
+            {% if project.getStatus == 0 %}
+                <br>Prosjekt status: <b>vendende</b>
+            {% elseif project.getStatus == 1 %}
+                <br>Prosjekt status: <b>pågår</b>
+            {% elseif project.getStatus == 2 %}
+                <br>Prosjekt status: <b>på pause</b>
+            {% elseif project.getStatus == 3 %}
+                <br>Prosjekt status: <b>avsluttet</b>
+            {% endif %}
         </div>
 
         <div class="container container_menu_lang text" id="project_members">
@@ -107,7 +116,7 @@
                             <input type="radio" name="status" id="cancelled" value="3" {% if project.getStatus() == 3 %} checked {% endif %} >
                         </td>
                         <td>
-                            <label for="paused">Kansellert </label>
+                            <label for="paused">Avsluttet </label>
                         </td>
                     </tr>
                 </table>
@@ -152,6 +161,9 @@
                         Gruppetype
                     </th>
                     <th>
+                        Gruppeleder
+                    </th>
+                    <th>
                         Antall medlemmer
                     </th>
                 </tr>
@@ -169,6 +181,9 @@
                     Vanlig gruppe
                 </td>
                 {% endif %}
+                    <td>
+                        {{ grp.firstName }} {{ grp.lastName }} ({{ grp.username }})
+                    </td>
                     <td>
                         {{ grp.nrOfUsers }}
                     </td>
