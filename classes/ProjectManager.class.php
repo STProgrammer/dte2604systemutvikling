@@ -37,7 +37,9 @@ class ProjectManager
     public function getAllProjects(): array
     {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Projects ORDER BY `startTime` DESC");
+            $stmt = $this->db->prepare("SELECT Projects.*, Users.username, Users.firstName, Users.lastName
+FROM Projects
+LEFT JOIN Users ON Users.userID = Projects.projectLeader WHERE 1 ORDER BY `startTime` DESC;");
             $stmt->execute();
             if ($projects = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
                 return $projects;
@@ -281,9 +283,10 @@ class ProjectManager
     public function getGroups($projectName) {
         $groups = array();
         try {
-            $stmt = $this->db->prepare("SELECT Groups.*, count(UsersAndGroups.groupID) as nrOfUsers
+            $stmt = $this->db->prepare("SELECT Groups.*, count(UsersAndGroups.groupID) as nrOfUsers, Users.username, Users.firstName, Users.lastName
     FROM Groups
     JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+LEFT JOIN Users ON Groups.groupLeader = Users.userID
     WHERE Groups.projectName = :projectName GROUP BY Groups.groupID;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             if ($stmt->execute()) {
