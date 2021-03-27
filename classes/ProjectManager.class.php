@@ -207,11 +207,15 @@ LEFT JOIN Users ON Users.userID = Projects.projectLeader WHERE 1 ORDER BY `start
     //GET MEMBERS
     public function getProjectMembers(string $projectName) {
         try {
+<<<<<<< HEAD
             $stmt = $this->db->prepare("SELECT DISTINCT Users.*
 FROM Users
 JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
 JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
 WHERE Groups.projectName = :projectName;");
+=======
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE EXISTS(SELECT groupID FROM Groups WHERE projectName = :projectName )) ORDER BY lastName ASC");
+>>>>>>> cbcc63cc31feb8861d58fa55ea64628c62de5c7d
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             $stmt->execute();
             if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {

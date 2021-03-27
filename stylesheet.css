@@ -131,6 +131,9 @@ section.profile_edit { margin-top: 6em; margin-bottom: 4em; }
 /**-------------  ERROR  -----------------------*/
 section.error { margin-top: 6em; margin-left: 5em; }
 
+/**------------- USER_CONTRIBUTION -----------------*/
+section.user_contribution { margin-top: 6em; margin-bottom: 4em; }
+
 section#center { align-self: center; }
 
 

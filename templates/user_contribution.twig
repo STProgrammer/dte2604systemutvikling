@@ -1,0 +1,11 @@
+{% extends "layout.twig" %}
+{% block content %}
+
+    <section id="user_contribution" class="user_contribution">
+        <div>
+            <h5>Bidrag fra bruker: </h5>
+            <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
+            <h5>{{ user.getFirstName }}</h5>
+        </div>
+    </section>
+{% endblock %}
