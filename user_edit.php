@@ -39,7 +39,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
         try {
             echo $twig->render('user_edit.twig', array('session' => $session,
                 'request' => $request, 'user' => $user, 'userToEdit' => $userToEdit));
-        } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {  }
+        } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) { echo $e->getMessage(); }
     }
 } else {
     header("location: login.php");

@@ -62,6 +62,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
                     'customers' => $customers, 'project' => $project,  'members' => $members,
                     'employees' => $employees, 'groups' => $groups));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+            echo $e->getMessage();
         }
     }
 } else {

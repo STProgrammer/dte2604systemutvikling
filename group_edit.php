@@ -58,6 +58,7 @@ if ($user && $group && ($user->isAdmin() or $user->getUserID() == $group->getGro
                 'request' => $request, 'user' => $user, 'employees' => $employees,
                 'group' => $group, 'members' => $members));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+            echo $e->getMessage();
         }
     }
 } else {

@@ -12,7 +12,7 @@ if (!is_null($user)) {
     try {
         echo $twig->render('groups.twig', array('user' => $user, 'groups' => $groups,
             'session' => $session, 'request' => $request, 'employees' => $employees));
-    } catch (LoaderError | RuntimeError | SyntaxError $e) {  }
+    } catch (LoaderError | RuntimeError | SyntaxError $e) { echo $e->getMessage();  }
 }
 else {
     header("location: index.php");
