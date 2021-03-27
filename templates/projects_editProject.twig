@@ -32,12 +32,17 @@
                     <th>Bruker id</th>
                     <th>Fornavn</th>
                     <th>Etternavn</th>
+                    <th>Se bidrag</th>
                 </tr>
                 {% for members in members %}
                     <tr>
                         <td>{{ members.getUserID() }}</td>
                         <td>{{ members.getFirstName }}</td>
                         <td>{{ members.getLastName }}</td>
+                        <td>
+                            <button class="buttons miniButtons" id="contribution"
+                                    onclick="">Bidrag</button>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
