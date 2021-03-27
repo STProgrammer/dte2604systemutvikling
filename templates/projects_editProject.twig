@@ -29,13 +29,13 @@
             <br><label>Medlemmer i dette prosjektet: </label></br>
             <table class="table">
                 <tr>
-                    <th>Bruker id</th>
+                    <th>Brukernavn</th>
                     <th>Fornavn</th>
                     <th>Etternavn</th>
                 </tr>
                 {% for members in members %}
                     <tr>
-                        <td>{{ members.getUserID() }}</td>
+                        <td>{{ members.getUsername() }}</td>
                         <td>{{ members.getFirstName }}</td>
                         <td>{{ members.getLastName }}</td>
                     </tr>
@@ -53,6 +53,12 @@
                 <br><select name="customer" id="customer">
                     {% for customer in customers %}
                         <option value="{{ customer.getUserId() }}" {% if project.getCustomer() == customer.getUserId() %} selected {% endif %}>{{ customer.getLastName() }}, {{ customer.getFirstName() }} ({{ customer.getUsername() }}) </option>
+                    {% endfor %}
+                </select>
+                <br><label for="projectLeader">Prosjekt leder:</label>
+                <br><select name="projectLeader" id="projectLeader">
+                    {% for candidate in candidates %}
+                        <option value="{{ candidate.getUserId() }}" {% if project.getProjectLeader() == candidate.getUserId() %} selected {% endif %}>{{ candidate.getLastName() }}, {{ candidate.getFirstName() }} ({{ candidate.getUsername() }}) </option>
                     {% endfor %}
                 </select>
                 <br><label for="startTime">Start tid</label>

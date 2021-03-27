@@ -13,6 +13,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
     $projectName = $project->getProjectName();
     $customers = $userManager->getAllCustomers("firstName"); //alle kunder
     $employees = $userManager->getAllEmployees("firstName");
+    $candidates = $projectManager->getLeaderCandidates($projectName);
     $groups = $projectManager->getGroups($projectName);
     $users = $userManager->getAllUsers("firstName"); //alle brukere
     $members = $projectManager->getProjectMembers($project->getProjectName());
@@ -60,7 +61,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             echo $twig->render('projects_editProject.twig',
                 array('session' => $session, 'request' => $request, 'user' => $user, 'users' => $users,
                     'customers' => $customers, 'project' => $project,  'members' => $members,
-                    'employees' => $employees, 'groups' => $groups));
+                    'employees' => $employees, 'groups' => $groups, 'candidates' => $candidates));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }

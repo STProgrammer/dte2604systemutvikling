@@ -172,38 +172,6 @@ LEFT JOIN Users ON Users.userID = Projects.projectLeader WHERE 1 ORDER BY `start
 
 
 
-/*
-    public function getAllPotentialLeaders($projectId) {
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE ")
-        }
-
-    }*/
-/*
-    public function addEmployees($projectName)
-    {
-        $users = $this->request->request->get('projectMembers');
-        try {
-            $stmt = $this->db->prepare(query: "INSERT IGNORE INTO UsersAndProjects (userID, projectName) VALUES (:userID, :projectName);");
-            if (is_array($users)) {
-                foreach ($users as $userID) {
-                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-                    $stmt->bindParam(':projectName', $projectName);
-                    $stmt->execute();
-                }
-                $this->notifyUser("Medlemmer ble lagt til", '..........');
-            } else {
-                $this->notifyUser("Kunne ikke legge til medlemmer", '..........');
-                return false;
-            }
-        } catch (Exception $e) {
-            $this->notifyUser("Kunne ikke legge til medlemmer", $e->getMessage());
-            return false;
-        }
-        return true;
-    }*/
-
-
     public function removeEmployees(Project $project)
     {
         $users = $this->request->request->get('projectMembers');
@@ -239,7 +207,11 @@ LEFT JOIN Users ON Users.userID = Projects.projectLeader WHERE 1 ORDER BY `start
     //GET MEMBERS
     public function getProjectMembers(string $projectName) {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndProjects.userID FROM UsersAndProjects WHERE UsersAndProjects.projectName = :projectName AND Users.userID = UsersAndProjects.userID);");
+            $stmt = $this->db->prepare("SELECT DISTINCT Users.*
+FROM Users
+JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
+JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
+WHERE Groups.projectName = :projectName;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             $stmt->execute();
             if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
@@ -302,21 +274,21 @@ LEFT JOIN Users ON Groups.groupLeader = Users.userID
     }
 
 
-    public function getLeadersCandidates(Group $group) : array
+    public function getLeaderCandidates(String $projectName) : array
     {
         $candidates = array();
-        $projectName = $group->getProjectName();
-        $groupLeader = $group->getGroupLeader();
-        $groupID = $group->getGroupID();
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID)
-                    AND NOT EXISTS (SELECT projectLeader FROM Projects WHERE Projects.projectName = :projectName);");
-            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
+            $stmt = $this->db->prepare("SELECT DISTINCT Users.*
+FROM Users
+JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
+JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
+WHERE Groups.projectName = :projectName
+AND NOT EXISTS(SELECT Groups.groupLeader FROM Groups WHERE Users.userID = Groups.groupLeader
+AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
-            $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
             $stmt->execute();
-            if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
-                return $members;
+            if ($candidates = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
+                return $candidates;
             } else {
                 $this->notifyUser("Ingen kandidater funnet", "Kunne ikke hente kandidater for gruppeleder");
                 return array();
@@ -328,29 +300,6 @@ LEFT JOIN Users ON Groups.groupLeader = Users.userID
     }
 
 
-
-    public function addEmployees($groupID)
-    {
-        $users = $this->request->request->get('groupMembers');
-        try {
-            $stmt = $this->db->prepare("INSERT IGNORE INTO UsersAndGroups (groupID, userID) VALUES (:groupID, :userID);");
-            if (is_array($users)) {
-                foreach ($users as $userID) {
-                    $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
-                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-                    $stmt->execute();
-                }
-                $this->notifyUser("Medlemmer ble lagt til");
-            } else {
-                $this->notifyUser("Fikk ikke legge til brukere");
-                return false;
-            }
-        } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke legge til brukere", $e->getMessage());
-            return false;
-        }
-        return true;
-    }
 
 
     public function removeGroups(Project $project)
@@ -549,7 +498,7 @@ LEFT JOIN Users ON Groups.groupLeader = Users.userID
     public function verifyProjectByAdmin($projectName) : bool {
         if($this->session->get('User')->isAdmin()) {
             try {
-                $sth = $this->dbase->prepare("update Projects set isAcceptedByAdmin = 1 where projectName = :projectName");
+                $sth = $this->db->prepare("update Projects set isAcceptedByAdmin = 1 where projectName = :projectName");
                 $sth->bindParam(':projectName', $projectName, PDO::PARAM_STR);
                 $sth->execute();
                 if($sth->rowCount() == 1) {

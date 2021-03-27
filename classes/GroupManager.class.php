@@ -247,18 +247,18 @@ WHERE NOT EXISTS
     public function getLeadersCandidates(Group $group) : array
     {
         $candidates = array();
-        $projectName = $group->getProjectName();
-        $groupLeader = $group->getGroupLeader();
         $groupID = $group->getGroupID();
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID)
-                    AND NOT EXISTS (SELECT projectLeader FROM Projects WHERE Projects.projectName = :projectName);");
+            $stmt = $this->db->prepare("SELECT Users.*, Groups.groupID
+FROM Users
+JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
+JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
+WHERE Groups.groupID = :groupID 
+AND NOT EXISTS (SELECT Projects.projectLeader FROM Projects WHERE Projects.projectLeader = Users.userID AND Projects.projectName = Groups.projectName)");
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
-            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
-            $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
             $stmt->execute();
             if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
-                return $members;
+                return $candidates;
             } else {
                 $this->notifyUser("Ingen kandidater funnet", "Kunne ikke hente kandidater for gruppeleder");
                 return array();
