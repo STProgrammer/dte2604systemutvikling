@@ -17,7 +17,7 @@
             <h3>Rediger prosjekt</h3>
             <br>Prosjekt: <b>{{ project.getProjectName }}</b>
             <br>Prosjekt Leder: <b>{{ project.leaderName }} </b>
-            <br>Prosjekt Leder: <b>{{ project.customerName }} </b>
+            <br>Kunde: <b>{{ project.customerName }} </b>
             <br>Prosjekt starttid: <b>{{ project.getStartTime }} </b>
             <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b>
 
@@ -85,8 +85,8 @@
                 {% for phase in phases %}
                     <tr>
                         <td>{{ phase.getPhaseName() }}</td>
-                        <td>{{ phase.startTime() }}</td>
-                        <td>{{ phase.finishTime() }}</td>
+                        <td>{{ phase.getStartTime() }}</td>
+                        <td>{{ phase.getFinishTime() }}</td>
                         {% if phase.getStatus() == 0 %}
                         <td>Ventende</td>
                         {%  elseif phase.getStatus() == 1 %}
@@ -99,7 +99,7 @@
 
                         <td>
                             <button class="buttons miniButtons" id="contribution"
-                                    onclick="window.location.href='user_contribution.php';">
+                                    onclick="window.location.href='phases_editPhase.php?phaseid={{ phase.getPhaseID() }}';">
                                 Se detaljer
                             </button>
                         </td>
@@ -209,7 +209,7 @@
 
         <div class="container container_menu_form text" id="add_phase_to_project">
             <b>Legg til ny fase</b>
-            <form method="post" id="group_register_form">
+            <form method="post" id="phase_register_form">
                 <br><label>Fasenavn: </label>
                 <br><input type="text" name="phaseName" value="" placeholder="Fasenavn" maxlength=45 required
                            id="phaseName"/>
@@ -220,7 +220,7 @@
                 <table>
                     <tr>
                         <td colspan="2">
-                            <label>Status på prosjektet: </label>
+                            <label>Status på fasen: </label>
                         </td>
                     </tr>
                     <tr>

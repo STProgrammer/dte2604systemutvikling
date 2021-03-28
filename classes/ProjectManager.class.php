@@ -81,6 +81,30 @@ JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.pro
     }
 
 
+    //GET PROJECT BY NAME
+    public function getProjectByName(String $projectName)
+    {
+        try {
+            $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
+CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
+FROM Projects
+JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectName = :projectName;');
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_INT, 100);
+            $stmt->execute();
+            if ($project = $stmt->fetchObject("Project")) {
+                return $project;
+            } else {
+                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
+                return null;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            return null;
+        }
+    }
+
+
 
     // ADD PROJECT
     public function addProject(): bool
@@ -467,25 +491,25 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
     // END DELETE PHASE
 
 
-    // GET PHASE WITH TASKS
-    /*public function getPhase ($phaseId) : array
+    // GET PHASE
+    public function getPhase($phaseId)
     {
-        try{
-            $sth = $this->db->prepare("select * from Phases where projcetName = :projectName;");
-            $sth->bindParam(":projectName", $projectName, PDO::PARAM_INT);
-            $sth->execute();
-            if ($sth->rowCount() == 1) {
-                return true;
+        try {
+            $stmt = $this->db->prepare(query: 'SELECT * FROM Phases WHERE phaseID = :phaseID;');
+            $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
+            $stmt->execute();
+            if ($phase = $stmt->fetchObject("Phase")) {
+                return $phase;
             } else {
-                $this->notifyUser("Feil ve henting av faser!");
-                return false;
+                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
+                return null;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil ved henting av faser!", $e->getMessage());
-            return false;
+            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            return null;
         }
-    }*/
-    // END GET PHASE WITH TASKS
+    }
+    // END GET PHASE
 
 
 

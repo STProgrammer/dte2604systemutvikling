@@ -1,7 +1,14 @@
 <?php
 
 require_once "includes.php";
-define('FILENAME_TAG', 'image');
+
+/* Denne Twig funksjonen er tatt fra https://stackoverflow.com/questions/61407758/how-to-change-one-value-in-get-by-clicking-a-link-or-button-from-twig-with/61407993#61407993 */
+$twig->addFunction(new \Twig\TwigFunction('get_page_url', function($query = [], $append = true) {
+    $tmp = $append ? $_GET : [];
+    foreach($query as $key => $value) $tmp[$key] = $value;
+
+    return '?' . http_build_query($tmp);
+}));
 
 $projectManager = new ProjectManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
@@ -12,8 +19,8 @@ $project = $projectManager->getProject($request->query->getInt('projectid'));
 if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProjectLeader())) {
     $projectName = $project->getProjectName();
     $customers = $userManager->getAllCustomers("firstName"); //alle kunder
-    $employees = $userManager->getAllEmployees("firstName");
-    $candidates = $projectManager->getLeaderCandidates($projectName);
+    $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
+    $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
     $phases = $projectManager->getAllPhases($projectName);
     $groups = $projectManager->getGroups($projectName);
     $users = $userManager->getAllUsers("firstName"); //alle brukere
@@ -82,7 +89,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
                     'customers' => $customers, 'project' => $project,  'members' => $members,
                     'employees' => $employees, 'groups' => $groups, 'candidates' => $candidates,
                 'phases' => $phases));
-        } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+        } catch (\Twig\Error\LoaderError  | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }
     }
