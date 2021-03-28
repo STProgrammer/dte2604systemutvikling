@@ -42,14 +42,14 @@
                     <th>Etternavn</th>
                     <th>Se bidrag</th>
                 </tr>
-                {% for members in members %}
+                {% for member in members %}
                     <tr>
-                        <td>{{ members.getUsername() }}</td>
-                        <td>{{ members.getFirstName }}</td>
-                        <td>{{ members.getLastName }}</td>
+                        <td>{{ member.getUsername() }}</td>
+                        <td>{{ member.getFirstName }}</td>
+                        <td>{{ member.getLastName }}</td>
                         <td>
                             <button class="buttons miniButtons" id="contribution"
-                                    onclick="window.location.href='user_contribution.php';">
+                                    onclick="window.location.href='user_contribution.php?=userTest{{ member.getUserID() }}';">
                                 Bidrag
                             </button>
                         </td>
