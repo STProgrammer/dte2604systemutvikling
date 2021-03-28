@@ -26,27 +26,25 @@
                     <tr>
                         <th>Gruppenavn </th>
                         <th>Gruppeleder </th>
-
-                        <!-- if admin\leder show this  -->
-                        {% if user.isAdmin or user.isProjectLeader %}
-                            <th>Status</th>
-                        {% endif %}
-                        {% if user.isAdmin %}
+                        <th>Antall medlemmer</th>
+                        <th>Gruppetype</th>
+                        {% if user.isAdmin() or user.isProjectLeader() %}
                             <th>Se detaljer og rediger</th>
                         {% endif %}
                     </tr>
                     {% for grp in groups %}
                         <tr>
                             <td>{{ grp.getGroupName }}</td>
-                            <td>{{ grp.getFirstName }}  {{ grp.getLastName }}</td>
+                            <td>{{ grp.leaderName }}</td>
+                            <td>{{ grp.nrOfMembers }}</td>
 
-
-                            <!-- if admin\leder show this  -->
-                            {% if user.isAdmin or user.isProjectLeader %}
-                                <td>{{ grp.getStatus }}</td>
+                            {% if grp.isAdmin() %}
+                                <td>Admin gruppe</td>
+                            {% else %}
+                                <td>Vanlig gruppe</td>
                             {% endif %}
 
-                            <!-- if user is admin  -->
+
                             {% if user.isAdmin %}
                                 <td>
                                     <button class="buttons miniButtons" id="miniButtons"

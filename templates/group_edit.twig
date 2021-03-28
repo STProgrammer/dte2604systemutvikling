@@ -15,19 +15,21 @@
                 {% endif %}
             </div>
             <div id="text">
-                <br>Gruppenavn: {{ group.getGroupName }}
-                <br>Gruppeleder: {{ group.firstName }} {{ group.lastName }} ({{ group.username }})
-                <br>Prosjekt: {{ group.getProjectName }}
+                <br>Gruppenavn: <b>{{ group.getGroupName }}</b>
+                <br>Gruppeleder: <b>{{ group.firstName }} {{ group.lastName }} ({{ group.username }})</b>
+                <br>Prosjekt: <b>{{ group.getProjectName }}</b>
                 {% if group.isAdmin %}
-                    <br>Gruppe type: admin gruppe
+                    <br>Gruppe type: <b>admin gruppe</b>
                 {% else %}
-                    <br>Gruppe type: vanlig gruppe
+                    <br>Gruppe type: <b>vanlig gruppe</b>
                 {% endif %}
                 <br>
                     <br><b>Medlemmer:</b>
+                <ul>
                     {% for empl in members %}
-                        <br>{{ empl.getFirstName }} {{ empl.getLastName }} ({{ empl.getUsername }})
+                        <li>{{ empl.getFirstName }} {{ empl.getLastName }} ({{ empl.getUsername }})
                     {% endfor %}
+                </ul>
 
             </div>
             <div id="text">

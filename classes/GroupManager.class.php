@@ -32,9 +32,13 @@ class GroupManager
     public function getAllGroups(): array
     {
         try {
-            $stmt = $this->db->prepare("SELECT Groups.groupName, Groups.groupID, Groups.groupLeader, Groups.isAdmin, Users.firstName, Users.lastName, Users.username FROM Groups LEFT JOIN Users ON Groups.groupLeader=Users.userID ORDER BY `groupName` ASC;");
+            $stmt = $this->db->prepare('SELECT Groups.*, CONCAT(groupLeader.firstName, " ", groupLeader.lastName, " (", groupLeader.username, ")") as leaderName,
+       count(UsersAndGroups.groupID) as nrOfMembers
+FROM Groups
+    JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+JOIN Users as groupLeader on groupLeader.userID = Groups.groupLeader GROUP BY Groups.groupID ORDER BY Groups.groupName ASC;');
             $stmt->execute();
-            if ($groups = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            if ($groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
                 return $groups;
             } else {
                 $this->notifyUser("Groups not found", "Kunne ikke hente grupper");

@@ -178,7 +178,7 @@ JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.pro
 
 
 
-    public function removeEmployees(Project $project)
+   /* public function removeEmployees(Project $project)
     {
         $users = $this->request->request->get('projectMembers');
         $projectName = $project->getProjectName();
@@ -208,7 +208,7 @@ JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.pro
             return false;
         }
         return true;
-    }
+    }*/
 
     //GET MEMBERS
     public function getProjectMembers(string $projectName) {
@@ -370,11 +370,19 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
     // ADD PHASE
-    public function addPhase ($projectName) : bool
+    public function addPhase (Project $project) : bool
     {
+        $projectName = $project->getProjectName();
         $phaseName = $this->request->request->get('phaseName');
         $startTime = $this->request->request->get('startTime');
         $finishTime = $this->request->request->get('finishTime');
+
+        if (strtotime($startTime) < strtotime($project->getStartTime())) {
+            $startTime = $project->getStartTime();
+        }
+        if (strtotime($finishTime) > strtotime($project->getFinishTime())) {
+            $finishTime = $project->getFinishTime();
+        }
         try{
             $sth = $this->db->prepare("insert into Phases (phaseName, projectName, startTime, finishTime, status) 
                 values (:phaseName, :projectName, :startTime, :finishTime, 0);");
@@ -399,13 +407,19 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
     // EDIT PHASE
-    public function editPhase (Phase $phase) : bool
+    public function editPhase (Phase $phase, Project $project) : bool
     {
         $phaseId = $phase->getPhaseID();
         $phaseName = $this->request->request->get('phaseName', $phase->getPhaseName());
         $startTime = $this->request->request->get('startTime', $phase->getStartTime());
         $finishTime = $this->request->request->get('finishTime', $phase->getFinishTime());
         $status = $this->request->request->getInt('status', $phase->getStatus());
+        if (strtotime($startTime) < strtotime($project->getStartTime())) {
+            $startTime = $project->getStartTime();
+        }
+        if (strtotime($finishTime) > strtotime($project->getFinishTime())) {
+            $finishTime = $project->getFinishTime();
+        }
         try{
             $sth = $this->db->prepare("update Phases set phaseName = :phaseName, startTime = :startTime, 
                   finishTime = :finishTime, status = :status where phaseID = :phaseID;");
@@ -478,19 +492,20 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
     // GET ALL PHASES
     public function getAllPhases ($projectName) : array
     {
+        $phases = array();
         try{
-            $sth = $this->db->prepare("select * from Phases where projcetName = :projectName;");
+            $sth = $this->db->prepare("select * from Phases where projectName = :projectName;");
             $sth->bindParam(":projectName", $projectName, PDO::PARAM_INT);
             $sth->execute();
-            if ($sth->rowCount() == 1) {
-                return true;
+            if ($phases = $sth->fetchAll(PDO::FETCH_CLASS, "Phase")) {
+                return $phases;
             } else {
                 $this->notifyUser("Feil ve henting av faser!");
-                return false;
+                return $phases;
             }
         } catch (Exception $e) {
             $this->notifyUser("Feil ved henting av faser!", $e->getMessage());
-            return false;
+            return $phases;
         }
     }
     // END GET ALL PHASES
@@ -501,24 +516,22 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
 
-    public function verifyProjectByAdmin($projectName) : bool {
-        if($this->session->get('User')->isAdmin()) {
-            try {
-                $sth = $this->db->prepare("update Projects set isAcceptedByAdmin = 1 where projectName = :projectName");
-                $sth->bindParam(':projectName', $projectName, PDO::PARAM_STR);
-                $sth->execute();
-                if($sth->rowCount() == 1) {
-                    $this->notifyUser("Project verified by admin", "");
-                    return true;
-                } else {
-                    $this->notifyUser("Failed to verify project", "");
-                    return false;
-                }
-            } catch (Exception $e) {
-                $this->notifyUser("Failed to verify project", $e->getMessage());
+    public function verifyProjectByAdmin(int $projectID) : bool {
+        try {
+            $sth = $this->db->prepare("update Projects set isAcceptedByAdmin = 1 where projectID = :projectID");
+            $sth->bindParam(':projectID', $projectID, PDO::PARAM_STR);
+            $sth->execute();
+            if($sth->rowCount() == 1) {
+                $this->notifyUser("Prosjekt godkjent av admin");
+                return true;
+            } else {
+                $this->notifyUser("Feil ved godkjenning av prosjekt");
                 return false;
             }
-        } else {return false; }
+        } catch (Exception $e) {
+            $this->notifyUser("Feil ved godkjenning av prosjekt", $e->getMessage());
+            return false;
+        }
     }
 
     //TODO
@@ -526,13 +539,5 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
     {
     }
 
-    //TODO
-    public function addCustomer(User $user, Project $project)
-    {
-    }
 
-    //TODO
-    public function getCustomers(Project $project)
-    {
-    }
 }
