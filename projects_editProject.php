@@ -56,6 +56,15 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
+    else if ($request->request->has('project_verify') && $user->isAdmin()) {
+        if ($projectManager->deleteProject($request->query->get('projectName')) && XsrfProtection::verifyMac("Delete project")) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ".$request->server->get('REQUEST_URI')."&failedtoverifyproject=!");
+            exit();
+        }
+    }
     else {
         try {
             echo $twig->render('projects_editProject.twig',

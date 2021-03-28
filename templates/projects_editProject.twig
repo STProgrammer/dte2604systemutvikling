@@ -20,6 +20,7 @@
             <br>Prosjekt Leder: <b>{{ project.customerName }} </b>
             <br>Prosjekt starttid: <b>{{ project.getStartTime }} </b>
             <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b>
+
             {% if project.getStatus == 0 %}
                 <br>Prosjekt status: <b>Vendende</b>
             {% elseif project.getStatus == 1 %}
@@ -30,6 +31,19 @@
                 <br>Prosjekt status: <b>Avslått</b>
             {% elseif project.getStatus == 3 %}
                 <br>Prosjekt status: <b>Avsluttet</b>
+            {% endif %}
+            {% if project.isAcceptedByAdmin() %}
+                <br>Godkjent av admin: <b>Ja, godkjent!</b>
+            {% else %}
+                <br>Godkjent av admin: <b>Ikke godkjent!</b>
+                {% if user.isAdmin() %}
+                    <form method="post" action="projects_editProject.php?projectid={{ project.getProjectID }}">
+                        <input type="hidden" value="{{ getMac("Verify project") }}" name="XSRFPreventionToken">
+                        <button type="submit" name="project_verify" class="buttons miniButtons" id="miniButtons">
+                            Godkjenn prosjektet
+                        </button>
+                    </form>
+                    {% endif %}
             {% endif %}
         </div>
 

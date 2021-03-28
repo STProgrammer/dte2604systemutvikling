@@ -178,7 +178,7 @@ JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.pro
 
 
 
-    public function removeEmployees(Project $project)
+   /* public function removeEmployees(Project $project)
     {
         $users = $this->request->request->get('projectMembers');
         $projectName = $project->getProjectName();
@@ -208,7 +208,7 @@ JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.pro
             return false;
         }
         return true;
-    }
+    }*/
 
     //GET MEMBERS
     public function getProjectMembers(string $projectName) {
@@ -501,24 +501,22 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
 
-    public function verifyProjectByAdmin($projectName) : bool {
-        if($this->session->get('User')->isAdmin()) {
-            try {
-                $sth = $this->db->prepare("update Projects set isAcceptedByAdmin = 1 where projectName = :projectName");
-                $sth->bindParam(':projectName', $projectName, PDO::PARAM_STR);
-                $sth->execute();
-                if($sth->rowCount() == 1) {
-                    $this->notifyUser("Project verified by admin", "");
-                    return true;
-                } else {
-                    $this->notifyUser("Failed to verify project", "");
-                    return false;
-                }
-            } catch (Exception $e) {
-                $this->notifyUser("Failed to verify project", $e->getMessage());
+    public function verifyProjectByAdmin(int $projectID) : bool {
+        try {
+            $sth = $this->db->prepare("update Projects set isAcceptedByAdmin = 1 where projectID = :projectID");
+            $sth->bindParam(':projectID', $projectID, PDO::PARAM_STR);
+            $sth->execute();
+            if($sth->rowCount() == 1) {
+                $this->notifyUser("Prosjekt godkjent av admin");
+                return true;
+            } else {
+                $this->notifyUser("Feil ved godkjenning av prosjekt");
                 return false;
             }
-        } else {return false; }
+        } catch (Exception $e) {
+            $this->notifyUser("Feil ved godkjenning av prosjekt", $e->getMessage());
+            return false;
+        }
     }
 
     //TODO
@@ -526,13 +524,5 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
     {
     }
 
-    //TODO
-    public function addCustomer(User $user, Project $project)
-    {
-    }
 
-    //TODO
-    public function getCustomers(Project $project)
-    {
-    }
 }
