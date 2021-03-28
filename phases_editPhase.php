@@ -15,7 +15,7 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
     $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
     $phases = $projectManager->getAllPhases($projectName);
     $members = $projectManager->getProjectMembers($project->getProjectName());
-    if ($request->request->has('phase_edit') && XsrfProtection::verifyMac("Phase edit")) {
+    if ($request->request->has('phase_edit') && XsrfProtection::verifyMac("Edit phase")) {
         if ($projectManager->editPhase($phase, $project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -47,10 +47,10 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
     }
     else if ($request->request->has('phase_delete') && $user->isAdmin()) {
         if ($projectManager->deletePhase($phaseId) && XsrfProtection::verifyMac("Delete phase")) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: projects_editProject.php?projectid=".$project->getProjectID());
             exit();
         } else {
-            header("Location: ".$request->server->get('REQUEST_URI')."?failedtodeleteprojects");
+            header("Location: projects_editProject.php?projectid=".$project->getProjectID()."&failedtodeleteprojects=1");
             exit();
         }
     }
