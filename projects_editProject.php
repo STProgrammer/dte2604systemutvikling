@@ -65,6 +65,15 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
+    else if ($request->request->has('phase_add') && $user->isAdmin()) {
+        if ($projectManager->addPhase($project) && XsrfProtection::verifyMac("Add phase")) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
+            exit();
+        }
+    }
     else {
         try {
             echo $twig->render('projects_editProject.twig',

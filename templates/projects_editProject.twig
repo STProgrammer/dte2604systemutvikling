@@ -171,6 +171,52 @@
             </form>
         </div>
 
+        <div class="container container_menu_form text" id="add_phase_to_project">
+            <b>Legg til ny fase</b>
+            <form method="post" id="group_register_form">
+                <br><label>Fasenavn: </label>
+                <br><input type="text" name="phaseName" value="" placeholder="Fasenavn" maxlength=45 required
+                           id="phaseName"/>
+                <br><label for="startTime">Start tid</label>
+                <br><input id="startTime" type="date" name="startTime" value="" placeholder="dd.mm.åååå" maxlength=90 required />
+                <br><label for="finishTime">Slutt tid</label>
+                <br><input id="finishTime" type="date" name="finishTime" value="" placeholder="dd.mm.åååå" maxlength=90 required />
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <label>Status på prosjektet: </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="waiting" name="status" value="0" required>
+                        </td>
+                        <td>
+                            <label for="waiting">Ventende </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="active" name="status" value="1" required>
+                        </td>
+                        <td>
+                            <label for="active">Pågår </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="status" id="paused" value="2" required>
+                        </td>
+                        <td>
+                            <label for="paused">På pause </label>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="{{ getMac("Add phase") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="phase_add" id="reg_btn" value="Ny fase">
+            </form>
+        </div>
+
         <div class="container container_menu_form text" id="groups_list">
             <h4>Grupper tilhørende prosjektet:</h4>
             <table>

@@ -370,11 +370,19 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
     // ADD PHASE
-    public function addPhase ($projectName) : bool
+    public function addPhase (Project $project) : bool
     {
+        $projectName = $project->getProjectName();
         $phaseName = $this->request->request->get('phaseName');
         $startTime = $this->request->request->get('startTime');
         $finishTime = $this->request->request->get('finishTime');
+
+        if (strtotime($startTime) < strtotime($project->getStartTime())) {
+            $startTime = $project->getStartTime();
+        }
+        if (strtotime($finishTime) > strtotime($project->getFinishTime())) {
+            $finishTime = $project->getFinishTime();
+        }
         try{
             $sth = $this->db->prepare("insert into Phases (phaseName, projectName, startTime, finishTime, status) 
                 values (:phaseName, :projectName, :startTime, :finishTime, 0);");
@@ -399,13 +407,19 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
     // EDIT PHASE
-    public function editPhase (Phase $phase) : bool
+    public function editPhase (Phase $phase, Project $project) : bool
     {
         $phaseId = $phase->getPhaseID();
         $phaseName = $this->request->request->get('phaseName', $phase->getPhaseName());
         $startTime = $this->request->request->get('startTime', $phase->getStartTime());
         $finishTime = $this->request->request->get('finishTime', $phase->getFinishTime());
         $status = $this->request->request->getInt('status', $phase->getStatus());
+        if (strtotime($startTime) < strtotime($project->getStartTime())) {
+            $startTime = $project->getStartTime();
+        }
+        if (strtotime($finishTime) > strtotime($project->getFinishTime())) {
+            $finishTime = $project->getFinishTime();
+        }
         try{
             $sth = $this->db->prepare("update Phases set phaseName = :phaseName, startTime = :startTime, 
                   finishTime = :finishTime, status = :status where phaseID = :phaseID;");
