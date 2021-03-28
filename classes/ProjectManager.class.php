@@ -492,19 +492,20 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
     // GET ALL PHASES
     public function getAllPhases ($projectName) : array
     {
+        $phases = array();
         try{
-            $sth = $this->db->prepare("select * from Phases where projcetName = :projectName;");
+            $sth = $this->db->prepare("select * from Phases where projectName = :projectName;");
             $sth->bindParam(":projectName", $projectName, PDO::PARAM_INT);
             $sth->execute();
-            if ($sth->rowCount() == 1) {
-                return true;
+            if ($phases = $sth->fetchAll(PDO::FETCH_CLASS, "Phase")) {
+                return $phases;
             } else {
                 $this->notifyUser("Feil ve henting av faser!");
-                return false;
+                return $phases;
             }
         } catch (Exception $e) {
             $this->notifyUser("Feil ved henting av faser!", $e->getMessage());
-            return false;
+            return $phases;
         }
     }
     // END GET ALL PHASES
