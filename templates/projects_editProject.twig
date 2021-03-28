@@ -15,22 +15,21 @@
 
         <div class="container container_menu text" id="projekt_info">
             <h3>Rediger prosjekt</h3>
-            <br>Prosjekt: <b>{{ project.getProjectName }}</b></br>
-            {% for users in users %}
-                {% if project.getProjectLeader == users.getUserId %}
-                    <br>Prosjekt Leder: <b>{{ users.getFirstName }} {{ users.getLastName }}</b></br>
-                {% endif %}
-            {% endfor %}
+            <br>Prosjekt: <b>{{ project.getProjectName }}</b>
+            <br>Prosjekt Leder: <b>{{ project.leaderName }} </b>
+            <br>Prosjekt Leder: <b>{{ project.customerName }} </b>
             <br>Prosjekt starttid: <b>{{ project.getStartTime }} </b>
             <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b>
             {% if project.getStatus == 0 %}
-                <br>Prosjekt status: <b>vendende</b>
+                <br>Prosjekt status: <b>Vendende</b>
             {% elseif project.getStatus == 1 %}
-                <br>Prosjekt status: <b>pågår</b>
+                <br>Prosjekt status: <b>Pågår</b>
             {% elseif project.getStatus == 2 %}
-                <br>Prosjekt status: <b>på pause</b>
+                <br>Prosjekt status: <b>Pauset</b>
             {% elseif project.getStatus == 3 %}
-                <br>Prosjekt status: <b>avsluttet</b>
+                <br>Prosjekt status: <b>Avslått</b>
+            {% elseif project.getStatus == 3 %}
+                <br>Prosjekt status: <b>Avsluttet</b>
             {% endif %}
         </div>
 
@@ -116,7 +115,15 @@
                             <input type="radio" name="status" id="cancelled" value="3" {% if project.getStatus() == 3 %} checked {% endif %} >
                         </td>
                         <td>
-                            <label for="paused">Avsluttet </label>
+                            <label for="cancelled">Avslått </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="status" id="ended" value="4" {% if project.getStatus() == 4 %} checked {% endif %} >
+                        </td>
+                        <td>
+                            <label for="ended">Avsluttet </label>
                         </td>
                     </tr>
                 </table>

@@ -37,11 +37,13 @@ class ProjectManager
     public function getAllProjects(): array
     {
         try {
-            $stmt = $this->db->prepare("SELECT Projects.*, Users.username, Users.firstName, Users.lastName
+            $stmt = $this->db->prepare('SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
+CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
 FROM Projects
-LEFT JOIN Users ON Users.userID = Projects.projectLeader WHERE 1 ORDER BY `startTime` DESC;");
+JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+JOIN Users as customer on customer.userID = Projects.customer ORDER BY Projects.startTime DESC;');
             $stmt->execute();
-            if ($projects = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
             } else {
                 $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
@@ -59,8 +61,11 @@ LEFT JOIN Users ON Users.userID = Projects.projectLeader WHERE 1 ORDER BY `start
     public function getProject(int $projectID)
     {
         try {
-            $stmt = $this->db->prepare(query: "SELECT Projects.*, Users.firstName, Users.lastName, Users.username FROM Projects LEFT JOIN 
-    Users ON Projects.projectLeader=Users.userID WHERE projectID = :projectID;");
+            $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
+CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
+FROM Projects
+JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectID = :projectID;');
             $stmt->bindParam(':projectID', $projectID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($project = $stmt->fetchObject("Project")) {
