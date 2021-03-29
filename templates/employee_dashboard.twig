@@ -1,27 +1,54 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="employee_dashboard" id="employee_dashboard">
-        <div class="container container_medium" id="container_medium">
-            <h4>Mine timeregistreringer</h4>
-            <div class="text">
-                Body text goes here
-            </div>
+        <div class>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h3>{{ header }}</h3>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
         </div>
-        <div class="container container_medium" id="container_medium">
-            <h4>Rapporterte eget fravær</h4>
-            <div class="text">
-                Body text goes here
-            </div>
+        <div class="container container_registrer_inn">
+            <button id="button" class="button" onclick="">
+                <img src="images/icon_time.png" width="40pt"> Registrer inn
+            </button>
         </div>
-
+        <div class="container container_pause">
+            <button id="button" class="button" onclick="">
+                <img src="images/icon_time.png" width="40pt"> Pause
+            </button>
+        </div>
+        <div class="container container_registrer_ut">
+            <button id="button" class="button" onclick="">
+                <img src="images/icon_time.png" width="40pt"> Registrer ut
+            </button>
+        </div>
     </section>
-
     <section>
-        <div class="container container_big">
-            <h4>Kommentarer fra brukere</h4>
-            <div class="text">
-                Body text goes here
-            </div>
+        <div class="openContainerNoBorder text" id="timeTabell">
+            <h4>Mine siste fem timeregistreringer</h4>
+            <table class="table" id="table">
+                <tr>
+                    <th>ID</th>
+                    <th>Task</th>
+                    <th>Starttid</th>
+                    <th>Slutttid</th>
+                    <th>Kommentar</th>
+                </tr>
+                {% for hours in Hour %}
+                    <tr>
+                        <td> {{ hours.hourID }}</td>
+                        <td> {{ hours.taskID }}</td>
+                        <td> {{ hours.startTime }}</td>
+                        <td> {{ hours.endTime }}</td>
+                        <td> {{ hours.Comment }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
     </section>
+
 {% endblock %}

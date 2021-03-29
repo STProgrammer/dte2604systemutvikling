@@ -73,7 +73,7 @@
         if ($session->get('User')->isVerifiedByAdmin() == 0) {
             try {
                 echo $twig->render('error.twig', array('msg' => 'Brukeren er ikke verifisert av admin!'));
-            } catch (LoaderError | RuntimeError | SyntaxError $e) { }
+            } catch (LoaderError | RuntimeError | SyntaxError $e) { echo $e->getMessage(); }
             die();
         }
         $user = $session->get('User'); // get the user data

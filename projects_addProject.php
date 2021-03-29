@@ -9,26 +9,19 @@ $projects = $ProjectManager->getAllProjects();
 $user = $session->get('User');
 
 $userManager = new UserManager($db, $request, $session);
-$users = $userManager->getAllUsers("lastName");
+$customers = $userManager->getAllCustomers("lastName");
 
 if ($user) {
-    echo $twig->render('projects_addProject.twig',
-        array('projects' => $projects, 'ProjectManager' => $ProjectManager, 'session' => $session,
-            'User' => $user,  'users' => $users));
-
     if ($request->request->has('addProject') && $user->isAdmin() | $user->isProjectLeader()
         && XsrfProtection::verifyMac("addProject")) {
+        $ProjectManager->addProject();
+        header("location: projects.php");
+        exit();
 
-        $project = new Project();
-        $project->setProjectName($request->request->get('projectName'));
-        $project->setProjectLeader($request->request->getInt('projectLeader'));
-        $project->setStartTime($request->request->get('startTime'));
-        $project->setFinishTime($request->request->get('finishTime'));
-        $project->setStatus($request->request->getInt('status'));
-        $project->setCustomer($request->request->getInt('customer'));
-        $project->setIsAcceptedByAdmin($request->request->getInt('isAcceptedByAdmin'));
-
-        $ProjectManager->addProject($project);
+    } else {
+        echo $twig->render('projects_addProject.twig',
+            array('projects' => $projects, 'ProjectManager' => $ProjectManager, 'session' => $session,
+                'User' => $user,  'customers' => $customers));
     }
 
 } else {

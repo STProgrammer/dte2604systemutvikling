@@ -131,6 +131,9 @@ section.profile_edit { margin-top: 6em; margin-bottom: 4em; }
 /**-------------  ERROR  -----------------------*/
 section.error { margin-top: 6em; margin-left: 5em; }
 
+/**------------- USER_CONTRIBUTION -----------------*/
+section.user_contribution { margin-top: 6em; margin-bottom: 4em; }
+
 section#center { align-self: center; }
 
 
@@ -186,7 +189,7 @@ div.openContainerNoBorder {
 }
 div.container_menu { width: 30em; height: 20em; background-color: #eeeeee; border: none;
 }
-div.container_menu_form { width: 30em; height: 20em; background-color: #eeeeee; border: none;
+div.container_menu_form { width: auto; height: auto; background-color: #eeeeee; border: none;
 }
 div.container_menu_lang { width: 65em; height: 20em;  border: none;
     overflow-y: scroll; scroll-behavior: smooth; box-shadow: none; background: none;

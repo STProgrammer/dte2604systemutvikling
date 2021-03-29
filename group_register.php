@@ -6,6 +6,7 @@ require_once('includes.php');
 $groupManager = new GroupManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 
+
 $employees = $userManager->getAllEmployees("firstName");
 
 
@@ -27,6 +28,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
             echo $twig->render('group_register.twig', array('session' => $session,
                 'request' => $request, 'user' => $user, 'employees' => $employees));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+            echo $e->getMessage();
         }
     }
 } else {

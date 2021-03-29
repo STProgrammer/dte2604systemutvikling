@@ -1,0 +1,44 @@
+{% extends "layout.twig" %}
+{% block content %}
+
+<section id="prosjekter" class="prosjekter">
+    <div class="container container_small">
+    </div>
+</section>
+
+<section>
+    <div class="openContainerNoBorder text" id="commentsTable">
+        <h3>Kommentarer </h3>
+        <table class="table" id="table">
+            {% if hours %}
+                <tr>
+                    <th>Prosjektnavn</th>
+                    <th>Navn</th>
+                    <th>Kommentar</th>
+
+                </tr>
+                {% for Hour in hours %}
+                    <tr>
+                        {#PROSJEKTNAVN#}
+                        {% for Task in tasks %}
+                            {% if Hour.getTaskID() == Task.getTaskID() %}
+                                <td>{{ Task.getProjectName() }}</td>
+                            {% endif %}
+                        {% endfor %}
+
+                        {#Navn#}
+                        {% for users in users %}
+                            {% if Hour.getWhoworked() == users.getUserId() %}
+                                <td>{{ users.firstName }} {{ users.lastName }}</td>
+                            {% endif %}
+                        {% endfor %}
+
+                        {#Kommentar#}
+                        <td>{{ Hour.getComment() }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+</section>
+{% endblock %}

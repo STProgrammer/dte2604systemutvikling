@@ -4,25 +4,100 @@
 class Group
 {
     private $groupID;
+    private $projectName;
     private $groupName;
-    private $isAdmin;
+    private bool $isAdmin;
     private $groupLeader;
-    private $firstName;
-    private $lastName;
+
+    /**
+     * Group constructor.
+     */
+    public function __construct()
+    {
+    }
 
 
-    public function getFirstName(){return $this->firstName;}
-    public function getLastName(){return $this->lastName;}
-    public function getGroupID(){return $this->groupID;}
-    public function getGroupName(){return $this->groupName;}
-    public function getGroupLeader(){return $this->groupLeader;}
+    /**
+     * @return mixed
+     */
+    public function getGroupID()
+    {
+        return $this->groupID;
+    }
 
-    public function setFirstName($firstName): void{$this->firstName = $firstName;}
-    public function setLastName($lastName): void{$this->lastName = $lastName;}
-    public function setGroupID($groupID): void{$this->groupID = $groupID;}
-    public function setGroupName($groupName): void{$this->groupName = $groupName;}
-    public function setGroupLeader($groupLeader): void{$this->groupLeader = $groupLeader;}
-    public function setAdmin($isAdmin): void{$this->isAdmin = $isAdmin;}
+    /**
+     * @param mixed $groupID
+     */
+    public function setGroupID($groupID): void
+    {
+        $this->groupID = $groupID;
+    }
 
-    public function isAdmin(){return $this->isAdmin;}
+    /**
+     * @return mixed
+     */
+    public function getProjectName()
+    {
+        return $this->projectName;
+    }
+
+    /**
+     * @param mixed $projectName
+     */
+    public function setProjectName($projectName): void
+    {
+        $this->projectName = $projectName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroupName()
+    {
+        return $this->groupName;
+    }
+
+    /**
+     * @param mixed $groupName
+     */
+    public function setGroupName($groupName): void
+    {
+        $this->groupName = $groupName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * @param bool $isAdmin
+     */
+    public function setIsAdmin(bool $isAdmin): void
+    {
+        $this->isAdmin = $isAdmin;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroupLeader()
+    {
+        return $this->groupLeader;
+    }
+
+    /**
+     * @param mixed $groupLeader
+     */
+    public function setGroupLeader($groupLeader): void
+    {
+        $this->groupLeader = $groupLeader;
+    }
+
+
+
+
 }

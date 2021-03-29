@@ -38,6 +38,7 @@ else {
     try {
         echo $twig->render('login.twig', array('session' => $session));
     } catch (LoaderError | RuntimeError | SyntaxError $e) {
+        echo $e->getMessage();
     }
 
 }

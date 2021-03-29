@@ -1,42 +1,54 @@
 <?php
 
 require_once "includes.php";
-define('FILENAME_TAG', 'image');
 
-$ProjectManager = new ProjectManager($db, $request, $session);
+/* Denne Twig funksjonen er tatt fra https://stackoverflow.com/questions/61407758/how-to-change-one-value-in-get-by-clicking-a-link-or-button-from-twig-with/61407993#61407993 */
+$twig->addFunction(new \Twig\TwigFunction('get_page_url', function($query = [], $append = true) {
+    $tmp = $append ? $_GET : [];
+    foreach($query as $key => $value) $tmp[$key] = $value;
+
+    return '?' . http_build_query($tmp);
+}));
+
+$projectManager = new ProjectManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 
-$project = $ProjectManager->getProject($request->query->get('projectName'));
-$projectName = $project->getProjectName();
-$employees = $userManager->getAllEmployees("firstName"); //alle som ikke er kunde
-$users = $userManager->getAllUsers("firstName"); //alle brukere
-$members = $ProjectManager->getProjectMembers($request->query->get('projectName'));
+$project = $projectManager->getProject($request->query->getInt('projectid'));
 
-if ($user && $project && ($user->isAdmin() or $user->isProjectLeader())) {
+
+if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProjectLeader())) {
+    $projectName = $project->getProjectName();
+    $customers = $userManager->getAllCustomers("firstName"); //alle kunder
+    $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
+    $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
+    $phases = $projectManager->getAllPhases($projectName);
+    $groups = $projectManager->getGroups($projectName);
+    $users = $userManager->getAllUsers("firstName"); //alle brukere
+    $members = $projectManager->getProjectMembers($project->getProjectName());
     if ($request->request->has('project_edit') && XsrfProtection::verifyMac("Project edit")) {
-        if (!$user->isAdmin()) {
-            $request->request->set('isAdmin', 0);
-        }
-        if ($ProjectManager->editProject($project)) {
-            header("Location: projects_editProject.php?projectName=".$projectName);
+        if ($projectManager->editProject($project)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
             header("Location: ?failedtoeditproject");
             exit();
         }
     }
-    else if ($request->request->has('add_members') && $user->isAdmin()) {
-        if ($ProjectManager->addEmployees($request->query->get('projectName')) && XsrfProtection::verifyMac("Project add members")) {
-            header("Location: projects_editProject.php?projectName=".$projectName);
+    else if ($request->request->has('group_add') && XsrfProtection::verifyMac("Add group")) {
+        if (!$user->isAdmin()) {
+            $request->request->set('isAdmin', 0);
+        }
+        if ($projectManager->addGroup($project->getProjectName())) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
             header("Location: ?failedtoaddmembers");
             exit();
         }
     }
-    else if ($request->request->has('remove_members') && $user->isAdmin()) {
-        if ($ProjectManager->removeEmployees($project) && XsrfProtection::verifyMac("Project remove members")) {
-            header("Location: projects_editProject.php?projectName=".$projectName);
+    else if ($request->request->has('remove_members') && XsrfProtection::verifyMac("Project remove members")) {
+        if ($projectManager->removeEmployees($project)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
             header("Location: ?failedtoremovemembers");
@@ -44,11 +56,29 @@ if ($user && $project && ($user->isAdmin() or $user->isProjectLeader())) {
         }
     }
     else if ($request->request->has('project_delete') && $user->isAdmin()) {
-        if ($ProjectManager->deleteProject($request->query->get('projectName')) && XsrfProtection::verifyMac("Delete project")) {
-            header("Location: projects_editProject.php?projectName=".$projectName);
+        if ($projectManager->deleteProject($request->query->get('projectName')) && XsrfProtection::verifyMac("Delete project")) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
             header("Location: ?failedtodeleteprojects");
+            exit();
+        }
+    }
+    else if ($request->request->has('project_verify') && $user->isAdmin() && XsrfProtection::verifyMac("Verify project")) {
+        if ($projectManager->verifyProjectByAdmin($project->getProjectID())) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ".$request->server->get('REQUEST_URI')."&failedtoverifyproject=!");
+            exit();
+        }
+    }
+    else if ($request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
+        if ($projectManager->addPhase($project)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
             exit();
         }
     }
@@ -56,8 +86,11 @@ if ($user && $project && ($user->isAdmin() or $user->isProjectLeader())) {
         try {
             echo $twig->render('projects_editProject.twig',
                 array('session' => $session, 'request' => $request, 'user' => $user, 'users' => $users,
-                    'employees' => $employees, 'project' => $project,  'members' => $members));
-        } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+                    'customers' => $customers, 'project' => $project,  'members' => $members,
+                    'employees' => $employees, 'groups' => $groups, 'candidates' => $candidates,
+                'phases' => $phases));
+        } catch (\Twig\Error\LoaderError  | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+            echo $e->getMessage();
         }
     }
 } else {

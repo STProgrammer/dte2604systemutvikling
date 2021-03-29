@@ -136,6 +136,7 @@ class User {
     public function isProjectLeader() { return $this->isProjectLeader; }
     public function isGroupLeader() { return $this->isGroupLeader; }
     public function isTemporary() : bool { return ($this->userType == 1); }
+    public function isUser() : bool { return ($this->userType ==2 || $this->userType == 1); }
     public function isCustomer() : bool { return ($this->userType == 0); }
 
     public function setProjectLeader($isProjectLeader) { $this->isProjectLeader = $isProjectLeader; }

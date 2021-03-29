@@ -35,63 +35,50 @@
                         <th>Slutttid</th>
                         <th>Status</th>
                         <th>Kunde</th>
-                        <th>Antall medlemmer</th>
                         <th>Godkjent av admin</th>
                         <th>Detaljer & rediger</th>
                     </tr>
-                    {% for Project in projects %}
+                    {% for project in projects %}
                         <tr>
                             {#PROSJEKTNAVN#}
-                            <td>{{ Project.getProjectName() }}</td>
+                            <td>{{ project.getProjectName() }}</td>
 
-                            {#PROSJEKTLEDER#}
-                            {% for users in users %}
-                                {% if Project.getProjectLeader() == users.getUserId() %}
-                                    <td>{{ users.firstName }} {{ users.lastName }}</td>
-                                {% endif %}
-                            {% endfor %}
-                            <td>{{ Project.getStartTime() }}</td>
-                            <td>{{ Project.getFinishTime() }}</td>
+                            <td>{{ project.leaderName }} </td>
+
+                            <td>{{ project.getStartTime() }}</td>
+                            <td>{{ project.getFinishTime() }}</td>
 
                             {#PROSJEKT STATUS#}
-                            {% if Project.getStatus() == 0 %}
+                            {% if project.getStatus() == 0 %}
                                 <td>Ventende</td>
                             {% endif %}
-                            {% if Project.getStatus() == 1 %}
+                            {% if project.getStatus() == 1 %}
                                 <td>Pågår</td>
                             {% endif %}
-                            {% if Project.getStatus() == 2 %}
+                            {% if project.getStatus() == 2 %}
                                 <td>Pauset</td>
                             {% endif %}
-                            {% if Project.getStatus() == 3 %}
+                            {% if project.getStatus() == 3 %}
                                 <td>Avslått</td>
+                            {% endif %}
+                            {% if project.getStatus() == 4 %}
+                                <td>Avsluttet</td>
                             {% endif %}
 
                             {#PROSJEKT KUNDE#}
-                            {% for users in users %}
-                                {% if Project.getCustomer() == users.getUserId() %}
-                                    <td>{{ users.username }}</td>
-                                {% endif %}
-                            {% endfor %}
-
-                            {#PROSJEKT ANTALL MEDLEMMER#}
-                            <td>{{ membersCount }}</td>
+                            <td>{{ project.customerName }}</td>
 
                             {#PROSJEKT GODKJENT AV ADMIN#}
-                            {% if Project.getIsAcceptedByAdmin() == 0 %}
-                                <td>Ventende</td>
-                            {% endif %}
-                            {% if Project.getIsAcceptedByAdmin() == 1 %}
+                            {% if project.isAcceptedByAdmin() %}
                                 <td>Godkjent</td>
-                            {% endif %}
-                            {% if Project.getIsAcceptedByAdmin() == 2 %}
-                                <td>Avslått</td>
+                            {% else %}
+                                <td>Ikke godkjent</td>
                             {% endif %}
 
                             {#HVIS ADMIN, REDIGER KNAPP#}
                             {% if User.isAdmin %}
                             <td><button class="buttons miniButtons" id="miniButtons"
-                                        onclick="location.href='projects_editProject.php?projectName={{ Project.getProjectName() }}';">
+                                        onclick="location.href='projects_editProject.php?projectid={{ project.getProjectID()}}';">
                                     <img src="" alt=""> Rediger
                                 </button></td>
                             {% endif %}

@@ -3,7 +3,7 @@
 
     <section class="edit_group" id="edit_group">
         <div class="openContainerNoBorder text" id="table_register">
-            <h3>Lag ny gruppe</h3>
+            <h3>Gruppe profil</h3>
             <div>
                 {% if session.getFlashBag.has('header') %}
                     {% for header in session.getFlashBag.get('header', []) %}
@@ -15,14 +15,22 @@
                 {% endif %}
             </div>
             <div id="text">
-                <br>Gruppenavn: {{ group.getGroupName }}
-                <br>Gruppeleder: {{ group.getFirstName }} {{ group.getLastName }}
+                <br>Gruppenavn: <b>{{ group.getGroupName }}</b>
+                <br>Gruppeleder: <b>{{ group.leaderName }} </b>
+                <br>Prosjekt: <b>{{ group.getProjectName }}</b>
                 {% if group.isAdmin %}
-                    <br>Gruppe type: admin gruppe
+                    <br>Gruppe type: <b>admin gruppe</b>
                 {% else %}
-                    <br>Gruppe type: vanlig gruppe
+                    <br>Gruppe type: <b>vanlig gruppe</b>
                 {% endif %}
-                <p>
+                <br>
+                    <br><b>Medlemmer:</b>
+                <ul>
+                    {% for empl in members %}
+                        <li>{{ empl.getFirstName }} {{ empl.getLastName }} ({{ empl.getUsername }})
+                    {% endfor %}
+                </ul>
+
             </div>
             <div id="text">
                 <form method="post" id="group_edit_form">
@@ -35,18 +43,12 @@
                         <select name="groupLeader" id="" class="form-control" onfocus='this.size=10;'
                                 onblur='this.size=10;'
                                 onchange='this.size=10; this.blur();'>
-                            {% for empl in members %}
-                                <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }}
-                                    (ID: {{ empl.getUserId }})
+                            {% for candidate in candidates %}
+                                <option value="{{ candidate.getUserID() }}" {% if candidate.getUserID() == group.getGroupLeader() %} selected {% endif %}>{{ candidate.getLastName }} {{ candidate.getFirstName }} ({{ candidate.getUsername }})
                                 </option>
                             {% endfor %}
                         </select></div>
                     {% if user.isAdmin %}
-                        <br><label>Admin eller vanlig gruppe: </label>
-                        <br><input type="radio" name="isAdmin" value="1" required>
-                        <label>Admin</label><br>
-                        <input type="radio" name="isAdmin" value="0" required>
-                        <label>Vanlig</label><br>
                     <br><label>Admin eller vanlig gruppe: </label>
                     <br><input type="radio" name="isAdmin" value="1" {% if group.isAdmin() %} checked {% endif %}>
                     <label>Admin</label><br>
@@ -95,14 +97,31 @@
                 </p>
             </div>
             <div id="text">
-                {% if user.isAdmin() %}
+                <form method="post" id="add_to_project">
+                    <br><label>Velg prosjekt:</label>
+                    <br><div class="wrapper">
+                        <select name="projectName" id="" class="form-control" onfocus='this.size=10;'
+                                onblur='this.size=10;'
+                                onchange='this.size=10; this.blur();'>
+                            {% for project in projects %}
+                                <option value="{{ project.getProjectName() }}" {% if project.getProjectName() == group.getProjectName() %} selected {% endif %}>{{ project.getProjectName() }}
+                                </option>
+                            {% endfor %}
+                        </select></div>
+                    <input type="hidden" value="{{ getMac("Add group to project") }}" name="XSRFPreventionToken">
+                    <br><input type="submit" name="add_to_project" id="reg_btn" value="Endre prosjekt">
+                </form>
+            </div>
+            {% if user.isAdmin() %}
+            <div id="text">
+
                     <form method="post"
                           onsubmit="return confirm('Er du sikker på å slette gruppen? \n(Kan ikke angres etterpå)');">
                         <input type="hidden" value="{{ getMac("Delete group") }}" name="XSRFPreventionToken">
                         <br><input type="submit" name="group_delete" value="Slett gruppe" class="delete"/>
                     </form>
-                {% endif %}
             </div>
+            {% endif %}
             <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
         </div>
     </section>

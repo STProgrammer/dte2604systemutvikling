@@ -56,7 +56,7 @@ if ($user) {
             echo $twig->render('profile_edit.twig', array('session' => $session,
                 'request' => $request, 'user' => $user));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-
+            echo $e->getMessage();
         }
     }
 } else {
