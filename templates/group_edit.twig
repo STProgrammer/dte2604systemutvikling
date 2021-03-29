@@ -16,7 +16,7 @@
             </div>
             <div id="text">
                 <br>Gruppenavn: <b>{{ group.getGroupName }}</b>
-                <br>Gruppeleder: <b>{{ group.firstName }} {{ group.lastName }} ({{ group.username }})</b>
+                <br>Gruppeleder: <b>{{ group.leaderName }} </b>
                 <br>Prosjekt: <b>{{ group.getProjectName }}</b>
                 {% if group.isAdmin %}
                     <br>Gruppe type: <b>admin gruppe</b>

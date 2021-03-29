@@ -35,8 +35,8 @@ class GroupManager
             $stmt = $this->db->prepare('SELECT Groups.*, CONCAT(groupLeader.firstName, " ", groupLeader.lastName, " (", groupLeader.username, ")") as leaderName,
        count(UsersAndGroups.groupID) as nrOfMembers
 FROM Groups
-    JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
-JOIN Users as groupLeader on groupLeader.userID = Groups.groupLeader GROUP BY Groups.groupID ORDER BY Groups.groupName ASC;');
+    LEFT JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+LEFT JOIN Users as groupLeader on groupLeader.userID = Groups.groupLeader GROUP BY Groups.groupID ORDER BY Groups.groupName ASC;');
             $stmt->execute();
             if ($groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
                 return $groups;
@@ -140,8 +140,8 @@ WHERE NOT EXISTS
     public function getGroup(int $groupID)
     {
         try {
-            $stmt = $this->db->prepare("SELECT Groups.*, Users.firstName, Users.lastName, Users.username FROM Groups LEFT JOIN 
-    Users ON Groups.groupLeader=Users.userID WHERE groupID = :groupID ORDER BY `groupName` ASC;");
+            $stmt = $this->db->prepare('SELECT Groups.*, CONCAT(Users.firstName, " ", Users.lastName, " ", " (", Users.username, ")") as leaderName FROM Groups LEFT JOIN 
+    Users ON Groups.groupLeader=Users.userID WHERE groupID = :groupID ORDER BY `groupName` ASC;');
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($group = $stmt->fetchObject("Group")) {
@@ -253,7 +253,7 @@ WHERE NOT EXISTS
     {
         $nonmembers = array();
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE NOT EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID) ORDER BY Users.lastName;");
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE NOT EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID) AND Users.userType > 0 ORDER BY Users.lastName;");
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($nonmembers = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
