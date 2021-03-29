@@ -128,6 +128,28 @@
             </table>
         </div>
 
+        <div class="container container_menu_form text" id="add_user_to_project">
+            <form method="post" id="group_register_form">
+                <b>Legg til ny oppgave: </b>
+                <br><label>Oppgavenavn: </label>
+                <br><input type="text" name="taskName" value="" placeholder="Oppgavenavn" maxlength=45 required
+                           id="taskName"/>
+                <br><label>Estimert tid: </label>
+                <br><input type="number" name="estimatedTime" value="" placeholder="Estimert tid" maxlength=45 required
+                           id="estimatedTime"/>
+                <br><label>Denn oppgaven er avhengig av (legg til oppgaver):</label>
+                <br><select name="dependentTasks[]" id="" class="form-control" multiple onfocus='this.size=10;'
+                        onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                    {% for task in tasks %}
+                        <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" value="{{ getMac("Add task") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="task_add" id="reg_btn" value="Ny oppgave">
+            </form>
+        </div>
+
         <div class="container container_menu_lang text" id="phase_tasks">
             <br><label>Andre oppgaver i dette prosjektet: </label>
             <table class="table">

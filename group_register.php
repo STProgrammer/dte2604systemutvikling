@@ -6,6 +6,7 @@ require_once('includes.php');
 $groupManager = new GroupManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 
+
 $employees = $userManager->getAllEmployees("firstName");
 
 

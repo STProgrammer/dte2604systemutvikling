@@ -179,6 +179,34 @@ WHERE NOT EXISTS
         return true;
     }
 
+    public function addToProject(Group $group) : bool
+    {
+        $projectName = $this->request->get('projectName');
+        $groupID = $group->getGroupID();
+        $groupLeader = $group->getGroupLeader();
+        try {
+            $stmt = $this->db->prepare("UPDATE Groups SET projectName = :projectName WHERE groupID = :groupID;
+    (SELECT projectLeader FROM Projects WHERE projectLeader = :groupLeader AND projectName = :projectName);
+UPDATE Groups SET groupLeader = null WHERE EXISTS (SELECT projectLeader FROM Projects WHERE projectLeader = :groupLeader AND projectName = :projectName) AND groupID = :groupID;
+                                    UPDATE Users SET Users.isGroupLeader = 0
+                                    WHERE NOT EXISTS
+                                    (SELECT groupLeader FROM Groups WHERE groupLeader = :groupLeader) AND Users.userID = :groupLeader;");
+            $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
+            $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            if ($stmt->execute()) {
+                $this->notifyUser("Gruppe ble lagt til prosjektet");
+                return true;
+            } else {
+                $this->notifyUser("Fikk ikke legge til prosjektet");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Fikk ikke legge til prosjektet", $e->getMessage());
+            return false;
+        }
+    }
+
     public function removeAllEmployees(Group $group)
     {
         $groupID = $group->getGroupID();

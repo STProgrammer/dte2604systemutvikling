@@ -34,11 +34,11 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('group_add') && $user->isAdmin()) {
+    else if ($request->request->has('group_add') && XsrfProtection::verifyMac("Add group")) {
         if (!$user->isAdmin()) {
             $request->request->set('isAdmin', 0);
         }
-        if ($projectManager->addGroup($project->getProjectName()) && XsrfProtection::verifyMac("Add group")) {
+        if ($projectManager->addGroup($project->getProjectName())) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
@@ -46,8 +46,8 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('remove_members') && $user->isAdmin()) {
-        if ($projectManager->removeEmployees($project) && XsrfProtection::verifyMac("Project remove members")) {
+    else if ($request->request->has('remove_members') && XsrfProtection::verifyMac("Project remove members")) {
+        if ($projectManager->removeEmployees($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
@@ -64,8 +64,8 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('project_verify') && $user->isAdmin()) {
-        if ($projectManager->deleteProject($request->query->get('projectName')) && XsrfProtection::verifyMac("Delete project")) {
+    else if ($request->request->has('project_verify') && $user->isAdmin() && XsrfProtection::verifyMac("Verify project")) {
+        if ($projectManager->verifyProjectByAdmin($project->getProjectID())) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
@@ -73,8 +73,8 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('phase_add') && $user->isAdmin()) {
-        if ($projectManager->addPhase($project) && XsrfProtection::verifyMac("Add phase")) {
+    else if ($request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
+        if ($projectManager->addPhase($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {

@@ -540,7 +540,7 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
 
-    public function verifyProjectByAdmin(int $projectID) : bool {
+    public function ProjectByAdmin(int $projectID) : bool {
         try {
             $sth = $this->db->prepare("update Projects set isAcceptedByAdmin = 1 where projectID = :projectID");
             $sth->bindParam(':projectID', $projectID, PDO::PARAM_STR);
