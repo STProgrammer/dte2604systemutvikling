@@ -2,14 +2,15 @@
 {% block content %}
     <section class="edit_project" id="edit_project">
 
-        {#TILBAKE KNAPP#}
+        {# TILBAKE KNAPP #}
         <div>
             {% if user.isAdmin() == 1 %}
-                <button class="button buttons" id="prosjektKnapper" onclick="goBack()"> <img src="" alt=""> Gå tilbake</button>
+                <button class="button buttons" id="prosjektKnapper" onclick="goBack()"><img src="" alt=""> Gå tilbake
+                </button>
             {% endif %}
         </div>
 
-        {#REDIGER PROSJEKT#}
+        {# REDIGER PROSJEKT #}
         <div class="container container_menu text" id="projekt_info">
             <h3>Rediger prosjekt</h3>
             <br>Prosjekt: <b>{{ project.getProjectName }}</b>
@@ -40,11 +41,11 @@
                             Godkjenn prosjektet
                         </button>
                     </form>
-                    {% endif %}
+                {% endif %}
             {% endif %}
         </div>
 
-        {#LISTE OVER MEDLEMMER I DETTE PROSJEKT#}
+        {# LISTE OVER MEDLEMMER I DETTE PROSJEKT #}
         <div class="container container_menu_lang text" id="project_members">
             <br><label>Medlemmer i dette prosjektet: </label></br>
             <table class="table">
@@ -70,6 +71,7 @@
             </table>
         </div>
 
+        {# FASER I DETTE PROSJEKT #}
         <div class="container container_menu_lang text" id="project_members">
             <br><label>Faser i dette prosjektet: </label></br>
             <table class="table">
@@ -86,13 +88,13 @@
                         <td>{{ phase.getStartTime() }}</td>
                         <td>{{ phase.getFinishTime() }}</td>
                         {% if phase.getStatus() == 0 %}
-                        <td>Ventende</td>
-                        {%  elseif phase.getStatus() == 1 %}
-                        <td>Aktiv</td>
-                        {%  elseif phase.getStatus() == 2 %}
-                        <td>Pause</td>
-                        {%  elseif phase.getStatus() == 3 %}
-                        <td>Avsluttet</td>
+                            <td>Ventende</td>
+                        {% elseif phase.getStatus() == 1 %}
+                            <td>Aktiv</td>
+                        {% elseif phase.getStatus() == 2 %}
+                            <td>Pause</td>
+                        {% elseif phase.getStatus() == 3 %}
+                            <td>Avsluttet</td>
                         {% endif %}
 
                         <td>
@@ -106,74 +108,98 @@
             </table>
         </div>
 
+        {# FJERN BRUKERE FRA DETTE PROSJEKTET #}
+        <div class="container container_menu_form  noBorder_NoBackground_NoShadow text" id="remove_users_from_project">
+            <form method="post" id="remove_group_members_form">
+                <br><label><b>Fjerne brukere fra prosjektet: </b></label>
+                <br>
+                <div class="wrapper">
+                    <select name="projectMembers[]" id="" class="form-control">
+                        {% for empl in members %}
+                            <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }}
+                                (ID: {{ empl.getUserId }})
+                            </option>
+                        {% endfor %}
+                    </select></div>
+                <input type="hidden" value="{{ getMac("Project remove members") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="remove_members" id="reg_btn" value="Fjern medlemmer">
+            </form>
+            <div>
+                <h5>Grupper tilhørende prosjektet:</h5>
+                <table>
+                    <tr>
+                        <th>Gruppenavn</th>
+                        <th>Gruppetype</th>
+                        <th>Gruppeleder</th>
+                        <th>Antall medlemmer</th>
+                    </tr>
+                    {% for grp in groups %}
+                        <tr>
+                            <td><a href="group_edit.php?groupid={{ grp.getGroupID() }}">{{ grp.getGroupName }}</a></td>
+                            {% if grp.isAdmin %}
+                                <td>Admin gruppe</td>
+                            {% else %}
+                                <td>Vanlig gruppe</td>
+                            {% endif %}
+                            <td>{{ grp.firstName }} {{ grp.lastName }} ({{ grp.username }})</td>
+                            <td style="text-align: center">{{ grp.nrOfUsers }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     </section>
 
     <section>
-
-        {#FORM ENDRE PROSJEKT#}
+        {# FORM ENDRE PROSJEKT #}
         <div class="container container_menu_form text" id="edit_project">
             <form method="post" id="project_edit_form">
-                <br><label for="customer">Kunde:</label>
+                <br><label for="customer"><b>Kunde: </b></label>
                 <br><select name="customer" id="customer">
                     {% for customer in customers %}
-                        <option value="{{ customer.getUserId() }}" {% if project.getCustomer() == customer.getUserId() %} selected {% endif %}>{{ customer.getLastName() }}, {{ customer.getFirstName() }} ({{ customer.getUsername() }}) </option>
+                        <option value="{{ customer.getUserId() }}" {% if project.getCustomer() == customer.getUserId() %} selected {% endif %}>{{ customer.getLastName() }}
+                            , {{ customer.getFirstName() }} ({{ customer.getUsername() }})
+                        </option>
                     {% endfor %}
                 </select>
                 <br><label for="projectLeader">Prosjekt leder:</label>
                 <br><select name="projectLeader" id="projectLeader">
                     {% for candidate in candidates %}
-                        <option value="{{ candidate.getUserId() }}" {% if project.getProjectLeader() == candidate.getUserId() %} selected {% endif %}>{{ candidate.getLastName() }}, {{ candidate.getFirstName() }} ({{ candidate.getUsername() }}) </option>
+                        <option value="{{ candidate.getUserId() }}" {% if project.getProjectLeader() == candidate.getUserId() %} selected {% endif %}>{{ candidate.getLastName() }}
+                            , {{ candidate.getFirstName() }} ({{ candidate.getUsername() }})
+                        </option>
                     {% endfor %}
                 </select>
                 <br><label for="startTime">Start tid</label>
-                <br><input id="startTime" type="date" name="startTime" value="{{ project.getStartTime() }}" placeholder="dd.mm.åååå" maxlength=90 />
+                <br><input id="startTime" type="date" name="startTime" value="{{ project.getStartTime() }}"
+                           placeholder="dd.mm.åååå" maxlength=90/>
                 <br><label for="finishTime">Slutt tid</label>
-                <br><input id="finishTime" type="date" name="finishTime" value="{{ project.getFinishTime() }}" placeholder="dd.mm.åååå" maxlength=90 />
+                <br><input id="finishTime" type="date" name="finishTime" value="{{ project.getFinishTime() }}"
+                           placeholder="dd.mm.åååå" maxlength=90/>
                 <table>
                     <tr>
-                        <td colspan="2">
-                            <label>Status på prosjektet: </label>
-                        </td>
+                        <td colspan="2"><label>Status på prosjektet: </label></td>
                     </tr>
                     <tr>
-                        <td>
-                            <input type="radio" id="waiting" name="status" value="0" {% if project.getStatus() == 0 %} checked {% endif %}>
-                        </td>
-                        <td>
-                            <label for="waiting">Ventende </label>
-                        </td>
+                        <td><input type="radio" id="waiting" name="status" value="0" {% if project.getStatus() == 0 %} checked {% endif %}></td>
+                        <td><label for="waiting">Ventende </label></td>
                     </tr>
                     <tr>
-                        <td>
-                            <input type="radio" id="active" name="status" value="1" {% if project.getStatus() == 1 %} checked {% endif %} >
-                        </td>
-                        <td>
-                            <label for="active">Pågår </label>
-                        </td>
+                        <td><input type="radio" id="active" name="status" value="1" {% if project.getStatus() == 1 %} checked {% endif %} ></td>
+                        <td><label for="active">Pågår </label></td>
                     </tr>
                     <tr>
-                        <td>
-                            <input type="radio" name="status" id="paused" value="2" {% if project.getStatus() == 2 %} checked {% endif %} >
-                        </td>
-                        <td>
-                            <label for="paused">På pause </label>
-                        </td>
+                        <td><input type="radio" name="status" id="paused" value="2" {% if project.getStatus() == 2 %} checked {% endif %} ></td>
+                        <td><label for="paused">På pause </label></td>
                     </tr>
                     <tr>
-                        <td>
-                            <input type="radio" name="status" id="cancelled" value="3" {% if project.getStatus() == 3 %} checked {% endif %} >
-                        </td>
-                        <td>
-                            <label for="cancelled">Avslått </label>
-                        </td>
+                        <td><input type="radio" name="status" id="cancelled" value="3" {% if project.getStatus() == 3 %} checked {% endif %} ></td>
+                        <td><label for="cancelled">Avslått </label></td>
                     </tr>
                     <tr>
-                        <td>
-                            <input type="radio" name="status" id="ended" value="4" {% if project.getStatus() == 4 %} checked {% endif %} >
+                        <td><input type="radio" name="status" id="ended" value="4" {% if project.getStatus() == 4 %} checked {% endif %} >
                         </td>
-                        <td>
-                            <label for="ended">Avsluttet </label>
-                        </td>
+                        <td><label for="ended">Avsluttet </label></td>
                     </tr>
                 </table>
                 <input type="hidden" value="{{ getMac("Project edit") }}" name="XSRFPreventionToken">
@@ -181,10 +207,10 @@
             </form>
         </div>
 
-        {#LEGG TIL MEDLEMMER#}
+        {# LEGG TIL GRUPPE #}
         <div class="container container_menu_form text" id="add_user_to_project">
             <form method="post" id="group_register_form">
-                <br><label>Gruppenavn: </label>
+                <br><label><b>Gruppenavn: </b></label>
                 <br><input type="text" name="groupName" value="" placeholder="Gruppenavn" maxlength=45 required
                            id="groupName"/>
                 {% if user.isAdmin %}
@@ -207,6 +233,7 @@
             </form>
         </div>
 
+        {# LEGG TIL FASE #}
         <div class="container container_menu_form text" id="add_phase_to_project">
             <b>Legg til ny fase</b>
             <form method="post" id="phase_register_form">
@@ -214,9 +241,11 @@
                 <br><input type="text" name="phaseName" value="" placeholder="Fasenavn" maxlength=45 required
                            id="phaseName"/>
                 <br><label for="startTime">Start tid</label>
-                <br><input id="startTime" type="date" name="startTime" value="" placeholder="dd.mm.åååå" maxlength=90 required />
+                <br><input id="startTime" type="date" name="startTime" value="" placeholder="dd.mm.åååå" maxlength=90
+                           required/>
                 <br><label for="finishTime">Slutt tid</label>
-                <br><input id="finishTime" type="date" name="finishTime" value="" placeholder="dd.mm.åååå" maxlength=90 required />
+                <br><input id="finishTime" type="date" name="finishTime" value="" placeholder="dd.mm.åååå" maxlength=90
+                           required/>
                 <table>
                     <tr>
                         <td colspan="2">
@@ -253,78 +282,21 @@
             </form>
         </div>
 
-        {#FJERN MEDLEMMER#}
-        <div class="container container_menu_form text" id="remove_users_from_project">
-            <form method="post" id="remove_group_members_form">
-                <br><label>Fjerne brukere fra prosjektet: </label>
-                <br>
-                <div class="wrapper">
-                    <select name="projectMembers[]" id="" class="form-control">
-                        {% for empl in members %}
-                            <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }}
-                                (ID: {{ empl.getUserId }})
-                            </option>
-                        {% endfor %}
-                    </select></div>
-                <input type="hidden" value="{{ getMac("Project remove members") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="remove_members" id="reg_btn" value="Fjern medlemmer">
-            </form>
-        <div class="container container_menu_form text" id="groups_list">
-            <h4>Grupper tilhørende prosjektet:</h4>
-            <table>
-                <tr>
-                    <th>
-                        Gruppenavn
-                    </th>
-                    <th>
-                        Gruppetype
-                    </th>
-                    <th>
-                        Gruppeleder
-                    </th>
-                    <th>
-                        Antall medlemmer
-                    </th>
-                </tr>
-                {% for grp in groups %}
-                <tr>
-                <td>
-                    <a href="group_edit.php?groupid={{ grp.getGroupID() }}">{{ grp.getGroupName }}</a>
-                </td>
-                {% if grp.isAdmin %}
-                <td>
-                    Admin gruppe
-                </td>
-                {% else %}
-                <td>
-                    Vanlig gruppe
-                </td>
-                {% endif %}
-                    <td>
-                        {{ grp.firstName }} {{ grp.lastName }} ({{ grp.username }})
-                    </td>
-                    <td style="text-align: center">
-                        {{ grp.nrOfUsers }}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-
-        </div>
-
-        {#SLETT PROSJEKT#}
-        <div class="openContainerNoBorder text" id="delete_project">
-            {% if user.isAdmin() %}
-                <form method="post" onsubmit="return confirm('Er du sikker på å slette prosjektet?\n(Kan ikke angres i etterkant!)');">
-                    <input type="hidden" value="{{ getMac("Delete project") }}" name="XSRFPreventionToken">
-                    <input type="submit" name="project_delete" value="Slett prosjekt" class="delete"/>
-                </form>
-            {% endif %}
-        </div>
-
     </section>
 
-    {#FEILMELDINGER FRA DATABASE#}
+    {# SLETT PROSJEKT #}
+    <div class="openContainerNoBorder text" id="delete_project">
+        {% if user.isAdmin() %}
+            <form method="post"
+                  onsubmit="return confirm('Er du sikker på å slette prosjektet?\n(Kan ikke angres i etterkant!)');">
+                <input type="hidden" value="{{ getMac("Delete project") }}" name="XSRFPreventionToken">
+                <input type="submit" name="project_delete" value="Slett prosjekt" class="delete"/>
+            </form>
+        {% endif %}
+    </div>
+
+
+    {# FEILMELDINGER FRA DATABASE #}
     <div class="container container_big_long text">
         <h5>Tilbakemeldinger fra database</h5>
         {% if session.getFlashBag.has('header') %}
