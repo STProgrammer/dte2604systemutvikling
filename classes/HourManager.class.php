@@ -63,6 +63,27 @@ class HourManager
     }
     //END GET ALL HOURS FOR LOGGED IN USER
 
+    // GET ALL HOURS
+    public function getAllHours() : array {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Hours");
+            $stmt->execute();
+            if( $hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $hours;
+            }
+            else {
+                $this->notifyUser("Comments not found", "Kunne ikke hente kommentarer");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllHours()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            //return new Project();
+            return array();
+        }
+    }
+
     // REGISTER TIME FOR USER
     public function registerTimeForUser($userID)
     {
