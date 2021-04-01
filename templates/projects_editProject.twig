@@ -72,38 +72,35 @@
             </table>
         </div>
 
-        <div class="container container_menu_lang text" id="phase_tasks">
-            <br><label>Oppgaver i dette prosjektet: </label>
+        <div class="container container_menu_lang text" id="project_tasks">
+            <br><label for="project_tasks">Oppgaver i dette prosjektet: </label>
             <table class="table">
                 <tr>
                     <th>Navn</th>
-                    <th>Start dato</th>
-                    <th>Slutt date</th>
                     <th>Tidsbruk</th>
                     <th>Estimert tid</th>
-                    <th>Hoved ansvarlig</th>
+                    <th>Gruppe</th>
                     <th>Status</th>
+                    <th>Se detaljer / endre</th>
                 </tr>
                 {% for task in tasks %}
                     <tr>
                         <td>{{ task.getTaskName() }}</td>
-                        <td>{{ task.getStartTime() }}</td>
-                        <td>{{ task.getFinishTime() }}</td>
                         <td>{{ task.getTimeSpent() }}</td>
                         <td>{{ task.getEstimatedTime() }}</td>
-                        <td>{{ task.mainResponsibleName }}</td>
+                        <td>{{ task.groupName }}</td>
                         {% if task.getStatus() == 0 %}
                             <td>Ventende</td>
                         {%  elseif task.getStatus() == 1 %}
                             <td>På arbeid</td>
                         {%  elseif task.getStatus() == 2 %}
                             <td>Pause</td>
-                        {%  elseif Task.getStatus() == 3 %}
+                        {%  elseif task.getStatus() == 3 %}
                             <td>Ferdig</td>
                         {% endif %}
                         <td>
                             <button class="buttons miniButtons" id="contribution"
-                                    onclick="window.location.href='phases_editPhase.php?phaseid={{ phase.getPhaseID() }}';">
+                                    onclick="window.location.href='tasks_editTask.php?taskid={{ task.getPhaseID() }}';">
                                 Se detaljer
                             </button>
                         </td>
@@ -118,19 +115,25 @@
                 <br><label>Oppgavenavn: </label>
                 <br><input type="text" name="taskName" value="" placeholder="Oppgavenavn" maxlength=45 required
                            id="taskName"/>
-                <br><label>Estimert tid: </label>
-                <br><input type="number" name="estimatedTime" value="" placeholder="Estimert tid" maxlength=45 required
-                           id="estimatedTime"/>
-                <br><label>Denn oppgaven er avhengig av (legg til oppgaver):</label>
-                <br><select name="dependentTasks[]" id="" class="form-control" multiple onfocus='this.size=10;'
+                <br><label for="dependent_tasks">Denn oppgaven er avhengig av (legg til oppgaver):</label>
+                <br><select name="dependentTasks[]" id="dependent_tasks" class="form-control" multiple onfocus='this.size=10;'
                             onblur='this.size=10;' onchange='this.size=10; this.blur();'>
                     {% for task in tasks %}
                         <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
                         </option>
                     {% endfor %}
                 </select>
-                <input type="hidden" value="{{ getMac("Add task") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="task_add" id="reg_btn" value="Ny oppgave">
+                <br><label for="groups">Denn oppgaven tilhører gruppe:</label>
+                <br><select name="groupID" id="groups" class="form-control" onfocus='this.size=10;'
+                            onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                    <option disabled selected value> -- velg en gruppe -- </option>
+                    {% for group in groups %}
+                        <option value="{{ group.getGroupID() }}">{{ group.getGroupName() }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" value="{{ getMac("New task") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="new_task" id="reg_btn" value="Ny oppgave">
             </form>
         </div>
 

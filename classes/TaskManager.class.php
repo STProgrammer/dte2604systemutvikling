@@ -22,33 +22,43 @@ class TaskManager {
     }
 
     // GET ALL TASKS
-    public function getAllTasks($hasSubtask = null, $projectName = null, $phaseID = null,  $status = null,
+    public function getAllTasks($hasSubtask = null, $projectName = null, $phaseID = null, $groupID = null, $status = null,
                                 $mainResponsible = null, $parentTask = null, $orderBy = null) : array {
         $tasks = array();
-        $query = "SELECT * FROM Tasks WHERE 1";
+        $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
+groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
+FROM Tasks
+LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
+LEFT JOIN Groups as groupID on groupID.groupID = Tasks.groupID
+LEFT JOIN Phases as phaseID on phaseID.phaseID = Tasks.phaseID
+LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1';
         $params = array();
         if (!is_null($hasSubtask)) {
-            $query .= " AND hasSubtask = :hasSubTask";
+            $query .= " AND Tasks.hasSubtask = :hasSubtask";
             $params[':hasSubtask'] = $hasSubtask;
         }
         if (!is_null($projectName)) {
-            $query .= " AND projectName = :projectName";
+            $query .= " AND Tasks.projectName = :projectName";
             $params[':projectName'] = $projectName;
         }
         if (!is_null($phaseID)) {
-            $query .= " AND phaseID = :phaseID";
+            $query .= " AND Tasks.phaseID = :phaseID";
             $params[':phaseID'] = $phaseID;
         }
+        if (!is_null($groupID)) {
+            $query .= " AND Tasks.groupID = :groupID";
+            $params[':groupID'] = $groupID;
+        }
         if (!is_null($status)) {
-            $query .= " AND status = :status";
+            $query .= " AND Tasks.status = :status";
             $params[':status'] = $status;
         }
         if (!is_null($mainResponsible)) {
-            $query .= " AND mainResponsible = :mainResponsible";
+            $query .= " AND Tasks.mainResponsible = :mainResponsible";
             $params[':mainResponsible'] = $mainResponsible;
         }
         if (!is_null($parentTask)) {
-            $query .= " AND parentTask = :parentTask";
+            $query .= " AND Tasks.parentTask = :parentTask";
             $params[':parentTask'] = $parentTask;
         }
         if (!is_null($orderBy)) {
@@ -72,58 +82,22 @@ class TaskManager {
         }
     }
 
-    // GET ALL MAIN TASKS
-    public function getAllMainTasks() : array {
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM Tasks ORDER BY taskName;");
-            $stmt->execute();
-            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
-                return $tasks;
-            }
-            else {
-                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
-                return array();
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
-            return array();
-        }
-    }
 
-
-    // GET ALL TASKS
-    public function getAllSubTasks() : array {
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM Tasks ORDER BY taskName;");
-            $stmt->execute();
-            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
-                return $tasks;
-            }
-            else {
-                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
-                return array();
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
-            return array();
-        }
-    }
-
-
-
-    public function addTask($projectName): bool //returns boolean value
+    public function addTask($projectName, $hasSubtask = 0): bool //returns boolean value
     {
         $taskName = $this->request->request->get('taskName');
         $estimatedTime = $this->request->request->getInt('estimatedTime', 0);
+        $phaseId = $this->request->request->get('phaseID', null);
+        $groupId = $this->request->request->get('groupID', null);
         try {
-            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, estimatedTime, projectName, phaseID)
-              VALUES (:taskName, :estimatedTime, :projectName, :phaseId);");
+            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, estimatedTime, projectName, phaseID, groupID, hasSubtask)
+              VALUES (:taskName, :estimatedTime, :projectName, :phaseID, :groupID, :hasSubtask);");
             $stmt->bindParam(':taskName', $taskName, PDO::PARAM_STR, 100);
             $stmt->bindParam(':estimatedTime', $estimatedTime, PDO::PARAM_INT, 100);
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
-            $stmt->bindParam(':phaseId', $phaseId, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':hasSubtask', $hasSubtask, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
                 $taskId = $this->db->lastInsertId();
                 if ($this->addDependencies($taskId)) {

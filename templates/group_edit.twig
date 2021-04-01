@@ -32,6 +32,42 @@
                 </ul>
 
             </div>
+
+            <div class="container container_menu_lang text" id="phase_tasks">
+                <br><label>Oppgaver som tilhører gruppa: </label>
+                <table class="table">
+                    <tr>
+                        <th>Navn</th>
+                        <th>Tidsbruk</th>
+                        <th>Estimert tid</th>
+                        <th>Status</th>
+                        <th>Se detaljer / endre</th>
+                    </tr>
+                    {% for task in tasks %}
+                        <tr>
+                            <td>{{ task.getTaskName() }}</td>
+                            <td>{{ task.getTimeSpent() }}</td>
+                            <td>{{ task.getEstimatedTime() }}</td>
+                            {% if task.getStatus() == 0 %}
+                                <td>Ventende</td>
+                            {%  elseif task.getStatus() == 1 %}
+                                <td>På arbeid</td>
+                            {%  elseif task.getStatus() == 2 %}
+                                <td>Pause</td>
+                            {%  elseif task.getStatus() == 3 %}
+                                <td>Ferdig</td>
+                            {% endif %}
+                            <td>
+                                <button class="buttons miniButtons" id="contribution"
+                                        onclick="window.location.href='tasks_editTask.php?taskid={{ task.getPhaseID() }}';">
+                                    Se detaljer
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
             <div id="text">
                 <form method="post" id="group_edit_form">
                     <br><label>Gruppenavn: </label>

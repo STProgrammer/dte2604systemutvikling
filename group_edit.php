@@ -6,6 +6,7 @@ require_once('includes.php');
 $groupManager = new GroupManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 $projectManager = new ProjectManager($db, $request, $session);
+$taskManager = new TaskManager($db, $request, $session);
 
 //$employees = $userManager->getAllEmployees("firstName");
 $group = $groupManager->getGroup($request->query->getInt('groupid'));
@@ -17,6 +18,7 @@ if (!is_null($user) && !is_null($group) && ($user->isAdmin() or $user->getUserID
     $members = $groupManager->getGroupMembers($groupID);
     $candidates = $groupManager->getLeaderCandidates($groupID);
     $projects = $projectManager->getAllProjects();
+    $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $group->getProjectName(), groupID: $groupID);
     if ($request->request->has('group_edit') && XsrfProtection::verifyMac("Group edit")) {
         if (!$user->isAdmin()) {
             $request->request->set('isAdmin', 0);
@@ -71,7 +73,7 @@ if (!is_null($user) && !is_null($group) && ($user->isAdmin() or $user->getUserID
             echo $twig->render('group_edit.twig', array('session' => $session,
                 'request' => $request, 'user' => $user, 'employees' => $employees,
                 'group' => $group, 'members' => $members, 'candidates' => $candidates,
-            'projects' => $projects));
+            'projects' => $projects, 'tasks' => $tasks));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }
