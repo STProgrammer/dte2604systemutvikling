@@ -1,7 +1,64 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="employee_dashboard" id="employee_dashboard">
-        <div class>
+
+        {#KNAPP - REGISTRER INN#}
+        <div class="container container_registrer_inn">
+            <button id="button" class="button" onclick="">
+                <img src="images/icon_time.png" width="40pt"> Registrer inn
+            </button>
+        </div>
+
+        {#KNAPP - REGISTRER PAUSE#}
+        <div class="container container_pause">
+            <button id="button" class="button" onclick="">
+                <img src="images/icon_time.png" width="40pt"> Pause
+            </button>
+        </div>
+
+        {#KNAPP - REGISTRER UT#}
+        <div class="container container_registrer_ut">
+            <button id="button" class="button" onclick="">
+                <img src="images/icon_time.png" width="40pt"> Registrer ut
+            </button>
+        </div>
+    </section>
+    <section>
+        {#Mine siste fem timeregistreringer#}
+        <div class="openContainerNoBorder text" id="timeTabell">
+            <h5>Mine timeregistreringer fra gjeldende måned</h5>
+            <table class="table" id="table">
+                <tr>
+                    <th>Task Navn</th>
+                    <th>Hoved Task</th>
+                    <th>Prosjektnavn</th>
+                    <th>Starttid</th>
+                    <th>Slutttid</th>
+                    <th>Lokasjon</th>
+                    <th>Kommentar</th>
+                </tr>
+                {% for hours in Hour %}
+                    <tr>
+                        {% for task in tasks %}
+                            {% if task.getTaskID() == hours.taskID %}
+                                <td> {{ task.getTaskName }}</td>
+                                <td> {{ task.getParentTask }}</td>
+                                <td> {{ task.getProjectName }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td> {{ hours.startTime }}</td>
+                        <td> {{ hours.endTime }}</td>
+                        <td> {{ hours.getLocation }}</td>
+                        <td> {{ hours.Comment }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+    <section>
+        {#Feilmeldinger#}
+        <div class="container container_big_long text">
+            <h5>Tilbakemeldinger fra database</h5>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
                     <h3>{{ header }}</h3>
@@ -11,44 +68,5 @@
                 {% endfor %}
             {% endif %}
         </div>
-        <div class="container container_registrer_inn">
-            <button id="button" class="button" onclick="">
-                <img src="images/icon_time.png" width="40pt"> Registrer inn
-            </button>
-        </div>
-        <div class="container container_pause">
-            <button id="button" class="button" onclick="">
-                <img src="images/icon_time.png" width="40pt"> Pause
-            </button>
-        </div>
-        <div class="container container_registrer_ut">
-            <button id="button" class="button" onclick="">
-                <img src="images/icon_time.png" width="40pt"> Registrer ut
-            </button>
-        </div>
     </section>
-    <section>
-        <div class="openContainerNoBorder text" id="timeTabell">
-            <h4>Mine siste fem timeregistreringer</h4>
-            <table class="table" id="table">
-                <tr>
-                    <th>ID</th>
-                    <th>Task</th>
-                    <th>Starttid</th>
-                    <th>Slutttid</th>
-                    <th>Kommentar</th>
-                </tr>
-                {% for hours in Hour %}
-                    <tr>
-                        <td> {{ hours.hourID }}</td>
-                        <td> {{ hours.taskID }}</td>
-                        <td> {{ hours.startTime }}</td>
-                        <td> {{ hours.endTime }}</td>
-                        <td> {{ hours.Comment }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </section>
-
 {% endblock %}

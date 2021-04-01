@@ -1,0 +1,52 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    {# TICKET 5.3.4 Det skal være en kommentar boks knyttet opp mot hver timeregistrering. Kommentarer er forbeholdt den som registrerer timen, men kan ses av flere. #}
+
+    <section class="edit_hour" id="edit_hour">
+        {# TILBAKE KNAPP #}
+        <div>
+            <button class="button buttons" id="prosjektKnapper" onclick="goBack()"><img src="" alt=""> Gå tilbake
+            </button>
+        </div>
+
+        {# Endre tid #}
+        <div class="container container_menu_form_hour text" id="add_user_to_project">
+            <form method="post" id="new_task_form">
+                <b>Endre Timeegistrering: </b><br>
+
+                <br><label for="hourID">Timeregistrerings Id: </label>
+                <br><input type="text" name="hourID" value="{{ hourID }}" maxlength=45 required id="hourID"/>
+                <br><label for="taskID">TaskId: </label>
+                <br><input type="text" name="taskID" value="{{ Hour.getTaskID }}" maxlength=45 required id="taskID"/>
+                <br><label for="startTime">Starttid: </label>
+                <br><input type="text" name="startTime" value="{{ Hour.getStartTime }}" maxlength=45 required id="startTime"/>
+                <br><label for="endTime">Sluttid: </label>
+                <br><input type="text" name="endTime" value="{{ Hour.getEndTime }}" maxlength=45 required id="endTime"/>
+                <br><label for="phaseId">Fase id: </label>
+                <br><input type="text" name="phaseId" value="{{ Hour.getPhaseID }}" maxlength=45 required id="phaseId"/>
+                <br>En melding vil bli sent til din leder, før endring blir godkjent i systemet.<br> Skriv i kommentar hvorfor du endrer timen.
+
+                <input type="hidden" value="{{ getMac("Edit Hour") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="edit_hour" id="reg_btn" value="Edit Hour">
+            </form>
+        </div>
+
+        {# Endre kommentar #}
+        <div class="container container_menu_form_hour text" id="add_user_to_project">
+            <form method="post" id="new_task_form">
+                <b>Endre Timeegistrering: </b><br>
+
+                <br><label for="hourID">Timeregistrerings Id: </label>
+                <br><input type="text" name="hourID" value="{{ hourID }}" maxlength=45 required id="hourID"/>
+                <br><label for="comment">Kommentar: </label>
+                <br><input type="text" name="comment" value="{{ Hour.getComment }}" required id="comment"/>
+
+                <input type="hidden" value="{{ getMac("Edit comment") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="edit_comment" id="reg_btn" value="Edit comment">
+            </form>
+        </div>
+
+    </section>
+{% endblock %}
+

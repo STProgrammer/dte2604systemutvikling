@@ -46,10 +46,16 @@ class HourManager
     // GET ALL HOURS FOR LOGGED IN USER
     public function getAllHoursForUser($userID): array
     {
+        //TODO må lage en måneds periode for å skrive kun timer fra siste 30 dager
+        //"SELECT * FROM Hours Where whoWorked= :userID
+        // and MONTH(endTime) = MONTH(NOW()) and YEAR(endTime)=YEAR(now()) ORDER BY endTime DESC");
+
         $allHoursForUser = null;
         try {
-            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID ORDER BY endTime DESC");
+            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID 
+                      and startTime BETWEEN '01.01.2020' and NOW() ORDER BY endTime DESC LIMIT 30");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
             if ($allHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $allHoursForUser;
             } else {
@@ -96,9 +102,28 @@ class HourManager
             $this->NotifyUser("En feil oppstod, på registerTimeForUser()", $e->getMessage());
             return array();
         }
-    }
+    }//END REGISTER TIME
 
-//END REGISTER TIME
+    // GET HOUR ---------------------------------------------------------------------------------
+    public function getHour($hourID)
+    {
+        try {
+            $stmt = $this->dbase->prepare("SELECT * FROM Hours Where hourID= :hourID");
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            $stmt->execute();
+            if( $hour = $stmt->fetchObject("Hour")) {
+                return $hour;
+            }
+            else {
+                $this->notifyUser("Comments not found", "Kunne ikke hente kommentarer");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getHour()", $e->getMessage());
+            return array();
+        }
+    }
 
 //CHANGE TIME USER
 public
