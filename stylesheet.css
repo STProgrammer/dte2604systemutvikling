@@ -88,6 +88,9 @@ section.customer_dashboard { margin-top: 6em; }
 /**-------------  TIMEREGISTRERINGER  ------------*/
 section.timeregistreringer { margin-top: 6em; }
 
+section.edit_hour { margin-top: 6em; }
+
+
 /**-------------  BRUKERPROFILER  ---------------*/
 section.brukerprofiler { margin-top: 6em; }
 
@@ -95,6 +98,8 @@ section.brukerprofiler { margin-top: 6em; }
 section.prosjekter { margin-top: 6em; }
 
 section.edit_project {margin-top: 6em;}
+
+
 
 /**-------------  GRUPPER  -------------------*/
 section.grupper { margin-top: 6em; }
@@ -178,7 +183,7 @@ div.container_big { width: 50em; height: 40em;
 div.container_big_long { margin-top: 3em; margin-bottom: 3em; width: 60em; height: 20em;
     border: none; box-shadow: none; background: #dbd9d9;
 }
-div.container_extra_big { width: 65em; height: 60em;
+div.container_extra_big { width: 65em; height: 30em;
 }
 div.container_center { display:block;
     height: 5em; box-shadow: none; border: none;
@@ -187,12 +192,21 @@ div.container_center { display:block;
 div.openContainerNoBorder {
     margin-left: 1em;
 }
-div.container_menu { width: 30em; height: 20em; background-color: #eeeeee; border: none;
+div.container_menu { width: 30em; height: 30em; background-color: #eeeeee; border: none;
 }
 div.container_menu_form { width: auto; height: auto; background-color: #eeeeee; border: none;
 }
-div.container_menu_lang { width: 50em; height: 20em;  border: none;
+div.container_menu_form_hour { width: 50em; height: 50em; background-color: #eeeeee; border: none;
+    overflow-y: scroll; scroll-behavior: smooth;
+}
+div.container_menu_form_project { width: 30em; height: 40em; background-color: #eeeeee; border: none;
+    overflow-y: scroll; scroll-behavior: smooth;
+}
+div.container_menu_lang { width: 60em; height: 30em;  border: none;
     overflow-y: scroll; scroll-behavior: smooth; box-shadow: none; background: none;
+}
+div.container_menu_lang_WithBorder { width: 60em; height: 40em;  border: none;
+    overflow-y: scroll; scroll-behavior: smooth; background: #eeeeee;
 }
 div.noBorder_NoBackground_NoShadow {
     border: none; background: none; box-shadow: none;

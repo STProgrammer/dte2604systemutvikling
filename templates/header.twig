@@ -2,35 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>$Title$ </title>
 </head>
 <body>
-<script>
-    function myFunction() {
-        var x = document.getElementById("myHeader");
-        if (x.className === "header") {
-            x.className += " responsive";
-        } else {
-            x.className = "header";
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myHeader");
+            if (x.className === "header") {
+                x.className += " responsive";
+            } else {
+                x.className = "header";
+            }
         }
-    }
-</script>
-<div class="header" id="myHeader">
-    <img src="images/morild_logo_150px.png" data-href="index.php" width="230pt" alt="Logo"/>
-    <!--TODO if bruker prosjektleder så link til prosjektleder_dashbord-->
+    </script>
+    <div class="header" id="myHeader">
+        <img src="images/morild_logo_150px.png" data-href="index.php" width="230pt" alt="Logo"/>
 
-    <a href="index.php">Dashbord</a>
-    <a href="timeregistration.php">Timeregistreringer </a>
-    <a href="userprofiles.php">Brukerprofiler</a>
-    <a href="projects.php">Prosjekter</a>
-    <a href="groups.php">Grupper</a>
-    <a href="reports.php">Rapporter</a>
-    <a href="profile_edit.php">Min profil</a>
-    <a href="logout.php">Logg ut</a>
+        <a href="index.php">Velkommen<b>{{user.getUsername()}}</b></a>
 
-    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-        <i class="fa fa-bars"></i>
-    </a>
-</div>
+        {% if user.isAdmin or user.isProjectLeader %}
+            <a href="timeregistration.php">Timeregistreringer </a>
+            <a href="userprofiles.php">Brukerprofiler</a>
+            <a href="projects.php">Prosjekter</a>
+            <a href="groups.php">Grupper</a>
+            <a href="reports.php">Rapporter</a>
+            <a href="profile_edit.php">Min profil</a>
+        {% endif %}
+
+        {% if user.isGroupLeader() %}
+            <a href="timeregistration.php">Timeregistreringer </a>
+            <a href="userprofiles.php">Mine brukere</a>
+            <a href="projects.php">Mine Prosjekter</a>
+            <a href="groups.php">Mine Grupper</a>
+            <a href="reports.php">Rapporter</a>
+            <a href="profile_edit.php">Min profil</a>
+        {% endif %}
+
+        {% if user.isEmployee %}
+            <a href="timeregistration.php">Mine timeregistreringer </a>
+            <a href="projects.php">Mine Prosjekter</a>
+            <a href="groups.php">Mine Grupper</a>
+            <a href="reports.php">Lønnslipp</a>
+            <a href="profile_edit.php">Min profil</a>
+        {% endif %}
+
+
+        {% if user.isCustomer %}
+            <a href="projects.php">Prosjektets fremgang</a>
+            <a href="reports.php">Prosjektets rapporter</a>
+            <a href="profile_edit.php">Min profil</a>
+        {% endif %}
+
+        <a href="logout.php">Logg ut</a>
+
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
 </body>
 </html>

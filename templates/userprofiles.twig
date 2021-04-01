@@ -62,6 +62,8 @@
                                 <td>Kunde</td>
                             {% elseif usr.isTemporary %}
                                 <td>Innleid</td>
+                            {% elseif usr.isEmployee %}
+                                <td>Utvikler</td>
                             {% else %}
                                 <td>Ingen stilling</td>
                             {% endif %}

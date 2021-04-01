@@ -27,6 +27,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
     $groups = $projectManager->getGroups($projectName);
     $users = $userManager->getAllUsers("firstName"); //alle brukere
     $members = $projectManager->getProjectMembers($project->getProjectName());
+
     if ($request->request->has('project_edit') && XsrfProtection::verifyMac("Project edit")) {
         if ($projectManager->editProject($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));

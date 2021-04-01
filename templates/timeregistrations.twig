@@ -3,23 +3,37 @@
     <section id="timeregistreringer" class="timeregistreringer">
     </section>
     <section>
+        {# Mine timeregistreringer fra gjeldende måned #}
         <div class="openContainerNoBorder text" id="timeTabell">
-            <h4>Alle mine timeregistreringer</h4>
+            <h5>Mine timeregistreringer fra gjeldende måned</h5>
             <table class="table" id="table">
                 <tr>
-                    <th>ID</th>
-                    <th>Task</th>
+                    <th>Task Navn</th>
+                    <th>Hoved Task</th>
+                    <th>Prosjektnavn</th>
                     <th>Starttid</th>
                     <th>Slutttid</th>
+                    <th>Lokasjon</th>
                     <th>Kommentar</th>
+                    <th>Endre</th>
                 </tr>
                 {% for hours in Hour %}
                     <tr>
-                        <td> {{ hours.hourID }}</td>
-                        <td> {{ hours.taskID }}</td>
+                        {% for task in tasks %}
+                            {% if task.getTaskID() == hours.taskID %}
+                                <td> {{ task.getTaskName }}</td>
+                                <td> {{ task.getParentTask }}</td>
+                                <td> {{ task.getProjectName }}</td>
+                            {% endif %}
+                        {% endfor %}
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
+                        <td> {{ hours.getLocation }}</td>
                         <td> {{ hours.Comment }}</td>
+                        <td><button class="buttons miniButtons" id="miniButtons"
+                                    onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
+                                <img src="" alt=""> Rediger
+                            </button></td>
                     </tr>
                 {% endfor %}
             </table>

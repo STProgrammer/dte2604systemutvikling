@@ -15,16 +15,16 @@ $tasks = $taskManager->getAllTasks();
 
 
 if ($user) {
+    $hourID = $request->query->get('hourID');
     $userID = $user->getUserId($user);
-    $hour = $hourManager->getLastHoursForUser($userID);
+    $hours = $hourManager->getAllHoursForUser($userID);
+    $hour = $hourManager->getHour($hourID);
 
-    echo $twig->render('employee_dashboard.twig',
-        array('Hour' => $hour, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks));
+    echo $twig->render('timeregistrationsEdit.twig',
+        array('Hour' => $hour, 'Hours' => $hours, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session,
+            'user' => $user, 'tasks' => $tasks, 'hourID' => $hourID));
 
 } else {
     header("location: login.php");
     exit();
 }
-
-
-
