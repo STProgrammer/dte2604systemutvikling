@@ -21,8 +21,59 @@ class TaskManager {
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
-    // GET ALL COMMENTS
-    public function getAllTasks() : array {
+    // GET ALL TASKS
+    public function getAllTasks($hasSubtask = null, $projectName = null, $phaseID = null,  $status = null,
+                                $mainResponsible = null, $parentTask = null, $orderBy = null) : array {
+        $tasks = array();
+        $query = "SELECT * FROM Tasks WHERE 1";
+        $params = array();
+        if (!is_null($hasSubtask)) {
+            $query .= " AND hasSubtask = :hasSubTask";
+            $params[':hasSubtask'] = $hasSubtask;
+        }
+        if (!is_null($projectName)) {
+            $query .= " AND projectName = :projectName";
+            $params[':projectName'] = $projectName;
+        }
+        if (!is_null($phaseID)) {
+            $query .= " AND phaseID = :phaseID";
+            $params[':phaseID'] = $phaseID;
+        }
+        if (!is_null($status)) {
+            $query .= " AND status = :status";
+            $params[':status'] = $status;
+        }
+        if (!is_null($mainResponsible)) {
+            $query .= " AND mainResponsible = :mainResponsible";
+            $params[':mainResponsible'] = $mainResponsible;
+        }
+        if (!is_null($parentTask)) {
+            $query .= " AND parentTask = :parentTask";
+            $params[':parentTask'] = $parentTask;
+        }
+        if (!is_null($orderBy)) {
+            $query .= " ORDER BY = :orderBy;";
+            $params[':orderBy'] = $orderBy;
+        }
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute($params);
+            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $tasks;
+            }
+            else {
+                $this->notifyUser("Oppgaver ble ikke funnet", "Kunne ikke hente oppgaver");
+                return $tasks;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return $tasks;
+        }
+    }
+
+    // GET ALL MAIN TASKS
+    public function getAllMainTasks() : array {
         try {
             $stmt = $this->db->prepare("SELECT * FROM Tasks ORDER BY taskName;");
             $stmt->execute();
@@ -40,7 +91,29 @@ class TaskManager {
         }
     }
 
-    public function addTask($phaseId, $projectName): bool //returns boolean value
+
+    // GET ALL TASKS
+    public function getAllSubTasks() : array {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Tasks ORDER BY taskName;");
+            $stmt->execute();
+            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $tasks;
+            }
+            else {
+                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return array();
+        }
+    }
+
+
+
+    public function addTask($projectName): bool //returns boolean value
     {
         $taskName = $this->request->request->get('taskName');
         $estimatedTime = $this->request->request->getInt('estimatedTime', 0);
@@ -93,6 +166,28 @@ class TaskManager {
             return false;
         }
     }
+
+
+    // GET ALL TASKS
+    public function getDependentTasks() : array {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Tasks ORDER BY taskName;");
+            $stmt->execute();
+            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $tasks;
+            }
+            else {
+                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return array();
+        }
+    }
+
+
 
 
 
