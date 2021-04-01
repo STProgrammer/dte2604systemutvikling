@@ -119,7 +119,7 @@
                         {% endif %}
                         <td>
                             <button class="buttons miniButtons" id="contribution"
-                                    onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">
+                                    onclick="window.location.href='phases_editPhase.php?phaseid={{ phase.getPhaseID() }}';">
                                 Se detaljer
                             </button>
                         </td>
@@ -262,14 +262,6 @@
                         </td>
                         <td>
                             <label for="paused">På pause </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="radio" name="status" id="ended" value="3" required {% if phase.getStatus() == 2 %} checked {% endif %}>
-                        </td>
-                        <td>
-                            <label for="ended">Avsluttet </label>
                         </td>
                     </tr>
                 </table>

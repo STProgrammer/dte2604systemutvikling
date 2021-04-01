@@ -14,7 +14,7 @@ class Task {
     private $projectName;
     private $timeSpent;
     private $estimatedTime;
-    private bool $hasSubtasks;
+    private bool $hasSubtask;
     private $mainResponsible;
 
     public function __construct() {
@@ -215,17 +215,17 @@ class Task {
     /**
      * @return bool
      */
-    public function isHasSubtasks(): bool
+    public function hasSubtask(): bool
     {
-        return $this->hasSubtasks;
+        return $this->hasSubtask;
     }
 
     /**
-     * @param bool $hasSubtasks
+     * @param bool $hasSubtask
      */
-    public function setHasSubtasks(bool $hasSubtasks): void
+    public function setHasSubtask(bool $hasSubtask): void
     {
-        $this->hasSubtasks = $hasSubtasks;
+        $this->hasSubtask = $hasSubtask;
     }
 
     /**

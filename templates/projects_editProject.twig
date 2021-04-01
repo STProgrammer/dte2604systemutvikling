@@ -7,8 +7,7 @@
         <div>
             {% if User.isAdmin() == 1 %}
                 <button class="button buttons" id="prosjektKnapper"
-                        onclick="goBack()">
-                    <img src="" alt=""> Gå tilbake
+                        onclick="goBack()"> Gå tilbake
                 </button>
             {% endif %}
         </div>
@@ -100,7 +99,7 @@
                         {% endif %}
                         <td>
                             <button class="buttons miniButtons" id="contribution"
-                                    onclick="window.location.href='tasks_editTask.php?taskid={{ task.getPhaseID() }}';">
+                                    onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">
                                 Se detaljer
                             </button>
                         </td>
@@ -123,9 +122,9 @@
                         </option>
                     {% endfor %}
                 </select>
-                <br><label for="groups">Denn oppgaven tilhører gruppe:</label>
+                <br><label for="groups">Den oppgaven tilhører gruppe:</label>
                 <br><select name="groupID" id="groups" class="form-control" onfocus='this.size=10;'
-                            onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                            onblur='this.size=10;' onchange='this.size=10; this.blur();' required>
                     <option disabled selected value> -- velg en gruppe -- </option>
                     {% for group in groups %}
                         <option value="{{ group.getGroupID() }}">{{ group.getGroupName() }}
@@ -358,7 +357,6 @@
                 </tr>
                 {% endfor %}
             </table>
-
         </div>
 
         <div class="openContainerNoBorder text" id="delete_project">

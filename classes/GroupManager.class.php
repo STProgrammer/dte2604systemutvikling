@@ -262,7 +262,7 @@ WHERE NOT EXISTS
     {
         $members = array();
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID);");
+            $stmt = $this->db->prepare("SELECT Users.*, CONCAT(Users.firstName, ' ', Users.lastName,  ' ( ', Users.username,  ') ') as fullName FROM Users WHERE EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID);");
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {

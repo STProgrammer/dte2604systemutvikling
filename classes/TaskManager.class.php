@@ -62,8 +62,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
             $params[':parentTask'] = $parentTask;
         }
         if (!is_null($orderBy)) {
-            $query .= " ORDER BY = :orderBy;";
-            $params[':orderBy'] = $orderBy;
+            $query .= " ORDER BY ".$orderBy;
         }
         try {
             $stmt = $this->db->prepare($query);
@@ -83,21 +82,79 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
     }
 
 
-    public function addTask($projectName, $hasSubtask = 0): bool //returns boolean value
+    // GET ALL TASKS
+    public function getTask($taskId)
+    {
+        $task = null;
+        $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
+groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
+FROM Tasks
+LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
+LEFT JOIN Groups as groupID on groupID.groupID = Tasks.groupID
+LEFT JOIN Phases as phaseID on phaseID.phaseID = Tasks.phaseID
+LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Tasks.taskID = :taskID';
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
+            $stmt->execute();
+            if( $task = $stmt->fetchObject("Task")) {
+                return $task;
+            }
+            else {
+                $this->notifyUser("Oppgaver ble ikke funnet", "Kunne ikke hente oppgaver");
+                return $task;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getTask()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return $task;
+        }
+    }
+
+
+    public function addMainTask($projectName): bool //returns boolean value
     {
         $taskName = $this->request->request->get('taskName');
-        $estimatedTime = $this->request->request->getInt('estimatedTime', 0);
         $phaseId = $this->request->request->get('phaseID', null);
         $groupId = $this->request->request->get('groupID', null);
         try {
-            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, estimatedTime, projectName, phaseID, groupID, hasSubtask)
-              VALUES (:taskName, :estimatedTime, :projectName, :phaseID, :groupID, :hasSubtask);");
+            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, projectName, phaseID, groupID, hasSubtask)
+              VALUES (:taskName, :projectName, :phaseID, :groupID, 1);");
             $stmt->bindParam(':taskName', $taskName, PDO::PARAM_STR, 100);
-            $stmt->bindParam(':estimatedTime', $estimatedTime, PDO::PARAM_INT, 100);
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
             $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
-            $stmt->bindParam(':hasSubtask', $hasSubtask, PDO::PARAM_INT, 100);
+            if ($stmt->execute()) {
+                $taskId = $this->db->lastInsertId();
+                if ($this->addDependencies($taskId)) {
+                    $this->NotifyUser("En oppgave ble lagt til");
+                    return true;
+                } else {
+                    $this->NotifyUser("En oppgave ble lagt til");
+                    return true;
+                }
+            } else {
+                $this->NotifyUser("Oppgave ble ikke oprettet");
+                return false;
+            }
+        } catch (PDOException $e) {
+            $this->NotifyUser("Oppgave ble ikke opprettet", $e->getMessage());
+            return false;
+        }
+    }
+
+    public function editMainTask($projectName): bool //returns boolean value
+    {
+        $taskName = $this->request->request->get('taskName');
+        $phaseId = $this->request->request->get('phaseID', null);
+        $groupId = $this->request->request->get('groupID', null);
+        try {
+            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, projectName, phaseID, groupID, hasSubtask)
+              VALUES (:taskName, :projectName, :phaseID, :groupID, 1);");
+            $stmt->bindParam(':taskName', $taskName, PDO::PARAM_STR, 100);
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
+            $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
                 $taskId = $this->db->lastInsertId();
                 if ($this->addDependencies($taskId)) {
@@ -118,7 +175,40 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
     }
 
 
-    public function addDependencies($taskId)
+    public function addSubTask($projectName, $parentTask): bool //returns boolean value
+    {
+        $taskName = $this->request->request->get('taskName');
+        $phaseId = $this->request->request->get('phaseID', null);
+        $groupId = $this->request->request->getInt('estimate', 0);
+        try {
+            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, projectName, phaseID, groupID, estimatedTime, hasSubtask)
+              VALUES (:taskName, :projectName, :phaseID, :groupID, :estimate, 1);");
+            $stmt->bindParam(':taskName', $taskName, PDO::PARAM_STR, 100);
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
+            $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':estimate', $estimate, PDO::PARAM_INT, 100);
+            if ($stmt->execute()) {
+                $taskId = $this->db->lastInsertId();
+                if ($this->addDependencies($taskId)) {
+                    $this->NotifyUser("En oppgave ble lagt til");
+                    return true;
+                } else {
+                    $this->NotifyUser("En oppgave ble lagt til");
+                    return true;
+                }
+            } else {
+                $this->NotifyUser("Oppgave ble ikke oprettet");
+                return false;
+            }
+        } catch (PDOException $e) {
+            $this->NotifyUser("Oppgave ble ikke opprettet", $e->getMessage());
+            return false;
+        }
+    }
+
+
+    public function addDependencies($taskId) : bool
     {
         $tasks = $this->request->request->get('dependentTasks');
         try {
@@ -142,22 +232,83 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
     }
 
 
-    // GET ALL TASKS
-    public function getDependentTasks() : array {
+    // GET FIRST TASKS
+    public function getTasksItIsDependentOn($taskId) : array {
+        $tasksItIsDependentOn = array();
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Tasks ORDER BY taskName;");
+            $stmt = $this->db->prepare('SELECT TaskDependencies.*, Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
+groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
+FROM TaskDependencies
+LEFT JOIN Tasks on TaskDependencies.firstTask = Tasks.taskID
+LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
+LEFT JOIN Groups as groupID on groupID.groupID = Tasks.groupID
+LEFT JOIN Phases as phaseID on phaseID.phaseID = Tasks.phaseID
+LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE TaskDependencies.secondTask = :taskID ORDER BY Tasks.taskName;');
+            $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
             $stmt->execute();
-            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
-                return $tasks;
+            if($tasksItIsDependentOn = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $tasksItIsDependentOn;
             }
             else {
                 $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
-                return array();
+                return $tasksItIsDependentOn;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, på getTasksItIsDependentOn()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
-            return array();
+            return $tasksItIsDependentOn;
+        }
+    }
+
+    // GET SECOND TASKS
+    public function getDependentTasks($taskId) : array {
+        $dependentTasks = array();
+        try {
+            $stmt = $this->db->prepare('SELECT TaskDependencies.*, Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
+groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
+FROM TaskDependencies
+LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID
+LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
+LEFT JOIN Groups as groupID on groupID.groupID = Tasks.groupID
+LEFT JOIN Phases as phaseID on phaseID.phaseID = Tasks.phaseID
+LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE TaskDependencies.firstTask = :taskID ORDER BY Tasks.taskName;');
+            $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
+            $stmt->execute();
+            if($dependentTasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $dependentTasks;
+            }
+            else {
+                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
+                return $dependentTasks;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getDependentTasks()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return $dependentTasks;
+        }
+    }
+
+
+    // GET SECOND TASKS
+    public function getNonDependentTasks($taskId) : array {
+        $dependentTasks = array();
+        try {
+            $stmt = $this->db->prepare('SELECT TaskDependencies.*, Tasks.*
+FROM TaskDependencies
+LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependencies.firstTask != :taskID AND TaskDependencies.secondTask != :taskID ORDER BY Tasks.taskName;');
+            $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
+            $stmt->execute();
+            if($dependentTasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $dependentTasks;
+            }
+            else {
+                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
+                return $dependentTasks;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getDependentTasks()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return $dependentTasks;
         }
     }
 

@@ -67,7 +67,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
         }
     }
     else if ($request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
-        if ($taskManager->addTask($projectName, 1)) {
+        if ($taskManager->addMainTask($projectName)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
