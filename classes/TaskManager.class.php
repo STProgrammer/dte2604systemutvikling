@@ -359,6 +359,52 @@ LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependen
         }
     }
 
+    public function editStatus($TaskId) : bool
+    {
+        $status = $this->request->request->get('status');
+        try {
+            $stmt = $this->db->prepare("UPDATE Tasks SET status = :status WHERE taskID = :taskID;
+                UPDATE Tasks SET status = :status WHERE parentTask = :taskID");
+            $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
+            $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+            if ($stmt->execute()) {
+                $this->notifyUser("Status på oppgaven og alle tilhørende sub-oppgaver ble endret");
+                return true;
+            } else {
+                $this->notifyUser("Fikk ikke endre status til oppgaver");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Fikk ikke endre status til oppgaver (feil på editStatus())", $e->getMessage());
+            return false;
+        }
+    }
+
+    public function reEstimate($TaskId, $parentTaskId) : bool
+    {
+        $estimatedTime = $this->request->request->get('estimatedTime');
+        try {
+            $stmt = $this->db->prepare("UPDATE Tasks SET estimatedTime = :estimatedTime WHERE taskID = :taskID;
+                UPDATE Tasks SET estimatedTime = (SELECT SUM(estimatedTime) total FROM Tasks WHERE parentTask = :parentTaskID) WHERE taskID = :parentTaskID");
+            $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
+            $stmt->bindParam(':estimatedTime', $estimatedTime, PDO::PARAM_INT);
+            $stmt->bindParam(':parentTaskID', $parentTaskId, PDO::PARAM_INT);
+            if ($stmt->execute()) {
+                $this->notifyUser("Estimate på oppgaven ble endret");
+                return true;
+            } else {
+                $this->notifyUser("Fikk ikke endre estimat til oppgaver");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Fikk ikke endre estimat til oppgaver (feil på reEstimate())", $e->getMessage());
+            return false;
+        }
+    }
+
+
+
+
 
 
 

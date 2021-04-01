@@ -21,8 +21,8 @@
             <br>Hoved ansvarlig: <b>{{ task.mainResponsibleName }} </b>
             <br>Estimert tid: <b>{{ task.getEstimatedTime }} </b>
             <br>Total brukt tid: <b>{{ task.getSpentTime }} </b>
-    {% if task.hasSubtask %}
-    <br>Parent task: <b>{{ task.parentTaskName }}</b>
+    {% if not task.hasSubtask %}
+    <br>Parent task: <a href="tasks_editTask.php?taskid={{ task.getParentTask() }}"><b>{{ task.parentTaskName }}</b></a>
     {% endif %}
 
             {% if task.getStatus == 0 %}
