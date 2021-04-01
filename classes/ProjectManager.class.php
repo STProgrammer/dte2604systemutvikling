@@ -202,40 +202,40 @@ JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.pro
 
 
 
-   /* public function removeEmployees(Project $project)
+    public function removeMember(Project $project) : bool
     {
-        $users = $this->request->request->get('projectMembers');
+        $userId = $this->request->request->get('projectMember');
         $projectName = $project->getProjectName();
         $projectLeader = $project->getProjectLeader();
         try {
-            $stmt = $this->db->prepare(query: "DELETE FROM UsersAndProjects 
-                    WHERE projectName = :projectName AND userId = :userID;
+            $stmt = $this->db->prepare(query: "DELETE FROM UsersAndGroups 
+                    WHERE userId = :userID 
+                      AND EXISTS (
+                          SELECT * FROM Groups WHERE Groups.projectName = :projectName 
+                      );
                     UPDATE Projects SET Projects.projectLeader = NULL 
                     WHERE projectName = :projectName AND Projects.projectLeader = :userID;
                     UPDATE Users SET Users.isProjectLeader = 0
                     WHERE NOT EXISTS
                     (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");
-            if (is_array($users)) {
-                foreach ($users as $userID) {
-                    $stmt->bindParam(':projectName', $projectName);
-                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-                    $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                }
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
+            $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
+            if ($stmt->execute()) {
+                $this->notifyUser("Arbeider fjernet fra prosjektet");
+                return true;
             } else {
-                $this->notifyUser("Failed to remove employee", '..........');
+                $this->notifyUser("Feil ved fjernin av arbeider fra prosjektet");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to remove employee", $e->getMessage());
+            $this->notifyUser("Arbeider fjernet fra prosjektet", $e->getMessage());
             return false;
         }
-        return true;
-    }*/
+    }
 
     //GET MEMBERS
-    public function getProjectMembers(string $projectName) {
+    public function getProjectMembers(string $projectName) : array {
         try {
             $stmt = $this->db->prepare("SELECT DISTINCT Users.*
 FROM Users
@@ -282,7 +282,7 @@ WHERE Groups.projectName = :projectName;");
         }
     }
 
-    public function getGroups($projectName) {
+    public function getGroups($projectName) : array {
         $groups = array();
         try {
             $stmt = $this->db->prepare("SELECT Groups.*, count(UsersAndGroups.groupID) as nrOfUsers, CONCAT(Users.firstName, ' ', Users.lastName, ' ',' (', Users.username, ') ') as fullName
@@ -332,7 +332,7 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
 
-    public function removeGroups(Project $project)
+    public function removeGroups(Project $project) : bool
     {
         $users = $this->request->request->get('projectMembers');
         $projectName = $project->getProjectName();
@@ -353,6 +353,7 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
                     $stmt->execute();
                     $stmt->closeCursor();
                 }
+                return true;
             } else {
                 $this->notifyUser("Failed to remove employee", '..........');
                 return false;
@@ -361,13 +362,12 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             $this->notifyUser("Failed to remove employee", $e->getMessage());
             return false;
         }
-        return true;
     }
 
 
 
     //DELETE PROJECT
-    public function deleteProject(string $projectName)
+    public function deleteProject(string $projectName) : bool
     {
         $projectLeader = $this->request->request->get('projectLeader');
         try {
@@ -556,11 +556,6 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             $this->notifyUser("Feil ved godkjenning av prosjekt", $e->getMessage());
             return false;
         }
-    }
-
-    //TODO
-    public function getEmployees(Project $project)
-    {
     }
 
 

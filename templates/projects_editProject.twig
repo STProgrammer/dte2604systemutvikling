@@ -180,7 +180,7 @@
                 <br><label><b>Fjerne brukere fra prosjektet: </b></label>
                 <br>
                 <div class="wrapper">
-                    <select name="projectMembers[]" id="" class="form-control">
+                    <select name="projectMember" id="" class="form-control">
                         {% for empl in members %}
                             <option value="{{ empl.getUserID() }}">{{ empl.getFirstName }} {{ empl.getLastName }}
                                 (ID: {{ empl.getUserId }})
@@ -207,14 +207,13 @@
                             {% else %}
                                 <td>Vanlig gruppe</td>
                             {% endif %}
-                            <td>{{ grp.firstName }} {{ grp.lastName }} ({{ grp.username }})</td>
+                            <td>{{ grp.fullName}}</td>
                             <td style="text-align: center">{{ grp.nrOfUsers }}</td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
         </div>
-    </section>
 
     <section>
         {# FORM ENDRE PROSJEKT #}
@@ -346,48 +345,6 @@
                 <input type="hidden" value="{{ getMac("Add phase") }}" name="XSRFPreventionToken">
                 <br><input type="submit" name="phase_add" id="reg_btn" value="Ny fase">
             </form>
-        </div>
-
-        <div class="container container_menu_form text" id="groups_list">
-            <h4>Grupper tilhørende prosjektet:</h4>
-            <table>
-                <tr>
-                    <th>
-                        Gruppenavn
-                    </th>
-                    <th>
-                        Gruppetype
-                    </th>
-                    <th>
-                        Gruppeleder
-                    </th>
-                    <th>
-                        Antall medlemmer
-                    </th>
-                </tr>
-                {% for grp in groups %}
-                <tr>
-                <td>
-                    <a href="group_edit.php?groupid={{ grp.getGroupID() }}">{{ grp.getGroupName }}</a>
-                </td>
-                {% if grp.isAdmin %}
-                <td>
-                    Admin gruppe
-                </td>
-                {% else %}
-                <td>
-                    Vanlig gruppe
-                </td>
-                {% endif %}
-                    <td>
-                        {{ grp.fullName }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ grp.nrOfUsers }}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
         </div>
 
         <div class="openContainerNoBorder text" id="delete_project">

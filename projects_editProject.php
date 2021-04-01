@@ -75,6 +75,15 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
+    else if ($request->request->has('remove_members') && XsrfProtection::verifyMac("Project remove members")) {
+        if ($projectManager->removeMember($project)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtoaddtasks");
+            exit();
+        }
+    }
     else if ($request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
         if ($projectManager->addPhase($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
