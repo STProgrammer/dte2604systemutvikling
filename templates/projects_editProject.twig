@@ -3,18 +3,13 @@
     <section class="edit_project" id="edit_project">
 
         {# TILBAKE KNAPP #}
-        <div>
-<<<<<<< HEAD
+
             {% if User.isAdmin() == 1 %}
+        <div>
                 <button class="button buttons" id="prosjektKnapper"
                         onclick="goBack()"> Gå tilbake
-=======
-            {% if user.isAdmin() == 1 %}
-                <button class="button buttons" id="prosjektKnapper" onclick="goBack()"><img src="" alt=""> Gå tilbake
->>>>>>> 6bcac6c3af0da9f7f1d3d9b36e906ae3d51e883b
-                </button>
+                    <div>
             {% endif %}
-        </div>
 
         {# REDIGER PROSJEKT #}
         <div class="container container_menu text" id="projekt_info">
@@ -393,7 +388,6 @@
                 </tr>
                 {% endfor %}
             </table>
-<<<<<<< HEAD
         </div>
 
         <div class="openContainerNoBorder text" id="delete_project">
@@ -404,19 +398,6 @@
                 </form>
             {% endif %}
         </div>
-=======
-
-    {# SLETT PROSJEKT #}
-    <div class="openContainerNoBorder text" id="delete_project">
-        {% if user.isAdmin() %}
-            <form method="post"
-                  onsubmit="return confirm('Er du sikker på å slette prosjektet?\n(Kan ikke angres i etterkant!)');">
-                <input type="hidden" value="{{ getMac("Delete project") }}" name="XSRFPreventionToken">
-                <input type="submit" name="project_delete" value="Slett prosjekt" class="delete"/>
-            </form>
-        {% endif %}
-    </div>
->>>>>>> 6bcac6c3af0da9f7f1d3d9b36e906ae3d51e883b
 
 
     {# FEILMELDINGER FRA DATABASE #}
