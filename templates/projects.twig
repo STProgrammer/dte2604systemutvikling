@@ -1,6 +1,8 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section id="prosjekter" class="prosjekter">
+
+        {#KNAPP - NYTT PROSJEKT#}
         <div class="container container_small">
             {% if User.isAdmin() == 1 %}
                 <button class="button" id="button"
@@ -9,6 +11,8 @@
                 </button>
             {% endif %}
         </div>
+
+        {#KNAPP - LEGG INN NY FUNSKJONER#}
         <div class="container container_small">
             {% if User.isAdmin() == 1 or User.isProjectLeader() == 1 %}
                 <button class="button" id="button" onclick="">
@@ -16,6 +20,7 @@
                 </button>
             {% endif %}
         </div>
+
     </section>
 
     <section>

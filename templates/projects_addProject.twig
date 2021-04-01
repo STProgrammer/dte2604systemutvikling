@@ -3,6 +3,7 @@
     <section id="prosjekter" class="prosjekter">
 
         <div>
+            {#GÅ TILBAKE KNAPP#}
             {% if User.isAdmin() == 1 %}
                 <button class="button buttons" id="prosjektKnapper" onclick="goBack()"> <img src="" alt=""> Gå tilbake</button>
             {% endif %}
@@ -11,8 +12,11 @@
     </section>
 
     <section id="addProject" >
+
         <div class="openContainerNoBorder text" id="prosjektTabell">
             <h3>Legg til nytt prosjekt </h3>
+
+            {#FORM - LEGG TIL PROSJEKT#}
             <form action="projects_addProject.php" enctype="multipart/form-data" method="post" class="formProject" id="formProject">
                 <div id="tekst">
                     <br><label for="projectName">Prosjekt Navn: </label>
@@ -66,6 +70,7 @@
         </div>
 
         <div class="container container_big_long text">
+            {#FEILMELDINGER FRA DATABASE#}
             <h6>Tilbakemeldinger fra database</h6>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
