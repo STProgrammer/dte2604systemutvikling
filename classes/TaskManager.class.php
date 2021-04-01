@@ -312,6 +312,53 @@ LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependen
         }
     }
 
+    public function addTasksToPhase($phaseId) : bool
+    {
+        $tasks = $this->request->request->get('tasks');
+        try {
+            $stmt = $this->db->prepare("UPDATE Tasks SET Tasks.phaseID = :phaseID WHERE Tasks.taskID = :taskID;");
+            if (is_array($tasks)) {
+                foreach ($tasks as $task) {
+                    $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT);
+                    $stmt->bindParam(':taskID', $task, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+                $this->notifyUser("Oppgave ble lagt til på fasen");
+                return true;
+            } else {
+                $this->notifyUser("Fikk ikke legge til oppgaver på fasen");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Fikk ikke legge til oppgaver på fasen (feil på addTasksToPhase())", $e->getMessage());
+            return false;
+        }
+    }
+
+
+    public function removeTasksFromPhase($phaseId) : bool
+    {
+        $tasks = $this->request->request->get('tasks');
+        try {
+            $stmt = $this->db->prepare("UPDATE Tasks SET Tasks.phaseID = null WHERE Tasks.taskID = :taskID AND Tasks.phaseID = :phaseID;");
+            if (is_array($tasks)) {
+                foreach ($tasks as $task) {
+                    $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT);
+                    $stmt->bindParam(':taskID', $task, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+                $this->notifyUser("Oppgave ble lagt til på fasen");
+                return true;
+            } else {
+                $this->notifyUser("Fikk ikke legge til oppgaver på fasen");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Fikk ikke legge til oppgaver på fasen (feil på removeTasksFromPhase())", $e->getMessage());
+            return false;
+        }
+    }
+
 
 
 

@@ -16,7 +16,8 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
     $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
     $phases = $projectManager->getAllPhases($projectName);
     $members = $projectManager->getProjectMembers($project->getProjectName());
-    $tasks = $taskManager->getAllTasks();
+    $tasks = $taskManager->getAllTasks(hasSubtask: 0, projectName: $projectName);
+    $phaseTasks = $taskManager->getAllTasks(hasSubtask: 0, phaseID: $phaseId);
     if ($request->request->has('phase_edit') && XsrfProtection::verifyMac("Edit phase")) {
         if ($projectManager->editPhase($phase, $project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
@@ -26,8 +27,8 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
             exit();
         }
     }
-    else if ($request->request->has('task_add') && XsrfProtection::verifyMac("Add task")) {
-        if ($taskManager->addTask($phaseId, $projectName)) {
+    else if ($request->request->has('tasks_add') && XsrfProtection::verifyMac("Add tasks to phase")) {
+        if ($taskManager->addTasksToPhase($phaseId)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
@@ -35,12 +36,12 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
             exit();
         }
     }
-    else if ($request->request->has('remove_task') && XsrfProtection::verifyMac("Remove tasks")) {
-        if ($projectManager->removeEmployees($project)) {
+    else if ($request->request->has('tasks_remove') && XsrfProtection::verifyMac("Remove tasks from phase")) {
+        if ($taskManager->removeTasksFromPhase($phaseId)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: ?failedtoremovetasks");
+            header("Location: ?failedtoaddtasks");
             exit();
         }
     }
@@ -59,7 +60,7 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
                 array('session' => $session, 'request' => $request, 'user' => $user,
                     'project' => $project,  'members' => $members,
                     'employees' => $employees, 'phase' => $phase,
-                'phases' => $phases, 'tasks' => $tasks));
+                'phases' => $phases, 'tasks' => $tasks, 'phaseTasks' => $phaseTasks));
         } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }
