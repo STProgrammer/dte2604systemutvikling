@@ -285,7 +285,7 @@ WHERE Groups.projectName = :projectName;");
     public function getGroups($projectName) {
         $groups = array();
         try {
-            $stmt = $this->db->prepare("SELECT Groups.*, count(UsersAndGroups.groupID) as nrOfUsers, Users.username, Users.firstName, Users.lastName
+            $stmt = $this->db->prepare("SELECT Groups.*, count(UsersAndGroups.groupID) as nrOfUsers, CONCAT(Users.firstName, ' ', Users.lastName, ' ',' (', Users.username, ') ') as fullName
     FROM Groups
     JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
 LEFT JOIN Users ON Groups.groupLeader = Users.userID
