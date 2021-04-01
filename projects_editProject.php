@@ -12,6 +12,7 @@ $twig->addFunction(new \Twig\TwigFunction('get_page_url', function($query = [], 
 
 $projectManager = new ProjectManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
+$taskManager = new TaskManager($db, $request, $session);
 
 $project = $projectManager->getProject($request->query->getInt('projectid'));
 
@@ -20,6 +21,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
     $projectName = $project->getProjectName();
     $customers = $userManager->getAllCustomers("firstName"); //alle kunder
     $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
+    $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
     $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
     $phases = $projectManager->getAllPhases($projectName);
     $groups = $projectManager->getGroups($projectName);
@@ -46,15 +48,6 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('remove_members') && XsrfProtection::verifyMac("Project remove members")) {
-        if ($projectManager->removeEmployees($project)) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
-            exit();
-        } else {
-            header("Location: ?failedtoremovemembers");
-            exit();
-        }
-    }
     else if ($request->request->has('project_delete') && $user->isAdmin()) {
         if ($projectManager->deleteProject($request->query->get('projectName')) && XsrfProtection::verifyMac("Delete project")) {
             header("Location: ".$request->server->get('REQUEST_URI'));
@@ -73,6 +66,15 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
+    else if ($request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
+        if ($taskManager->addTask($projectName, 1)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtoaddtasks");
+            exit();
+        }
+    }
     else if ($request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
         if ($projectManager->addPhase($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
@@ -88,7 +90,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
                 array('session' => $session, 'request' => $request, 'user' => $user, 'users' => $users,
                     'customers' => $customers, 'project' => $project,  'members' => $members,
                     'employees' => $employees, 'groups' => $groups, 'candidates' => $candidates,
-                'phases' => $phases));
+                'phases' => $phases, 'tasks' => $tasks));
         } catch (\Twig\Error\LoaderError  | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }

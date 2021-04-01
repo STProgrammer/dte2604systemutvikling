@@ -10,8 +10,8 @@ if (empty($twig)) {
     echo $twig->render('error.twig', array('msg' => 'Twig not working!'));
 }
 
-$commentsManager = new CommentsManager($db, $request, $session);
-$hours = $commentsManager->getAllHours();
+$HourManager = new CommentsManager($db, $request, $session);
+$hours = $HourManager->getAllHours();
 
 $user = $session->get('User');
 
