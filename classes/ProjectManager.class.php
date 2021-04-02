@@ -165,8 +165,8 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
         $projectLeader = $this->request->request->get('projectLeader');
         $startTime = $this->request->request->get('startTime', $project->getStartTime());
         $finishTime = $this->request->request->get('finishTime', $project->getFinishTime());
-        $status = $this->request->request->getInt('status', $project->getStatus());
-        $customer = $this->request->request->getInt('customer', $project->getCustomer());
+        $status = $this->request->request->get('status', $project->getStatus());
+        $customer = $this->request->request->get('customer', $project->getCustomer());
         $oldProjectLeader = $project->getProjectLeader();
         try {
             $stmt = $this->db->prepare(query: "update Projects set projectName = :projectName, projectLeader = :projectLeader, startTime = :startTime, 

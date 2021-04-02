@@ -26,6 +26,7 @@
                     <tr>
                         <th>Gruppenavn </th>
                         <th>Gruppeleder </th>
+                        <th>Prosjekt</th>
                         <th>Antall medlemmer</th>
                         <th>Gruppetype</th>
                         {% if user.isAdmin() or user.isProjectLeader() %}
@@ -36,6 +37,7 @@
                         <tr>
                             <td>{{ grp.getGroupName }}</td>
                             <td>{{ grp.leaderName }}</td>
+                            <td>{{ grp.getProjectName }}</td>
                             <td>{{ grp.nrOfMembers }}</td>
 
                             {% if grp.isAdmin() %}
