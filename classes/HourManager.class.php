@@ -22,7 +22,7 @@ class HourManager
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
-    // GET LAST HOURS FOR LOGGED IN USER
+    // GET LAST HOURS FOR LOGGED IN USER -------------------------------------------------
     public function getLastHoursForUser($userID): array
     {
         $lastHoursForUser = null;
@@ -41,7 +41,6 @@ class HourManager
             return array();
         }
     }
-    //END GET LAST HOURS FOR LOGGED IN USER
 
     // GET ALL HOURS FOR LOGGED IN USER ------------------------------------------------------------
     public function getAllHoursForUser($userID): array
@@ -67,32 +66,108 @@ class HourManager
             return array();
         }
     }
+
     // GET ALL HOURS FOR LOGGED IN USER ------------------------------------------------------------
-    public function getAllHoursForUserWithTask($userID): array
-    {
-        $allHoursForUserWithTask = null;
-        try {
-            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID 
-                      and startTime BETWEEN '01.01.2020' and NOW() ORDER BY endTime DESC LIMIT 30 
-                      LEFT JOIN (SELECT * FROM Tasks WHERE task.getTaskID = hours.taskID) ");
-            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-            $stmt->execute();
-            if ($allHoursForUserWithTask = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-                return $allHoursForUserWithTask;
+    public function getAllHoursForUserWithTask($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
+                             $timeWorked = null, $activated = null, $location = null, $absenceType = null,
+                             $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null,
+                             $orderBy = null, $offset = null, $limit = null) : array {
+        $hours = array();
+        $query = 'SELECT Hours.*, CONCAT(workers.firstName, " ", workers.lastName, " (", workers.username, ")") as whoWorkedName, 
+                    hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
+                    FROM Hours
+                    LEFT JOIN Users as workers on workers.userID = Hours.whoWorked
+                    LEFT JOIN Tasks as hourTasks on hourTasks.taskID = Hours.taskID
+                    LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE 1';
+        $params = array();
+        if (!is_null($taskId)) {
+            $query .= " AND Hours.taskID = :taskID";
+            $params[':taskID'] = $taskId;
+        }
+        if (!is_null($whoWorked)) {
+            $query .= " AND Hours.whoWorked = :whoWorked";
+            $params[':whoWorked'] = $whoWorked;
+        }
+        if (!is_null($phaseId)) {
+            $query .= " AND Hours.phaseID = :phaseID";
+            $params[':phaseID'] = $phaseId;
+        }
+        if (!is_null($startTime)) {
+            $query .= " AND Hours.startTime > :startTime";
+            $params[':startTime'] = $startTime;
+        }
+        if (!is_null($endTime)) {
+            $query .= " AND Hours.endTime < :endTime";
+            $params[':endTime'] = $endTime;
+        }
+        if (!is_null($timeWorked)) {
+            $query .= " AND Hours.timeWorked = :timeWorked";
+            $params[':timeWorked'] = $timeWorked;
+        }
+        if (!is_null($activated)) {
+            $query .= " AND Hours.activated = :activated";
+            $params[':activated'] = $activated;
+        }
+        if (!is_null($location)) {
+            $query .= " AND Hours.location = :location";
+            $params[':location'] = $location;
+        }
+        if (!is_null($absenceType)) {
+            $query .= " AND Hours.absenceType = :absenceType";
+            $params[':absenceType'] = $absenceType;
+        }
+        if (!is_null($overtimeType)) {
+            $query .= " AND Hours.overtimeType = :overtimeType";
+            $params[':overtimeType'] = $overtimeType;
+        }
+        if (!is_null($isChanged)) {
+            $query .= " AND Hours.isChanged = :isChanged";
+            $params[':isChanged'] = $isChanged;
+        }
+        if (!is_null($stampingStatus)) {
+            $query .= " AND Hours.stampingStatus = :stampingStatus";
+            $params[':stampingStatus'] = $stampingStatus;
+        }
+        if (!is_null($taskType)) {
+            $query .= " AND Hours.activated = :taskType";
+            $params[':taskType'] = $taskType;
+        }
+        if (!is_null($orderBy)) {
+            $query .= " ORDER BY ".$orderBy;
+        }
+        if (!is_null($limit)) {
+            $limit = intval($limit);
+            if (!is_null($offset)) {
+                $offset = intval($offset);
+                $query .= " LIMIT ".$offset.", ".$limit;
+//                $params[':offset'] = $offset;
+                //               $params[':limit'] = $limit;
             } else {
-                $this->notifyUser("Ingen timer funnet.", "Kunne ikke hente timene.");
-                return array();
+                $query .= " LIMIT ".$limit;
+//                $params[':limit'] = $limit;
+            }
+        }
+        try {
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute($params);
+            if($tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $hours;
+            }
+            else {
+                $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente oppgaver");
+                return $hours;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllHoursForUser()", $e->getMessage());
-            return array();
+            $this->NotifyUser("En feil oppstod, på getAllHours()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return $hours;
         }
     }
 
-    // GET ALL HOURS
+    // GET ALL HOURS --------------------------------------------------------------------------------
     public function getAllHours() : array {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Hours");
+            $stmt = $this->dbase->prepare("SELECT * FROM Hours");
             $stmt->execute();
             if( $hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hours;
@@ -110,7 +185,7 @@ class HourManager
         }
     }
 
-    // REGISTER TIME FOR USER
+    // REGISTER TIME FOR USER ---------------------------------------------------------------------------
     public function registerTimeForUser($userID)
     {
         try {
@@ -122,7 +197,7 @@ class HourManager
             $this->NotifyUser("En feil oppstod, på registerTimeForUser()", $e->getMessage());
             return array();
         }
-    }//END REGISTER TIME
+    }
 
     // GET HOUR ---------------------------------------------------------------------------------
     public function getHour($hourID)
@@ -142,6 +217,29 @@ class HourManager
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getHour()", $e->getMessage());
             return array();
+        }
+    }
+
+    //EDIT COMMENT --------------------------------------------------------------------------------
+    public function editComment($hour): bool
+    {
+        $hourID = $hour->getHourID();
+        $comment = $this->request->request->get('comment', $hour->getComment());
+        try {
+            $stmt = $this->dbase->prepare(query: "UPDATE Hours SET comment = :comment WHERE hourID = :hourID;");
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            $stmt->bindParam(':comment', $comment);
+            if ($stmt->execute()) {
+                $stmt->closeCursor();
+                $this->notifyUser('Comment changed');
+                return true;
+            } else {
+                $this->notifyUser('Comment not changed, failed!');
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change comment, exeption: ", $e->getMessage());
+            return false;
         }
     }
 

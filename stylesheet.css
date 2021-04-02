@@ -361,11 +361,11 @@ input[type=text] {
     transition: width 0.4s ease-out;
 }
 textarea#comment {
-    width: 40em;
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    width: 60em;
     height: 5em;
     padding: 0.1em 0.1em;
     margin-left: 1em;
-    box-shadow: 0.1em 0.1em 0.2em #888888;
     border: lightyellow;
     background: white;
 }
@@ -482,15 +482,16 @@ td#comment_btn {
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
+    background: #efeded;
+    height: 2em;
 }
 td#comment_form_show {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    cursor: pointer; display: none;
+    display: none;
 }
 td#comment_form_show1 {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    cursor: pointer; white-space: pre-line; word-wrap:break-word;
-    vertical-align: top; alignment: top;
+    white-space: pre-line;
 }
 td#comment_btn_back {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;

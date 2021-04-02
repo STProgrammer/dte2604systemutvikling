@@ -9,32 +9,31 @@
     <link rel="icon" type="image/png" href="images/favicon.ico">
 </head>
 <body>
+<section class="loginn">
+    <form action="login.php" method="post">
+        <div>
+            <img id="innloggLogo" src="images/morild_logo_150px.png" alt="Logo"/>
+        </div>
+        <div class="button button_long">
+            <label for="user"> Brukernavn </label>
+            <input type="text" name="username" id="user" required>
+        </div>
+        <br>
+        <div class="button button_long">
+            <label for="password"> Passord </label>
+            <input type="password" name="password" id="password" required>
+        </div>
 
+        <div>
+            <button id="buttonNoBorderOnlyGreenText" class="button" type="button" name="forgotten_password">
+                Glemt passord
+            </button>
+            <input type="hidden" value="{{ getMac("login") }}" name="XSRFPreventionToken">
+            <input id="submit" type="submit" name="login" value="Bekreft">
+        </div>
 
-    <section class="loginn">
-        <form action="login.php" method="post">
-            <div>
-                <img id="innloggLogo" src="images/morild_logo_150px.png" alt="Logo"/>
-            </div>
-            <div class="button button_long">
-                <label for="user"> Brukernavn </label>
-                <input type="text" name="username" id="user" required>
-            </div><br>
-            <div class="button button_long">
-                <label for="password"> Passord </label>
-                <input type="password" name="password" id="password" required>
-            </div>
-
-            <div>
-                <button id="buttonNoBorderOnlyGreenText" class="button" type="button" name="forgotten_password">
-                    Glemt passord
-                </button>
-                <input type="hidden" value="{{ getMac("login") }}" name="XSRFPreventionToken">
-                <input id="submit" type="submit" name="login" value="Bekreft">
-            </div>
-
-        </form>
-    </section>
+    </form>
+</section>
 <section>
     <div class="container container_big_long text">
         {% if session.getFlashBag.has('header') %}
