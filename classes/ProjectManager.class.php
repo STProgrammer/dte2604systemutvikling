@@ -40,8 +40,8 @@ class ProjectManager
             $stmt = $this->db->prepare('SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
 CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
 FROM Projects
-JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
-JOIN Users as customer on customer.userID = Projects.customer ORDER BY Projects.startTime DESC;');
+LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+LEFT JOIN Users as customer on customer.userID = Projects.customer ORDER BY Projects.startTime DESC;');
             $stmt->execute();
             if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
@@ -64,8 +64,8 @@ JOIN Users as customer on customer.userID = Projects.customer ORDER BY Projects.
             $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
 CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
 FROM Projects
-JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
-JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectID = :projectID;');
+LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectID = :projectID;');
             $stmt->bindParam(':projectID', $projectID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($project = $stmt->fetchObject("Project")) {
@@ -88,8 +88,8 @@ JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.pro
             $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
 CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
 FROM Projects
-JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
-JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectName = :projectName;');
+LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectName = :projectName;');
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($project = $stmt->fetchObject("Project")) {
@@ -239,8 +239,8 @@ JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.pro
         try {
             $stmt = $this->db->prepare("SELECT DISTINCT Users.*
 FROM Users
-JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
-JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
+LEFT JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
+LEFT JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
 WHERE Groups.projectName = :projectName;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             $stmt->execute();
