@@ -16,7 +16,7 @@ $tasks = $taskManager->getAllTasks();
 if ($user) {
     $userID = $user->getUserId($user);
     $hour = $hourManager->getAllHoursForUser($userID);
-    $hourWithTask = $hourManager->getAllHours(taskId: 24, whoWorked: 2);
+    $hourWithTask = $hourManager->getHours(taskId: 24, whoWorked: 2);
 
     echo $twig->render('timeregistrations.twig',
         array('Hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks));

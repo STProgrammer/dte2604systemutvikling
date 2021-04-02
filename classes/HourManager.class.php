@@ -24,7 +24,7 @@ class HourManager
 
 
     // GET ALL TASKS
-    public function getAllHours($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
+    public function getHours($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
                                 $timeWorked = null, $activated = null, $location = null, $absenceType = null,
                                 $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null,
                                 $orderBy = null, $offset = null, $limit = null) : array {
@@ -188,7 +188,7 @@ LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE 1';
         }
     }
 
-    /*// GET ALL HOURS
+    // GET ALL HOURS
     public function getAllHours() : array {
         try {
             $stmt = $this->db->prepare("SELECT * FROM Hours");
@@ -207,7 +207,7 @@ LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE 1';
             //return new Project();
             return array();
         }
-    }*/
+    }
 
     // REGISTER TIME FOR USER
     public function registerTimeForUser($userID)
