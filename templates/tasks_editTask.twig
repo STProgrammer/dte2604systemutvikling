@@ -5,11 +5,9 @@
         <button class="button buttons" onclick="goBack()">Gå tilbake</button>
 
         <div>
-            {% if User.isAdmin() == 1 %}
                 <button class="button buttons" id="prosjektKnapper"
                         onclick="goBack()"> Gå tilbake
                 </button>
-            {% endif %}
         </div>
 
         <div class="container container_menu_form text" id="task_info">
@@ -184,7 +182,7 @@
                                 onchange='this.size=10; this.blur();'>
                             <option disabled selected value> -- velg en hoved ansvarlig for oppgaven -- </option>
                             {% for responsible in groupMembers %}
-                                <option value="{{ responsible.getUserID() }}">{{ responsible.fullname }} </option>
+                                <option value="{{ responsible.getUserID() }}">{{ responsible.fullName }} </option>
                             {% endfor %}
                         </select>
                     </div>

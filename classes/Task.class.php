@@ -43,8 +43,8 @@ class Task {
     public function setTimeSpent($timeSpent): void{$this->timeSpent = $timeSpent;}
     public function getEstimatedTime(){return $this->estimatedTime;}
     public function setEstimatedTime($estimatedTime): void{$this->estimatedTime = $estimatedTime;}
-    public function isHasSubtasks(): bool{return $this->hasSubtasks;}
-    public function setHasSubtasks(bool $hasSubtasks): void{$this->hasSubtasks = $hasSubtasks;}
+    public function hasSubtask(): bool{return $this->hasSubtask;}
+    public function setHasSubtask(bool $hasSubtask): void{$this->hasSubtasks = $hasSubtask;}
     public function getMainResponsible(){return $this->mainResponsible;}
     public function setMainResponsible($mainResponsible): void{$this->mainResponsible = $mainResponsible;}
 }

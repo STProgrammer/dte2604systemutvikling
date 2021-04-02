@@ -53,7 +53,7 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
         }
     }
     else if ($request->request->has('subtask_add') && XsrfProtection::verifyMac("Add subtask")) {
-        if ($taskManager->addSubTask($projectManager, $task->getParentTask())) {
+        if ($taskManager->addSubTask($projectName, $task->getParentTask(), $task->getGroupID())) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
@@ -101,7 +101,7 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
     else {
         try {
             echo $twig->render('tasks_editTask.twig', array('session' => $session, 'request' => $request,
-                'user' => $user, 'task' => $task, 'tasks' => $tasks, 'group' => $groups, 'groupMembers' => $groupMembers,
+                'user' => $user, 'task' => $task, 'tasks' => $tasks, 'groups' => $groups, 'groupMembers' => $groupMembers,
                 'phases' => $phases, 'subTasks' => $subTasks, 'tasksItIsDependentOn' => $tasksItIsDependentOn,
                 'dependentTasks' => $dependentTasks, 'nonDependentTasks' => $nonDependentTasks));
         } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {

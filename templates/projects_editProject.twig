@@ -3,12 +3,10 @@
     <section class="edit_project" id="edit_project">
 
         {# TILBAKE KNAPP #}
-        {% if user.isAdmin() == 1 %}
         <div>
             <button class="button buttons" id="prosjektKnapper" onclick="goBack()"><img src="" alt=""> Gå tilbake
             </button>
         </div>
-        {% endif %}
 
         {# REDIGER PROSJEKT MENU #}
         <div class="container container_menu text" id="projekt_info">
