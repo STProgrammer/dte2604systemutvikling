@@ -26,7 +26,7 @@ class TaskManager {
                                 $mainResponsible = null, $parentTask = null, $orderBy = null) : array {
         $tasks = array();
         $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
-groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
+groupID.groupName as groupName, phaseID.phaseName as phaseName, parentTasks.taskName as parentTaskName
 FROM Tasks
 LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
 LEFT JOIN Groups as groupID on groupID.groupID = Tasks.groupID
@@ -86,7 +86,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
     public function getTask($taskId)
     {
         $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
-groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
+groupID.groupName as groupName, phaseID.phaseName as phaseName, parentTasks.taskName as parentTaskName
 FROM Tasks
 LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
 LEFT JOIN Groups as groupID on groupID.groupID = Tasks.groupID
@@ -145,8 +145,8 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
     public function editTask(Task $task): bool //returns boolean value
     {
         $taskId = $task->getTaskID();
-        $phaseId = $this->request->request->getInt('phaseID', $task->getPhaseID());
-        $mainResponsible = $this->request->request->getInt('mainResponsible', $task->getMainResponsible());
+        $phaseId = $this->request->request->get('phaseID', $task->getPhaseID());
+        $mainResponsible = $this->request->request->get('mainResponsible', $task->getMainResponsible());
         try {
             $stmt = $this->db->prepare("UPDATE Tasks SET phaseID = :phaseID, mainResponsible = :mainResponsible WHERE taskID = :taskID;");
             $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT, 100);
@@ -209,6 +209,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                     $stmt->bindParam(':firstTask', $task, PDO::PARAM_INT);
                     $stmt->bindParam(':taskId', $taskId, PDO::PARAM_INT);
                     $stmt->execute();
+                    $stmt->closeCursor();
                 }
                 $this->notifyUser("Avhengigheter ble lagt til");
                 return true;

@@ -14,7 +14,7 @@
             <br>Estimert tid: <b>{{ task.getEstimatedTime }} </b>
             <br>Total brukt tid: <b>{{ task.getSpentTime }} </b>
     {% if not task.hasSubtask %}
-    <br>Parent task: <a href="tasks_editTask.php?taskid={{ task.getParentTask() }}"><b>{{ task.parentTaskName }}</b></a>
+    <br>Parent task: <a href="tasks_editTask.php?taskid={{ task.getParentTask() }}">{{ task.parentTaskName }}</a>
     {% endif %}
 
             {% if task.getStatus == 0 %}
