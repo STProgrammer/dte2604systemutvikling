@@ -5,11 +5,13 @@
     $hourManager = new HourManager($db, $request, $session);
     $userManager = new UserManager($db, $request, $session);
     $taskManager = new TaskManager($db, $request, $session);
-    $userID = $user->getUserId($user);
-    $hour = $hourManager->getLastHoursForUser($userID);
-    $tasks = $taskManager->getAllTasks();
+
 
     if ($user) {
+        $userID = $user->getUserId($user);
+        $hour = $hourManager->getLastHoursForUser($userID);
+        $tasks = $taskManager->getAllTasks();
+
         if ($user->isAdmin()) {
             try {
                 echo $twig->render('admin_dashboard.twig', array('session' => $session, 'user' => $user,

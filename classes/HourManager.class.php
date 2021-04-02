@@ -43,7 +43,7 @@ class HourManager
     }
     //END GET LAST HOURS FOR LOGGED IN USER
 
-    // GET ALL HOURS FOR LOGGED IN USER
+    // GET ALL HOURS FOR LOGGED IN USER ------------------------------------------------------------
     public function getAllHoursForUser($userID): array
     {
         //TODO må lage en måneds periode for å skrive kun timer fra siste 30 dager
@@ -67,7 +67,27 @@ class HourManager
             return array();
         }
     }
-    //END GET ALL HOURS FOR LOGGED IN USER
+    // GET ALL HOURS FOR LOGGED IN USER ------------------------------------------------------------
+    public function getAllHoursForUserWithTask($userID): array
+    {
+        $allHoursForUserWithTask = null;
+        try {
+            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID 
+                      and startTime BETWEEN '01.01.2020' and NOW() ORDER BY endTime DESC LIMIT 30 
+                      LEFT JOIN (SELECT * FROM Tasks WHERE task.getTaskID == hours.taskID) ");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($allHoursForUserWithTask = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $allHoursForUserWithTask;
+            } else {
+                $this->notifyUser("Ingen timer funnet.", "Kunne ikke hente timene.");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllHoursForUser()", $e->getMessage());
+            return array();
+        }
+    }
 
     // GET ALL HOURS
     public function getAllHours() : array {

@@ -16,9 +16,10 @@ $tasks = $taskManager->getAllTasks();
 if ($user) {
     $userID = $user->getUserId($user);
     $hour = $hourManager->getAllHoursForUser($userID);
+    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
 
     echo $twig->render('timeregistrations.twig',
-        array('Hour' => $hour, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks));
+        array('Hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks));
 
 } else {
     header("location: login.php");
