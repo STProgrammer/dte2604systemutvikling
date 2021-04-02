@@ -28,7 +28,7 @@ class HourManager
                                 $timeWorked = null, $activated = null, $location = null, $absenceType = null,
                                 $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null,
                                 $orderBy = null, $offset = null, $limit = null) : array {
-        $tasks = array();
+        $hours = array();
         $query = 'SELECT Hours.*, CONCAT(workers.firstName, " ", workers.lastName, " (", workers.username, ")") as whoWorkedName, 
 hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
 FROM Hours
@@ -49,11 +49,11 @@ LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE 1';
             $params[':phaseID'] = $phaseId;
         }
         if (!is_null($startTime)) {
-            $query .= " AND Hours.startTime = :startTime";
+            $query .= " AND Hours.startTime > :startTime";
             $params[':startTime'] = $startTime;
         }
         if (!is_null($endTime)) {
-            $query .= " AND Hours.endTime = :endTime";
+            $query .= " AND Hours.endTime < :endTime";
             $params[':endTime'] = $endTime;
         }
         if (!is_null($timeWorked)) {
@@ -107,16 +107,16 @@ LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE 1';
             $stmt = $this->dbase->prepare($query);
             $stmt->execute($params);
             if($tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-                return $tasks;
+                return $hours;
             }
             else {
                 $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente oppgaver");
-                return $tasks;
+                return $hours;
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getAllHours()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
-            return $tasks;
+            return $hours;
         }
     }
 
