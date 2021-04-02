@@ -188,8 +188,8 @@
                             </option>
                         {% endfor %}
                     </select></div>
-                <input type="hidden" value="{{ getMac("Project remove members") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="remove_members" id="reg_btn" value="Fjern medlemmer">
+                <input type="hidden" value="{{ getMac("Project remove member") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="remove_member" id="reg_btn" value="Fjern medlemm">
             </form>
             <div>
                 <br><h6>Grupper tilhørende prosjektet:</h6><br>
@@ -339,29 +339,6 @@
         </form>
     </div>
 
-    <div class="container container_menu_form text" id="groups_list">
-        <h5>Grupper tilhørende prosjektet:</h5><br>
-        <table>
-            <tr>
-                <th>Gruppenavn</th>
-                <th>Gruppetype</th>
-                <th>Gruppeleder</th>
-                <th>Antall medlemmer</th>
-            </tr>
-            {% for grp in groups %}
-                <tr>
-                    <td><a href="group_edit.php?groupid={{ grp.getGroupID() }}">{{ grp.getGroupName }}</a></td>
-                    {% if grp.isAdmin %}
-                        <td>Admin gruppe</td>
-                    {% else %}
-                        <td>Vanlig gruppe</td>
-                    {% endif %}
-                    <td>{{ grp.firstName }} {{ grp.lastName }} ({{ grp.username }})</td>
-                    <td style="text-align: center">{{ grp.nrOfUsers }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
 
     {# SLETT PROSJEKT #}
     <div class="openContainerNoBorder text" id="delete_project">

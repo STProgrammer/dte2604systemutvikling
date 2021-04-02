@@ -3,7 +3,7 @@
     <section id="prosjekter" class="prosjekter">
 
         {#KNAPP - NYTT PROSJEKT#}
-        {% if User.isAdmin() == 1 %}
+        {% if user.isAdmin() == 1 %}
         <div class="container container_small">
                 <button class="button" id="button"
                         onclick="window.location.href='projects_addProject.php';">
@@ -13,7 +13,7 @@
         {% endif %}
 
         {#KNAPP - LEGG INN NY FUNSKJONER#}
-        {% if User.isAdmin() == 1 or User.isProjectLeader() == 1 %}
+        {% if user.isAdmin() == 1 or user.isProjectLeader() == 1 %}
         <div class="container container_small">
                 <button class="button" id="button" onclick="">
                     <img src="images/icon_addproject.png"  width="30em" alt=""> Legge inn funksjoner
@@ -76,10 +76,10 @@
                             {% endif %}
 
                             {#HVIS ADMIN, REDIGER KNAPP#}
-                            {% if User.isAdmin %}
+                            {% if user.isAdmin %}
                             <td><button class="buttons miniButtons" id="miniButtons"
                                         onclick="location.href='projects_editProject.php?projectid={{ project.getProjectID()}}';">
-                                    <img src="" alt=""> Rediger
+                                    Rediger
                                 </button></td>
                             {% endif %}
                         </tr>

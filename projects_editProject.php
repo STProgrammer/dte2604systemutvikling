@@ -76,12 +76,12 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('remove_members') && XsrfProtection::verifyMac("Project remove members")) {
+    else if ($request->request->has('remove_member') && XsrfProtection::verifyMac("Project remove member")) {
         if ($projectManager->removeMember($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: ?failedtoaddtasks");
+            header("Location: ?failedtoremovemembers");
             exit();
         }
     }

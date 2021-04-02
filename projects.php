@@ -3,14 +3,6 @@
 require_once "includes.php";
 define('FILENAME_TAG', 'image');
 
-    if (!isset($db)) {
-        echo $twig->render('error.twig', array('msg' => 'No database connected!'));
-    }
-    if (empty($twig)) {
-        echo $twig->render('error.twig', array('msg' => 'Twig not working!'));
-    }
-$user = $session->get('User');
-
 if ($user) {
     $ProjectManager = new ProjectManager($db, $request, $session);
     $projects = $ProjectManager->getAllProjects();
