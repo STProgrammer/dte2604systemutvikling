@@ -268,8 +268,12 @@ WHERE Groups.projectName = :projectName;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             if ($stmt->execute()) {
                 $groupId = $this->db->lastInsertId();
-                $this->NotifyUser("En gruppe ble lagt til prosjektet");
-                return true;
+                if ($this->addEmployees($groupId)) {
+                    $this->NotifyUser("En gruppe ble lagt til prosjektet");
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 $this->NotifyUser("Feil ved å legge til gruppe");
                 return false;
@@ -278,6 +282,29 @@ WHERE Groups.projectName = :projectName;");
             $this->NotifyUser("Feil ved å legge til gruppe", $e->getMessage());
             return false;
         }
+    }
+
+    public function addEmployees($groupID)
+    {
+        $users = $this->request->request->get('groupMembers');
+        try {
+            $stmt = $this->db->prepare("INSERT IGNORE INTO UsersAndGroups (groupID, userID) VALUES (:groupID, :userID);");
+            if (is_array($users)) {
+                foreach ($users as $userID) {
+                    $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT);
+                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+                $this->notifyUser("Medlemmer ble lagt til");
+            } else {
+                $this->notifyUser("Fikk ikke legge til brukere");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Fikk ikke legge til brukere", $e->getMessage());
+            return false;
+        }
+        return true;
     }
 
     public function getGroups($projectName) : array {
@@ -365,7 +392,7 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
     //DELETE PROJECT
-    public function deleteProject(string $projectName) : bool
+    public function deleteProject(String $projectName) : bool
     {
         $projectLeader = $this->request->request->get('projectLeader');
         try {

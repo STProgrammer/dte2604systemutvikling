@@ -50,7 +50,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
         }
     }
     else if ($request->request->has('project_delete') && $user->isAdmin()) {
-        if ($projectManager->deleteProject($request->query->get('projectName')) && XsrfProtection::verifyMac("Delete project")) {
+        if ($projectManager->deleteProject($projectName) && XsrfProtection::verifyMac("Delete project")) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
