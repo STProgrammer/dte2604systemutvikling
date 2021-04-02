@@ -229,7 +229,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
     {
         $tasks = $this->request->request->get('dependentTasks');
         try {
-            $stmt = $this->db->prepare("DELETE FROM TaskDependencies WHERE firstTask = :firstTask and secondTask = :taskId);");
+            $stmt = $this->db->prepare("DELETE FROM TaskDependencies WHERE firstTask = :firstTask and secondTask = :taskId;");
             if (is_array($tasks)) {
                 foreach ($tasks as $task) {
                     $stmt->bindParam(':firstTask', $task, PDO::PARAM_INT);
