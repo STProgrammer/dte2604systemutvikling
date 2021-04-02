@@ -74,7 +74,7 @@ class HourManager
         try {
             $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID 
                       and startTime BETWEEN '01.01.2020' and NOW() ORDER BY endTime DESC LIMIT 30 
-                      LEFT JOIN (SELECT * FROM Tasks WHERE task.getTaskID == hours.taskID) ");
+                      LEFT JOIN (SELECT * FROM Tasks WHERE task.getTaskID = hours.taskID) ");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if ($allHoursForUserWithTask = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {

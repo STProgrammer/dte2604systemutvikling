@@ -10,14 +10,7 @@
 </head>
 <body>
 
-    {% if session.getFlashBag.has('header') %}
-        {% for header in session.getFlashBag.get('header', []) %}
-            <h3>{{ header }}</h3>
-        {% endfor %}
-        {% for message in session.getFlashBag.get('message', []) %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+
     <section class="loginn">
         <form action="login.php" method="post">
             <div>
@@ -42,5 +35,17 @@
 
         </form>
     </section>
+<section>
+    <div class="container container_big_long text">
+        {% if session.getFlashBag.has('header') %}
+            {% for header in session.getFlashBag.get('header', []) %}
+                <h3>{{ header }}</h3>
+            {% endfor %}
+            {% for message in session.getFlashBag.get('message', []) %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</section>
 </body>
 </html>
