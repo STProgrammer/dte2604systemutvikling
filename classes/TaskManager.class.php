@@ -443,9 +443,43 @@ LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependen
         }
     }
 
-    
 
-
+    public function deleteTask($taskId, $parentTaskId) : bool
+    {
+        if (!is_null($parentTaskId)) {
+            try {
+                $stmt = $this->db->prepare("DELETE FROM Tasks Where taskID = :taskID;
+                UPDATE Tasks SET estimatedTime = (SELECT SUM(estimatedTime) total FROM Tasks WHERE parentTask = :parentTaskID) WHERE taskID = :parentTaskID");
+                $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
+                $stmt->bindParam(':parentTaskID', $parentTaskId, PDO::PARAM_INT);
+                if ($stmt->execute()) {
+                    $this->notifyUser("Oppgave ble slettet");
+                    return true;
+                } else {
+                    $this->notifyUser("Fikk ikke slette oppgave");
+                    return false;
+                }
+            } catch (Exception $e) {
+                $this->notifyUser("Fikk ikke slette oppgave", $e->getMessage());
+                return false;
+            }
+        } else {
+            try {
+                $stmt = $this->db->prepare("DELETE FROM Tasks Where taskID = :taskID;");
+                $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
+                if ($stmt->execute()) {
+                    $this->notifyUser("Oppgave ble slettet");
+                    return true;
+                } else {
+                    $this->notifyUser("Fikk ikke slette oppgave");
+                    return false;
+                }
+            } catch (Exception $e) {
+                $this->notifyUser("Fikk ikke slette oppgave", $e->getMessage());
+                return false;
+            }
+        }
+    }
 
 
 

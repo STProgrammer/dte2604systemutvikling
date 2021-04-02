@@ -53,7 +53,7 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
         }
     }
     else if ($request->request->has('subtask_add') && XsrfProtection::verifyMac("Add subtask")) {
-        if ($taskManager->addSubTask($projectName, $task->getParentTask(), $task->getGroupID())) {
+        if ($taskManager->addSubTask($projectName, $task->getTaskID(), $task->getGroupID())) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
@@ -95,6 +95,15 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
             exit();
         } else {
             header("Location: ?failedtoremovedependenttasks=1");
+            exit();
+        }
+    }
+    else if ($request->request->has('task_delete') && XsrfProtection::verifyMac("Delete task")) {
+        if ($taskManager->deleteTask($taskId, $task->getParentTask())) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtodeletetask=1");
             exit();
         }
     }
