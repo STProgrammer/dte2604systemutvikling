@@ -22,6 +22,68 @@ class HourManager
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
+
+    // GET ALL TASKS
+    public function getAllTasks($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
+                                $timeWorked = null, $activated = null, $location = null, $absenceType = null,
+                                $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null, $orderBy = null) : array {
+        $tasks = array();
+        $query = 'SELECT Hours.*, CONCAT(workers.firstName, " ", workers.lastName, " (", workers.username, ")") as whoWorkedName, 
+hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
+FROM Hours
+LEFT JOIN Users as workers on workers.userID = Hours.whoWorked
+LEFT JOIN Tasks as hourTasks on hourTasks.taskID = Hours.taskID
+LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE 1';
+        $params = array();
+        if (!is_null($taskId)) {
+            $query .= " AND Tasks.hasSubtask = :hasSubtask";
+            $params[':hasSubtask'] = $taskId;
+        }
+        if (!is_null($whoWorked)) {
+            $query .= " AND Tasks.projectName = :projectName";
+            $params[':projectName'] = $whoWorked;
+        }
+        if (!is_null($phaseId)) {
+            $query .= " AND Tasks.phaseID = :phaseID";
+            $params[':phaseID'] = $phaseId;
+        }
+        if (!is_null($startTime)) {
+            $query .= " AND Tasks.groupID = :groupID";
+            $params[':groupID'] = $startTime;
+        }
+        if (!is_null($endTime)) {
+            $query .= " AND Tasks.status = :status";
+            $params[':status'] = $endTime;
+        }
+        if (!is_null($timeWorked)) {
+            $query .= " AND Tasks.mainResponsible = :mainResponsible";
+            $params[':mainResponsible'] = $timeWorked;
+        }
+        if (!is_null($activated)) {
+            $query .= " AND Tasks.parentTask = :parentTask";
+            $params[':parentTask'] = $activated;
+        }
+        if (!is_null($orderBy)) {
+            $query .= " ORDER BY ".$orderBy;
+        }
+        try {
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute($params);
+            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $tasks;
+            }
+            else {
+                $this->notifyUser("Oppgaver ble ikke funnet", "Kunne ikke hente oppgaver");
+                return $tasks;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return $tasks;
+        }
+    }
+
+
     // GET LAST HOURS FOR LOGGED IN USER
     public function getLastHoursForUser($userID): array
     {

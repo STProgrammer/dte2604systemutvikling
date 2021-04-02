@@ -181,6 +181,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             $stmt->bindParam(':parentTask', $parentTask, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
                 $taskId = $this->db->lastInsertId();
+                $stmt->closeCursor();
                 if ($this->addDependencies($taskId)) {
                     $this->NotifyUser("En deloppgave ble lagt til");
                     return true;
@@ -308,13 +309,17 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
 
 
     // GET SECOND TASKS
-    public function getNonDependentTasks($taskId) : array {
+    public function getNonDependentTasks($task) : array {
+        $projectName = $task->getProjectName();
+        $taskId = $task->getTaskID();
         $dependentTasks = array();
         try {
-            $stmt = $this->db->prepare('SELECT TaskDependencies.*, Tasks.*
-FROM TaskDependencies
-LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependencies.firstTask != :taskID AND TaskDependencies.secondTask != :taskID ORDER BY Tasks.taskName;');
+            $stmt = $this->db->prepare('SELECT * FROM Tasks WHERE taskID 
+                              NOT IN(SELECT firstTask FROM TaskDependencies WHERE secondTask = :taskID) 
+                      AND taskID NOT IN(SELECT secondTask FROM TaskDependencies WHERE firstTask = :taskID) 
+                      AND taskID != :taskID AND projectName = :projectName;');
             $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
+            $stmt->bindPAram(':projectName', $projectName, PDO::PARAM_STR);
             $stmt->execute();
             if($dependentTasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
                 return $dependentTasks;

@@ -20,7 +20,7 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
 
     $tasksItIsDependentOn = $taskManager->getTasksItIsDependentOn($taskId);
     $dependentTasks = $taskManager->getDependentTasks($taskId);
-    $nonDependentTasks = $taskManager->getNonDependentTasks($taskId);
+    $nonDependentTasks = $taskManager->getNonDependentTasks($task);
 
     $parentTask = $taskManager->getTask($task->getParentTask());
     $tasks = $taskManager->getAllTasks(projectName: $projectName);

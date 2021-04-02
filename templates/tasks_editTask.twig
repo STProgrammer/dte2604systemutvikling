@@ -257,7 +257,7 @@
                         <th>Status</th>
                         <th>Se detaljer / endre</th>
                     </tr>
-                    {% for task in depententTasks %}
+                    {% for task in dependentTasks %}
                         <tr>
                             <td>{{ task.getTaskName() }}</td>
                             <td>{{ task.groupName }}</td>
@@ -312,7 +312,7 @@
                     <div class="wrapper">
                         <br><select name="dependentTasks[]" id="dependent_tasks" class="form-control" multiple onfocus='this.size=10;'
                                     onblur='this.size=10;' onchange='this.size=10; this.blur();'>
-                            {% for task in dependentTasks %}
+                            {% for task in tasksItIsDependentOn %}
                                 <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
                                 </option>
                             {% endfor %}
