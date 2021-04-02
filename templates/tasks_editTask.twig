@@ -156,10 +156,10 @@
 
             <div id="text">
                 <form method="post" id="change_group_form">
-                    <br><label>Velg gruppe:</label>
+                    <br><label for="choose-group">Velg gruppe:</label>
                     <br>
                     <div class="wrapper">
-                        <select name="group" id="" class="form-control" onfocus='this.size=10;' required
+                        <select name="group" id="choose-group" class="form-control" onfocus='this.size=10;' required
                                 onblur='this.size=10;'
                                 onchange='this.size=10; this.blur();'>
                             <option disabled selected value> -- velg en gruppe -- </option>
@@ -188,7 +188,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <input type="hidden" value="{{ getMac("Change main responsible") }}" name="XSRFPreventionToken">
+                    <input type="hidden" value="{{ getMac("Change main responsible or phase") }}" name="XSRFPreventionToken">
                     <br><input type="submit" name="main_responsible_change" id="reg_btn" value="Endre hovedansvarlig">
                 </form>
             </div>
@@ -208,7 +208,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <input type="hidden" value="{{ getMac("Change phase") }}" name="XSRFPreventionToken">
+                    <input type="hidden" value="{{ getMac("Change main responsible or phase") }}" name="XSRFPreventionToken">
                     <br><input type="submit" name="phase_change" id="reg_btn" value="Endre fase">
                 </form>
             </div>

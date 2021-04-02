@@ -30,7 +30,71 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: ?failedtoaddtasks");
+            header("Location: ?failedtoaddtasks=1");
+            exit();
+        }
+    }
+    else if ($request->request->has('task_status_edit') && XsrfProtection::verifyMac("Edit task status")) {
+        if ($taskManager->editStatus($taskId)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtoedittaskstatus=1");
+            exit();
+        }
+    }
+    else if ($request->request->has('reestimate') && XsrfProtection::verifyMac("Re-estimate")) {
+        if ($taskManager->reEstimate($taskId, $task->getParentTask())) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtoreestimatetask=1");
+            exit();
+        }
+    }
+    else if ($request->request->has('subtask_add') && XsrfProtection::verifyMac("Add subtask")) {
+        if ($taskManager->addSubTask($projectManager, $task->getParentTask())) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtoaddsubtask=1");
+            exit();
+        }
+    }
+    else if ($request->request->has('group_change') && XsrfProtection::verifyMac("Change group")) {
+        if ($taskManager->changeGroup($taskId)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtoedittaskstatus=1");
+            exit();
+        }
+    }
+    else if (($request->request->has('main_responsible_change') or $request->request->has('phase_change'))
+        && XsrfProtection::verifyMac("Change main responsible or phase")) {
+        if ($taskManager->editTask($task)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?taskedited=1");
+            exit();
+        }
+    }
+    else if ($request->request->has('add_dependent_tasks') && XsrfProtection::verifyMac("Add dependent tasks")) {
+        if ($taskManager->addDependencies($taskId)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtoadddependenttasks=1");
+            exit();
+        }
+    }
+    else if ($request->request->has('remove_dependent_tasks') && XsrfProtection::verifyMac("Remove dependent tasks")) {
+        if ($taskManager->removeDependencies($taskId)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ?failedtoremovedependenttasks=1");
             exit();
         }
     }

@@ -9,6 +9,7 @@ class Project {
     private $finishTime;
     private $status;
     private $customer;
+    private $activePhase;
     private bool $isAcceptedByAdmin;
 
     public function __construct() {
@@ -127,12 +128,32 @@ class Project {
     }
 
     /**
+     * @return mixed
+     */
+    public function getActivePhase()
+    {
+        return $this->activePhase;
+    }
+
+    /**
+     * @param mixed $activePhase
+     */
+    public function setActivePhase($activePhase): void
+    {
+        $this->activePhase = $activePhase;
+    }
+
+
+
+    /**
      * @return bool
      */
     public function isAcceptedByAdmin(): bool
     {
         return $this->isAcceptedByAdmin;
     }
+
+
 
     /**
      * @param bool $isAcceptedByAdmin

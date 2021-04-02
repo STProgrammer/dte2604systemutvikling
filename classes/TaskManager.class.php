@@ -85,7 +85,6 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
     // GET ALL TASKS
     public function getTask($taskId)
     {
-        $task = null;
         $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
 groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
 FROM Tasks
@@ -97,17 +96,17 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
             $stmt->execute();
-            if( $task = $stmt->fetchObject("Task")) {
+            if($task = $stmt->fetchObject("Task")) {
                 return $task;
             }
             else {
                 $this->notifyUser("Oppgaver ble ikke funnet", "Kunne ikke hente oppgaver");
-                return $task;
+                return null;
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getTask()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
-            return $task;
+            return null;
         }
     }
 
@@ -143,33 +142,25 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
         }
     }
 
-    public function editMainTask($projectName): bool //returns boolean value
+    public function editTask(Task $task): bool //returns boolean value
     {
-        $taskName = $this->request->request->get('taskName');
-        $phaseId = $this->request->request->get('phaseID', null);
-        $groupId = $this->request->request->get('groupID', null);
+        $taskId = $task->getTaskID();
+        $phaseId = $this->request->request->getInt('phaseID', $task->getPhaseID());
+        $mainResponsible = $this->request->request->getInt('mainResponsible', $task->getMainResponsible());
         try {
-            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, projectName, phaseID, groupID, hasSubtask)
-              VALUES (:taskName, :projectName, :phaseID, :groupID, 1);");
-            $stmt->bindParam(':taskName', $taskName, PDO::PARAM_STR, 100);
-            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
+            $stmt = $this->db->prepare("UPDATE Tasks SET phaseID = :phaseID, mainResponsible = :mainResponsible WHERE taskID = :taskID;");
+            $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':mainResponsible', $mainResponsible, PDO::PARAM_INT, 100);
             $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
-            $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
-                $taskId = $this->db->lastInsertId();
-                if ($this->addDependencies($taskId)) {
-                    $this->NotifyUser("En oppgave ble lagt til");
-                    return true;
-                } else {
-                    $this->NotifyUser("En oppgave ble lagt til");
-                    return true;
-                }
+                $this->NotifyUser("Oppgave ble endret");
+                return true;
             } else {
-                $this->NotifyUser("Oppgave ble ikke oprettet");
+                $this->NotifyUser("Oppgave ble ikke endret");
                 return false;
             }
         } catch (PDOException $e) {
-            $this->NotifyUser("Oppgave ble ikke opprettet", $e->getMessage());
+            $this->NotifyUser("Oppgave ble ikke endret", $e->getMessage());
             return false;
         }
     }
@@ -179,30 +170,30 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
     {
         $taskName = $this->request->request->get('taskName');
         $phaseId = $this->request->request->get('phaseID', null);
-        $groupId = $this->request->request->getInt('estimate', 0);
+        $estimate = $this->request->request->getInt('estimate', 0);
         try {
-            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, projectName, phaseID, groupID, estimatedTime, hasSubtask)
-              VALUES (:taskName, :projectName, :phaseID, :groupID, :estimate, 1);");
+            $stmt = $this->db->prepare("INSERT INTO `Tasks` (taskName, projectName, phaseID, parentTask, estimatedTime, hasSubtask)
+              VALUES (:taskName, :projectName, :phaseID, :parentTask, :estimate, 0;");
             $stmt->bindParam(':taskName', $taskName, PDO::PARAM_STR, 100);
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
-            $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
             $stmt->bindParam(':estimate', $estimate, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':parentTask', $parentTask, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
                 $taskId = $this->db->lastInsertId();
                 if ($this->addDependencies($taskId)) {
-                    $this->NotifyUser("En oppgave ble lagt til");
+                    $this->NotifyUser("En deloppgave ble lagt til");
                     return true;
                 } else {
-                    $this->NotifyUser("En oppgave ble lagt til");
+                    $this->NotifyUser("En deloppgave ble lagt til");
                     return true;
                 }
             } else {
-                $this->NotifyUser("Oppgave ble ikke oprettet");
+                $this->NotifyUser("Deloppgave ble ikke opprettet");
                 return false;
             }
         } catch (PDOException $e) {
-            $this->NotifyUser("Oppgave ble ikke opprettet", $e->getMessage());
+            $this->NotifyUser("Deloppgave ble ikke opprettet", $e->getMessage());
             return false;
         }
     }
@@ -230,6 +221,32 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             return false;
         }
     }
+
+
+    public function removeDependencies($taskId) : bool
+    {
+        $tasks = $this->request->request->get('dependentTasks');
+        try {
+            $stmt = $this->db->prepare("DELETE FROM TaskDependencies WHERE firstTask = :firstTask and secondTask = :taskId);");
+            if (is_array($tasks)) {
+                foreach ($tasks as $task) {
+                    $stmt->bindParam(':firstTask', $task, PDO::PARAM_INT);
+                    $stmt->bindParam(':taskId', $taskId, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+                $this->notifyUser("Avhengigheter ble fjernet");
+                return true;
+            } else {
+                $this->notifyUser("Fikk ikke fjerne avhengigheter");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Fikk ikke fjerne avhengigheter", $e->getMessage());
+            return false;
+        }
+    }
+
+
 
 
     // GET FIRST TASKS
@@ -359,7 +376,7 @@ LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependen
         }
     }
 
-    public function editStatus($TaskId) : bool
+    public function editStatus($taskId) : bool
     {
         $status = $this->request->request->get('status');
         try {
@@ -380,7 +397,31 @@ LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependen
         }
     }
 
-    public function reEstimate($TaskId, $parentTaskId) : bool
+
+    public function changeGroup($taskId): bool //returns boolean value
+    {
+        $groupId = $this->request->request->get('groupID');
+        try {
+            $stmt = $this->db->prepare("UPDATE Tasks SET groupID = :groupID WHERE taskID = :taskID;
+                UPDATE Tasks SET groupID = :groupID WHERE parentTask = :taskID;");
+            $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
+            if ($stmt->execute()) {
+                $this->NotifyUser("Gruppe ble endret");
+                return true;
+            } else {
+                $this->NotifyUser("Gruppe ble ikke endret");
+                return false;
+            }
+        } catch (PDOException $e) {
+            $this->NotifyUser("Gruppe ble ikke endret", $e->getMessage());
+            return false;
+        }
+    }
+
+
+
+    public function reEstimate($taskId, $parentTaskId) : bool
     {
         $estimatedTime = $this->request->request->get('estimatedTime');
         try {
@@ -401,6 +442,8 @@ LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependen
             return false;
         }
     }
+
+
 
 
 
