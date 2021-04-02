@@ -169,14 +169,13 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
     public function addSubTask($projectName, $parentTask, $groupId): bool //returns boolean value
     {
         $taskName = $this->request->request->get('taskName');
-        $phaseId = $this->request->request->get('phaseID', null);
-        $estimate = $this->request->request->getInt('estimate', 0);
+        $estimate = $this->request->request->getInt('estimatedTime', 0);
         try {
-            $stmt = $this->db->prepare("INSERT INTO Tasks (taskName, projectName, phaseID, parentTask, groupID, estimatedTime, hasSubtask)
-              VALUES (:taskName, :projectName, :phaseID, :parentTask, :groupID, :estimate, 0);");
+            $stmt = $this->db->prepare("INSERT INTO Tasks (taskName, projectName, parentTask, groupID, estimatedTime, hasSubtask)
+              VALUES (:taskName, :projectName, :parentTask, :groupID, :estimate, 0);
+              UPDATE Tasks SET estimatedTime = (SELECT SUM(estimatedTime) total FROM Tasks WHERE parentTask = :parentTask) WHERE taskID = :parentTask");
             $stmt->bindParam(':taskName', $taskName, PDO::PARAM_STR, 100);
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
-            $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
             $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
             $stmt->bindParam(':estimate', $estimate, PDO::PARAM_INT, 100);
             $stmt->bindParam(':parentTask', $parentTask, PDO::PARAM_INT, 100);
@@ -444,10 +443,7 @@ LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID WHERE TaskDependen
         }
     }
 
-
-
-
-
+    
 
 
 
