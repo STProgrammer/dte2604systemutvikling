@@ -1,8 +1,8 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section id="timeregistreringer" class="timeregistreringer">
-    </section>
-    <section>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         {# Mine timeregistreringer fra gjeldende måned #}
         <div class="openContainerNoBorder text" id="timeTabell">
             <h5>Mine timeregistreringer fra gjeldende måned</h5>
@@ -14,7 +14,6 @@
                     <th>Starttid</th>
                     <th>Slutttid</th>
                     <th>Lokasjon</th>
-                    <th>Kommentar</th>
                     <th>Endre</th>
                 </tr>
                 {% for hours in Hour %}
@@ -29,16 +28,65 @@
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
                         <td> {{ hours.getLocation }}</td>
-                        <td> {{ hours.Comment }}</td>
-                        <td><button class="buttons miniButtons" id="miniButtons"
+                        <td>
+                            <button class="buttons miniButtons" id="miniButtons"
                                     onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
                                 <img src="" alt=""> Rediger
-                            </button></td>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" rowspan="2" id="comment_btn" class="comment_btn"><i>Kommentar (trykk for å endre): </i>{{ hours.Comment }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" rowspan="1" id="comment_form_show1" class="comment_form_show1">
+                            {# Vis hele kommentaren #}
+                                {{ hours.Comment }}
+                        </td>
+                        <td colspan="4" id="comment_form_show" class="comment_form_show">
+                            {# Legg til kommentar #}
+                            <div class="container container_addComment text" id="add_comment">
+                                <form method="post" id="add_comment">
+                                    <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45
+                                           required/>
+                                    <label for="comment">Endre kommentar: </label>
+                                    <textarea id="comment" rows="3" name="comment"
+                                              required>{{ Hour.getComment }}</textarea>
+                                    <input type="hidden" value="{{ getMac("Edit Comment") }}"
+                                           name="XSRFPreventionToken">
+                                    <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
-    </section>
+        <script>
+            $(document).ready(function () {
+                $('.comment_form_show').hide();
+                $('.comment_form_show1').hide();
+                $('.comment_btn_back').hide();
+                $('.comment_btn').show();
 
-    </div>
+                $('.comment_btn').click(
+                    function () {
+                        $('.comment_form_show').fadeIn(2000);
+                        $('.comment_form_show1').fadeIn(2000);
+                        $('.comment_btn').hide();
+                        $('.comment_btn_back').fadeIn(2000);
+                    });
+                $('.comment_btn_back').click(
+                    function () {
+                        $('.comment_form_show').hide();
+                        $('.comment_form_show1').hide();
+                        $('.comment_btn_back').hide();
+                        $('.comment_btn').fadeIn(2000);
+                    });
+            });
+        </script>
+    </section>
 {% endblock %}
