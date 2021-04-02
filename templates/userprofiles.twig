@@ -18,17 +18,10 @@
             </div>
                 {% endif %}
         {% endif %}
+    </section>
         <section>
             <h5>Alle brukere og administratorer</h5>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h3>{{ header }}</h3>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-                {# session->getFlashBag->clear(); //sletter flashbagmeldinger #}
-            {% endif %}
+
             <div class="text">
                 <table class="table" id="table">
                     <tr>
@@ -94,5 +87,15 @@
                 </table>
             </div>
         </section>
-    </section>
+    <div class="container container_big_long text">
+        {% if session.getFlashBag.has('header') %}
+            {% for header in session.getFlashBag.get('header', []) %}
+                <h3>{{ header }}</h3>
+            {% endfor %}
+            {% for message in session.getFlashBag.get('message', []) %}
+                <p>{{ message }}</p>
+            {% endfor %}
+            {# session->getFlashBag->clear(); //sletter flashbagmeldinger #}
+        {% endif %}
+    </div>
 {% endblock %}
