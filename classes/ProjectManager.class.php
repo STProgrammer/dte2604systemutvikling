@@ -268,10 +268,8 @@ WHERE Groups.projectName = :projectName;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             if ($stmt->execute()) {
                 $groupId = $this->db->lastInsertId();
-                if ($this->addEmployees($groupId)) {
-                    $this->NotifyUser("En gruppe ble lagt til prosjektet");
-                    return true;
-                }
+                $this->NotifyUser("En gruppe ble lagt til prosjektet");
+                return true;
             } else {
                 $this->NotifyUser("Feil ved å legge til gruppe");
                 return false;
