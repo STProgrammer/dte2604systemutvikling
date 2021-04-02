@@ -193,7 +193,6 @@ div.container_addComment { width: 50em; height: 8em;
     border: none; background: none; box-shadow: none;
     padding: 0.1em; margin: 0.1em;
 }
-
 div.openContainerNoBorder {
     margin-left: 1em;
 }
@@ -487,6 +486,11 @@ td#comment_btn {
 td#comment_form_show {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     cursor: pointer; display: none;
+}
+td#comment_form_show1 {
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    cursor: pointer; white-space: pre-line; word-wrap:break-word;
+    vertical-align: top; alignment: top;
 }
 td#comment_btn_back {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;

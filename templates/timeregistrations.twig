@@ -39,11 +39,9 @@
                         <td colspan="7" rowspan="2" id="comment_btn" class="comment_btn"><i>Kommentar (trykk for å endre): </i>{{ hours.Comment }}</td>
                     </tr>
                     <tr>
-                        <td colspan="4" rowspan="3" id="comment_form_show1" class="comment_form_show1">
+                        <td colspan="3" rowspan="1" id="comment_form_show1" class="comment_form_show1">
                             {# Vis hele kommentaren #}
-                            <div class="container container_addComment text" id="add_comment">
                                 {{ hours.Comment }}
-                            </div>
                         </td>
                         <td colspan="4" id="comment_form_show" class="comment_form_show">
                             {# Legg til kommentar #}
@@ -62,7 +60,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
+                        <td colspan="7" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
                     </tr>
                 {% endfor %}
             </table>
@@ -79,14 +77,14 @@
                         $('.comment_form_show').fadeIn(2000);
                         $('.comment_form_show1').fadeIn(2000);
                         $('.comment_btn').hide();
-                        $('.comment_btn_back').show();
+                        $('.comment_btn_back').fadeIn(2000);
                     });
                 $('.comment_btn_back').click(
                     function () {
-                        $('.comment_form_show').fadeOut(1000);
-                        $('.comment_form_show1').fadeOut(1000);
-                        $('.comment_btn_back').fadeOut(1000);
-                        $('.comment_btn').show();
+                        $('.comment_form_show').hide();
+                        $('.comment_form_show1').hide();
+                        $('.comment_btn_back').hide();
+                        $('.comment_btn').fadeIn(2000);
                     });
             });
         </script>
