@@ -1,22 +1,23 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="employee_dashboard" id="employee_dashboard">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        {#KNAPP - REGISTRER INN#}
+        {# KNAPP - REGISTRER INN #}
         <div class="container container_registrer_inn">
             <button id="button" class="button" onclick="">
                 <img src="images/icon_time.png" width="40pt"> Registrer inn
             </button>
         </div>
 
-        {#KNAPP - REGISTRER PAUSE#}
+        {# KNAPP - REGISTRER PAUSE #}
         <div class="container container_pause">
             <button id="button" class="button" onclick="">
                 <img src="images/icon_time.png" width="40pt"> Pause
             </button>
         </div>
 
-        {#KNAPP - REGISTRER UT#}
+        {# KNAPP - REGISTRER UT #}
         <div class="container container_registrer_ut">
             <button id="button" class="button" onclick="">
                 <img src="images/icon_time.png" width="40pt"> Registrer ut
@@ -24,7 +25,8 @@
         </div>
     </section>
     <section>
-        {#Mine siste fem timeregistreringer#}
+
+        {# Mine siste fem timeregistreringer #}
         <div class="openContainerNoBorder text" id="timeTabell">
             <h5>Mine timeregistreringer fra gjeldende måned</h5>
             <table class="table" id="table">
@@ -35,9 +37,10 @@
                     <th>Starttid</th>
                     <th>Slutttid</th>
                     <th>Lokasjon</th>
-                    <th>Kommentar</th>
+                    <th>Endre</th>
                 </tr>
-                {% for hours in Hour %}
+                {#  hours verdien her kommer fra getAllHoursForUser($userID); så kun denne brukerens kommentarer #}
+                {% for hours in hours %}
                     <tr>
                         {% for task in tasks %}
                             {% if task.getTaskID() == hours.taskID %}
@@ -49,14 +52,74 @@
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
                         <td> {{ hours.getLocation }}</td>
-                        <td> {{ hours.Comment }}</td>
+                        <td>
+                            <button class="buttons miniButtons" id="miniButtons"
+                                    onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
+                                <img src="" alt=""> Rediger
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" rowspan="2" id="comment_btn" class="comment_btn"><i><b>Kommentar: </b></i>
+                            {{ hours.Comment }} <i><b>Endre</b></i></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" rowspan="1" id="comment_form_show1" class="comment_form_show1">
+                            {# Vis hele kommentaren #}
+                            {{ hours.Comment }}
+                        </td>
+
+                        <td colspan="4" id="comment_form_show" class="comment_form_show">
+                            {# Endre kommentar #}
+                            <div class="container container_addComment text" id="add_comment">
+                                <form method="post" id="edit_comment_hour">
+                                    <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45
+                                           required/>
+                                    <label for="comment">Endre kommentar: </label>
+                                    <textarea id="comment" cols="2" rows="4" name="comment"
+                                              required>{{ Hour.getComment }}</textarea>
+                                    <input type="hidden" value="{{ getMac("Edit Comment") }}"
+                                           name="XSRFPreventionToken">
+                                    <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour"
+                                               value="Endre kommentar">
+                                </form>
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="7" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
                     </tr>
                 {% endfor %}
             </table>
+            {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
+            <script>
+                $(document).ready(function () {
+                    $('.comment_form_show').hide();
+                    $('.comment_form_show1').hide();
+                    $('.comment_btn_back').hide();
+                    $('.comment_btn').show();
+
+                    $('.comment_btn').click(
+                        function () {
+                            $('.comment_form_show').fadeIn(2000);
+                            $('.comment_form_show1').fadeIn(2000);
+                            $('.comment_btn').hide();
+                            $('.comment_btn_back').fadeIn(2000);
+                        });
+                    $('.comment_btn_back').click(
+                        function () {
+                            $('.comment_form_show').hide();
+                            $('.comment_form_show1').hide();
+                            $('.comment_btn_back').hide();
+                            $('.comment_btn').fadeIn(2000);
+                        });
+                });
+            </script>
         </div>
     </section>
     <section>
-        {#Feilmeldinger#}
+        {# Feilmeldinger #}
         <div class="container container_big_long text">
             <h5>Tilbakemeldinger fra database</h5>
             {% if session.getFlashBag.has('header') %}

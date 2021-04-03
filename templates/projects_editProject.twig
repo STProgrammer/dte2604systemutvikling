@@ -351,7 +351,7 @@
 
 
     {# FEILMELDINGER FRA DATABASE #}
-    <div class="container container_big_long text">
+    <div class="container container_big_long text scroll">
         <h5>Tilbakemeldinger fra database</h5>
         {% if session.getFlashBag.has('header') %}
             {% for header in session.getFlashBag.get('header', []) %}

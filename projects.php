@@ -7,11 +7,6 @@ if ($user) {
     $ProjectManager = new ProjectManager($db, $request, $session);
     $projects = $ProjectManager->getAllProjects();
 
-    //TODO Antall medlemmer
-    //$members = $ProjectManager->getProjectMembers($request->query->get('projectName'));
-    //$members = $ProjectManager->getProjectMembers($request->query->get('projectName'));
-    //$membersCount = count($members);
-
     $userManager = new UserManager($db, $request, $session);
     $users = $userManager->getAllUsers("lastName");
 

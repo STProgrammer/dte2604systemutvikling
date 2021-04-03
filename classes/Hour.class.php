@@ -21,6 +21,7 @@ class Hour {
 
     public function getHourID(){return $this->hourID;}
     public function getTaskID(){return $this->taskID;}
+    public function getWhoWorked(){return $this->whoWorked;}
     public function getStartTime(){return $this->startTime;}
     public function getEndTime(){return $this->endTime;}
     public function getLocation(){return $this->location;}

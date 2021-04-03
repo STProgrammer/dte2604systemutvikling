@@ -9,15 +9,6 @@
     <link rel="icon" type="image/png" href="images/favicon.ico">
 </head>
 <body>
-
-    {% if session.getFlashBag.has('header') %}
-        {% for header in session.getFlashBag.get('header', []) %}
-            <h3>{{ header }}</h3>
-        {% endfor %}
-        {% for message in session.getFlashBag.get('message', []) %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
     <section class="loginn">
         <form action="login.php" method="post">
             <div>
@@ -26,7 +17,8 @@
             <div class="button button_long">
                 <label for="user"> Brukernavn </label>
                 <input type="text" name="username" id="user" required>
-            </div><br>
+            </div>
+            <br>
             <div class="button button_long">
                 <label for="password"> Passord </label>
                 <input type="password" name="password" id="password" required>
@@ -41,6 +33,19 @@
             </div>
 
         </form>
+    </section>
+
+    <section>
+        <div class="container container_big_long text">
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h3>{{ header }}</h3>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
     </section>
 </body>
 </html>

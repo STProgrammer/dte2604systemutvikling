@@ -18,11 +18,21 @@ if ($user) {
     $hourID = $request->query->get('hourID');
     $userID = $user->getUserId($user);
     $hours = $hourManager->getAllHoursForUser($userID);
-    $hour = $hourManager->getHour($hourID);
+    $hour = $hourManager->getHour($userID);
 
-    echo $twig->render('timeregistrationsEdit.twig',
-        array('Hour' => $hour, 'Hours' => $hours, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session,
-            'user' => $user, 'tasks' => $tasks, 'hourID' => $hourID));
+    if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
+        if ($hourManager->editComment($hour)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
+            exit();
+        }
+    }else {
+        echo $twig->render('timeregistrationsEdit.twig',
+                array('hour' => $hour, 'Hours' => $hours, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session,
+                    'user' => $user, 'tasks' => $tasks, 'hourID' => $hourID));
+    }
 
 } else {
     header("location: login.php");

@@ -11,42 +11,53 @@
         </div>
 
         {# Endre tid #}
-        <div class="container container_menu_form_hour text" id="add_user_to_project">
-            <form method="post" id="new_task_form">
+        <div class="container container_menu_form_hour text" id="edit_hour">
+            <form method="post" id="edit_hour">
                 <b>Endre Timeegistrering: </b><br>
 
                 <br><label for="hourID">Timeregistrerings Id: </label>
                 <br><input type="text" name="hourID" value="{{ hourID }}" maxlength=45 required id="hourID"/>
                 <br><label for="taskID">TaskId: </label>
-                <br><input type="text" name="taskID" value="{{ Hour.getTaskID }}" maxlength=45 required id="taskID"/>
+                <br><input type="text" name="taskID" value="{{ hour.getTaskID }}" maxlength=45 required id="taskID"/>
                 <br><label for="startTime">Starttid: </label>
-                <br><input type="text" name="startTime" value="{{ Hour.getStartTime }}" maxlength=45 required id="startTime"/>
+                <br><input type="text" name="startTime" value="{{ hour.getStartTime }}" maxlength=45 required id="startTime"/>
                 <br><label for="endTime">Sluttid: </label>
-                <br><input type="text" name="endTime" value="{{ Hour.getEndTime }}" maxlength=45 required id="endTime"/>
+                <br><input type="text" name="endTime" value="{{ hour.getEndTime }}" maxlength=45 required id="endTime"/>
                 <br><label for="phaseId">Fase id: </label>
-                <br><input type="text" name="phaseId" value="{{ Hour.getPhaseID }}" maxlength=45 required id="phaseId"/>
+                <br><input type="text" name="phaseId" value="{{ hour.getPhaseID }}" maxlength=45 required id="phaseId"/>
                 <br>En melding vil bli sent til din leder, før endring blir godkjent i systemet.<br> Skriv i kommentar hvorfor du endrer timen.
 
                 <input type="hidden" value="{{ getMac("Edit Hour") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="edit_hour" id="reg_btn" value="Edit Hour">
+                <br><input type="submit" name="edit_hour" id="edit_hour" value="Edit Hour">
             </form>
         </div>
 
         {# Endre kommentar #}
-        <div class="container container_menu_form_hour text" id="add_user_to_project">
-            <form method="post" id="new_task_form">
-                <b>Endre Timeegistrering: </b><br>
-
-                <br><label for="hourID">Timeregistrerings Id: </label>
-                <br><input type="text" name="hourID" value="{{ hourID }}" maxlength=45 required id="hourID"/>
-                <br><label for="comment">Kommentar: </label>
-                <br><input type="text" name="comment" value="{{ Hour.getComment }}" required id="comment"/>
-
-                <input type="hidden" value="{{ getMac("Edit comment") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="edit_comment" id="reg_btn" value="Edit comment">
+        <div class="container container_menu_form text" id="edit_comment_hour">
+            <form method="post" id="edit_comment_hour">
+                <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45
+                       required/>
+                <label for="comment">Endre kommentar: </label>
+                <textarea id="commentbig" cols="2" rows="4" name="comment"
+                          required>{{ hour.getComment }}</textarea>
+                <input type="hidden" value="{{ getMac("Edit Comment") }}"
+                       name="XSRFPreventionToken">
+                <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
             </form>
         </div>
-
     </section>
+
+    {# FEILMELDINGER FRA DATABASE #}
+    <div class="container container_big_long text">
+        <h5>Tilbakemeldinger fra database</h5>
+        {% if session.getFlashBag.has('header') %}
+            {% for header in session.getFlashBag.get('header', []) %}
+                <h6>{{ header }}</h6>
+            {% endfor %}
+            {% for message in session.getFlashBag.get('message', []) %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
 {% endblock %}
 

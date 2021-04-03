@@ -10,55 +10,61 @@
                 </button>
             </div>
         {% endif %}
-        <section>
-            <h5>Alle brukere og administratorer</h5>
+    </section>
+    <section>
+        <h5>Alle brukere og administratorer</h5>
+
+        <div class="text">
+            <table class="table" id="table">
+                <tr>
+                    <th>Gruppenavn</th>
+                    <th>Gruppeleder</th>
+                    <th>Prosjekt</th>
+                    <th>Antall medlemmer</th>
+                    <th>Gruppetype</th>
+                    {% if user.isAdmin() or user.isProjectLeader() %}
+                        <th>Se detaljer og rediger</th>
+                    {% endif %}
+                </tr>
+                {% for grp in groups %}
+                    <tr>
+                        <td>{{ grp.getGroupName }}</td>
+                        <td>{{ grp.leaderName }}</td>
+                        <td>{{ grp.getProjectName }}</td>
+                        <td>{{ grp.nrOfMembers }}</td>
+
+                        {% if grp.isAdmin() %}
+                            <td>Admin gruppe</td>
+                        {% else %}
+                            <td>Vanlig gruppe</td>
+                        {% endif %}
+
+
+                        {% if user.isAdmin %}
+                            <td>
+                                <button class="buttons miniButtons" id="miniButtons"
+                                        onclick="window.location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
+                                    <img src="" alt=""> Rediger
+                                </button>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+    <section>
+        {# FEILMELDINGER FRA DATABASE #}
+        <div class="container container_big_long text">
+            <h5>Tilbakemeldinger fra database</h5>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
-                    <h3>{{ header }}</h3>
+                    <h6>{{ header }}</h6>
                 {% endfor %}
                 {% for message in session.getFlashBag.get('message', []) %}
                     <p>{{ message }}</p>
                 {% endfor %}
-                {# session->getFlashBag->clear(); //sletter flashbagmeldinger #}
             {% endif %}
-            <div class="text">
-                <table class="table" id="table">
-                    <tr>
-                        <th>Gruppenavn </th>
-                        <th>Gruppeleder </th>
-                        <th>Prosjekt</th>
-                        <th>Antall medlemmer</th>
-                        <th>Gruppetype</th>
-                        {% if user.isAdmin() or user.isProjectLeader() %}
-                            <th>Se detaljer og rediger</th>
-                        {% endif %}
-                    </tr>
-                    {% for grp in groups %}
-                        <tr>
-                            <td>{{ grp.getGroupName }}</td>
-                            <td>{{ grp.leaderName }}</td>
-                            <td>{{ grp.getProjectName }}</td>
-                            <td>{{ grp.nrOfMembers }}</td>
-
-                            {% if grp.isAdmin() %}
-                                <td>Admin gruppe</td>
-                            {% else %}
-                                <td>Vanlig gruppe</td>
-                            {% endif %}
-
-
-                            {% if user.isAdmin %}
-                                <td>
-                                    <button class="buttons miniButtons" id="miniButtons"
-                                            onclick="window.location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
-                                        <img src="" alt=""> Rediger
-                                    </button>
-                                </td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </section>
+        </div>
     </section>
 {% endblock %}

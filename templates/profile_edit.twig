@@ -28,16 +28,7 @@
     <section id="profile_edit" class="profile_edit">
         <div class="openContainerNoBorder text" id="table_edit">
             <h3>Min profil</h3>
-            <div class>
-                {% if session.getFlashBag.has('header') %}
-                    {% for header in session.getFlashBag.get('header', []) %}
-                        <h3>{{ header }}</h3>
-                    {% endfor %}
-                    {% for message in session.getFlashBag.get('message', []) %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
+
                 <form method="post" id="profile_edit_form">
                     <div id="text">
                         <h5>Endre personalia</h5>
@@ -114,5 +105,15 @@
     </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="user_register_check.js"></script>
+    <div class>
+        {% if session.getFlashBag.has('header') %}
+            {% for header in session.getFlashBag.get('header', []) %}
+                <h3>{{ header }}</h3>
+            {% endfor %}
+            {% for message in session.getFlashBag.get('message', []) %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
 
 {% endblock %}

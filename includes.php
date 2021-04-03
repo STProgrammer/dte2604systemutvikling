@@ -1,5 +1,6 @@
 <?php
 
+    //phpinfo();
 
     $homedir = __DIR__ . '/';
 
