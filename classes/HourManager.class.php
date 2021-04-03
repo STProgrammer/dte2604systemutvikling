@@ -7,6 +7,7 @@ class HourManager
     private $request;
     private $session;
 
+    // CONSTRUCTOR -------------------------------------------------
     public function __construct(PDO $db, \Symfony\Component\HttpFoundation\Request $request, \Symfony\Component\HttpFoundation\Session\Session $session)
     {
         $this->dbase = $db;
@@ -14,7 +15,7 @@ class HourManager
         $this->session = $session;
     }
 
-
+    // FEILMELDINGER -------------------------------------------------
     private function notifyUser($strHeader, $strMessage = "")
     {
         //$this->session->getFlashBag()->clear();
@@ -33,7 +34,7 @@ class HourManager
             if ($lastHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $lastHoursForUser;
             } else {
-                $this->notifyUser("Ingen timer funnet.", "Kunne ikke hente timene.");
+                $this->notifyUser("Ingen timer funnet.", "getLastHoursForUser");
                 return array();
             }
         } catch (Exception $e) {
@@ -58,7 +59,7 @@ class HourManager
             if ($allHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $allHoursForUser;
             } else {
-                $this->notifyUser("Ingen timer funnet.", "Kunne ikke hente timene.");
+                $this->notifyUser("Ingen timer funnet.", "getAllHoursForUser");
                 return array();
             }
         } catch (Exception $e) {
@@ -154,26 +155,27 @@ class HourManager
                 return $hours;
             }
             else {
-                $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente oppgaver");
+                $this->notifyUser("Timer ble ikke funnet", "getAllHoursForUserWithTask");
                 return $hours;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllHours()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, på getAllHoursForUserWithTask()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
             return $hours;
         }
     }
 
-    // GET ALL HOURS --------------------------------------------------------------------------------
-    public function getAllHours() : array {
+    // GET ALL Hours With All Users --------------------------------------------------------------------------------
+    public function getAllHours() {
+        $hoursAll = array();
         try {
-            $stmt = $this->dbase->prepare("SELECT * FROM Hours");
+            $stmt = $this->dbase->prepare("SELECT * FROM Hours ORDER BY startTime DESC");
             $stmt->execute();
-            if( $hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-                return $hours;
+            if( $hoursAll = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $hoursAll;
             }
             else {
-                $this->notifyUser("Comments not found", "Kunne ikke hente kommentarer");
+                $this->notifyUser("Kunne ikke hente kommentarer, ", "getAllHours()");
                 //return new Project();
                 return array();
             }
@@ -200,11 +202,11 @@ class HourManager
     }
 
     // GET HOUR ---------------------------------------------------------------------------------
-    public function getHour($hourID)
+    public function getHour($userID)
     {
         try {
-            $stmt = $this->dbase->prepare("SELECT * FROM Hours Where hourID= :hourID");
-            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            $stmt = $this->dbase->prepare("SELECT * FROM Hours Where whoWorked= :userID");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if( $hour = $stmt->fetchObject("Hour")) {
                 return $hour;
@@ -225,29 +227,30 @@ class HourManager
     {
         $hourID = $hour->getHourID();
         $comment = $this->request->request->get('comment', $hour->getComment());
+//        $hourID = $this->request->request->get('hourID');
+//        $comment = $this->request->request->get('comment');
         try {
             $stmt = $this->dbase->prepare(query: "UPDATE Hours SET comment = :comment WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':comment', $comment);
             if ($stmt->execute()) {
                 $stmt->closeCursor();
-                $this->notifyUser('Comment changed');
+                $this->notifyUser('Comment changed', 'editComment()');
                 return true;
             } else {
-                $this->notifyUser('Comment not changed, failed!');
+                $this->notifyUser('Comment not changed, failed!', 'editComment()');
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change comment, exeption: ", $e->getMessage());
+            $this->notifyUser("Failed to change comment, exeption on 'editComment()': ", $e->getMessage());
             return false;
         }
     }
 
-//CHANGE TIME USER
-public
-function changeTimeForUser()
-{
+    //CHANGE TIME USER ----------------------------------------------------------------------------------------
+    public function changeTimeForUser()
+    {
 
-}
-//END CHANGE TIME USER
+    }
+
 }

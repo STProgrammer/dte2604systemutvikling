@@ -1,5 +1,6 @@
 /**Bruk felles containere, buttons og andre felles ting så langt det går----*/
 body { background-color:#E7E7E7;
+
 }
 /**----------- HEADER ------------------------------------------*/
 .header img { display: inline-block; padding-left: 1em;
@@ -71,7 +72,7 @@ small screens (display the links vertically instead of horizontally) */
 
 
 /**-------------  ADMINISTRATOR_DASHBOARD  ---------*/
-section.admin_dashboard { margin-top: 6em; margin-bottom: 4em; }
+section.admin_dashboard { margin-top: 6em; }
 
 /**-------------  PROSJEKTLEDER_DASHBOARD  --------*/
 section.prosjektleder_dashboard { margin-top: 6em; }
@@ -151,10 +152,10 @@ div.container{
     height: 5em;
     padding: 1em;
     margin: 1em;
-    border: 0.1em solid #8f9091;
+    border: 0.1em solid #e0dbdb;
     box-sizing: border-box;
     border-radius: 1em;
-    background: white;
+    background: #ffffff;
     box-shadow: 0.1em 0.1em 0.1em #acabab;
     overflow: hidden;
 }
@@ -172,13 +173,13 @@ div.container_registrer_ut { width: 20em; height: 5em;
 }
 div.container_small_long { width: 24em; height: 5em;
 }
-div.container_medium { width: 22em; height: 9em;
+div.container_medium { width: 22em; height: 10em;
 }
 div.container_medium_long { width: 30em; height: 10em;
 }
 div.container_medium_high { width: 40em; height: 30em;
 }
-div.container_big { width: 50em; height: 40em;
+div.container_big { width: 60em; height: auto; min-height: 20em; margin-bottom: 2em;
 }
 div.container_big_long { margin-top: 3em; margin-bottom: 3em; width: 40em; height: auto; min-height: 100%;
     border: none; box-shadow: none; background: #dbd9d9;
@@ -199,11 +200,13 @@ div.openContainerNoBorder {
 div.container_menu { width: 30em; height: 30em; background-color: #eeeeee; border: none;
 }
 div.container_menu_form { width: auto; height: auto; background-color: #eeeeee; border: none;
+    min-height: 20em; position: fixed; z-index:99;
+    /*https://stackoverflow.com/questions/3948445/how-to-make-div-on-top-of-all-other-control*/
 }
 div.container_menu_form_hour { width: 50em; height: 50em; background-color: #eeeeee; border: none;
     overflow-y: scroll; scroll-behavior: smooth;
 }
-div.container_menu_form_project { width: 30em; height: 40em; background-color: #eeeeee; border: none;
+div.container_menu_form_project { width: 29em; height: 42em; background-color: #eeeeee; border: none;
     overflow-y: scroll; scroll-behavior: smooth;
 }
 div.container_menu_lang { width: 60em; height: 30em;  border: none;
@@ -214,6 +217,8 @@ div.container_menu_lang_WithBorder { width: 60em; height: 40em;  border: none;
 }
 div.noBorder_NoBackground_NoShadow {
     border: none; background: none; box-shadow: none;
+}
+div.scroll { overflow-y: scroll; scroll-behavior: smooth;
 }
 /**-----------  BUTTONS  -------------*/
 .buttons {
@@ -362,8 +367,19 @@ input[type=text] {
 }
 textarea#comment {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    width: 60em;
+    width: 100%;
     height: 5em;
+    min-width: 100em;
+    padding: 0.1em 0.1em;
+    margin-left: 1em;
+    border: lightyellow;
+    background: white;
+    transition: width 0.4s ease-out;
+}
+textarea#commentbig {
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    width: 60em;
+    height: 10em;
     padding: 0.1em 0.1em;
     margin-left: 1em;
     border: lightyellow;
@@ -491,7 +507,7 @@ td#comment_form_show {
 }
 td#comment_form_show1 {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    white-space: pre-line;
+    white-space: pre-line; height: auto;
 }
 td#comment_btn_back {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
@@ -533,6 +549,11 @@ h6 { font-family: Segoe UI, serif; font-size: 0.8rem; color: #5f5a5a; margin: 0;
 }
 b { margin-left: 1em}
 
+p { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
+
+ul { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
+ol { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
+
 /* -------------LINK -----------------------*/
 a { font-family: Segoe UI, serif; color: #5f5a5a; font-size: 1rem;
 }
@@ -543,6 +564,24 @@ a:hover { color: lightyellow;
 .flash-notice { color: #a82828;
 }
 .top-login { float: left;
+}
+
+/**-----------SCROLLBAR---------------*/
+/* width */
+::-webkit-scrollbar {
+    width: 2em;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 /**-----------FOOTER---------------*/

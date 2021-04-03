@@ -13,13 +13,14 @@ $taskManager = new TaskManager($db, $request, $session);
 if ($user) {
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
-    $hours = $hourManager->getAllHoursForUser($userID);
+
+    $hours = $hourManager->getAllHoursForUser($userID); //kun denne brukerens kommentarer
     $hourId = $request->query->getInt('hourID');
     $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($hourId);
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
-        if ($hourManager->editComment($hourId)) {
+        if ($hourManager->editComment($hour)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {

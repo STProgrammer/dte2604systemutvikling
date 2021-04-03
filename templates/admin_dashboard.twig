@@ -1,35 +1,80 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="admin_dashboard" id="admin_dashboard">
+        {# Databaseoppføringer #}
         <div class="container container_medium">
-                <h4>Databaseoppføringer i dag</h4>
-                <div class="text">
-                    Body text goes here
+            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
+            <h6>Databaseoppføringer i dag</h6>
+            <div class="text">
+                Databaseoppføring i dag: 20 oppføringer
             </div>
         </div>
-        <div class="container container_medium" id="container_medium">
-            <h4>Total timeregistrering</h4>
-            <div class="text">
-                Body text goes here
+
+        {# Totale timeregistreringer i dag #}
+        <div class="container container_medium">
+            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
+            <h6>Totale timeregistreringer i dag</h6>
+            <div class="text_bigtime">
+                20:40
             </div>
         </div>
-        <div class="container container_medium" id="container_medium">
-            <h4>Nye brukere til godkjenning</h4>
+
+        {# Feilmeldinger #}
+        <div class="container container_medium_long scroll">
+            <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/>
+            <h6>Feilmeldinger i dag</h6>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {# Registrer fravær / Rediger timeføringer #}
+        <div class="container container_medium">
+            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
+            <h6>Registrer fravær / </h6>
+            <h6>Rediger timeføringer</h6>
+        </div>
+
+        {# Nye brukere til godkjenning #}
+        <div class="container container_medium">
+            <img src="images/icon_verify_user.png" width="40px" alt="Icon"/>
+            <h6>Nye brukere til godkjenning</h6>
             <div class="text">
-                Body text goes here
+                Brukere som skal godkjennes kommer her
             </div>
         </div>
-        <div class="container container_medium" id="container_medium">
-            <h4>Rapporterte feilmeldinger</h4>
+
+        {# Prosjekter og oppgaver #}
+        <div class="container container_medium_long scroll">
+            <img src="images/icon_task.png" width="40px" alt="Icon"/>
+            <h6>Prosjekter og oppgaver</h6>
             <div class="text">
-                Body text goes here
+                Se prosjekter og oppgaver
             </div>
         </div>
-        <div class="container container_big">
-            <h4>Kommentarer fra brukere</h4>
-            <div class="text">
-                Body text goes here
-            </div>
+
+    </section>
+
+    <section>
+
+        {# Siste kommentarer fra brukere #}
+        <div class="container container_big text scroll">
+            <img src="images/icon_kommentar.png" width="40px" alt="Icon"/>
+            Siste kommentarer fra brukere<br><br>
+            {% for hoursAll in hoursAll %}{% for users in users %}
+                {% if hoursAll.whoWorked == users.userID %}
+                    <h6>{{ users.firstname }} {{ users.lastname }}</h6>
+                    <ul>{{ hoursAll.comment }}</ul><br>
+                {% endif %}
+            {% endfor %}{% endfor %}
         </div>
     </section>
 {% endblock %}
+    {# REFERENCES #}
+    {# Adobe XD icons #}
+    {# icon_task.png: https://icon-icons.com/icon/task/120291   #}

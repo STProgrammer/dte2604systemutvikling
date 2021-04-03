@@ -13,10 +13,10 @@ $taskManager = new TaskManager($db, $request, $session);
 if ($user) {
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
+
     $hours = $hourManager->getAllHoursForUser($userID);
-    $hourId = $request->query->getInt('hourID');
     $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
-    $hour = $hourManager->getHour($hourId);
+    $hour = $hourManager->getHour($userID);
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
@@ -28,10 +28,9 @@ if ($user) {
         }
     }
     else {
-
-            echo $twig->render('timeregistrations.twig',
-                array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,
-                    'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks));
+        echo $twig->render('timeregistrations.twig',
+            array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,
+                'userID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks));
 
     }
 } else {
