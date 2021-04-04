@@ -486,7 +486,24 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             }
         }
     }
-
+    // GET ALL TASKSTYPES ------------------------------------------------------------------
+    public function getCategoryName() : array
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM TaskCategories");
+            $stmt->execute();
+            if( $categoryName = $stmt->fetchObject(PDO::FETCH_CLASS,"categoryName")) {
+                return $categoryName;
+            }
+            else {
+                $this->notifyUser("tasktypes not found", "Kunne ikke hente tasktypes");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getTaskTypes()", $e->getMessage());
+            return array();
+        }
+    }
 
 
 }

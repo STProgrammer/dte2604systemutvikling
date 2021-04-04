@@ -8,12 +8,12 @@
             <form method="post" id="register_time_form">
                 <table>
                     <tr>
-                        <th colspan="2"><label>Oppgavenavn: </label></th>
+                        <th colspan="2"><label>Oppgavekategori: </label></th>
                     </tr>
-                    {% for task in tasks %}
+                    {% for categories in categoryName %}
                         <tr>
                             <td><input type="radio" id="task" name="status" value="1" required></td>
-                            <td><label for="task">{{ task.getTaskName }} </label></td>
+                            <td><label for="task">{{ categories.getCategoryName }} </label></td>
                         </tr>
                     {% endfor %}
                 </table>
