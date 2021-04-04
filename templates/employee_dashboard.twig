@@ -4,12 +4,22 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         {# KNAPP - REGISTRER INN #}
-        <div class="container container_registrer_inn">
-            <button id="button" class="button" onclick="">
-                <img src="images/icon_time.png" width="40pt"> Registrer inn
-            </button>
+        <div id="text">
+            <form method="post" id="register_time_form">
+                <table>
+                    <tr>
+                        <th colspan="2"><label>Oppgavenavn: </label></th>
+                    </tr>
+                    {% for task in tasks %}
+                        <tr>
+                            <td><input type="radio" id="task" name="status" value="1" required></td>
+                            <td><label for="task">{{ task.getTaskName }} </label></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
+            </form>
         </div>
-
         {# KNAPP - REGISTRER PAUSE #}
         <div class="container container_pause">
             <button id="button" class="button" onclick="">
@@ -39,7 +49,7 @@
                     <th>Lokasjon</th>
                     <th>Endre</th>
                 </tr>
-                {#  hours verdien her kommer fra getAllHoursForUser($userID); så kun denne brukerens kommentarer #}
+                {# hours verdien her kommer fra getAllHoursForUser($userID); så kun denne brukerens kommentarer #}
                 {% for hours in hours %}
                     <tr>
                         {% for task in tasks %}
@@ -121,7 +131,7 @@
     <section>
         {# Feilmeldinger #}
         <div class="container container_big_long text">
-            <h5>Tilbakemeldinger fra database</h5>
+            <h2>Tilbakemeldinger fra database</h2>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
                     <h3>{{ header }}</h3>

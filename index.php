@@ -13,7 +13,6 @@
         $users = $userManager->getAllUsers('dateRegistered');
 
         $hoursAll = $hourManager->getAllHours();
-        $hour = $hourManager->getLastHoursForUser($user->getUserId());
         $hours = $hourManager->getAllHoursForUser($userID);
         $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
 
@@ -24,7 +23,7 @@
                 echo $twig->render('admin_dashboard.twig',
                     array( 'session' => $session, 'request' => $request,
                         'user' => $user, 'users' => $users,
-                        'hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,
+                        'hours' => $hours, 'hourWithTask' => $hourWithTask,
                         'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
                         'tasks' => $tasks));
             } catch (LoaderError | RuntimeError | SyntaxError $e) {
@@ -36,7 +35,7 @@
                 echo $twig->render('projectleader_dashboard.twig',
                     array( 'session' => $session, 'request' => $request,
                         'user' => $user, 'users' => $users,
-                        'hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,
+                        'hours' => $hours, 'hourWithTask' => $hourWithTask,
                         'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
                         'tasks' => $tasks));
             } catch (LoaderError | RuntimeError | SyntaxError $e) {
@@ -48,7 +47,7 @@
                 echo $twig->render('groupleader_dashboard.twig',
                     array( 'session' => $session, 'request' => $request,
                         'user' => $user, 'users' => $users,
-                        'hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,
+                        'hours' => $hours, 'hourWithTask' => $hourWithTask,
                         'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
                         'tasks' => $tasks));
             } catch (LoaderError | RuntimeError | SyntaxError $e) {
@@ -60,7 +59,7 @@
                 echo $twig->render('employee_dashboard.twig',
                     array( 'session' => $session, 'request' => $request,
                         'user' => $user, 'users' => $users,
-                        'hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,
+                        'hours' => $hours, 'hourWithTask' => $hourWithTask,
                         'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
                         'tasks' => $tasks));
             } catch (LoaderError | RuntimeError | SyntaxError $e) {

@@ -23,26 +23,7 @@ class HourManager
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
-    // GET LAST HOURS FOR LOGGED IN USER -------------------------------------------------
-    public function getLastHoursForUser($userID): array
-    {
-        $lastHoursForUser = null;
-        try {
-            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID 
-                                            ORDER BY endTime DESC LIMIT 5");
-            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-            $stmt->execute();
-            if ($lastHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-                return $lastHoursForUser;
-            } else {
-                $this->notifyUser("Ingen timer funnet.", "getLastHoursForUser");
-                return array();
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllHoursForUser()", $e->getMessage());
-            return array();
-        }
-    }
+
 
     // GET ALL TASKS -------------------------------------------------------------------------------------
     public function getHours($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
@@ -140,27 +121,6 @@ class HourManager
             return $hours;
         }
     }
-
-
-//    // GET LAST HOURS FOR LOGGED IN USER
-//    public function getLastHoursForUser($userID): array
-//{
-//    $lastHoursForUser = null;
-//    try {
-//        $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID ORDER BY endTime DESC LIMIT 5");
-//        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-//        $stmt->execute();
-//        if ($lastHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-//            return $lastHoursForUser;
-//        } else {
-//            $this->notifyUser("Ingen timer funnet.", "getLastHoursForUser");
-//            return array();
-//        }
-//    } catch (Exception $e) {
-//        $this->NotifyUser("En feil oppstod, på getAllHoursForUser()", $e->getMessage());
-//        return array();
-//    }
-//}
 
     // GET ALL HOURS FOR LOGGED IN USER ------------------------------------------------------------
     public function getAllHoursForUser($userID): array
@@ -307,16 +267,34 @@ class HourManager
     }
 
     // REGISTER TIME FOR USER ---------------------------------------------------------------------------
-    public function registerTimeForUser($userID)
+    public function registerTimeForUser($userID) : bool
     {
+        $taskID = $this->request->request->get('taskID');
+        $location = $this->request->request->get('location');
+        $phaseID = $this->request->request->get('phaseID');
+        $comment = $this->request->request->get('comment');
+        $taskType = $this->request->request->get('taskType');
         try {
-            $stmt = $this->dbase->prepare("INSERT INTO Hours (startTime, whoWorked) VALUES (NOW(), :userID)");
+            $stmt = $this->dbase->prepare("INSERT INTO Hours (`taskID`, `whoWorked`, `startTime`, 'endTime', 
+                   `location`, `phaseID`, `absenceType`, `overtimeType`, `comment`, `isChanged`, `stampingStatus`, `taskType`) 
+                   VALUES (:taskID, :userID, NOW(), NOW(), :location, :phaseID, NULL, NULL, :comment, 0, 0, :taskType)");
+            $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':location', $location, PDO::PARAM_STR);
+            $stmt->bindParam(':phaseID', $phaseID, PDO::PARAM_INT);
+            $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+            $stmt->bindParam(':taskType', $taskType, PDO::PARAM_STR);
             $stmt->execute();
-
+            if ($stmt->rowCount() == 1) {
+                $this->notifyUser("Ny timereg ble registrert", "");
+                return true;
+            } else {
+                $this->notifyUser("Failed to register time!", "");
+                return false;
+            }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på registerTimeForUser()", $e->getMessage());
-            return array();
+            return false;
         }
     }
 
