@@ -29,7 +29,7 @@ if ($user) {
         }
     }
     //Registrer time
-    elseif ($request->request->has('register_time')) {
+    if ($request->request->has('register_time')) {
         if ($hourManager->registerTimeForUser($userID)) {
             header("Location: employee_dashboard.php?registeredhour=1");
             exit();
@@ -38,7 +38,7 @@ if ($user) {
             exit();
         }
     }
-    elseif ($user) {
+    if ($user) {
 
         echo $twig->render('employee_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,

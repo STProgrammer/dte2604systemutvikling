@@ -486,7 +486,8 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             }
         }
     }
-    // GET ALL TASKSTYPES ------------------------------------------------------------------
+
+    // GET ALL TASKTYPES ------------------------------------------------------------------
     public function getCategoryName() : array
     {
         try {
@@ -496,11 +497,11 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return $categoryName;
             }
             else {
-                $this->notifyUser("tasktypes not found", "Kunne ikke hente tasktypes");
+                $this->notifyUser("categories not found", "Kunne ikke hente kategorier");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getTaskTypes()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, på getCategoryName()", $e->getMessage());
             return array();
         }
     }

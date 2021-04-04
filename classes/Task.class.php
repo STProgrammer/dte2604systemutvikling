@@ -16,6 +16,8 @@ class Task {
     private $estimatedTime;
     private bool $hasSubtask;
     private $mainResponsible;
+    private $categoryName;
+
 
     public function __construct() {
     }
@@ -47,4 +49,6 @@ class Task {
     public function setHasSubtask(bool $hasSubtask): void{$this->hasSubtasks = $hasSubtask;}
     public function getMainResponsible(){return $this->mainResponsible;}
     public function setMainResponsible($mainResponsible): void{$this->mainResponsible = $mainResponsible;}
+    public function getCategoryName(){return $this->categoryName;}
+    public function setCategoryName($categoryName): void{$this->categoryName = $categoryName;}
 }
