@@ -47,6 +47,7 @@
                     <th>Starttid</th>
                     <th>Slutttid</th>
                     <th>Lokasjon</th>
+                    <th>Kommentar</th>
                     <th>Endre</th>
                 </tr>
                 {# hours verdien her kommer fra getAllHoursForUser($userID); så kun denne brukerens kommentarer #}
@@ -62,6 +63,7 @@
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
                         <td> {{ hours.getLocation }}</td>
+                        <td> {{ hours.getComment }}</td>
                         <td>
                             <button class="buttons miniButtons" id="miniButtons"
                                     onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
@@ -69,63 +71,8 @@
                             </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="7" rowspan="2" id="comment_btn" class="comment_btn"><i><b>Kommentar: </b></i>
-                            {{ hours.Comment }} <i><b>Endre</b></i></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" rowspan="1" id="comment_form_show1" class="comment_form_show1">
-                            {# Vis hele kommentaren #}
-                            {{ hours.Comment }}
-                        </td>
-
-                        <td colspan="4" id="comment_form_show" class="comment_form_show">
-                            {# Endre kommentar #}
-                            <div class="container container_addComment text" id="add_comment">
-                                <form method="post" id="edit_comment_hour">
-                                    <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45
-                                           required/>
-                                    <label for="comment">Endre kommentar: </label>
-                                    <textarea id="comment" cols="2" rows="4" name="comment"
-                                              required>{{ Hour.getComment }}</textarea>
-                                    <input type="hidden" value="{{ getMac("Edit Comment") }}"
-                                           name="XSRFPreventionToken">
-                                    <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour"
-                                               value="Endre kommentar">
-                                </form>
-                            </div>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td colspan="7" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
-                    </tr>
                 {% endfor %}
             </table>
-            {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
-            <script>
-                $(document).ready(function () {
-                    $('.comment_form_show').hide();
-                    $('.comment_form_show1').hide();
-                    $('.comment_btn_back').hide();
-                    $('.comment_btn').show();
-
-                    $('.comment_btn').click(
-                        function () {
-                            $('.comment_form_show').fadeIn(2000);
-                            $('.comment_form_show1').fadeIn(2000);
-                            $('.comment_btn').hide();
-                            $('.comment_btn_back').fadeIn(2000);
-                        });
-                    $('.comment_btn_back').click(
-                        function () {
-                            $('.comment_form_show').hide();
-                            $('.comment_form_show1').hide();
-                            $('.comment_btn_back').hide();
-                            $('.comment_btn').fadeIn(2000);
-                        });
-                });
-            </script>
         </div>
     </section>
     <section>

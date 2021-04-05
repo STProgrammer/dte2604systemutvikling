@@ -91,7 +91,6 @@ section.timeregistreringer { margin-top: 6em; }
 
 section.edit_hour { margin-top: 6em; }
 
-
 /**-------------  BRUKERPROFILER  ---------------*/
 section.brukerprofiler { margin-top: 6em; }
 
@@ -190,7 +189,7 @@ div.container_center { display:block;
     height: 5em; box-shadow: none; border: none;
     /**margin-left: auto; margin-right: auto; width: 50%;*/
 }
-div.container_addComment { width: 50em; height: 8em;
+div.container_addComment { width: 100%; height: 6.5em;
     border: none; background: none; box-shadow: none;
     padding: 0.1em; margin: 0.1em;
 }
@@ -365,16 +364,18 @@ input[type=text] {
     border: none;
     transition: width 0.4s ease-out;
 }
+/*textarea {*/
+/*    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;*/
+/*    width: 40em;*/
+/*}*/
 textarea#comment {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 100%;
-    height: 5em;
-    min-width: 100em;
     padding: 0.1em 0.1em;
     margin-left: 1em;
     border: lightyellow;
     background: white;
-    transition: width 0.4s ease-out;
+
 }
 textarea#commentbig {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
@@ -383,7 +384,7 @@ textarea#commentbig {
     padding: 0.1em 0.1em;
     margin-left: 1em;
     border: lightyellow;
-    background: white;
+
 }
 input[type=email] {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
@@ -449,16 +450,10 @@ input[type=submit] {
     font-weight: bold;
 }
 input#edit_comment_hour {
-    font-family: Segoe UI, serif; color: white; font-size: 0.8rem;
-    background: #599871;
     height: 1em;
     padding: 0.1em 0.1em 1.4em 0.1em;
     margin: 0.5em 0.5em 0.5em 30em;
-    box-sizing: border-box;
-    border-radius: 0.5em;
-    border: none;
     cursor: pointer;
-    font-weight: bold;
 }
 input[type=submit] :hover {
       color: #11b54a;
@@ -501,13 +496,11 @@ td#comment_btn {
     background: #efeded;
     height: 2em;
 }
-td#comment_form_show {
-    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    display: none;
-}
-td#comment_form_show1 {
-    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    white-space: pre-line; height: auto;
+
+form#edit_comment_hour {
+    width: 65%;
+    margin-left: 12em;
+    margin-right: 5em;
 }
 td#comment_btn_back {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
@@ -526,7 +519,6 @@ tr:nth-child(even) { background-color: #f2f2f2;
     font-size: 0.8rem;
     margin: 0.5em;
 }
-
 
 /**-----------  TEXT  -----------------------*/
 /**padding:top right bottom left; */
