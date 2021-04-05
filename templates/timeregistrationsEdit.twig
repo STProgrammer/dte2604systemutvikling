@@ -10,6 +10,22 @@
             </button>
         </div>
 
+        {# Endre kommentar #}
+        <div class="container container_menu_form text" id="edit_comment_hour">
+            <form method="post" id="edit_comment_hour1">
+                <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45
+                       required/>
+                <label for="comment">Endre kommentar: </label>
+                <textarea id="commentbig" cols="2" rows="4" name="comment"
+                          required>{{ hour.getComment }}</textarea>
+                <input type="hidden" value="{{ getMac("Edit Comment") }}"
+                       name="XSRFPreventionToken">
+                <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
+            </form>
+        </div>
+    </section>
+
+    <section>
         {# Endre tid #}
         <div class="container container_menu_form_hour text" id="edit_hour">
             <form method="post" id="edit_hour">
@@ -32,21 +48,7 @@
             </form>
         </div>
 
-        {# Endre kommentar #}
-        <div class="container container_menu_form text" id="edit_comment_hour">
-            <form method="post" id="edit_comment_hour1">
-                <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45
-                       required/>
-                <label for="comment">Endre kommentar: </label>
-                <textarea id="commentbig" cols="2" rows="4" name="comment"
-                          required>{{ hour.getComment }}</textarea>
-                <input type="hidden" value="{{ getMac("Edit Comment") }}"
-                       name="XSRFPreventionToken">
-                <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
-            </form>
-        </div>
     </section>
-
     {# FEILMELDINGER FRA DATABASE #}
     <div class="container container_big_long text">
         <h5>Tilbakemeldinger fra database</h5>
