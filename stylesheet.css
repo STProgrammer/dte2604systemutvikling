@@ -202,6 +202,7 @@ div.container_menu_form { width: auto; height: auto; background-color: #eeeeee; 
     min-height: 20em; position: fixed; z-index:99;
     /*https://stackoverflow.com/questions/3948445/how-to-make-div-on-top-of-all-other-control*/
 }
+
 div.container_menu_form_hour { width: 50em; height: 50em; background-color: #eeeeee; border: none;
     overflow-y: scroll; scroll-behavior: smooth;
 }
@@ -501,6 +502,10 @@ form#edit_comment_hour {
     width: 65%;
     margin-left: 12em;
     margin-right: 5em;
+}
+
+form#edit_comment_hour1 {
+    width: auto;
 }
 td#comment_btn_back {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
