@@ -23,6 +23,17 @@
                 <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
             </form>
         </div>
+
+        {# Endre kommentar fra sjefen #}
+        <div class="container container_menu_form text" id="edit_comment_hour">
+            <form method="post" id="edit_comment_hour1" class="edit_comment_hour1">
+                <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45 required/>
+                <label for="commentBoss">Endre kommentar: </label>
+                <textarea id="commentbig" name="commentBoss" required>{{ hour.getCommentBoss() }}</textarea>
+                <input type="hidden" value="{{ getMac("Edit Comment Boss") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="edit_commentBoss_hour" id="edit_commentBoss_hour" value="Endre / legg til kommentar">
+            </form>
+        </div>
     </section>
 
     <section>

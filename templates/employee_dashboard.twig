@@ -48,7 +48,9 @@
                     <th>Slutttid</th>
                     <th>Lokasjon</th>
                     <th>Kommentar</th>
-                    <th>Endre</th>
+                    {% if user.isAdmin %}
+                        <th>Endre</th>
+                    {% endif %}
                 </tr>
                 {# hours verdien her kommer fra getAllHoursForUser($userID); så kun denne brukerens kommentarer #}
                 {% for hours in hours %}

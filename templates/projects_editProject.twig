@@ -10,7 +10,7 @@
 
         {# REDIGER PROSJEKT MENU #}
         <div class="container container_menu text" id="projekt_info">
-            <h3>Rediger prosjekt</h3>
+            <h3 id="bigColoredName">{{ project.getProjectName }}</h3>
             <br>Prosjekt: <b>{{ project.getProjectName }}</b><br>
             <br>Prosjekt Leder: <b>{{ project.leaderName }} </b><br>
             <br>Kunde: <b>{{ project.customerName }} </b><br>
@@ -45,7 +45,7 @@
 
         {# MEDLEMMER I DETTE PROSJEKTET #}
         <div class="container container_menu_lang text" id="project_members">
-            <br><label><b>Medlemmer i dette prosjektetet:</b></label></br>
+            <br><label id="oversikt"><b>Medlemmer i dette prosjektetet:</b></label></br>
             <table class="table">
                 <tr>
                     <th>Brukernavn</th>
@@ -71,7 +71,7 @@
 
         {# OPPGAVER I DETTE PROSJEKTET #}
         <div class="container container_menu_lang_WithBorder text" id="project_tasks">
-            <br><label for="project_tasks"><b>Oppgaver i dette prosjektet: </b></label>
+            <br><label for="project_tasks" id="oversikt"><b>Oppgaver i dette prosjektet: </b></label>
             <table class="table">
                 <tr>
                     <th>Navn</th>
@@ -110,7 +110,7 @@
         {# LEGG TIL NY OPPGAVE #}
         <div class="container container_menu_form_project text" id="add_user_to_project">
             <form method="post" id="new_task_form">
-                <b>Legg til ny oppgave: </b><br>
+                <b id="oversikt">Legg til ny oppgave: </b><br>
                 <br><label>Oppgavenavn: </label>
                 <br><input type="text" name="taskName" value="" placeholder="Oppgavenavn" maxlength=45 required
                            id="taskName"/>
@@ -139,7 +139,7 @@
 
         {# FASER I DETTE PROSJEKTET #}
         <div class="container container_menu_lang_WithBorder text" id="project_members">
-            <br><label><b>Faser i dette prosjektet:</b> </label></br>
+            <br><label id="oversikt"><b>Faser i dette prosjektet:</b> </label></br>
             <table class="table">
                 <tr>
                     <th>Fasenavn</th>
@@ -176,7 +176,7 @@
         {# FJERN BRUKERE FRA DETTE PROSJEKTET #}
         <div class="container container_menu_form_project text" id="remove_users_from_project">
             <form method="post" id="remove_group_members_form">
-                <br><label><b>Fjerne brukere fra prosjektet: </b></label>
+                <br><label id="oversikt"><b>Fjerne brukere fra prosjektet: </b></label>
                 <br>
                 <div class="wrapper">
                     <select name="projectMember" id="" class="form-control">
@@ -218,7 +218,7 @@
     {# ENDRE PROSJEKT #}
     <div class="container container_menu_form_project text" id="edit_project">
         <form method="post" id="project_edit_form">
-            <br><label for="customer"><b>Kunde: </b></label>
+            <label for="customer" id="oversikt"><b>Kunde: </b></label>
             <br><select name="customer" id="customer">
                 {% for customer in customers %}
                     <option value="{{ customer.getUserId() }}" {% if project.getCustomer() == customer.getUserId() %} selected {% endif %}>{{ customer.getLastName() }}
@@ -279,7 +279,7 @@
     {# LEGG TIL GRUPPE #}
     <div class="container container_menu_form_project text" id="add_user_to_project">
         <form method="post" id="group_register_form">
-            <label><b>Gruppenavn: </b></label>
+            <label id="oversikt"><b>Gruppenavn: </b></label>
             <br><input type="text" name="groupName" value="" placeholder="Gruppenavn" maxlength=45 required
                        id="groupName"/>
             {% if user.isAdmin %}
@@ -304,7 +304,7 @@
 
     {# LEGG TIL FASE #}
     <div class="container container_menu_form_project text" id="add_phase_to_project">
-        <b>Legg til ny fase</b>
+        <b id="oversikt">Legg til ny fase</b>
         <form method="post" id="phase_register_form">
             <br><label>Fasenavn: </label>
             <br><input type="text" name="phaseName" value="" placeholder="Fasenavn" maxlength=45 required

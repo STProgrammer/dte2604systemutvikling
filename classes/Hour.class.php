@@ -7,12 +7,14 @@ class Hour {
     private $whoWorked;
     private $startTime;
     private $endTime;
+    private $timeWorked;
     private bool $activated;
     private $location;
     private $phaseID;
     private $absenceType;
     private $overtimeType;
     private $comment;
+    private $commentBoss;
     private bool $isChanged;
     private bool $stampingStatus;
 
@@ -24,17 +26,20 @@ class Hour {
     public function getWhoWorked(){return $this->whoWorked;}
     public function getStartTime(){return $this->startTime;}
     public function getEndTime(){return $this->endTime;}
+    public function getTimeWorked(){return $this->timeWorked;}
     public function getLocation(){return $this->location;}
     public function getPhaseID(){return $this->phaseID;}
     public function getAbsenceType(){return $this->absenceType;}
     public function getOvertimeType(){return $this->overtimeType;}
     public function getComment(){return $this->comment;}
+    public function getCommentBoss(){return $this->commentBoss;}
 
     public function setHourID($hourID): void{$this->hourID = $hourID;}
     public function setTaskID($taskID): void{$this->taskID = $taskID;}
     public function setWhoWorked($whoWorked): void{$this->whoWorked = $whoWorked;}
     public function setStartTime($startTime): void{$this->startTime = $startTime;}
     public function setEndTime($endTime): void{$this->endTime = $endTime;}
+    public function setTimeWorked($timeWorked): void{$this->timeWorked = $timeWorked;}
     public function setActivated(bool $activated): void{$this->activated = $activated;}
     public function setLocation($location): void{$this->location = $location;}
     public function setPhaseID($phaseID): void{$this->phaseID = $phaseID;}

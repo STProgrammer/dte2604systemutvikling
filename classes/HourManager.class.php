@@ -319,13 +319,11 @@ class HourManager
         }
     }
 
-    //EDIT COMMENT --------------------------------------------------------------------------------
+    //EDIT COMMENT USER --------------------------------------------------------------------------------
     public function editComment($hour): bool
     {
         $hourID = $hour->getHourID();
         $comment = $this->request->request->get('comment', $hour->getComment());
-//        $hourID = $this->request->request->get('hourID');
-//        $comment = $this->request->request->get('comment');
         try {
             $stmt = $this->dbase->prepare(query: "UPDATE Hours SET comment = :comment WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
@@ -340,6 +338,29 @@ class HourManager
             }
         } catch (Exception $e) {
             $this->notifyUser("Failed to change comment, exeption on 'editComment()': ", $e->getMessage());
+            return false;
+        }
+    }
+
+    //EDIT COMMENT BOSS--------------------------------------------------------------------------------
+    public function editCommentBoss($hour): bool
+    {
+        $hourID = $hour->getHourID();
+        $commentBoss = $this->request->request->get('commentBoss', $hour->getCommentBoss());
+        try {
+            $stmt = $this->dbase->prepare(query: "UPDATE Hours SET commentBoss = :commentBoss WHERE hourID = :hourID;");
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            $stmt->bindParam(':commentBoss', $commentBoss);
+            if ($stmt->execute()) {
+                $stmt->closeCursor();
+                $this->notifyUser('Boss comment changed', 'editCommentBoss()');
+                return true;
+            } else {
+                $this->notifyUser('Comment not changed, failed!', 'editCommentBoss()');
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Failed to change comment, exeption on 'editCommentBoss()': ", $e->getMessage());
             return false;
         }
     }

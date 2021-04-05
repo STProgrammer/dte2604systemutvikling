@@ -193,6 +193,10 @@ div.container_addComment { width: 100%; height: 7em;
     border: none; background: none; box-shadow: none;
     padding: 0.1em; margin: 0.1em;
 }
+div#edit_commentBoss_hour { width: 100%; height: 6.5em;
+    border: none; background: none; box-shadow: none;
+    padding: 0.1em; margin: 0.1em;
+}
 div.openContainerNoBorder {
     margin-left: 1em;
 }
@@ -378,9 +382,18 @@ textarea#comment {
     background: white;
 
 }
+textarea#commentBoss {
+    font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
+    width: 100%;
+    padding: 0.1em 0.1em;
+    margin-left: 1em;
+    border: lightyellow;
+    background: white;
+
+}
 textarea#commentbig {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    width: 60em;
+    width: 40em;
     height: 10em;
     padding: 0.1em 0.1em;
     margin-left: 1em;
@@ -450,6 +463,18 @@ input[type=submit] {
     cursor: pointer;
     font-weight: bold;
 }
+input#edit_commentBoss_hour {
+    font-family: Segoe UI, serif; color: white; font-size: 0.8rem;
+    background: #599871;
+    width: 15em;
+    padding: 0.2em 18em 0.2em 3em;
+    margin: 0.2em 0.2em 0.2em 0em;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
 input#edit_comment_hour {
     height: 1em;
     padding: 0.1em 0.1em 1.4em 0.1em;
@@ -459,9 +484,12 @@ input#edit_comment_hour {
 input[type=submit] :hover {
       color: #11b54a;
 }
-label {
-    color: #4c4747;
-}
+label { color: #4c4747; }
+
+label#oversikt { color: olive; }
+
+b#oversikt { color: olive; }
+
 select{
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
@@ -509,7 +537,7 @@ form#edit_comment_hour1 {
 }
 td#comment_btn_back {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    cursor: pointer; text-align: center;
+    cursor: pointer;
 }
 
 tr:hover { background-color: #f5f5f5;
@@ -551,6 +579,9 @@ p { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 ul { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 ol { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 
+h3#bigColoredName {
+    color: darkgoldenrod; font-size: 1.5rem;
+}
 /* -------------LINK -----------------------*/
 a { font-family: Segoe UI, serif; color: #5f5a5a; font-size: 1rem;
 }

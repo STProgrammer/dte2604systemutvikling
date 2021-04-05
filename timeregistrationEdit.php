@@ -28,6 +28,14 @@ if ($user) {
             header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
             exit();
         }
+    }elseif ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
+        if ($hourManager->editCommentBoss($hour)) {
+            header("Location: ".$request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
+            exit();
+        }
     }else {
         echo $twig->render('timeregistrationsEdit.twig',
                 array('hour' => $hour, 'Hours' => $hours, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session,
