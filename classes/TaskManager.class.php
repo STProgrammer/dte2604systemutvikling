@@ -488,13 +488,13 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
     }
 
     // GET ALL TASKTYPES ------------------------------------------------------------------
-    public function getCategoryName() : array
+    public function getCategories() : array
     {
         try {
             $stmt = $this->db->prepare("SELECT * FROM TaskCategories");
             $stmt->execute();
-            if( $categoryName = $stmt->fetchObject(PDO::FETCH_CLASS,"categoryName")) {
-                return $categoryName;
+            if( $categories = $stmt->fetchAll()) {
+                return $categories;
             }
             else {
                 $this->notifyUser("categories not found", "Kunne ikke hente kategorier");
