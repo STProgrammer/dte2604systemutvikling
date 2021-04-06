@@ -18,12 +18,10 @@
             </form>
         </div>
 
-{#        #}{# KNAPP - REGISTRER PAUSE #}
-{#        <div class="container container_pause">#}
-{#            <button id="button" class="button" onclick="">#}
-{#                <img src="images/icon_time.png" width="40pt"> Pause#}
-{#            </button>#}
-{#        </div>#}
+
+        {% if timeregCheck.stampingStatus == 0  %}
+
+
 
         {# KNAPP - REGISTRER UT #}
         <div class="container container_registrer_ut">
@@ -31,6 +29,8 @@
                 <img src="images/icon_time.png" width="40pt"> Registrer ut
             </button>
         </div>
+
+        {% endif %}
     </section>
     <section>
 

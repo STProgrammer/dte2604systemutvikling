@@ -384,4 +384,24 @@ class HourManager
 
     }
 
+    public function checkIfActiveTimereg($userID) : array
+    {
+        try{
+            $stmt = $this->dbase->prepare(query: "SELECT activated, stampingStatus FROM Hours WHERE whoWorked = :userID ;");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($timeregCheck = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $timeregCheck;
+        } else {
+                $this->notifyUser("Kunne ikke hente status, ", "checkIfActiveTimereg()");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på checkIfActiveTimereg()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            //return new Project();
+            return array();
+        }
+    }
 }

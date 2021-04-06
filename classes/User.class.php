@@ -140,6 +140,14 @@ class User {
     public function isEmployee() : bool { return ($this->userType ==2); }
     public function isCustomer() : bool { return ($this->userType == 0); }
 
+    public function hasActiveTimeregistration() : bool {
+        /*
+         * PSEUDO JS:
+         * const timeregistration = getFromDB(Hour);
+         * const filtered = timeregistration.filter((timeregistration) => timeregistration.whoWorked === this.userID && timeregistration.isActivated )
+         * */
+    }
+
     public function setProjectLeader($isProjectLeader) { $this->isProjectLeader = $isProjectLeader; }
     public function setGroupLeader($isGroupLeader) { $this->isGroupLeader = $isGroupLeader; }
 
