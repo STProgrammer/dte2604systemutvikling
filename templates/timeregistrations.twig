@@ -1,98 +1,93 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section id="timeregistreringer" class="timeregistreringer">
+    </section>
 
-        {# Mine timeregistreringer fra gjeldende måned #}
+    <section>
+        <div class="container container_small">
+        <button id="button" class="button" title="Start tid"
+                onclick="window.location.href='timeregistration.php';">
+            <img src="images/icon_time.png" width="30em"> Start tid
+        </button>
+        </div>
+
+        <div class="container container_small">
+            <button id="button" class="button" title="Pause tid"
+                    onclick="window.location.href='timeregistration.php';">
+                <img src="images/icon_time.png" width="30em"> Pause tid
+            </button>
+        </div>
+
+        <div class="container container_small">
+            <button id="button" class="button" title="Stop tid"
+                    onclick="window.location.href='timeregistration.php';">
+                <img src="images/icon_time.png" width="30em"> Stop tid
+            </button>
+        </div>
+
+        <table>
+            <tr>
+                <td colspan="2">
+                    <label> Status: </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="radio" id="waiting" name="status" value="0" required>
+                </td>
+                <td>
+                    <label for="waiting">Selvstudier </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="radio" id="active" name="status" value="1" required>
+                </td>
+                <td>
+                    <label for="active">Kurs </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="radio" name="status" id="paused" value="2" required>
+                </td>
+                <td>
+                    <label for="paused">Møte </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="radio" name="status" id="paused" value="3" required>
+                </td>
+                <td>
+                    <label for="paused">Prosjekt arbeid </label>
+                </td>
+            </tr>
+        </table>
+        </div>
+
         <div class="openContainerNoBorder text" id="timeTabell">
-            <h5>Mine timeregistreringer fra gjeldende måned</h5>
+            <h4>Alle mine timeregistreringer</h4>
             <table class="table" id="table">
                 <tr>
-                    <th>Task Navn</th>
-                    <th>Hoved Task</th>
-                    <th>Prosjektnavn</th>
+                    <th>ID</th>
+                    <th>Task</th>
                     <th>Starttid</th>
                     <th>Slutttid</th>
-                    <th>Lokasjon</th>
-                    <th>Endre</th>
+                    <th>Kommentar</th>
                 </tr>
-                {% if user.isAdmin or user.isProjectLeader or user.getUserId == userID %}
-                {% for hours in hours %}
+                {% for hours in Hour %}
                     <tr>
-                        {% for task in tasks %}
-                            {% if task.getTaskID() == hours.taskID %}
-                                <td> {{ task.getTaskName }}</td>
-                                <td> {{ task.getParentTask }}</td>
-                                <td> {{ task.getProjectName }}</td>
-                            {% endif %}
-                        {% endfor %}
+                        <td> {{ hours.hourID }}</td>
+                        <td> {{ hours.taskID }}</td>
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
-                        <td> {{ hours.getLocation }}</td>
-                        <td>
-                            <button class="buttons miniButtons" id="miniButtons"
-                                    onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
-                                <img src="" alt=""> Rediger
-                            </button>
-                        </td>
+                        <td> {{ hours.Comment }}</td>
                     </tr>
-                    <tr>
-                        <td colspan="7" rowspan="1" id="comment_btn" class="comment_btn"><i><b>Kommentar: </b></i>
-                            {{ hours.Comment }}  <i><b>Endre</b></i></td>
-                    </tr>
-                    <tr>
-                        {# Endre kommentar #}
-                        <td colspan="6" rowspan="1" id="comment_form_show" class="comment_form_show">
-                            <div class="container container_addComment text" id="add_comment">
-                                <form method="post" id="edit_comment_hour" class="edit_comment_hour">
-                                    <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45 required/>
-                                    <label for="comment">Endre kommentar: </label>
-                                    <textarea id="comment" name="comment" required>{{ hour.getComment }}</textarea>
-                                    <input type="hidden" value="{{ getMac("Edit Comment") }}" name="XSRFPreventionToken">
-                                    <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
-                                </form>
-                            </div>
-                        </td>
-                        <td colspan="1" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
-                    </tr>
-                {% endfor %}{% endif %}
-                {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
-                {# https://www.w3schools.com/jquery/jquery_hide_show.asp #}
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                <script>
-                    $(document).ready(function () {
-                        $('.comment_form_show').hide();
-                        $('.comment_btn_back').hide();
-                        $('.comment_btn').show();
-
-                        $('.comment_btn').click(
-                            function () {
-                                $('.comment_form_show').fadeIn(2000);
-                                $('.comment_btn').hide();
-                                $('.comment_btn_back').fadeIn(2000);
-                            });
-                        $('.comment_btn_back').click(
-                            function () {
-                                $('.comment_form_show').hide();
-                                $('.comment_btn_back').hide();
-                                $('.comment_btn').fadeIn(2000);
-                            });
-                    });
-                </script>
-                {# endre kommentar slutt #}
+                {% endfor %}
             </table>
         </div>
-
-        {# FEILMELDINGER FRA DATABASE #}
-        <div class="container container_big_long text">
-            <h5>Tilbakemeldinger fra database</h5>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
     </section>
+
+    </div>
 {% endblock %}
