@@ -6,17 +6,14 @@
         {# KNAPP - REGISTRER INN #}
         <div id="text">
             <form method="post" id="register_time_form">
-                <table>
-                    <tr>
-                        <th colspan="2"><label>Oppgavekategori: </label></th>
-                    </tr>
-                    {% for category in categories %}
-                        <tr>
-                            <td><input type="radio" id="taskType" name="taskType" required></td>
-                            <td><label for="taskType">{{ category['categoryName'] }} </label></td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                    <select name="Kategori">
+                        <option value="Administrativt">Administrativt</option>
+                        <option value="Kurs">Kurs</option>
+                        <option value="Møte">Møte</option>
+                        <option value="Prosjekt">Prosjekt</option>
+                        <option value="Rapportering">Rapportering</option>
+                        <option value="Selvstudie">Selvstudie</option>
+                    </select>
                 <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
             </form>
         </div>
