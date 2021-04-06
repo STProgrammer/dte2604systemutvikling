@@ -272,14 +272,29 @@ class HourManager
     // REGISTER TIME FOR USER ---------------------------------------------------------------------------
     public function registerTimeForUser($userID): bool
     {
-        $taskType = $categoryName;
+        $hourID = NULL;
+        $taskID = NULL;
+        $startTime = date("Y-m-d H:i:s");
+        $endTime = date("Y-m-d H:i:s");
+        $timeWorked = 0;
+        $activated = 1;
+        $location = NULL;
+        $phaseID = NULL;
+        $absenceType = NULL;
+        $overtimeType = NULL;
+        $comment = NULL;
+        $commentBoss = NULL;
+        $isChanged = 0;
+        $stampingStatus = 0;
+        $categoryName = $this->request->request->get('categoryName');
 
         try {
             $stmt = $this->dbase->prepare("INSERT INTO Hours (`hourID`, `taskID`, `whoWorked`, `startTime`, 
                    `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
                    `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
-                   VALUES (NULL, NULL, :userID, NOW(), NOW(), 0, 1, NULL, NULL, NULL, NULL, 
-                           NULL, NULL, NULL, 0, :taskType)");
+                   VALUES (:hourID, :taskID, :userID, :startTime, :endTime, :timeWorked, :activated, 
+                           :location, :phaseID, :absenceType, :overtimeType, :comment, 
+                           :commentBoss, :isChanged, :stampingStatus, :taskType)");
 
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_STR);
             $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
@@ -296,7 +311,7 @@ class HourManager
             $stmt->bindParam(':commentBoss', $commentBoss, PDO::PARAM_STR);
             $stmt->bindParam(':isChanged', $isChanged, PDO::PARAM_STR);
             $stmt->bindParam(':stampingStatus', $stampingStatus, PDO::PARAM_STR);
-            $stmt->bindParam(':taskType', $taskType, PDO::PARAM_STR);
+            $stmt->bindParam(':categoryName', $categoryName, PDO::PARAM_STR);
 
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
