@@ -29,9 +29,9 @@ class HourManager
     public function getHours($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
                                 $timeWorked = null, $activated = null, $location = null, $absenceType = null,
                                 $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null,
-                                $orderBy = null, $offset = null, $limit = null) : array {
+                                $orderBy = null, $offset = null, $limit = null, $projectName = null) : array {
         $hours = array();
-        $query = 'SELECT Hours.*, CONCAT(workers.firstName, " ", workers.lastName, " (", workers.username, ")") as whoWorkedName, 
+        $query = 'SELECT Hours.*, hourTasks.*, CONCAT(workers.firstName, " ", workers.lastName, " (", workers.username, ")") as whoWorkedName, 
                     hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
                     FROM Hours
                     LEFT JOIN Users as workers on workers.userID = Hours.whoWorked
@@ -90,6 +90,10 @@ class HourManager
             $query .= " AND Hours.activated = :taskType";
             $params[':taskType'] = $taskType;
         }
+        if (!is_null($projectName)) {
+            $query .= " AND hourTasks.projectName = :projectName";
+            $params[':projectName'] = $projectName;
+        }
         if (!is_null($orderBy)) {
             $query .= " ORDER BY ".$orderBy;
         }
@@ -108,7 +112,7 @@ class HourManager
         try {
             $stmt = $this->dbase->prepare($query);
             $stmt->execute($params);
-            if($tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+            if($hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hours;
             }
             else {
