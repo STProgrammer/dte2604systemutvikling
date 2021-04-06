@@ -286,7 +286,7 @@ class HourManager
         $commentBoss = NULL;
         $isChanged = 0;
         $stampingStatus = 0;
-        $categoryName = $this->request->request->get('categoryName');
+        $taskType = $this->request->request->get('Kategori');
 
         try {
             $stmt = $this->dbase->prepare("INSERT INTO Hours (`hourID`, `taskID`, `whoWorked`, `startTime`, 
@@ -311,7 +311,7 @@ class HourManager
             $stmt->bindParam(':commentBoss', $commentBoss, PDO::PARAM_STR);
             $stmt->bindParam(':isChanged', $isChanged, PDO::PARAM_STR);
             $stmt->bindParam(':stampingStatus', $stampingStatus, PDO::PARAM_STR);
-            $stmt->bindParam(':categoryName', $categoryName, PDO::PARAM_STR);
+            $stmt->bindParam(':taskType', $taskType, PDO::PARAM_STR);
 
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
@@ -402,7 +402,7 @@ class HourManager
     public function checkIfActiveTimereg($userID) : array
     {
         try{
-            $stmt = $this->dbase->prepare(query: "SELECT activated, stampingStatus FROM Hours WHERE whoWorked = :userID ;");
+            $stmt = $this->dbase->prepare(query: "SELECT stampingStatus, hourID FROM Hours WHERE whoWorked = :userID ;");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if ($timeregCheck = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {

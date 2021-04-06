@@ -55,17 +55,7 @@
             }
         }
         elseif ($user->isUser()) { //BRUKER TEMP and WORKER
-            try {
-                echo $twig->render('employee_dashboard.twig',
-                    array( 'session' => $session, 'request' => $request,
-                        'user' => $user, 'users' => $users,
-                        'hours' => $hours, 'hourWithTask' => $hourWithTask,
-                        'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
-                        'tasks' => $tasks, 'categories' => $categories,
-                        'TaskManager'=> $taskManager));
-            } catch (LoaderError | RuntimeError | SyntaxError $e) {
-                echo $e->getMessage();
-            }
+            header("location: employee_dashboard.php");
         }
     } else {
         header("location: login.php");

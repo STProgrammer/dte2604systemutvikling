@@ -6,6 +6,7 @@
         {# KNAPP - REGISTRER INN #}
         <div id="text">
             <form method="post" id="register_time_form">
+                <label for="Kategori"></label>
                     <select name="Kategori">
                         <option value="Administrativt">Administrativt</option>
                         <option value="Kurs">Kurs</option>
@@ -14,9 +15,17 @@
                         <option value="Rapportering">Rapportering</option>
                         <option value="Selvstudie">Selvstudie</option>
                     </select>
+
                 <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
             </form>
         </div>
+{#        {% for timer in timeregCheck %}#}
+{#            {{ timer.hourID }}#}
+{#            {{ timer.stampingStatus }}#}
+{#        {% endfor %}#}
+
+{#        viser hourID og stampingStatus tilhørende. Må få lagt inn sjekk hvis aktiv timeregistrering (stampingStatus = 0)
+            , vis stopp knapp og kan ikke starte ny før stampingStatus er satt til 1 #}
 
 
         {% if timeregCheck.stampingStatus == 0  %}
