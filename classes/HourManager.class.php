@@ -24,12 +24,12 @@ class HourManager
     }
 
 
-
     // GET ALL TASKS -------------------------------------------------------------------------------------
     public function getHours($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
-                                $timeWorked = null, $activated = null, $location = null, $absenceType = null,
-                                $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null,
-                                $orderBy = null, $offset = null, $limit = null, $projectName = null) : array {
+                             $timeWorked = null, $activated = null, $location = null, $absenceType = null,
+                             $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null,
+                             $orderBy = null, $offset = null, $limit = null, $projectName = null): array
+    {
         $hours = array();
         $query = 'SELECT Hours.*, hourTasks.*, CONCAT(workers.firstName, " ", workers.lastName, " (", workers.username, ")") as whoWorkedName, 
                     hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
@@ -95,27 +95,26 @@ class HourManager
             $params[':projectName'] = $projectName;
         }
         if (!is_null($orderBy)) {
-            $query .= " ORDER BY ".$orderBy;
+            $query .= " ORDER BY " . $orderBy;
         }
         if (!is_null($limit)) {
             $limit = intval($limit);
             if (!is_null($offset)) {
                 $offset = intval($offset);
-                $query .= " LIMIT ".$offset.", ".$limit;
+                $query .= " LIMIT " . $offset . ", " . $limit;
 //                $params[':offset'] = $offset;
- //               $params[':limit'] = $limit;
+                //               $params[':limit'] = $limit;
             } else {
-                $query .= " LIMIT ".$limit;
+                $query .= " LIMIT " . $limit;
 //                $params[':limit'] = $limit;
             }
         }
         try {
             $stmt = $this->dbase->prepare($query);
             $stmt->execute($params);
-            if($hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+            if ($hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hours;
-            }
-            else {
+            } else {
                 $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente oppgaver");
                 return $hours;
             }
@@ -153,9 +152,10 @@ class HourManager
 
     // GET ALL HOURS FOR LOGGED IN USER ------------------------------------------------------------
     public function getAllHoursForUserWithTask($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
-                             $timeWorked = null, $activated = null, $location = null, $absenceType = null,
-                             $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null,
-                             $orderBy = null, $offset = null, $limit = null) : array {
+                                               $timeWorked = null, $activated = null, $location = null, $absenceType = null,
+                                               $overtimeType = null, $isChanged = null, $stampingStatus = null, $taskType = null,
+                                               $orderBy = null, $offset = null, $limit = null): array
+    {
         $hours = array();
         $query = 'SELECT Hours.*, CONCAT(workers.firstName, " ", workers.lastName, " (", workers.username, ")") as whoWorkedName, 
                     hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
@@ -217,27 +217,26 @@ class HourManager
             $params[':taskType'] = $taskType;
         }
         if (!is_null($orderBy)) {
-            $query .= " ORDER BY ".$orderBy;
+            $query .= " ORDER BY " . $orderBy;
         }
         if (!is_null($limit)) {
             $limit = intval($limit);
             if (!is_null($offset)) {
                 $offset = intval($offset);
-                $query .= " LIMIT ".$offset.", ".$limit;
+                $query .= " LIMIT " . $offset . ", " . $limit;
 //                $params[':offset'] = $offset;
                 //               $params[':limit'] = $limit;
             } else {
-                $query .= " LIMIT ".$limit;
+                $query .= " LIMIT " . $limit;
 //                $params[':limit'] = $limit;
             }
         }
         try {
             $stmt = $this->dbase->prepare($query);
             $stmt->execute($params);
-            if($tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+            if ($tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hours;
-            }
-            else {
+            } else {
                 $this->notifyUser("Timer ble ikke funnet", "getAllHoursForUserWithTask");
                 return $hours;
             }
@@ -249,15 +248,15 @@ class HourManager
     }
 
     // GET ALL Hours With All Users --------------------------------------------------------------------------------
-    public function getAllHours() {
+    public function getAllHours()
+    {
         $hoursAll = array();
         try {
             $stmt = $this->dbase->prepare("SELECT * FROM Hours ORDER BY startTime DESC");
             $stmt->execute();
-            if( $hoursAll = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+            if ($hoursAll = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hoursAll;
-            }
-            else {
+            } else {
                 $this->notifyUser("Kunne ikke hente kommentarer, ", "getAllHours()");
                 //return new Project();
                 return array();
@@ -271,23 +270,49 @@ class HourManager
     }
 
     // REGISTER TIME FOR USER ---------------------------------------------------------------------------
-    public function registerTimeForUser($userID) : bool
+    public function registerTimeForUser($userID): bool
     {
-        $taskID = $this->request->request->get('taskID');
-        $location = $this->request->request->get('location');
-        $phaseID = $this->request->request->get('phaseID');
-        $comment = $this->request->request->get('comment');
-        $taskType = $this->request->request->get('taskType');
+        $hourID = NULL;
+        $taskID = NULL;
+        $startTime = date("Y-m-d H:i:s");
+        $endTime = date("Y-m-d H:i:s");
+        $timeWorked = 0;
+        $activated = 1;
+        $location = NULL;
+        $phaseID = NULL;
+        $absenceType = NULL;
+        $overtimeType = NULL;
+        $comment = NULL;
+        $commentBoss = NULL;
+        $isChanged = 0;
+        $stampingStatus = 0;
+        $categoryName = $this->request->request->get('categoryName');
+
         try {
-            $stmt = $this->dbase->prepare("INSERT INTO Hours (`taskID`, `whoWorked`, `startTime`, 'endTime', 
-                   `location`, `phaseID`, `absenceType`, `overtimeType`, `comment`, `isChanged`, `stampingStatus`, `taskType`) 
-                   VALUES (:taskID, :userID, NOW(), NOW(), :location, :phaseID, NULL, NULL, :comment, 0, 0, :taskType)");
-            $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
-            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt = $this->dbase->prepare("INSERT INTO Hours (`hourID`, `taskID`, `whoWorked`, `startTime`, 
+                   `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
+                   `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
+                   VALUES (:hourID, :taskID, :userID, :startTime, :endTime, :timeWorked, :activated, 
+                           :location, :phaseID, :absenceType, :overtimeType, :comment, 
+                           :commentBoss, :isChanged, :stampingStatus, :taskType)");
+
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_STR);
+            $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_STR);
+            $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
+            $stmt->bindParam(':endTime', $endTime, PDO::PARAM_STR);
+            $stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_STR);
+            $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
             $stmt->bindParam(':location', $location, PDO::PARAM_STR);
-            $stmt->bindParam(':phaseID', $phaseID, PDO::PARAM_INT);
+            $stmt->bindParam(':phaseID', $phaseID, PDO::PARAM_STR);
+            $stmt->bindParam(':absenceType', $absenceType, PDO::PARAM_STR);
+            $stmt->bindParam(':overtimeType', $overtimeType, PDO::PARAM_STR);
             $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
-            $stmt->bindParam(':taskType', $taskType, PDO::PARAM_STR);
+            $stmt->bindParam(':commentBoss', $commentBoss, PDO::PARAM_STR);
+            $stmt->bindParam(':isChanged', $isChanged, PDO::PARAM_STR);
+            $stmt->bindParam(':stampingStatus', $stampingStatus, PDO::PARAM_STR);
+            $stmt->bindParam(':categoryName', $categoryName, PDO::PARAM_STR);
+
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
                 $this->notifyUser("Ny timereg ble registrert", "");
@@ -309,10 +334,9 @@ class HourManager
             $stmt = $this->dbase->prepare("SELECT * FROM Hours Where whoWorked= :userID");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
-            if( $hour = $stmt->fetchObject("Hour")) {
+            if ($hour = $stmt->fetchObject("Hour")) {
                 return $hour;
-            }
-            else {
+            } else {
                 $this->notifyUser("Comments not found", "Kunne ikke hente kommentarer");
                 //return new Project();
                 return array();

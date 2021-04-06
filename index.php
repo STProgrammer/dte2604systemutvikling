@@ -15,7 +15,7 @@
         $hoursAll = $hourManager->getAllHours();
         $hours = $hourManager->getAllHoursForUser($userID);
         $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
-
+        $categories = $taskManager->getCategories();
         $tasks = $taskManager->getAllTasks();
 
         if ($user->isAdmin()) {
@@ -61,7 +61,8 @@
                         'user' => $user, 'users' => $users,
                         'hours' => $hours, 'hourWithTask' => $hourWithTask,
                         'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
-                        'tasks' => $tasks));
+                        'tasks' => $tasks, 'categories' => $categories,
+                        'TaskManager'=> $taskManager));
             } catch (LoaderError | RuntimeError | SyntaxError $e) {
                 echo $e->getMessage();
             }

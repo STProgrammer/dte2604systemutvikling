@@ -12,20 +12,21 @@
                     </tr>
                     {% for category in categories %}
                         <tr>
-                            <td><input type="radio" id="task" name="status" value="1" required></td>
-                            <td><label for="task">{{ category['categoryName'] }} </label></td>
+                            <td><input type="radio" id="taskType" name="taskType" required></td>
+                            <td><label for="taskType">{{ category['categoryName'] }} </label></td>
                         </tr>
                     {% endfor %}
                 </table>
                 <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
             </form>
         </div>
-        {# KNAPP - REGISTRER PAUSE #}
-        <div class="container container_pause">
-            <button id="button" class="button" onclick="">
-                <img src="images/icon_time.png" width="40pt"> Pause
-            </button>
-        </div>
+
+{#        #}{# KNAPP - REGISTRER PAUSE #}
+{#        <div class="container container_pause">#}
+{#            <button id="button" class="button" onclick="">#}
+{#                <img src="images/icon_time.png" width="40pt"> Pause#}
+{#            </button>#}
+{#        </div>#}
 
         {# KNAPP - REGISTRER UT #}
         <div class="container container_registrer_ut">
