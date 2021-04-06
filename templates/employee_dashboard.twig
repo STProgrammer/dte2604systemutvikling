@@ -10,10 +10,10 @@
                     <tr>
                         <th colspan="2"><label>Oppgavekategori: </label></th>
                     </tr>
-                    {% for categories in categoryName %}
+                    {% for category in categories %}
                         <tr>
                             <td><input type="radio" id="task" name="status" value="1" required></td>
-                            <td><label for="task">{{ categories.getCategoryName }} </label></td>
+                            <td><label for="task">{{ category['categoryName'] }} </label></td>
                         </tr>
                     {% endfor %}
                 </table>

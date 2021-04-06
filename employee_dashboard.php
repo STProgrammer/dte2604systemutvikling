@@ -17,7 +17,7 @@ if ($user) {
     $hourId = $request->query->getInt('hourID');
     $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($hourId);
-    $categoryName = $taskManager->getCategoryName();
+    $categories = $taskManager->getCategories();
     }
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
@@ -42,7 +42,7 @@ if ($user) {
 
         echo $twig->render('employee_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,
-                'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks, 'categoryName' => $categoryName,
+                'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks, 'categories' => $categories,
                 'TaskManager'=> $taskManager));
 
     } else {
