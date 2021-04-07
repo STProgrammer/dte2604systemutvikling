@@ -45,14 +45,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="6"><i>Kommentar fra {{ userToView.getFirstName }}:</i> {{ hours.getComment }}</td>
+                        <td colspan="6"><i><b>Kommentar fra {{ userToView.getFirstName }}:</b></i> {{ hours.getComment }}</td>
                     </tr>
                     <tr>
                         <td colspan="6" id="comment_btn" class="comment_btn">
-                            <i>Kommentar fra sjefen:
+                            <i><b>Kommentar fra sjefen:
                                 {% if user.isAdmin %}
                                     <i> Endre/Skriv</i>
-                                {% endif %}</i>
+                                {% endif %}</b></i>
                             {{ hours.getCommentBoss }}
                         </td>
                     </tr>
