@@ -19,7 +19,8 @@ if ($user) {
     $hour = $hourManager->getHour($userID);
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
-        if ($hourManager->editComment($hour)) {
+        $hourID = $request->query->getInt('hourId');
+        if ($hourManager->editComment($hourID)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {

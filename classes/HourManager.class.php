@@ -135,7 +135,7 @@ class HourManager
         $allHoursForUser = null;
         try {
             $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID 
-                      and startTime BETWEEN '01.01.2020' and NOW() ORDER BY endTime DESC LIMIT 30");
+                      ORDER BY startTime DESC");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if ($allHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
@@ -397,10 +397,10 @@ class HourManager
     }
 
     //EDIT COMMENT USER --------------------------------------------------------------------------------
-    public function editComment($hour): bool
+    public function editComment($hourID): bool
     {
-        $hourID = $hour->getHourID();
-        $comment = $this->request->request->get('comment', $hour->getComment());
+        $hourID = $this->request->request->get('hourID');
+        $comment = $this->request->request->get('comment');
         try {
             $stmt = $this->dbase->prepare(query: "UPDATE Hours SET comment = :comment WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
@@ -420,10 +420,10 @@ class HourManager
     }
 
     //EDIT COMMENT BOSS--------------------------------------------------------------------------------
-    public function editCommentBoss($hour): bool
+    public function editCommentBoss($hourId): bool
     {
-        $hourID = $hour->getHourID();
-        $commentBoss = $this->request->request->get('commentBoss', $hour->getCommentBoss());
+        $hourID = $this->request->request->get('hourID');
+        $commentBoss = $this->request->request->get('commentBoss');
         try {
             $stmt = $this->dbase->prepare(query: "UPDATE Hours SET commentBoss = :commentBoss WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);

@@ -49,7 +49,7 @@ class Hour {
     public function setIsChanged(bool $isChanged): void{$this->isChanged = $isChanged;}
     public function setStampingStatus(bool $stampingStatus): void{$this->stampingStatus = $stampingStatus;}
 
-    public function isActivated(): bool{return $this->activated;}
+    public function isActivated(): bool{return $this->activated == 1;}
     public function isChanged(): bool{return $this->isChanged;}
     public function isStampingStatus(): bool{return $this->stampingStatus;}
 

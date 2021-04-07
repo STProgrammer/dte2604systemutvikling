@@ -76,12 +76,14 @@
                             {% endif %}
 
                             {#HVIS ADMIN, REDIGER KNAPP#}
-                            {% if user.isAdmin %}
+                            {#{% if user.isAdmin %}#}
+                            {#Alle kan se alle prosjekter. Bortsett fra kunde. Kunde ser kun sin egen prosjekt
+                            inne på editProject må vi legge inn bruker rettigheter#}
                             <td><button class="buttons miniButtons" id="miniButtons"
                                         onclick="location.href='projects_editProject.php?projectid={{ project.getProjectID()}}';">
-                                    Rediger
+                                    Se detaljer
                                 </button></td>
-                            {% endif %}
+                            {#{% endif %}#}
                         </tr>
                     {% endfor %}
                 {% endif %}

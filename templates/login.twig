@@ -36,7 +36,7 @@
     </section>
 
     <section>
-        <div class="container container_big_long text">
+        <div class="container container_big_long text scroll">
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
                     <h3>{{ header }}</h3>
