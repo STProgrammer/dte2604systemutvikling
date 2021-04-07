@@ -13,6 +13,7 @@
                     <th>Starttid</th>
                     <th>Slutttid</th>
                     <th>Lokasjon</th>
+                    <th>Godkjent</th>
                     <th>Endre</th>
                 </tr>
                 {% if user.isAdmin or user.isProjectLeader or user.getUserId == userID %}
@@ -28,6 +29,11 @@
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
                         <td> {{ hours.getLocation }}</td>
+                        {% if hours.isActivated %}
+                            <td>Godkjent</td>
+                        {% else %}
+                            <td>Ikke godkjent</td>
+                        {% endif %}
                         <td>
                             <button class="buttons miniButtons" id="miniButtons"
                                     onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
@@ -44,9 +50,9 @@
                         <td colspan="6" rowspan="1" id="comment_form_show" class="comment_form_show">
                             <div class="container container_addComment text" id="add_comment">
                                 <form method="post" id="edit_comment_hour" class="edit_comment_hour">
-                                    <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45 required/>
+                                    <input id="hourID" type="hidden" name="hourID" value="{{ hours.getHourID }}" maxlength=45 required/>
                                     <label for="comment">Endre kommentar: </label>
-                                    <textarea id="comment" name="comment" required>{{ hour.getComment }}</textarea>
+                                    <textarea id="comment" name="comment" required>{{ hours.getComment }}</textarea>
                                     <input type="hidden" value="{{ getMac("Edit Comment") }}" name="XSRFPreventionToken">
                                     <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
                                 </form>

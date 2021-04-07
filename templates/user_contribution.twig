@@ -45,26 +45,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="6"><b>Kommentar fra {{ userToView.getFirstName }}:</b> {{ hours.getComment }}</td>
+                        <td colspan="6"><i>Kommentar fra {{ userToView.getFirstName }}:</i> {{ hours.getComment }}</td>
                     </tr>
                     <tr>
-
                         <td colspan="6" id="comment_btn" class="comment_btn">
-                            <b>Kommentar fra sjefen: </b>{{ hours.getCommentBoss }}
-                            {% if user.isAdmin %}
-                                <b><i> Endre/Skriv</i></b>
-                            {% endif %}
+                            <i>Kommentar fra sjefen:
+                                {% if user.isAdmin %}
+                                    <i> Endre/Skriv</i>
+                                {% endif %}</i>
+                            {{ hours.getCommentBoss }}
                         </td>
                     </tr>
 
+                    {% if user.isAdmin %}
                     <tr>
                         {# Endre kommentar fra sjef#}
                         <td colspan="6" rowspan="1" id="comment_form_show" class="comment_form_show">
                             <div class="container edit_commentBoss_hour text" id="edit_commentBoss_hour">
                                 <form method="post" id="edit_comment_hour" class="edit_comment_hour">
-                                    <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45 required/>
-                                    <label for="commentBoss">Endre kommentar: </label>
-                                    <textarea id="commentBoss" name="commentBoss" required>{{ hour.getCommentBoss() }}</textarea>
+                                    <input id="hourID" type="hidden" name="hourID" value="{{ hours.getHourID }}" maxlength=45 required/>
+                                    <label for="commentBoss">Endre kommentar fra sjefen: </label>
+                                    <textarea id="commentBoss" name="commentBoss" required>{{ hours.getCommentBoss() }}</textarea>
                                     <input type="hidden" value="{{ getMac("Edit Comment Boss") }}" name="XSRFPreventionToken">
                                     <br><input type="submit" name="edit_commentBoss_hour" id="edit_commentBoss_hour" value="Endre / legg til kommentar">
                                 </form>
@@ -72,6 +73,7 @@
                         </td>
                         <td colspan="1" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
                 {# https://www.w3schools.com/jquery/jquery_hide_show.asp #}
