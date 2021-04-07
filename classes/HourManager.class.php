@@ -348,19 +348,14 @@ class HourManager
     }
 
     // STOP TIME FOR USER ---------------------------------------------------------------------------
-    public function stopTimeForUser($hourID): bool
+    public function stopTimeForUser($userID): bool
     {
-        $hourID = $this->activeTimeregForUser($hourID);
-        $endTime = date("Y-m-d H:i:s");
-        $stampingStatus = 1;
+        $hourID = $this->activeTimeregForUser($userID);
 
         try {
-            $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = :endTime, 
-                 stampingStatus = :stampingStatus WHERE hourID = :hourID");
-
+            $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = NOW(), 
+                 stampingStatus = 1 WHERE hourID = :hourID");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
-            $stmt->bindParam(':endTime', $endTime, PDO::PARAM_STR);
-            $stmt->bindParam(':stampingStatus', $stampingStatus, PDO::PARAM_INT);
             $stmt->execute();
 
             if ($stmt->rowCount() == 1) {

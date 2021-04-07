@@ -47,7 +47,7 @@ if ($user) {
     //Registrer time
     if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
-            if ($hourManager->stopTimeForUser($activeHourID)) {
+            if ($hourManager->stopTimeForUser($userID)) {
                 header("Location: employee_dashboard.php?stopregisteredhour=1");
                 exit();
             }
