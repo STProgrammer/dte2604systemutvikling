@@ -327,6 +327,55 @@ class HourManager
         }
     }
 
+    public function activeTimeregForUser($userID)
+    {
+        try {
+            $stmt = $this->dbase->prepare("SELECT hourID FROM Hours WHERE whoWorked = :userID AND stampingStatus = 0");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($activeHourID = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $activeHourID;
+            } else {
+                $this->notifyUser("Kunne ikke hente aktiv timeregistrering, ", "activeTimeregForUser()");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på activeTimeregForUser()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            //return new Project();
+            return array();
+        }
+    }
+
+    // STOP TIME FOR USER ---------------------------------------------------------------------------
+    public function stopTimeForUser($hourID): bool
+    {
+        $hourID = $this->activeTimeregForUser($hourID);
+        $endTime = date("Y-m-d H:i:s");
+        $stampingStatus = 1;
+
+        try {
+            $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = :endTime, 
+                 stampingStatus = :stampingStatus WHERE hourID = :hourID");
+
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            $stmt->bindParam(':endTime', $endTime, PDO::PARAM_STR);
+            $stmt->bindParam(':stampingStatus', $stampingStatus, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 1) {
+                $this->notifyUser("Timereg stoppet", "");
+                return true;
+            } else {
+                $this->notifyUser("Failed to stop timereg", "stopTimeForUser()");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på stopTimeForUser()", $e->getMessage());
+            return false;
+        }
+    }
+
     // GET HOUR ---------------------------------------------------------------------------------
     public function getHour($userID)
     {
@@ -399,15 +448,15 @@ class HourManager
 
     }
 
-    public function checkIfActiveTimereg($userID) : array
+    public function checkIfActiveTimereg($userID): array
     {
-        try{
+        try {
             $stmt = $this->dbase->prepare(query: "SELECT stampingStatus, hourID FROM Hours WHERE whoWorked = :userID ;");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if ($timeregCheck = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $timeregCheck;
-        } else {
+            } else {
                 $this->notifyUser("Kunne ikke hente status, ", "checkIfActiveTimereg()");
                 //return new Project();
                 return array();

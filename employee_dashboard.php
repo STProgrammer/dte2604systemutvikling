@@ -18,7 +18,10 @@ if ($user) {
     $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($hourId);
     $categories = $taskManager->getCategories();
+
     $timeregCheck = $hourManager->checkIfActiveTimereg($userID);
+    $activeHourID = $hourManager->activeTimeregForUser($userID);
+
     }
 
 
@@ -38,6 +41,18 @@ if ($user) {
             exit();
         } else {
             header("Location: ?failedtoregistrerhour=1");
+            exit();
+        }
+    }
+    //Registrer time
+    if ($request->request->has('stop_time')) {
+        if ($hourManager->activeTimeregForUser($userID)) {
+            if ($hourManager->stopTimeForUser($activeHourID)) {
+                header("Location: employee_dashboard.php?stopregisteredhour=1");
+                exit();
+            }
+        } else {
+            header("Location: ?failedtostopregistrerhour=1");
             exit();
         }
     }

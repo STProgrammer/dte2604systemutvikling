@@ -3,43 +3,35 @@
     <section class="employee_dashboard" id="employee_dashboard">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        {# KNAPP - REGISTRER INN #}
-        <div id="text">
-            <form method="post" id="register_time_form">
-                <label for="Kategori"></label>
-                    <select name="Kategori">
-                        <option value="Administrativt">Administrativt</option>
-                        <option value="Kurs">Kurs</option>
-                        <option value="Møte">Møte</option>
-                        <option value="Prosjekt">Prosjekt</option>
-                        <option value="Rapportering">Rapportering</option>
-                        <option value="Selvstudie">Selvstudie</option>
-                    </select>
 
-                <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
-            </form>
-        </div>
-{#        {% for timer in timeregCheck %}#}
-{#            {{ timer.hourID }}#}
-{#            {{ timer.stampingStatus }}#}
-{#        {% endfor %}#}
-
-{#        viser hourID og stampingStatus tilhørende. Må få lagt inn sjekk hvis aktiv timeregistrering (stampingStatus = 0)
-            , vis stopp knapp og kan ikke starte ny før stampingStatus er satt til 1 #}
+            {% if status.stampingStatus == 0 %}
+                {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
+                <div id="text">
+                    <form method="post" id="register_time_form">
+                        <select name="Kategori">
+                            <option value="Administrativt">Administrativt</option>
+                            <option value="Kurs">Kurs</option>
+                            <option value="Møte">Møte</option>
+                            <option value="Prosjekt">Prosjekt</option>
+                            <option value="Rapportering">Rapportering</option>
+                            <option value="Selvstudie">Selvstudie</option>
+                        </select>
+                        <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
+                    </form>
+                </div>
+            {% endif %}
 
 
-        {% if timeregCheck.stampingStatus == 0  %}
-
-
-
-        {# KNAPP - REGISTRER UT #}
-        <div class="container container_registrer_ut">
-            <button id="button" class="button" onclick="">
-                <img src="images/icon_time.png" width="40pt"> Registrer ut
-            </button>
-        </div>
-
-        {% endif %}
+        {% for status in timeregCheck %}
+            {% if status.stampingStatus == 0 %}
+                {# KNAPP - REGISTRER UT HVIS DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 0 #}
+                <div id="text">
+                    <form method="post" id="stop_time_form">
+                        <input type="submit" name="stop_time" id="reg_btn" value="Stopp timeregistrering">
+                    </form>
+                </div>
+            {% endif %}
+        {% endfor %}
     </section>
     <section>
 
