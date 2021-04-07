@@ -377,7 +377,27 @@ class HourManager
     }
 
     // GET HOUR ---------------------------------------------------------------------------------
-    public function getHour($userID)
+    public function getHour($hourID)
+    {
+        try {
+            $stmt = $this->dbase->prepare("SELECT * FROM Hours Where hourID = :hourID");
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($hour = $stmt->fetchObject("Hour")) {
+                return $hour;
+            } else {
+                $this->notifyUser("Comments not found", "Kunne ikke hente kommentarer");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getHour()", $e->getMessage());
+            return array();
+        }
+    }
+
+    // GET HOUR FOR USER---------------------------------------------------------------------------------
+    public function getHourForUser($userID)
     {
         try {
             $stmt = $this->dbase->prepare("SELECT * FROM Hours Where whoWorked= :userID");

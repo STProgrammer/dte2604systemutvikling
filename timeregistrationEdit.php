@@ -15,13 +15,13 @@ $tasks = $taskManager->getAllTasks();
 
 
 if ($user) {
-    $hourID = $request->query->get('hourID');
     $userID = $user->getUserId($user);
     $hours = $hourManager->getAllHoursForUser($userID);
-    $hour = $hourManager->getHour($userID);
+    $hourID = $request->query->getInt('hourID');
+    $hour = $hourManager->getHour($hourID);
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
-        if ($hourManager->editComment($hour)) {
+        if ($hourManager->editComment($hourID)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
@@ -29,7 +29,7 @@ if ($user) {
             exit();
         }
     }elseif ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
-        if ($hourManager->editCommentBoss($hour)) {
+        if ($hourManager->editCommentBoss($hourID)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
