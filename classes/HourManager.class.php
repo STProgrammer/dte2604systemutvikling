@@ -275,7 +275,6 @@ class HourManager
         $hourID = NULL;
         $taskID = NULL;
         $startTime = date("Y-m-d H:i:s");
-        $endTime = date("Y-m-d H:i:s");
         $timeWorked = 0;
         $activated = 1;
         $location = NULL;
@@ -292,7 +291,7 @@ class HourManager
             $stmt = $this->dbase->prepare("INSERT INTO Hours (`hourID`, `taskID`, `whoWorked`, `startTime`, 
                    `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
                    `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
-                   VALUES (:hourID, :taskID, :userID, :startTime, :endTime, :timeWorked, :activated, 
+                   VALUES (:hourID, :taskID, :userID, :startTime, 0, :timeWorked, :activated, 
                            :location, :phaseID, :absenceType, :overtimeType, :comment, 
                            :commentBoss, :isChanged, :stampingStatus, :taskType)");
 
@@ -300,7 +299,6 @@ class HourManager
             $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
             $stmt->bindParam(':userID', $userID, PDO::PARAM_STR);
             $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
-            $stmt->bindParam(':endTime', $endTime, PDO::PARAM_STR);
             $stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_STR);
             $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
             $stmt->bindParam(':location', $location, PDO::PARAM_STR);
@@ -333,8 +331,8 @@ class HourManager
             $stmt = $this->dbase->prepare("SELECT hourID FROM Hours WHERE whoWorked = :userID AND stampingStatus = 0");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
-            if ($activeHourID = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-                return $activeHourID;
+            if ($hourID = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $hourID;
             } else {
                 $this->notifyUser("Kunne ikke hente aktiv timeregistrering, ", "activeTimeregForUser()");
                 return array();
@@ -348,10 +346,8 @@ class HourManager
     }
 
     // STOP TIME FOR USER ---------------------------------------------------------------------------
-    public function stopTimeForUser($userID): bool
+    public function stopTimeForUser($hourID): bool
     {
-        $hourID = $this->activeTimeregForUser($userID);
-
         try {
             $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = NOW(), 
                  stampingStatus = 1 WHERE hourID = :hourID");
