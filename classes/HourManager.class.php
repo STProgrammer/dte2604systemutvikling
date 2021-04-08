@@ -277,7 +277,7 @@ class HourManager
         $startTime = date("Y-m-d H:i:s");
         $timeWorked = 0;
         $activated = 1;
-        $location = NULL;
+        $location = $this->request->request->get('Lokasjon');
         $phaseID = NULL;
         $absenceType = NULL;
         $overtimeType = NULL;
@@ -331,7 +331,7 @@ class HourManager
             $stmt = $this->dbase->prepare("SELECT hourID FROM Hours WHERE whoWorked = :userID AND stampingStatus = 0");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
-            if ($hourID = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+            if ($hourID = $stmt->fetch()) {
                 return $hourID;
             } else {
                 $this->notifyUser("Kunne ikke hente aktiv timeregistrering, ", "activeTimeregForUser()");
@@ -348,6 +348,7 @@ class HourManager
     // STOP TIME FOR USER ---------------------------------------------------------------------------
     public function stopTimeForUser($hourID): bool
     {
+        $hourID = $hourID[0];
         try {
             $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = NOW(), 
                  stampingStatus = 1 WHERE hourID = :hourID");

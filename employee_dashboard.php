@@ -17,7 +17,6 @@ if ($user) {
     $hourId = $request->query->getInt('hourID');
     $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($hourId);
-    $categories = $taskManager->getCategories();
     $timeregCheck = $hourManager->checkIfActiveTimereg($userID);
 
     }
@@ -42,10 +41,9 @@ if ($user) {
     }
     //STOP time
     if ($request->request->has('stop_time')) {
-        $hourID = $hourManager->activeTimeregForUser($userID);
-        $stopTime = $hourManager->stopTimeForUser($hourID);
-
         if ($hourManager->activeTimeregForUser($userID)) {
+            $hourID = $hourManager->activeTimeregForUser($userID);
+            $stopTime = $hourManager->stopTimeForUser($hourID);
             if ($hourManager->stopTimeForUser($hourID)) {
                 header("Location: employee_dashboard.php?stopregisteredhour=1");
                 exit();
@@ -59,7 +57,7 @@ if ($user) {
 
         echo $twig->render('employee_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,
-                'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks, 'categories' => $categories,
+                'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
                 'TaskManager'=> $taskManager, 'timeregCheck'=> $timeregCheck));
 
     } else {
