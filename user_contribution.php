@@ -20,7 +20,8 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     $tasks = $taskManager->getAllTasks();
 
     if ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
-        if ($hourManager->editCommentBoss($hour)) {
+        $hourID = $request->query->getInt('hourId');
+        if ($hourManager->editCommentBoss($hourID)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {

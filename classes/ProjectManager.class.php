@@ -56,6 +56,9 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer ORDER BY Proj
             return array();
         }
     }
+    // GET ALL PROJECTS FOR USER
+    //TODO
+
 
     //GET PROJECT
     public function getProject(int $projectID)

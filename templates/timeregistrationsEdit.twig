@@ -13,7 +13,7 @@
         {# Endre kommentar #}
         <div class="container container_menu_form text" id="edit_comment_hour">
             <form method="post" id="edit_comment_hour1">
-                <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45
+                <input id="hourID" type="hidden" name="hourID" value="{{ hour.getHourID }}" maxlength=45
                        required/>
                 <label for="comment">Endre kommentar: </label>
                 <textarea id="commentbig" cols="2" rows="4" name="comment"
@@ -27,7 +27,7 @@
         {# Endre kommentar fra sjefen #}
         <div class="container container_menu_form text" id="edit_comment_hour">
             <form method="post" id="edit_comment_hour1" class="edit_comment_hour1">
-                <input id="hourID" type="hidden" name="hourID" value="{{ hourID }}" maxlength=45 required/>
+                <input id="hourID" type="hidden" name="hourID" value="{{ hour.getHourID }}" maxlength=45 required/>
                 <label for="commentBoss">Endre kommentar: </label>
                 <textarea id="commentbig" name="commentBoss" required>{{ hour.getCommentBoss() }}</textarea>
                 <input type="hidden" value="{{ getMac("Edit Comment Boss") }}" name="XSRFPreventionToken">
@@ -43,7 +43,7 @@
                 <b>Endre Timeegistrering: </b><br>
 
                 <br><label for="hourID">Timeregistrerings Id: </label>
-                <br><input type="text" name="hourID" value="{{ hourID }}" maxlength=45 required id="hourID"/>
+                <br><input type="text" name="hourID" value="{{ hour.getHourID }}" maxlength=45 required id="hourID"/>
                 <br><label for="taskID">TaskId: </label>
                 <br><input type="text" name="taskID" value="{{ hour.getTaskID }}" maxlength=45 required id="taskID"/>
                 <br><label for="startTime">Starttid: </label>
