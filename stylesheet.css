@@ -526,6 +526,14 @@ td#comment_btn {
     height: 2em;
 }
 
+td#commentar {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #efeded;
+    height: 2em;
+    padding-left: 3em;
+}
+
 form#edit_comment_hour {
     width: 65%;
     margin-left: 12em;

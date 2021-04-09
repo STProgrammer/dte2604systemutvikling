@@ -58,8 +58,10 @@
             Siste kommentarer fra brukere<br><br>
             {% for hoursAll in hoursAll %}{% for users in users %}
                 {% if hoursAll.whoWorked == users.userID %}
-                    <h6>{{ users.firstname }} {{ users.lastname }}</h6>
-                    <ul>{{ hoursAll.comment }}</ul><br>
+                    {% if hoursAll.comment is not empty %}
+                        <h6>{{ users.firstname }} {{ users.lastname }}</h6>
+                        <ul>{{ hoursAll.comment }}</ul><br>
+                    {% endif %}
                 {% endif %}
             {% endfor %}{% endfor %}
         </div>

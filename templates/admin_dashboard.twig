@@ -61,15 +61,22 @@
     </section>
 
     <section>
-
         {# Siste kommentarer fra brukere #}
         <div class="container container_big text scroll">
             <img src="images/icon_kommentar.png" width="40px" alt="Icon"/>
             Siste kommentarer fra brukere<br><br>
             {% for hoursAll in hoursAll %}{% for users in users %}
                 {% if hoursAll.whoWorked == users.userID %}
-                    <h6>{{ users.firstname }} {{ users.lastname }}</h6>
-                    <ul>{{ hoursAll.comment }}</ul><br>
+                    {% if hoursAll.comment is not empty %}
+                        <table>
+                            <tr>
+                                <td><b>{{ users.firstname }} {{ users.lastname }} :</b></td>
+                            </tr>
+                            <tr>
+                                <td id="commentar" > {{ hoursAll.comment }}</td>
+                            </tr>
+                        </table>
+                    {% endif %}
                 {% endif %}
             {% endfor %}{% endfor %}
         </div>
