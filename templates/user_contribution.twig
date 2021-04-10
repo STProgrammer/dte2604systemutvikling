@@ -21,6 +21,7 @@
                     <th>Prosjektnavn</th>
                     <th>Starttid</th>
                     <th>Slutttid</th>
+                    <th>Total tid</th>
                     <th>Lokasjon</th>
                     <th>Endre</th>
                 </tr>
@@ -36,6 +37,7 @@
                         {% endfor %}
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
+                        <td>{{ hourManager.spentTimePhase(hours.startTime, hours.endTime) }}</td>
                         <td> {{ hours.getLocation }}</td>
                         <td>
                             <button class="buttons miniButtons" id="miniButtons"

@@ -25,6 +25,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
     $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
     $phases = $projectManager->getAllPhases($projectName);
     $groups = $projectManager->getGroups($projectName);
+    $groupFromUserAndGroups = $projectManager->getGroupFromUserAndGroups($projectName);
     $users = $userManager->getAllUsers("firstName"); //alle brukere
     $members = $projectManager->getProjectMembers($project->getProjectName());
 
@@ -100,7 +101,8 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
                 array('session' => $session, 'request' => $request, 'user' => $user, 'users' => $users,
                     'customers' => $customers, 'project' => $project,  'members' => $members,
                     'employees' => $employees, 'groups' => $groups, 'candidates' => $candidates,
-                'phases' => $phases, 'tasks' => $tasks));
+                    'phases' => $phases, 'tasks' => $tasks,
+                    'groupFromUserAndGroups' => $groupFromUserAndGroups));
         } catch (\Twig\Error\LoaderError  | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }

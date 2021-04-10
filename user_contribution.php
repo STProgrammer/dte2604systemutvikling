@@ -19,6 +19,10 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $tasks = $taskManager->getAllTasks();
 
+//    $starTime = date("2021-04-10 08:00:00");
+//    $endTime = date("2021-04-10 16:00:00");
+//    $spentTimePhase = $hourManager->spentTimePhase($starTime, $endTime);
+
     if ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
         $hourID = $request->query->getInt('hourId');
         if ($hourManager->editCommentBoss($hourID)) {
@@ -30,10 +34,12 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
         }
     }
     else {
+
         echo $twig->render('user_contribution.twig',
             array('session' => $session, 'request' => $request, 'user' => $user,
                 'userToView' => $userToView, 'userID' => $userID,
                 'hour' => $hour, 'hours' => $hours, 'hourWithTask' => $hourWithTask,
+                'hourManager' => $hourManager,
                 'tasks' => $tasks));
 
     }

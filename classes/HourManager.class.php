@@ -23,6 +23,16 @@ class HourManager
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
+    // CALCULATE TIME IN PHASE -------------------------------------------------
+    public function spentTimePhase($starTime, $endTime) { //blir brukt fra twig. Kalles fra user_contribution.twig
+        $startTime = new DateTime($starTime);
+        $endTime = new DateTime($endTime);
+
+        $hourCount = $endTime->diff($startTime);
+        return $hourCount->format('%H:%I');
+    }
+
+
 
     // GET ALL TASKS -------------------------------------------------------------------------------------
     public function getHours($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,

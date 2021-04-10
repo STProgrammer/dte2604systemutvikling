@@ -48,13 +48,22 @@
             <br><label id="oversikt"><b>Medlemmer i dette prosjektetet:</b></label></br>
             <table class="table">
                 <tr>
+                    <th>Gruppenavn</th>
                     <th>Brukernavn</th>
                     <th>Fornavn</th>
                     <th>Etternavn</th>
                     <th>Se bidrag</th>
+                    <th>{{ groups.projectName }}</th>
                 </tr>
                 {% for member in members %}
                     <tr>
+                        {% for group in groupFromUserAndGroups %}
+                            {% if member.userID == group.userID and  group.projectName == project.getProjectName %}
+                                <td>
+                                    <option value="{{ group.groupName }}">{{ group.groupName }}</option>
+                                </td>
+                            {% endif %}
+                        {% endfor %}
                         <td>{{ member.getUsername() }}</td>
                         <td>{{ member.getFirstName }}</td>
                         <td>{{ member.getLastName }}</td>
@@ -68,7 +77,9 @@
                 {% endfor %}
             </table>
         </div>
+    </section>
 
+    <section>
         {# OPPGAVER I DETTE PROSJEKTET #}
         <div class="container container_menu_lang_WithBorder text" id="project_tasks">
             <br><label for="project_tasks" id="oversikt"><b>Oppgaver i dette prosjektet: </b></label>
@@ -126,7 +137,7 @@
                 <br><label for="groups">Den oppgaven tilhører gruppe:</label>
                 <br><select name="groupID" id="groups" class="form-control" onfocus='this.size=10;'
                             onblur='this.size=10;' onchange='this.size=10; this.blur();'>
-                    <option disabled selected value> -- velg en gruppe -- </option>
+                    <option disabled selected value> -- velg en gruppe --</option>
                     {% for group in groups %}
                         <option value="{{ group.getGroupID() }}">{{ group.getGroupName() }}
                         </option>
@@ -136,7 +147,9 @@
                 <br><input type="submit" name="new_task" id="reg_btn" value="Ny oppgave">
             </form>
         </div>
+    </section>
 
+    <section>
         {# FASER I DETTE PROSJEKTET #}
         <div class="container container_menu_lang_WithBorder text" id="project_members">
             <br><label id="oversikt"><b>Faser i dette prosjektet:</b> </label></br>
@@ -206,13 +219,14 @@
                             {% else %}
                                 <td>Vanlig gruppe</td>
                             {% endif %}
-                            <td>{{ grp.fullName}}</td>
+                            <td>{{ grp.fullName }}</td>
                             <td style="text-align: center">{{ grp.nrOfUsers }}</td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
         </div>
+    </section>
 
     <section>
     {# ENDRE PROSJEKT #}

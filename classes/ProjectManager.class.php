@@ -240,17 +240,16 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
     //GET MEMBERS
     public function getProjectMembers(string $projectName) : array {
         try {
-            $stmt = $this->db->prepare("SELECT DISTINCT Users.*
-FROM Users
-LEFT JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
-LEFT JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
-WHERE Groups.projectName = :projectName;");
+            $stmt = $this->db->prepare("SELECT DISTINCT Users.* FROM Users
+                        LEFT JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
+                        LEFT JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
+                        WHERE Groups.projectName = :projectName;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             $stmt->execute();
             if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
                 return $members;
             } else {
-                $this->notifyUser("Ingen medlemmer funnet", "Kunne ikke hente medlemmer av prosjektet");
+                $this->notifyUser("Ingen medlemmer funnet", "getProjectMembers()");
                 return array();
             }
         } catch (Exception $e) {
@@ -314,10 +313,10 @@ WHERE Groups.projectName = :projectName;");
         $groups = array();
         try {
             $stmt = $this->db->prepare("SELECT Groups.*, count(UsersAndGroups.groupID) as nrOfUsers, CONCAT(Users.firstName, ' ', Users.lastName, ' ',' (', Users.username, ') ') as fullName
-    FROM Groups
-    JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
-LEFT JOIN Users ON Groups.groupLeader = Users.userID
-    WHERE Groups.projectName = :projectName GROUP BY Groups.groupID;");
+                        FROM Groups
+                        JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+                        LEFT JOIN Users ON Groups.groupLeader = Users.userID
+                        WHERE Groups.projectName = :projectName GROUP BY Groups.groupID;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             if ($stmt->execute()) {
                 $groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group");
@@ -329,6 +328,26 @@ LEFT JOIN Users ON Groups.groupLeader = Users.userID
         } catch (Exceptopn $e) {
             $this->notifyUser("Feil i getGroups()", $e->getMessage());
             return $groups;}
+    }
+
+    //GET GROUP FROM USERSANDGROUPS
+    public function getGroupFromUserAndGroups($projectName) : array {
+        $groupsFromUsersAndGroups = array();
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM UsersAndGroups
+                        JOIN `Groups` ON Groups.groupID = UsersAndGroups.groupID
+                        WHERE Groups.projectName = :projectName");
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            if ($stmt->execute()) {
+                $groupsFromUsersAndGroups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group");
+                return $groupsFromUsersAndGroups;
+            } else {
+                $this->notifyUser("Feil i getGroups()");
+                return $groupsFromUsersAndGroups;
+            }
+        } catch (Exceptopn $e) {
+            $this->notifyUser("Feil i getGroups()", $e->getMessage());
+            return $groupsFromUsersAndGroups;}
     }
 
 
