@@ -17,6 +17,7 @@ if ($user) {
     $hours = $hourManager->getAllHoursForUser($userID);
     $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($userID);
+    $hours = $hourManager->getHours( whoWorked: $userID);
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         $hourID = $request->query->getInt('hourId');

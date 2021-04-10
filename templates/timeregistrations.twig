@@ -7,28 +7,20 @@
             <h5>Mine timeregistreringer fra gjeldende måned</h5>
             <table class="table" id="table">
                 <tr>
-                    <th>Task Navn</th>
-                    <th>Hoved Task</th>
-                    <th>Prosjektnavn</th>
-                    <th>Starttid</th>
+                    <th>Startid</th>
                     <th>Slutttid</th>
                     <th>Lokasjon</th>
+                    <th>Type arbeid</th>
                     <th>Godkjent</th>
                     <th>Endre</th>
-                </tr>
+
                 {% if user.isAdmin or user.isProjectLeader or user.getUserId == userID %}
                 {% for hours in hours %}
                     <tr>
-                        {% for task in tasks %}
-                            {% if task.getTaskID() == hours.taskID %}
-                                <td> {{ task.getTaskName }}</td>
-                                <td> {{ task.getParentTask }}</td>
-                                <td> {{ task.getProjectName }}</td>
-                            {% endif %}
-                        {% endfor %}
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
                         <td> {{ hours.getLocation }}</td>
+                        <td> {{ hours.taskType }}</td>
                         {% if hours.isActivated %}
                             <td>Godkjent</td>
                         {% else %}
@@ -61,6 +53,64 @@
                         <td colspan="1" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
                     </tr>
                 {% endfor %}{% endif %}
+                </tr>
+                <table class="table" id="table">
+                    <tr>
+                        <th>Task Navn</th>
+                        <th>Hoved Task</th>
+                        <th>Prosjektnavn</th>
+                        <th>Starttid</th>
+                        <th>Slutttid</th>
+                        <th>Lokasjon</th>
+                        <th>Godkjent</th>
+                        <th>Endre</th>
+
+                        {% if user.isAdmin or user.isProjectLeader or user.getUserId == userID %}
+                    <tr>
+                        {% for hour in hours %}
+                    <tr>
+                        {% if hour.taskId > 1 %}
+                        <td> {{ hour.taskName }}</td>
+                        <td> {{ hour.parentTask }}</td>
+                        <td> {{ hour.projectName }}</td>
+                        <td> {{ hour.startTime }}</td>
+                        <td> {{ hour.endTime }}</td>
+                        <td> {{ hour.getLocation }}</td>
+                        {% if hours.isActivated %}
+                            <td>Godkjent</td>
+                        {% else %}
+                            <td>Ikke godkjent</td>
+                        {% endif %}
+                        <td>
+                            <button class="buttons miniButtons" id="miniButtons"
+                                    onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
+                                <img src="" alt=""> Rediger
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" rowspan="1" id="comment_btn" class="comment_btn"><i><b>Kommentar: </b></i>
+                            {{ hours.Comment }}  <i><b>Endre</b></i></td>
+                    </tr>
+                    <tr>
+                        {# Endre kommentar #}
+                        <td colspan="6" rowspan="1" id="comment_form_show" class="comment_form_show">
+                            <div class="container container_addComment text" id="add_comment">
+                                <form method="post" id="edit_comment_hour" class="edit_comment_hour">
+                                    <input id="hourID" type="hidden" name="hourID" value="{{ hours.getHourID }}" maxlength=45 required/>
+                                    <label for="comment">Endre kommentar: </label>
+                                    <textarea id="comment" name="comment" required>{{ hours.getComment }}</textarea>
+                                    <input type="hidden" value="{{ getMac("Edit Comment") }}" name="XSRFPreventionToken">
+                                    <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
+                                </form>
+                            </div>
+                        </td>
+                        <td colspan="1" id="comment_btn_back" class="comment_btn_back">Gå tilbake:</td>
+                    </tr>
+                        {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </tr>
                 {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
                 {# https://www.w3schools.com/jquery/jquery_hide_show.asp #}
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
