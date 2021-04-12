@@ -69,7 +69,8 @@ small screens (display the links vertically instead of horizontally) */
     }
 }
 /**header slutt--------------------------------------------------------------------*/
-
+/**-------------  ALLE  ---------*/
+section.paddingFromBotton {margin-bottom: 3em;}
 
 /**-------------  ADMINISTRATOR_DASHBOARD  ---------*/
 section.admin_dashboard { margin-top: 6em; }
@@ -98,8 +99,6 @@ section.brukerprofiler { margin-top: 6em; }
 section.prosjekter { margin-top: 6em; }
 
 section.edit_project {margin-top: 6em;}
-
-
 
 /**-------------  GRUPPER  -------------------*/
 section.grupper { margin-top: 6em; }
@@ -185,6 +184,7 @@ div.container_big_long { margin-top: 3em; margin-bottom: 3em; width: 40em; heigh
 }
 div.container_extra_big { width: 65em; height: 30em;
 }
+
 div.container_center { display:block;
     height: 5em; box-shadow: none; border: none;
     /**margin-left: auto; margin-right: auto; width: 50%;*/
@@ -214,7 +214,7 @@ div.container_menu_form_project { width: 29em; height: 45em; background-color: #
     overflow-y: scroll; scroll-behavior: smooth;
 }
 div.container_menu_lang { width: 60em; height: 30em;  border: none;
-    overflow-y: scroll; scroll-behavior: smooth;
+    overflow-y: scroll; overflow-x: scroll;  scroll-behavior: smooth;
 }
 div.container_menu_lang_WithBorder { width: 60em; height: 40em;  border: none;
     overflow-y: scroll; scroll-behavior: smooth; background: #eeeeee;

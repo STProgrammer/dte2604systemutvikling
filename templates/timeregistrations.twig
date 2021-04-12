@@ -70,12 +70,12 @@
                         {% for hour in hours %}
                     <tr>
                         {% if hour.taskId > 1 %}
-                        <td> {{ hour.taskName }}</td>
-                        <td> {{ hour.parentTask }}</td>
-                        <td> {{ hour.projectName }}</td>
-                        <td> {{ hour.startTime }}</td>
-                        <td> {{ hour.endTime }}</td>
-                        <td> {{ hour.getLocation }}</td>
+                            <td> {{ hour.taskName }}</td>
+                            <td> {{ hour.parentTask }}</td>
+                            <td> {{ hour.projectName }}</td>
+                            <td> {{ hour.startTime }}</td>
+                            <td> {{ hour.endTime }}</td>
+                            <td> {{ hour.getLocation }}</td>
                         {% if hours.isActivated %}
                             <td>Godkjent</td>
                         {% else %}
