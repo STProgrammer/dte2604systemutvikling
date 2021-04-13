@@ -29,7 +29,7 @@ if (!is_null($user) && !is_null($project)) {
     $users = $userManager->getAllUsers("firstName"); //alle brukere
     $members = $projectManager->getProjectMembers($project->getProjectName());
 
-    if ($user->isAdmin() or $user->isProjectLeader() && $request->request->has('project_edit') && XsrfProtection::verifyMac("Project edit")) {
+    if ($user->isAdmin()  && $request->request->has('project_edit') && XsrfProtection::verifyMac("Project edit")) {
         if ($projectManager->editProject($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -38,7 +38,7 @@ if (!is_null($user) && !is_null($project)) {
             exit();
         }
     }
-    else if ($user->isAdmin() or $user->isProjectLeader() && $request->request->has('group_add') && XsrfProtection::verifyMac("Add group")) {
+    else if ($user->isAdmin() && $request->request->has('group_add') && XsrfProtection::verifyMac("Add group")) {
         if (!$user->isAdmin()) {
             $request->request->set('isAdmin', 0);
         }
@@ -68,7 +68,7 @@ if (!is_null($user) && !is_null($project)) {
             exit();
         }
     }
-    else if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader() && $request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
+    else if ($user->isAdmin()  && $request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
         if ($taskManager->addMainTask($projectName)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -77,7 +77,7 @@ if (!is_null($user) && !is_null($project)) {
             exit();
         }
     }
-    else if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader() && $request->request->has('remove_member') && XsrfProtection::verifyMac("Project remove member")) {
+    else if ($user->isAdmin()  && $request->request->has('remove_member') && XsrfProtection::verifyMac("Project remove member")) {
         if ($projectManager->removeMember($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -86,7 +86,7 @@ if (!is_null($user) && !is_null($project)) {
             exit();
         }
     }
-    else if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader() && $request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
+    else if ($user->isAdmin() && $request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
         if ($projectManager->addPhase($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
