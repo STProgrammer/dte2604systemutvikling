@@ -56,7 +56,7 @@ if ($user) {
     echo $twig->render('projectleader_dashboard.twig',
         array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask, 'HourManager' => $hourManager,
             'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
-            'TaskManager' => $taskManager));
+            'TaskManager' => $taskManager, 'hourID' => $hourID));
 
 } else {
     header("location: login.php");

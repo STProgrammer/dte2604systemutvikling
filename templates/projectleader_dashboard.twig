@@ -1,7 +1,7 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="prosjektleder_dashboard" id="prosjektleder_dashboard">
-
+        {#
         {% set stamp = "" %}
         {% for status in hours %}
             {% if status.stampingStatus == true %}
@@ -12,7 +12,10 @@
         {% endfor %}
 
         {% if stamp %}
-            {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
+        #}
+
+        {% if hourID is empty %}
+        {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
             <div id="text">
                 <form method="post" id="register_time_form">
                     <select name="Kategori">
@@ -34,18 +37,16 @@
             </div>
         {% endif %}
 
+        {% if not hourID is empty %}
+        {# KNAPP - REGISTRER UT HVIS DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 0 #}
+        <div id="text">
+            <form method="post" id="stop_time_form">
+                <input type="submit" name="stop_time" id="reg_btn"
+                       value="{{ status.hourID }} Stopp timeregistrering">
+            </form>
+        </div>
+        {% endif %}
 
-        {% for status in hours %}
-            {% if status.stampingStatus == false %}
-                {# KNAPP - REGISTRER UT HVIS DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 0 #}
-                <div id="text">
-                    <form method="post" id="stop_time_form">
-                        <input type="submit" name="stop_time" id="reg_btn"
-                               value="{{ status.hourID }} Stopp timeregistrering">
-                    </form>
-                </div>
-            {% endif %}
-        {% endfor %}
         {# Databaseoppføringer #}
         <div class="container container_medium">
             <img src="images/icon_databse.png" width="40px" alt="Icon"/>
