@@ -59,7 +59,6 @@ if ($user) {
             array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,
                 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
                 'TaskManager'=> $taskManager, 'timeregCheck'=> $timeregCheck));
-
     } else {
     header("location: login.php");
     exit();
