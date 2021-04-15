@@ -1,19 +1,6 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="prosjektleder_dashboard" id="prosjektleder_dashboard">
-        {#
-        {% set stamp = "" %}
-        {% for status in hours %}
-            {% if status.stampingStatus == true %}
-                {% if status.stampingStatus|length > 0 %}
-                    {% set stamp = true %}
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-
-        {% if stamp %}
-        #}
-
         {% if hourID is empty %}
         {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
             <div id="text">

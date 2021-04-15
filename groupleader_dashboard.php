@@ -43,8 +43,7 @@ define('FILENAME_TAG', 'image');
     //STOP time
     if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
-            $hourID = $hourManager->activeTimeregForUser($userID);
-            $stopTime = $hourManager->stopTimeForUser($hourID);
+//            $stopTime = $hourManager->stopTimeForUser($hourID);
             if ($hourManager->stopTimeForUser($hourID)) {
                 header("Location: groupleader_dashboard.php?stopregisteredhour=1");
                 exit();
@@ -59,7 +58,7 @@ define('FILENAME_TAG', 'image');
         echo $twig->render('groupleader_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,
                 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
-                'TaskManager'=> $taskManager));
+                'TaskManager'=> $taskManager, 'hourID' => $hourID));
 
     } else {
         header("location: login.php");
