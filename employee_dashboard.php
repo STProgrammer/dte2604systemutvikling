@@ -17,7 +17,8 @@ if ($user) {
     $hourId = $request->query->getInt('hourID');
     $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($hourId);
-    $timeregCheck = $hourManager->checkIfActiveTimereg($userID);
+//    $timeregCheck = $hourManager->checkIfActiveTimereg($userID);
+    $hourID = $hourManager->activeTimeregForUser($userID);
 
     }
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
@@ -42,7 +43,6 @@ if ($user) {
     //STOP time
     if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
-            $hourID = $hourManager->activeTimeregForUser($userID);
             $stopTime = $hourManager->stopTimeForUser($hourID);
             if ($hourManager->stopTimeForUser($hourID)) {
                 header("Location: employee_dashboard.php?stopregisteredhour=1");

@@ -3,44 +3,50 @@
     <section class="employee_dashboard" id="employee_dashboard">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
-            {% if status.stampingStatus == 0 %}
-                {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
-                <div id="text">
-                    <form method="post" id="register_time_form">
-                        <select name="Kategori">
-                            <option value="Administrativt">Administrativt</option>
-                            <option value="Kurs">Kurs</option>
-                            <option value="Møte">Møte</option>
-                            <option value="Prosjekt">Prosjekt</option>
-                            <option value="Rapportering">Rapportering</option>
-                            <option value="Selvstudie">Selvstudie</option>
-                        </select>
-                        <select name="Lokasjon">
-                            <option value="Hjemmekontor">Hjemmekontor</option>
-                            <option value="Kontor">Kontor</option>
-                            <option value="Ute">Ute</option>
-                            <option value="Reise">Reise</option>
-                        </select>
-                        <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
-                    </form>
-                </div>
+        {% set stamp = "" %}
+        {% for status in hours %}
+            {% if status.stampingStatus == true %}
+                {% if status.stampingStatus|length > 0 %}
+                    {% set stamp = true %}
+                {% endif %}
             {% endif %}
+        {% endfor %}
+
+        {% if stamp %}
+            {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
+            <div id="text">
+                <form method="post" id="register_time_form">
+                    <select name="Kategori">
+                        <option value="Administrativt">Administrativt</option>
+                        <option value="Kurs">Kurs</option>
+                        <option value="Møte">Møte</option>
+                        <option value="Prosjekt">Prosjekt</option>
+                        <option value="Rapportering">Rapportering</option>
+                        <option value="Selvstudie">Selvstudie</option>
+                    </select>
+                    <select name="Lokasjon">
+                        <option value="Hjemmekontor">Hjemmekontor</option>
+                        <option value="Kontor">Kontor</option>
+                        <option value="Ute">Ute</option>
+                        <option value="Reise">Reise</option>
+                    </select>
+                    <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
+                </form>
+            </div>
+        {% endif %}
 
 
-        {% for status in timeregCheck %}
-            {% if status.stampingStatus == 0 %}
+        {% for status in hours %}
+            {% if status.stampingStatus == false %}
                 {# KNAPP - REGISTRER UT HVIS DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 0 #}
                 <div id="text">
                     <form method="post" id="stop_time_form">
-                        <input type="submit" name="stop_time" id="reg_btn" value="Stopp timeregistrering">
+                        <input type="submit" name="stop_time" id="reg_btn"
+                               value="{{ status.hourID }} Stopp timeregistrering">
                     </form>
                 </div>
             {% endif %}
         {% endfor %}
-    </section>
-    <section>
-
         {# Mine siste fem timeregistreringer #}
         <div class="openContainerNoBorder text" id="timeTabell">
             <h5>Mine timeregistreringer fra gjeldende måned</h5>
