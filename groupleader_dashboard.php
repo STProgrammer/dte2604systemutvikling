@@ -18,8 +18,8 @@ define('FILENAME_TAG', 'image');
         $hourId = $request->query->getInt('hourID');
         $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
         $hour = $hourManager->getHour($hourId);
-        $timeregCheck = $hourManager->checkIfActiveTimereg($userID);
-
+//    $timeregCheck = $hourManager->checkIfActiveTimereg($userID);
+        $hourID = $hourManager->activeTimeregForUser($userID);
     }
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
@@ -59,7 +59,7 @@ define('FILENAME_TAG', 'image');
         echo $twig->render('groupleader_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,
                 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
-                'TaskManager'=> $taskManager, 'timeregCheck'=> $timeregCheck));
+                'TaskManager'=> $taskManager));
 
     } else {
         header("location: login.php");
