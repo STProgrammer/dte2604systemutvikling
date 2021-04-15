@@ -41,7 +41,7 @@ if ($request->request->has('register_time')) {
 //STOP time
 if ($request->request->has('stop_time')) {
     if ($hourManager->activeTimeregForUser($userID)) {
-        $stopTime = $hourManager->stopTimeForUser($hourID);
+        //$stopTime = $hourManager->stopTimeForUser($hourID);
         if ($hourManager->stopTimeForUser($hourID)) {
             header("Location: projectleader_dashboard.php?stopregisteredhour=1");
             exit();
