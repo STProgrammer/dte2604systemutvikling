@@ -27,30 +27,27 @@
             <a href="groups.php">Grupper</a>
             <a href="reports.php">Rapporter</a>
             <a href="profile_edit.php">Min profil</a>
-        {% endif %}
 
-        {% if user.isGroupLeader() %}
+        {% elseif user.isGroupLeader() %}
             <a href="timeregistration.php">Timeregistreringer </a>
             <a href="userprofiles.php">Mine brukere</a>
             <a href="projects.php">Mine Prosjekter</a>
             <a href="groups.php">Mine Grupper</a>
             <a href="reports.php">Rapporter</a>
             <a href="profile_edit.php">Min profil</a>
-        {% endif %}
 
-        {% if user.isEmployee %}
+        {% elseif user.isEmployee %}
             <a href="timeregistration.php">Mine timeregistreringer </a>
             <a href="projects.php">Mine Prosjekter</a>
             <a href="groups.php">Mine Grupper</a>
             <a href="reports.php">Lønnslipp</a>
             <a href="profile_edit.php">Min profil</a>
-        {% endif %}
 
-
-        {% if user.isCustomer %}
+        {% elseif user.isCustomer %}
             <a href="projects.php">Prosjektets fremgang</a>
             <a href="reports.php">Prosjektets rapporter</a>
             <a href="profile_edit.php">Min profil</a>
+
         {% endif %}
 
         <a href="logout.php">Logg ut</a>
