@@ -13,11 +13,11 @@ $taskManager = new TaskManager($db, $request, $session);
 if ($user) {
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
-    $hours = $hourManager->getAllHoursForUser($userID); //kun denne brukerens kommentarer
+
     $hourId = $request->query->getInt('hourID');
-    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($hourId);
-//    $timeregCheck = $hourManager->checkIfActiveTimereg($userID);
+    $hours = $hourManager->getHours(whoWorked: $userID);
+
     $hourID = $hourManager->activeTimeregForUser($userID);
 
     }
@@ -43,7 +43,6 @@ if ($user) {
     //STOP time
     if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
-//            $stopTime = $hourManager->stopTimeForUser($hourID);
             if ($hourManager->stopTimeForUser($hourID)) {
                 header("Location: employee_dashboard.php?stopregisteredhour=1");
                 exit();
@@ -56,7 +55,7 @@ if ($user) {
     if ($user) {
 
         echo $twig->render('employee_dashboard.twig',
-            array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask,'HourManager' => $hourManager,
+            array('hours' => $hours, 'hour' => $hour,'hourManager' => $hourManager,
                 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
                 'TaskManager'=> $taskManager, 'hourID'=> $hourID));
     } else {

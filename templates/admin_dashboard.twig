@@ -65,23 +65,21 @@
         <div class="container container_big text scroll">
             <img src="images/icon_kommentar.png" width="40px" alt="Icon"/>
             Siste kommentarer fra brukere<br><br>
-            {% for hoursAll in hoursAll %}{% for users in users %}
-                {% if hoursAll.whoWorked == users.userID %}
-                    {% if hoursAll.comment is not empty %}
-                        <table>
-                            <tr>
-                                <td><b>{{ users.firstname }} {{ users.lastname }} :</b></td>
-                            </tr>
-                            <tr>
-                                <td id="commentar" > {{ hoursAll.comment }}</td>
-                            </tr>
-                        </table>
-                    {% endif %}
+            {% for hour in hours %}
+                {% if hour.comment is not empty %}
+                    <table>
+                        <tr>
+                            <td><b>{{ hour.whoWorkedName }} :</b></td>
+                        </tr>
+                        <tr>
+                            <td id="commentar"> {{ hour.comment }}</td>
+                        </tr>
+                    </table>
                 {% endif %}
-            {% endfor %}{% endfor %}
+            {% endfor %}
         </div>
     </section>
 {% endblock %}
     {# REFERENCES #}
     {# Adobe XD icons #}
-    {# icon_task.png: https://icon-icons.com/icon/task/120291   #}
+    {# icon_task.png: https://icon-icons.com/icon/task/120291     #}

@@ -263,9 +263,9 @@ class UserManager
         try {
             $hash = password_hash($password,PASSWORD_DEFAULT);
             $sth = $this->dbase->prepare("update Users set username = :username, firstName = :firstName, 
-    lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
-    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, 
-    isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status WHERE userID = :userID;");
+                        lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
+                        phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, 
+                        isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status WHERE userID = :userID;");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
             $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
             $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
@@ -448,31 +448,6 @@ class UserManager
     }
     // END GET USER
 
-/*
-    // GET ALL USERS
-    public function getAllUsers($colName, $isAdmin = null,
-                                $isProjectLeader = null, $isGroupLeader = null, $isTemporary = null) : array {
-        $allUsers = null;
-        try{
-           // $colName = "`".str_replace("`","``",$colName)."`";
-            $query   = "SELECT * FROM Users ORDER BY `$colName` ASC;";
-            $stmt = $this->dbase->prepare($query);
-            $stmt->execute();
-            if($allUsers = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
-                return $allUsers;
-            }
-            else {
-                $this->notifyUser("User not found", "");
-                return array();
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllUsers()", $e->getMessage());
-            return array();
-        }
-        return array();
-    }
-    // END GET ALL USERS
-*/
 
     // GET ALL USERS
     public function getAllUsers($colName) : array {

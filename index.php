@@ -12,9 +12,7 @@ if ($user) {
     $userID = $user->getUserId($user);
     $users = $userManager->getAllUsers('dateRegistered');
 
-    $hoursAll = $hourManager->getAllHours();
-    $hours = $hourManager->getAllHoursForUser($userID);
-    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
+    $hours = $hourManager->getAllHours();
     $categories = $taskManager->getCategories();
     $tasks = $taskManager->getAllTasks();
 
@@ -23,8 +21,7 @@ if ($user) {
             echo $twig->render('admin_dashboard.twig',
                 array( 'session' => $session, 'request' => $request,
                     'user' => $user, 'users' => $users,
-                    'hours' => $hours, 'hourWithTask' => $hourWithTask,
-                    'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
+                    'hours' => $hours, 'HourManager' => $hourManager,
                     'tasks' => $tasks));
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
             echo $e->getMessage();
@@ -32,29 +29,11 @@ if ($user) {
     }
     elseif ($user->isProjectLeader()) {
         header("location: projectleader_dashboard.php");
-//            try {
-//                echo $twig->render('projectleader_dashboard.twig',
-//                    array( 'session' => $session, 'request' => $request,
-//                        'user' => $user, 'users' => $users,
-//                        'hours' => $hours, 'hourWithTask' => $hourWithTask,
-//                        'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
-//                        'tasks' => $tasks));
-//            } catch (LoaderError | RuntimeError | SyntaxError $e) {
-//                echo $e->getMessage();
-//            }
+
     }
     elseif ($user->isGroupLeader()) { //TEAMLEDER
         header("location: groupleader_dashboard.php");
-//            try {
-//                echo $twig->render('groupleader_dashboard.twig',
-//                    array( 'session' => $session, 'request' => $request,
-//                        'user' => $user, 'users' => $users,
-//                        'hours' => $hours, 'hourWithTask' => $hourWithTask,
-//                        'hoursAll' => $hoursAll, 'HourManager' => $hourManager,
-//                        'tasks' => $tasks));
-//            } catch (LoaderError | RuntimeError | SyntaxError $e) {
-//                echo $e->getMessage();
-//            }
+
     }
     elseif ($user->isUser()) { //BRUKER TEMP and WORKER
         header("location: employee_dashboard.php");

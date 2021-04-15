@@ -36,9 +36,44 @@
             </div>
         {% endif %}
 
-        {# Mine siste fem timeregistreringer #}
+        {# Mine siste timeregistreringer for innstemplinger #}
         <div class="openContainerNoBorder text" id="timeTabell">
-            <h5>Mine timeregistreringer fra gjeldende måned</h5>
+            <h5>Mine siste timeregistreringer for innstemplinger </h5>
+            <table class="table" id="table">
+                <tr>
+                    <th>Task Type</th>
+                    <th>Lokasjon</th>
+                    <th>Starttid</th>
+                    <th>Slutttid</th>
+                    <th>Antall timer</th>
+                    <th>Godkjent av leder</th>
+                    <th>Kommentar fra bruker</th>
+                    <th>Kommentar fra leder</th>
+                </tr>
+                {% for hour in hours %}
+                    {% if hour.whoWorked == user.getUserId and hour.taskId is null %}
+                        <tr>
+                            <td> {{ hour.taskType }}</td>
+                            <td> {{ hour.location }}</td>
+                            <td> {{ hour.startTime }}</td>
+                            <td> {{ hour.endTime }}</td>
+                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            {% if hour.activated == true %}
+                                <td>Godkjent</td>
+                            {% else %}
+                                <td>Ikke godkjent enda</td>
+                            {% endif %}
+                            <td> {{ hour.comment }}</td>
+                            <td> {{ hour.commentBoss }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+
+        {# Mine siste timeregistreringer for oppgaver #}
+        <div class="openContainerNoBorder text" id="timeTabell">
+            <h5>Mine siste timeregistreringer for oppgaver</h5>
             <table class="table" id="table">
                 <tr>
                     <th>Task Navn</th>
@@ -46,44 +81,47 @@
                     <th>Prosjektnavn</th>
                     <th>Starttid</th>
                     <th>Slutttid</th>
+                    <th>Antall timer</th>
                     <th>Lokasjon</th>
-                    <th>Kommentar</th>
+                    <th>Kommentar fra bruker</th>
                     {% if user.isAdmin %}
                         <th>Endre</th>
                     {% endif %}
                 </tr>
-                {# hours verdien her kommer fra getAllHoursForUser($userID); så kun denne brukerens kommentarer #}
-                {% for hours in hours %}
-                    <tr>
-                        {% for task in tasks %}
-                            {% if task.getTaskID() == hours.taskID %}
-                                <td> {{ task.getTaskName }}</td>
-                                <td> {{ task.getParentTask }}</td>
-                                <td> {{ task.getProjectName }}</td>
-                            {% endif %}
-                        {% endfor %}
-                        <td> {{ hours.startTime }}</td>
-                        <td> {{ hours.endTime }}</td>
-                        <td> {{ hours.getLocation }}</td>
-                        <td> {{ hours.getComment }}</td>
-                        <td>
-                            <button class="buttons miniButtons" id="miniButtons"
-                                    onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
-                                <img src="" alt=""> Rediger
-                            </button>
-                        </td>
-                    </tr>
+                {% for hour in hours %}
+                    {% if hour.whoWorked == user.getUserId and hour.taskId is not null %}
+                            <tr>
+                                <td> {{ hour.taskName }}</td>
+                                <td> {{ hour.parentTask }}</td>
+                                <td> {{ hour.projectName }}</td>
+                                <td> {{ hour.startTime }}</td>
+                                <td> {{ hour.endTime }}</td>
+                                <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                                <td> {{ hour.location }}</td>
+                                <td> {{ hour.comment }}</td>
+                                {% if user.isAdmin %}
+                                    <td>
+                                        <button class="buttons miniButtons" id="miniButtons"
+                                                onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
+                                            <img src="" alt=""> Rediger
+                                        </button>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                    {% endif %}
                 {% endfor %}
             </table>
         </div>
+
     </section>
+
     <section>
         {# Feilmeldinger #}
         <div class="container container_big_long text scroll">
-            <h2>Tilbakemeldinger fra database</h2>
+            <h5>Tilbakemeldinger fra database</h5>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
-                    <h3>{{ header }}</h3>
+                    <h6>{{ header }}</h6>
                 {% endfor %}
                 {% for message in session.getFlashBag.get('message', []) %}
                     <p>{{ message }}</p>

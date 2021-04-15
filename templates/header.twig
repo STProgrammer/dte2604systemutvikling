@@ -18,7 +18,7 @@
     <div class="header" id="myHeader">
         <img src="images/morild_logo_150px.png" data-href="index.php" width="230pt" alt="Logo"/>
 
-        <a href="index.php">Velkommen<b>{{user.getFirstName()}}</b></a>
+        <a href="index.php">Velkommen <b>{{user.getFirstName()}}</b></a>
 
         {% if user.isAdmin or user.isProjectLeader %}
             <a href="timeregistration.php">Timeregistreringer </a>
