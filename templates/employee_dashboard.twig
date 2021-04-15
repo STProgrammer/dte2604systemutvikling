@@ -78,7 +78,7 @@
     </section>
     <section>
         {# Feilmeldinger #}
-        <div class="container container_big_long text">
+        <div class="container container_big_long text scroll">
             <h2>Tilbakemeldinger fra database</h2>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}

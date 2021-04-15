@@ -40,14 +40,11 @@
                         {% endif %}
 
 
-                        {% if user.isAdmin %}
                             <td>
                                 <button class="buttons miniButtons" id="miniButtons"
                                         onclick="window.location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
-                                    <img src="" alt=""> Rediger
-                                </button>
+                                    <img src="" alt=""> Se Grupper </button>
                             </td>
-                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>
