@@ -342,11 +342,11 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
                 $groupsFromUsersAndGroups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group");
                 return $groupsFromUsersAndGroups;
             } else {
-                $this->notifyUser("Feil i getGroups()");
+                $this->notifyUser("Feil i getGroupFromUserAndGroups");
                 return $groupsFromUsersAndGroups;
             }
         } catch (Exceptopn $e) {
-            $this->notifyUser("Feil i getGroups()", $e->getMessage());
+            $this->notifyUser("Feil i getGroupFromUserAndGroups", $e->getMessage());
             return $groupsFromUsersAndGroups;}
     }
 

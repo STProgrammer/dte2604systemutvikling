@@ -14,14 +14,13 @@ $user = $session->get('User');
 if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     $userID = $request->query->getInt('userID');
     $userToView = $userManager->getUser($userID);
+
     $hours = $hourManager->getAllHoursForUser($userID);
     $hour = $hourManager->getHour($userID);
-    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
-    $tasks = $taskManager->getAllTasks();
 
-//    $starTime = date("2021-04-10 08:00:00");
-//    $endTime = date("2021-04-10 16:00:00");
-//    $spentTimePhase = $hourManager->spentTimePhase($starTime, $endTime);
+    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
+
+    $tasks = $taskManager->getAllTasks();
 
     if ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
         $hourID = $request->query->getInt('hourId');

@@ -486,10 +486,6 @@ input[type=submit] :hover {
 }
 label { color: #4c4747; }
 
-label#oversikt { color: olive; }
-
-b#oversikt { color: olive; }
-
 select{
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     width: 20em;
@@ -579,6 +575,27 @@ h4 { font-family: Segoe UI, serif; font-size: 1.2rem; color: #5f5a5a; margin: 0;
 h5 { font-family: Segoe UI, serif; font-size: 1rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
 }
 h6 { font-family: Segoe UI, serif; font-size: 0.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+}
+.marginleft {margin-left: 1em;
+}
+.greenText {color: darkgreen;
+}
+.overskrift {color: darkolivegreen; padding-left: 1em;
+    border-left: 0.5em solid lightgray;
+    border-bottom: 0.2em solid lightgray;
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 0.1em;
+}
+.overskriftLiten {
+    color: olive;
+    margin-bottom: 1em;
+    margin-top: 1em;
+ }
+b.overskriftLiten {
+    color: olive;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
 b { margin-left: 1em}
 
