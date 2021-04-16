@@ -12,11 +12,11 @@ $taskManager = new TaskManager($db, $request, $session);
 if ($user) {
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
-    $hours = $hourManager->getAllHoursForUser($userID); //kun denne brukerens kommentarer
+
+    $hours = $hourManager->getAllHours(); //kun denne brukerens kommentarer
     $hourId = $request->query->getInt('hourID');
-    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
+//    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($hourId);
-//    $timeregCheck = $hourManager->checkIfActiveTimereg($userID);
     $hourID = $hourManager->activeTimeregForUser($userID);
 }
 if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
@@ -54,7 +54,7 @@ if ($request->request->has('stop_time')) {
 if ($user) {
 
     echo $twig->render('projectleader_dashboard.twig',
-        array('hours' => $hours, 'hour' => $hour, 'hourWithTask' => $hourWithTask, 'HourManager' => $hourManager,
+        array('hours' => $hours, 'hour' => $hour, 'hourManager' => $hourManager,
             'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
             'TaskManager' => $taskManager, 'hourID' => $hourID));
 

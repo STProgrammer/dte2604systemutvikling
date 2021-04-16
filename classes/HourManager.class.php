@@ -71,7 +71,7 @@ class HourManager
                     FROM Hours
                     LEFT JOIN Users as workers on workers.userID = Hours.whoWorked
                     LEFT JOIN Tasks as hourTasks on hourTasks.taskID = Hours.taskID
-                    LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID ';
+                    LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE workers.userID = Hours.whoWorked';
         $params = array();
         if (!is_null($taskId)) {
             $query .= " AND Hours.taskID = :taskID";

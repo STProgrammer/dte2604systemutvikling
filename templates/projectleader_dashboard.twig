@@ -85,23 +85,41 @@
     </section>
 
     <section>
-        {# Siste kommentarer fra brukere #}
+        {# Siste kommentarer fra brukere og ledere #}
         <div class="container container_big text scroll">
             <img src="images/icon_kommentar.png" width="40px" alt="Icon"/>
-            Siste kommentarer fra brukere<br><br>
-            {% for hoursAll in hoursAll %}{% for users in users %}
-                {% if hoursAll.whoWorked == users.userID %}
-                    {% if hoursAll.comment is not empty %}
-                        <h6>{{ users.firstname }} {{ users.lastname }}</h6>
-                        <ul>{{ hoursAll.comment }}</ul><br>
-                    {% endif %}
+            Siste kommentarer fra brukere <br><br>
+            {% for hour in hours %}
+                {% if hour.comment is not empty %}
+                    <table>
+                        <tr>
+                            <td class="widthFixed"><b>{{ hour.whoWorkedName }} :</b></td>
+                            <td>{{ hour.startTime }}</td>
+                        </tr>
+                        <tr>
+                            <td id="commentar"> {{ hour.comment }}</td>
+                        </tr>
+                    </table>
                 {% endif %}
-            {% endfor %}{% endfor %}
+            {% endfor %}
         </div>
-    </section>
-
-    <section>
-
+        <div class="container container_big text scroll">
+            <img src="images/icon_kommentar.png" width="40px" alt="Icon"/>
+            Siste kommentarer fra ledere <br><br>
+            {% for hour in hours %}
+                {% if hour.commentBoss is not empty %}
+                    <table>
+                        <tr>
+                            <td class="widthFixed"><b>{{ hour.whoWorkedName }} :</b></td>
+                            <td>{{ hour.startTime }}</td>
+                        </tr>
+                        <tr>
+                            <td id="commentar"> {{ hour.commentBoss }}</td>
+                        </tr>
+                    </table>
+                {% endif %}
+            {% endfor %}
+        </div>
     </section>
 
 {% endblock %}

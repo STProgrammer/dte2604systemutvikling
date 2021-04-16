@@ -14,7 +14,7 @@ if ($user) {
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
 
-    $hour = $hourManager->getHour($userID);
+//    $hour = $hourManager->getHour($userID);
     $hours = $hourManager->getHours(whoWorked: $userID);
     $hoursAll = $hourManager->getAllHours();
 
@@ -39,7 +39,7 @@ if ($user) {
     } else {
         echo $twig->render('timeregistrations.twig',
             array('session' => $session, 'request' => $request, 'user' => $user,
-                'hours' => $hours, 'hour' => $hour, 'hoursAll' => $hoursAll,
+                'hours' => $hours, 'hoursAll' => $hoursAll,
                 'hourManager' => $hourManager,
                 'userID' => $userID,
                 'tasks' => $tasks));
