@@ -5,6 +5,7 @@
     <section class="edit_user" id="edit_user">
         <div class="openContainerNoBorder text" id="table_edit">
             <h3>Profilen til {{ userToEdit.getFirstName() }}  {{ userToEdit.getLastName() }}</h3>
+            <h5 class="marginleft overskrift">Endre din profil</h5>
             <div class>
                 {% if session.getFlashBag.has('header') %}
                     {% for header in session.getFlashBag.get('header', []) %}
@@ -17,62 +18,71 @@
             </div>
             <form method="post" id="edit_form">
                 <br id="text">
-                    <br><label for="address">Adresse:</label>
-                    <br><input type="text" id="address" name="address" placeholder="Adresse" maxlength=90
-                               value="{{ userToEdit.getAddress() }}" required/>
+                <br><label for="address">Adresse:</label>
+                <br><input type="text" id="address" name="address" placeholder="Adresse" maxlength=90
+                           value="{{ userToEdit.getAddress() }}" required/>
 
-                    <br><label for="zipCode">Postnummer:</label>
-                    <br><input type="text" id="zipCode" name="zipCode" placeholder="Postnummer" maxlength=10
-                               required value="{{ userToEdit.getZipCode() }}"/>
+                <br><label for="zipCode">Postnummer:</label>
+                <br><input type="text" id="zipCode" name="zipCode" placeholder="Postnummer" maxlength=10
+                           required value="{{ userToEdit.getZipCode() }}"/>
 
-                    <br><label for="city">Poststed:</label>
-                    <br><input type="text" id="city" name="city" placeholder="Poststed" maxlength=45 required
-                               value="{{ userToEdit.getCity() }}"/>
+                <br><label for="city">Poststed:</label>
+                <br><input type="text" id="city" name="city" placeholder="Poststed" maxlength=45 required
+                           value="{{ userToEdit.getCity() }}"/>
 
-                    <br><label for="phoneNumber">Telefon:</label>
-                    <br><input type="text" id="phoneNumber" name="phoneNumber" placeholder="Telefon" maxlength=45
-                               value="{{ userToEdit.getPhoneNumber() }}" required/>
+                <br><label for="phoneNumber">Telefon:</label>
+                <br><input type="text" id="phoneNumber" name="phoneNumber" placeholder="Telefon" maxlength=45
+                           value="{{ userToEdit.getPhoneNumber() }}" required/>
 
-                    <br><label for="mobileNumber">Mobil:</label>
-                    <br><input type="text" id="mobileNumber" name="mobileNumber" placeholder="Mobil" maxlength=45
-                               value="{{ userToEdit.getMobileNumber() }}" required/>
+                <br><label for="mobileNumber">Mobil:</label>
+                <br><input type="text" id="mobileNumber" name="mobileNumber" placeholder="Mobil" maxlength=45
+                           value="{{ userToEdit.getMobileNumber() }}" required/>
 
-                    <br><label for="IMAddress">IM adresse:</label>
-                    <br><input type="text" id="IMAddress" name="IMAddress" placeholder="IM adresse" maxlength=45
-                               value="{{ userToEdit.getIMAddress() }}" required/>
+                <br><label for="IMAddress">IM adresse:</label>
+                <br><input type="text" id="IMAddress" name="IMAddress" placeholder="IM adresse" maxlength=45
+                           value="{{ userToEdit.getIMAddress() }}" required/>
 
 
-                {% if userToEdit.isAdmin %}
-                    <br>Stilling: Administrator
-                {% elseif userToEdit.isProjectLeader %}
-                    <br>Stilling: Prosjektleder
-                {% elseif userToEdit.isGroupLeader %}
-                    <br>Stilling: Teamleder
-                {% elseif userToEdit.isTemporary %}
-                    <br>Stilling: Innleid
-                {% elseif userToEdit.isCustomer %}
-                    <br>Stilling: Kunde
-                {% else %}
-                    <br>Stilling: Ingen stilling
-                {% endif %}
-                    {% if not userToEdit.isCustomer() %}
-                    <p><label>Endre stilling: </label>
-                        <label for="worker">Fast arbeider</label>
-                    <br><input type="radio" id="worker" name="userType" value="2">
-
-                    <br><input type="radio" id="temporary" name="userType" value="1">
-                    <label for="temporary">Innleid arbeider</label>
-                    {% if user.isAdmin() %}
-                        <br><input type="radio" id="admin" name="userType" value="3">
-                        <label for="admin">Admin</label>
-                    {% endif %}
-                    {% endif %}
-
+                <table>
+                    <tr>
+                        <td>
+                            {% if userToEdit.isAdmin %}
+                                Stilling er: <b> Administrator</b>
+                            {% elseif userToEdit.isProjectLeader %}
+                                Stilling / posisjon er: <b> Prosjektleder</b>
+                            {% elseif userToEdit.isGroupLeader %}
+                                Stilling / posisjon er: <b> Teamleder</b>
+                            {% elseif userToEdit.isTemporary %}
+                                Stilling er: <b> Innleid</b>
+                            {% elseif userToEdit.isCustomer %}
+                                Posisjon er: <b> Kunde</b>
+                            {% else %}
+                                Stilling er: <b> Ingen stilling</b>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        {% if not userToEdit.isCustomer() %}
+                            <td><label>Endre stilling: </label></td>
+                            <td><label for="worker">Fast arbeider</label></td>
+                            <td><input type="radio" id="worker" name="userType" value="2"></td>
+                            <td><label for="temporary">Innleid arbeider</label></td>
+                            <td><input type="radio" id="temporary" name="userType" value="1"></td>
+                            {% if user.isAdmin() %}
+                                <td>
+                                    <input type="radio" id="admin" name="userType" value="3">
+                                    <label for="admin">Admin</label>
+                                </td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                </table>
 
                 {% if not userToEdit.isCustomer() %}
-                    <p>Status: {{ userToEdit.getStatus() }}
+                <p>Status: <b>{{ userToEdit.getStatus() }}</b><br>
                     <br><label for="status">Endre status</label>
-                        <br><select name="status" id="status">
+                    <br><select name="status" id="status">
                         <option value="Sick" {% if userToEdit.getStatus() == "Sick" %} selected {% endif %}>
                             Syk
                         </option>
@@ -94,17 +104,17 @@
                         </option>
                     </select>
                     {% endif %}
-                <input type="hidden" value="{{ getMac("Edit user's information") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="user_edit" id="edit_btn" value="Send inn endringer"><br>
+                    <input type="hidden" value="{{ getMac("Edit user's information") }}" name="XSRFPreventionToken">
+                    <br><input type="submit" name="user_edit" id="edit_btn" value="Send inn endringer"><br>
             </form>
             <br>
-        {% if user.isAdmin() %}
-            <form method="post"
-                  onsubmit="return confirm('Er du sikker på å slette brukeren? \n(Kan ikke angres etterpå)');">
-                <input type="hidden" value="{{ getMac("Delete user") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="delete_user" value="Slett bruker" class="delete"/>
-            </form>
-        {% endif %}
+            {% if user.isAdmin() %}
+                <form method="post"
+                      onsubmit="return confirm('Er du sikker på å slette brukeren? \n(Kan ikke angres etterpå)');">
+                    <input type="hidden" value="{{ getMac("Delete user") }}" name="XSRFPreventionToken">
+                    <br><input type="submit" name="delete_user" value="Slett bruker" class="delete"/>
+                </form>
+            {% endif %}
             <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
         </div>
     </section>

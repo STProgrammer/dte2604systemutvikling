@@ -8,17 +8,20 @@ $userManager = new UserManager($db, $request, $session);
 $projectManager = new ProjectManager($db, $request, $session);
 $taskManager = new TaskManager($db, $request, $session);
 
-//$employees = $userManager->getAllEmployees("firstName");
 $group = $groupManager->getGroup($request->query->getInt('groupid'));
 
 
-if (!is_null($user) && !is_null($group) && ($user->isAdmin() or $user->getUserID() == $group->getGroupLeader())) {
+if (!is_null($user) && !is_null($group) && ($user->getUserID() == $group->getGroupLeader())) {
     $groupID = $group->getGroupID();
+
     $employees = $groupManager->getAllNonMembers($groupID);
     $members = $groupManager->getGroupMembers($groupID);
     $candidates = $groupManager->getLeaderCandidates($groupID);
+
     $projects = $projectManager->getAllProjects();
+
     $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $group->getProjectName(), groupID: $groupID);
+
     if ($request->request->has('group_edit') && XsrfProtection::verifyMac("Group edit")) {
         if (!$user->isAdmin()) {
             $request->request->set('isAdmin', 0);

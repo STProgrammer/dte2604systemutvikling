@@ -5,53 +5,63 @@
 
     <section class="edit_hour" id="edit_hour">
         {# TILBAKE KNAPP #}
-        <div>
-            <button class="button buttons" id="prosjektKnapper" onclick="goBack()"><img src="" alt=""> Gå tilbake
+        <div class="container noPaddingNoMargin container_small cursor" onclick="goBack()">
+            <button id="button" class="button" title="Gå tilbake"
+                    onclick="goBack()">
+                <img class="imgicon" src="" alt=""><b>Gå tilbake</b>
             </button>
         </div>
+    </section>
 
+    <section>
         {# Endre kommentar #}
         <div class="container container_menu_form text" id="edit_comment_hour">
+            <h5 id="overskrift">Endre din egen kommentar</h5>
             <form method="post" id="edit_comment_hour1">
-                <input id="hourID" type="hidden" name="hourID" value="{{ hour.getHourID }}" maxlength=45
+                <input id="hourID" type="hidden" name="hourID" value="{{ hour.hourID }}" maxlength=45
                        required/>
-                <label for="comment">Endre kommentar: </label>
+                <label class="overskriftLiten"  for="comment">Endre din egen kommentar: </label><br>
                 <textarea id="commentbig" cols="2" rows="4" name="comment"
-                          required>{{ hour.getComment }}</textarea>
+                          required>{{ hour.comment }}</textarea>
                 <input type="hidden" value="{{ getMac("Edit Comment") }}"
                        name="XSRFPreventionToken">
                 <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
             </form>
         </div>
 
+        {% if user.isAdmin %}
         {# Endre kommentar fra sjefen #}
         <div class="container container_menu_form text" id="edit_comment_hour">
+            <h5 id="overskrift">Endre leder kommentaren</h5>
             <form method="post" id="edit_comment_hour1" class="edit_comment_hour1">
-                <input id="hourID" type="hidden" name="hourID" value="{{ hour.getHourID }}" maxlength=45 required/>
-                <label for="commentBoss">Endre kommentar: </label>
-                <textarea id="commentbig" name="commentBoss" required>{{ hour.getCommentBoss() }}</textarea>
+                <input id="hourID" type="hidden" name="hourID" value="{{ hour.hourID }}" maxlength=45 required/>
+                <label  class="overskriftLiten" for="commentBoss">Endre leder kommentaren: </label><br>
+                <textarea id="commentbig" name="commentBoss" required>{{ hour.commentBoss }}</textarea>
                 <input type="hidden" value="{{ getMac("Edit Comment Boss") }}" name="XSRFPreventionToken">
                 <br><input type="submit" name="edit_commentBoss_hour" id="edit_commentBoss_hour" value="Endre / legg til kommentar">
             </form>
         </div>
+        {% endif %}
     </section>
 
     <section>
         {# Endre tid #}
         <div class="container container_menu_form_hour text" id="edit_hour">
+            <h5 id="overskrift">Endre Timeegistrering</h5>
             <form method="post" id="edit_hour">
-                <b>Endre Timeegistrering: </b><br>
+                <b>TODO denne må fikses. TODO en slette funksjon</b><br>
+                <b class="overskriftLiten">Endre Timeegistrering:</b><br>
 
                 <br><label for="hourID">Timeregistrerings Id: </label>
-                <br><input type="text" name="hourID" value="{{ hour.getHourID }}" maxlength=45 required id="hourID"/>
+                <br><input type="text" name="hourID" value="{{ hour.hourID }}" maxlength=45 required id="hourID"/>
                 <br><label for="taskID">TaskId: </label>
-                <br><input type="text" name="taskID" value="{{ hour.getTaskID }}" maxlength=45 required id="taskID"/>
+                <br><input type="text" name="taskID" value="{{ hour.taskID }}" maxlength=45 required id="taskID"/>
                 <br><label for="startTime">Starttid: </label>
-                <br><input type="text" name="startTime" value="{{ hour.getStartTime }}" maxlength=45 required id="startTime"/>
+                <br><input type="text" name="startTime" value="{{ hour.startTime }}" maxlength=45 required id="startTime"/>
                 <br><label for="endTime">Sluttid: </label>
-                <br><input type="text" name="endTime" value="{{ hour.getEndTime }}" maxlength=45 required id="endTime"/>
+                <br><input type="text" name="endTime" value="{{ hour.endTime }}" maxlength=45 required id="endTime"/>
                 <br><label for="phaseId">Fase id: </label>
-                <br><input type="text" name="phaseId" value="{{ hour.getPhaseID }}" maxlength=45 required id="phaseId"/>
+                <br><input type="text" name="phaseId" value="{{ hour.phaseID }}" maxlength=45 required id="phaseId"/>
                 <br>En melding vil bli sent til din leder, før endring blir godkjent i systemet.<br> Skriv i kommentar hvorfor du endrer timen.
 
                 <input type="hidden" value="{{ getMac("Edit Hour") }}" name="XSRFPreventionToken">

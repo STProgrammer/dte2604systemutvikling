@@ -10,7 +10,8 @@ $employees = $userManager->getAllEmployees("firstName");
 if (!is_null($user)) {
     $groups = $groupManager->getAllGroups();
     try {
-        echo $twig->render('groups.twig', array('user' => $user, 'groups' => $groups,
+        echo $twig->render('groups.twig',
+            array('user' => $user, 'groups' => $groups,
             'session' => $session, 'request' => $request, 'employees' => $employees));
     } catch (LoaderError | RuntimeError | SyntaxError $e) { echo $e->getMessage();  }
 }

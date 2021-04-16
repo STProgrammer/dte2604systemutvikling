@@ -11,12 +11,14 @@ $user = $session->get('User');
 $hourManager = new HourManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 $taskManager = new TaskManager($db, $request, $session);
-$tasks = $taskManager->getAllTasks();
 
 
 if ($user) {
     $userID = $user->getUserId($user);
-    $hours = $hourManager->getAllHoursForUser($userID);
+
+    $tasks = $taskManager->getAllTasks(); //trenger vi den?
+
+    $hours = $hourManager->getHours(whoWorked: $userID);
     $hourID = $request->query->getInt('hourID');
     $hour = $hourManager->getHour($hourID);
 
@@ -38,7 +40,7 @@ if ($user) {
         }
     }else {
         echo $twig->render('timeregistrationsEdit.twig',
-                array('hour' => $hour, 'Hours' => $hours, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session,
+                array('hour' => $hour, 'hours' => $hours, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session,
                     'user' => $user, 'tasks' => $tasks, 'hourID' => $hourID));
     }
 

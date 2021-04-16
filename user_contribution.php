@@ -14,10 +14,9 @@ $user = $session->get('User');
 if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     $userID = $request->query->getInt('userID');
     $userToView = $userManager->getUser($userID);
-    $hours = $hourManager->getAllHoursForUser($userID);
-    $hour = $hourManager->getHour($userID);
-    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
-    $tasks = $taskManager->getAllTasks();
+
+    $hours = $hourManager->getHours(whoWorked: $userID);
+//    $hour = $hourManager->getHour($userID);
 
     if ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
         $hourID = $request->query->getInt('hourId');
@@ -33,8 +32,8 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
         echo $twig->render('user_contribution.twig',
             array('session' => $session, 'request' => $request, 'user' => $user,
                 'userToView' => $userToView, 'userID' => $userID,
-                'hour' => $hour, 'hours' => $hours, 'hourWithTask' => $hourWithTask,
-                'tasks' => $tasks));
+                 'hours' => $hours,
+                'hourManager' => $hourManager));
 
     }
 } else {

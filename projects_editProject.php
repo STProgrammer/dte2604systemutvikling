@@ -17,18 +17,24 @@ $taskManager = new TaskManager($db, $request, $session);
 $project = $projectManager->getProject($request->query->getInt('projectid'));
 
 
-if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProjectLeader())) {
+if (!is_null($user) && !is_null($project)) {
     $projectName = $project->getProjectName();
+
+    $users = $userManager->getAllUsers("firstName"); //alle brukere
     $customers = $userManager->getAllCustomers("firstName"); //alle kunder
     $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
-    $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
+    $members = $projectManager->getProjectMembers($project->getProjectName()); //alle medlemmer av dette prosjektet
     $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
-    $phases = $projectManager->getAllPhases($projectName);
-    $groups = $projectManager->getGroups($projectName);
-    $users = $userManager->getAllUsers("firstName"); //alle brukere
-    $members = $projectManager->getProjectMembers($project->getProjectName());
 
-    if ($request->request->has('project_edit') && XsrfProtection::verifyMac("Project edit")) {
+    $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
+    $phases = $projectManager->getAllPhases($projectName);
+
+    $groups = $projectManager->getGroups($projectName);
+    $groupFromUserAndGroups = $projectManager->getGroupFromUserAndGroups($projectName); //henter gruppe basert på UsersAndGroups tabell. Joiner Group tabell og sjekker prosjektname
+
+
+
+    if ($user->isAdmin()  && $request->request->has('project_edit') && XsrfProtection::verifyMac("Project edit")) {
         if ($projectManager->editProject($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -37,7 +43,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('group_add') && XsrfProtection::verifyMac("Add group")) {
+    else if ($user->isAdmin() && $request->request->has('group_add') && XsrfProtection::verifyMac("Add group")) {
         if (!$user->isAdmin()) {
             $request->request->set('isAdmin', 0);
         }
@@ -49,7 +55,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('project_delete') && $user->isAdmin()) {
+    else if ($user->isAdmin() && $request->request->has('project_delete')) {
         if ($projectManager->deleteProject($projectName) && XsrfProtection::verifyMac("Delete project")) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -58,7 +64,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('project_verify') && $user->isAdmin() && XsrfProtection::verifyMac("Verify project")) {
+    else if ($user->isAdmin() && $request->request->has('project_verify') && XsrfProtection::verifyMac("Verify project")) {
         if ($projectManager->verifyProjectByAdmin($project->getProjectID())) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -67,7 +73,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
+    else if ($user->isAdmin()  && $request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
         if ($taskManager->addMainTask($projectName)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -76,7 +82,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('remove_member') && XsrfProtection::verifyMac("Project remove member")) {
+    else if ($user->isAdmin()  && $request->request->has('remove_member') && XsrfProtection::verifyMac("Project remove member")) {
         if ($projectManager->removeMember($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -85,7 +91,7 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
             exit();
         }
     }
-    else if ($request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
+    else if ($user->isAdmin() && $request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
         if ($projectManager->addPhase($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
@@ -97,10 +103,18 @@ if (!is_null($user) && !is_null($project) && ($user->isAdmin() or $user->isProje
     else {
         try {
             echo $twig->render('projects_editProject.twig',
-                array('session' => $session, 'request' => $request, 'user' => $user, 'users' => $users,
-                    'customers' => $customers, 'project' => $project,  'members' => $members,
-                    'employees' => $employees, 'groups' => $groups, 'candidates' => $candidates,
-                'phases' => $phases, 'tasks' => $tasks));
+                array('session' => $session, 'request' => $request, 'user' => $user,
+
+                    'users' => $users,
+                    'customers' => $customers, 'members' => $members,
+                    'employees' => $employees, 'candidates' => $candidates,
+
+                    'project' => $project,
+
+                    'phases' => $phases, 'tasks' => $tasks,
+
+                    'groups' => $groups,
+                    'groupFromUserAndGroups' => $groupFromUserAndGroups));
         } catch (\Twig\Error\LoaderError  | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }
