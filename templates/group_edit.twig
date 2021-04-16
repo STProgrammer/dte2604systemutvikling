@@ -2,7 +2,6 @@
 {% block content %}
 
     <section class="edit_group" id="edit_group">
-
         {# TILBAKE KNAPP #}
         <div class="container container_small cursor" onclick="goBack()">
             <button id="button" class="button" title="Ny bruker"
@@ -11,6 +10,7 @@
             </button>
         </div>
     </section>
+
     <section>
         {# GROUP INFO #}
         <div class="container container_menu text" id="table_register">
@@ -73,6 +73,7 @@
             </table>
         </div>
 
+    <section>
         {# Endre Gruppe #}
         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
             <div class="container container_menu_high text">
@@ -148,6 +149,8 @@
                 </p>
             </div>
         {% endif %}
+
+    </section>
 
         {# Endre prosjekt #}
         {% if user.isAdmin() %}

@@ -64,16 +64,16 @@
         <div class="container container_big text scroll">
             <img src="images/icon_kommentar.png" width="40px" alt="Icon"/>
             Siste kommentarer fra brukere<br><br>
-            {% for hoursAll in hoursAll %}{% for users in users %}
-                {% if hoursAll.whoWorked == users.userID %}
-                    <h6>{{ users.firstname }} {{ users.lastname }}</h6>
-                    <ul>{{ hoursAll.comment }}</ul><br>
+            {% for hour in hoursAll %}
+                {% if hour.comment is not null %}
+                    <h6>{{ hour.whoWorkedName }} </h6>
+                    <ul>{{ hour.comment }}</ul><br>
                 {% endif %}
-            {% endfor %}{% endfor %}
+            {% endfor %}
         </div>
 
     </section>
 {% endblock %}
     {# REFERENCES #}
     {# Adobe XD icons #}
-    {# icon_task.png: https://icon-icons.com/icon/task/120291  #}
+    {# icon_task.png: https://icon-icons.com/icon/task/120291   #}

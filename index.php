@@ -21,7 +21,7 @@ if ($user) {
             echo $twig->render('admin_dashboard.twig',
                 array( 'session' => $session, 'request' => $request,
                     'user' => $user, 'users' => $users,
-                    'hours' => $hours, 'HourManager' => $hourManager,
+                    'hours' => $hours, 'hourManager' => $hourManager,
                     'tasks' => $tasks));
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
             echo $e->getMessage();
@@ -30,6 +30,9 @@ if ($user) {
     elseif ($user->isProjectLeader()) {
         header("location: projectleader_dashboard.php");
 
+    }
+    elseif ($user->isCustomer()) {
+        header("location: customer_dashboard.php");
     }
     elseif ($user->isGroupLeader()) { //TEAMLEDER
         header("location: groupleader_dashboard.php");

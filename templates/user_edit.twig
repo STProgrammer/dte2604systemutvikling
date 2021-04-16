@@ -44,6 +44,7 @@
 
 
                 <table>
+                    {% if user.isAdmin %}
                     <tr>
                         <td>
                             {% if userToEdit.isAdmin %}
@@ -61,6 +62,7 @@
                             {% endif %}
                         </td>
                     </tr>
+                    {% endif %}
                     <tr></tr>
                     <tr>
                         {% if not userToEdit.isCustomer() %}

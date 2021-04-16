@@ -2,90 +2,108 @@
 {% block content %}
     <section class="edit_project" id="edit_project">
 
-        <button class="button buttons" onclick="goBack()">Gå tilbake</button>
+        {# TILBAKE KNAPP #}
+        <div class="container container_small cursor" onclick="goBack()">
+            <button id="button" class="button" title="Ny bruker"
+                    onclick="goBack()">
+                <img src="" width="30em"> Gå tilbake
+            </button>
+        </div>
+    </section>
 
-        <div class="container container_menu_form text" id="task_info">
-            <h3>Oppgave detaljer: </h3>
-            <br><b>{{ task.getTaskName }}</b>
-            <br>Prosjekt: <b>{{ task.getProjectName }} </b>
-            <br>Gruppe: <b>{{ task.groupName }} </b>
-            <br>Fase: <b>{{ task.phaseName }} </b>
-            <br>Hoved ansvarlig: <b>{{ task.mainResponsibleName }} </b>
-            <br>Estimert tid: <b>{{ task.getEstimatedTime }} </b>
-            <br>Total brukt tid: <b>{{ task.getSpentTime }} </b>
-    {% if not task.hasSubtask %}
-    <br>Parent task: <a href="tasks_editTask.php?taskid={{ task.getParentTask() }}">{{ task.parentTaskName }}</a>
-    {% endif %}
+    <section>
 
-            {% if task.getStatus == 0 %}
-                <br>Oppgave status: <b>Ventende</b>
-            {% elseif task.getStatus == 1 %}
-                <br>Oppgave status: <b>Pågår</b>
-            {% elseif task.getStatus == 2 %}
-                <br>Oppgave status: <b>Pauset</b>
-            {% elseif task.getStatus == 3 %}
-                <br>Oppgave status: <b>Ferdig</b>
-            {% endif %}
+    {# Oppgave detaljer #}
+    <div class="container container_menu text" id="task_info">
+        <h3 id="bigColoredName">Oppgave detaljer: </h3>
+        <br><b>{{ task.getTaskName }}</b>
+        <br>Prosjekt: <b>{{ task.getProjectName }} </b>
+        <br>Gruppe: <b>{{ task.groupName }} </b>
+        <br>Fase: <b>{{ task.phaseName }} </b>
+        <br>Hoved ansvarlig: <b>{{ task.mainResponsibleName }} </b>
+        <br>Estimert tid: <b>{{ task.getEstimatedTime }} </b>
+        <br>Total brukt tid: <b>{{ task.getSpentTime }} </b>
+        {% if not task.hasSubtask %}
+            <br>Parent task: <a
+                href="tasks_editTask.php?taskid={{ task.getParentTask() }}">{{ task.parentTaskName }}</a>
+        {% endif %}
 
-<br>
-            <div class="container container_menu_form text" id="edit_status">
-                <b>Endre status på oppgaven</b>
-                <form method="post" id="task_status_edit_form">
-                    <table>
-                        <tr>
-                            <td>
-                                <input type="radio" id="waiting" name="status" value="0" required {% if task.getStatus() == 0 %} checked {% endif %}>
-                            </td>
-                            <td>
-                                <label for="waiting">Ventende </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="radio" id="active" name="status" value="1" required {% if task.getStatus() == 1 %} checked {% endif %}>
-                            </td>
-                            <td>
-                                <label for="active">Pågår </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="radio" name="status" id="paused" value="2" required {% if task.getStatus() == 2 %} checked {% endif %}>
-                            </td>
-                            <td>
-                                <label for="paused">Pauset </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="radio" name="status" id="ended" value="3" required {% if task.getStatus() == 2 %} checked {% endif %}>
-                            </td>
-                            <td>
-                                <label for="ended">Ferdig </label>
-                            </td>
-                        </tr>
-                    </table>
-                    <input type="hidden" value="{{ getMac("Edit task status") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="task_status_edit" id="reg_btn" value="Endre status på oppgave">
-                </form>
-            </div>
+        {% if task.getStatus == 0 %}
+            <br>Oppgave status: <b>Ventende</b>
+        {% elseif task.getStatus == 1 %}
+            <br>Oppgave status: <b>Pågår</b>
+        {% elseif task.getStatus == 2 %}
+            <br>Oppgave status: <b>Pauset</b>
+        {% elseif task.getStatus == 3 %}
+            <br>Oppgave status: <b>Ferdig</b>
+        {% endif %}
+    </div>
 
-    {% if not task.hasSubtask() %}
-    <div class="container container_menu_form text" id="reestimate">
-        <form method="post" id="new_task_form">
-            <br><label for="estimatedTime"><b>Re-estimering</b> </label>
-            <br><input type="number" name="estimatedTime" value="" placeholder="Estimert tid" maxlength=45 required
-                       id="estimatedTime"/>
-            <input type="hidden" value="{{ getMac("Re-estimate") }}" name="XSRFPreventionToken">
-            <br><input type="submit" name="reestimate" id="reg_btn" value="Re-estimer">
+    <div class="container container_menu text" id="edit_status">
+        <h5 class="overskriftLiten">Endre status på oppgaven</h5>
+        <form method="post" id="task_status_edit_form">
+            <table>
+                <tr>
+                    <td>
+                        <input type="radio" id="waiting" name="status" value="0"
+                               required {% if task.getStatus() == 0 %} checked {% endif %}>
+                    </td>
+                    <td>
+                        <label for="waiting">Ventende </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="active" name="status" value="1"
+                               required {% if task.getStatus() == 1 %} checked {% endif %}>
+                    </td>
+                    <td>
+                        <label for="active">Pågår </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="status" id="paused" value="2"
+                               required {% if task.getStatus() == 2 %} checked {% endif %}>
+                    </td>
+                    <td>
+                        <label for="paused">Pauset </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="status" id="ended" value="3"
+                               required {% if task.getStatus() == 2 %} checked {% endif %}>
+                    </td>
+                    <td>
+                        <label for="ended">Ferdig </label>
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" value="{{ getMac("Edit task status") }}" name="XSRFPreventionToken">
+            <br><input type="submit" name="task_status_edit" id="reg_btn" value="Endre status på oppgave">
         </form>
     </div>
+
+    {# Del oppgaver #}
+    {% if not task.hasSubtask() %}
+        <div class="container container_menu text" id="reestimate">
+            <h5 class="overskriftLiten">Del oppgaver</h5>
+            <form method="post" id="new_task_form">
+                <br><label for="estimatedTime"><b>Re-estimering</b> </label>
+                <br><input type="number" name="estimatedTime" value="" placeholder="Estimert tid" maxlength=45 required
+                           id="estimatedTime"/>
+                <input type="hidden" value="{{ getMac("Re-estimate") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="reestimate" id="reg_btn" value="Re-estimer">
+            </form>
+        </div>
     {% endif %}
 
-
+    {# Del oppgaver #}
     {% if task.hasSubtask() %}
-
-            <br><div class="container container_menu_lang text" id="sub_tasks">
+        <section>
+            <div class="container container_menu_lang_WithBorder text" id="sub_tasks">
+                <h5 class="overskriftLiten">Del oppgaver</h5>
                 <br><label for="sub_tasks">Deloppgaver: </label>
                 <table class="table">
                     <tr>
@@ -106,11 +124,11 @@
                             <td>{{ subTask.mainResponsibleName }}</td>
                             {% if subTask.getStatus() == 0 %}
                                 <td>Ventende</td>
-                            {%  elseif subTask.getStatus() == 1 %}
+                            {% elseif subTask.getStatus() == 1 %}
                                 <td>På arbeid</td>
-                            {%  elseif subTask.getStatus() == 2 %}
+                            {% elseif subTask.getStatus() == 2 %}
                                 <td>Pause</td>
-                            {%  elseif subTask.getStatus() == 3 %}
+                            {% elseif subTask.getStatus() == 3 %}
                                 <td>Ferdig</td>
                             {% endif %}
                             <td>
@@ -124,7 +142,9 @@
                 </table>
             </div>
 
+        {# Legg til ny deloppgave #}
         <div class="container container_menu_form text" id="add_subtask">
+            <h5 class="overskriftLiten">Legg til ny deloppgave</h5>
             <form method="post" id="new_task_form">
                 <b>Legg til ny deloppgave: </b>
                 <br><label>Oppgavenavn: </label>
@@ -135,7 +155,7 @@
                            id="estimatedTime"/>
                 <br><label>Denn oppgaven er avhengig av (legg til oppgaver):</label>
                 <br><select name="dependentTasks[]" id="" class="form-control" multiple onfocus='this.size=10;'
-                        onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                            onblur='this.size=10;' onchange='this.size=10; this.blur();'>
                     {% for task in tasks %}
                         <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
                         </option>
@@ -145,8 +165,12 @@
                 <br><input type="submit" name="subtask_add" id="reg_btn" value="Ny deloppgave">
             </form>
         </div>
+        </section>
 
-            <div id="text">
+        <section>
+            {# Velg gruppe #}
+            <div class="container container_menu_xsmall text scroll">
+                <h5 class="overskriftLiten">Velg gruppe</h5>
                 <form method="post" id="change_group_form">
                     <br><label for="choose-group">Velg gruppe:</label>
                     <br>
@@ -154,183 +178,188 @@
                         <select name="group" id="choose-group" class="form-control" onfocus='this.size=10;' required
                                 onblur='this.size=10;'
                                 onchange='this.size=10; this.blur();'>
-                            <option disabled selected value> -- velg en gruppe -- </option>
+                            <option disabled selected value> -- velg en gruppe --</option>
                             {% for group in groups %}
                                 <option value="{{ group.getGroupID() }}">{{ group.getGroupName }} </option>
                             {% endfor %}
                         </select>
-                        </div>
+                    </div>
                     <input type="hidden" value="{{ getMac("Change group") }}" name="XSRFPreventionToken">
                     <br><input type="submit" name="group_change" id="reg_btn" value="Endre gruppe">
                 </form>
             </div>
+
     {% endif %}
 
-            <div id="text">
-                <form method="post" id="main_responsible_change_form">
-                    <br><label>Velg hoved ansvarlig:</label>
-                    <br>
-                    <div class="wrapper">
-                        <select name="group" id="" class="form-control" onfocus='this.size=10;' required
-                                onblur='this.size=10;'
-                                onchange='this.size=10; this.blur();'>
-                            <option disabled selected value> -- velg en hoved ansvarlig for oppgaven -- </option>
-                            {% for responsible in groupMembers %}
-                                <option value="{{ responsible.getUserID() }}">{{ responsible.fullName }} </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <input type="hidden" value="{{ getMac("Change main responsible or phase") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="main_responsible_change" id="reg_btn" value="Endre hovedansvarlig">
-                </form>
+    {# Velg hoved ansvarlig: #}
+    <div class="container container_menu_xsmall text scroll">
+        <h5 class="overskriftLiten">Velg hoved ansvarlig</h5>
+        <form method="post" id="main_responsible_change_form">
+            <br><label>Velg hoved ansvarlig:</label>
+            <br>
+            <div class="wrapper">
+                <select name="group" id="" class="form-control" onfocus='this.size=10;' required
+                        onblur='this.size=10;'
+                        onchange='this.size=10; this.blur();'>
+                    <option disabled selected value> -- velg en hoved ansvarlig for oppgaven --</option>
+                    {% for responsible in groupMembers %}
+                        <option value="{{ responsible.getUserID() }}">{{ responsible.fullName }} </option>
+                    {% endfor %}
+                </select>
             </div>
+            <input type="hidden" value="{{ getMac("Change main responsible or phase") }}" name="XSRFPreventionToken">
+            <br><input type="submit" name="main_responsible_change" id="reg_btn" value="Endre hovedansvarlig">
+        </form>
+    </div>
 
-
-            <div id="text">
-                <form method="post" id="change_phase">
-                    <br><label>Velg fase:</label>
-                    <br>
-                    <div class="wrapper">
-                        <select name="group" id="" class="form-control" onfocus='this.size=10;' required
-                                onblur='this.size=10;'
-                                onchange='this.size=10; this.blur();'>
-                            <option disabled selected value> -- velg en fase -- </option>
-                            {% for phase in phases %}
-                                <option value="{{ phase.getPhaseID() }}">{{ phase.getPhaseName }} </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <input type="hidden" value="{{ getMac("Change main responsible or phase") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="phase_change" id="reg_btn" value="Endre fase">
-                </form>
+    {# Velg fase #}
+    <div class="container container_menu_xsmall text scroll">
+        <h5 class="overskriftLiten">Velg fase</h5>
+        <form method="post" id="change_phase">
+            <br><label>Velg fase:</label>
+            <br>
+            <div class="wrapper">
+                <select name="group" id="" class="form-control" onfocus='this.size=10;' required
+                        onblur='this.size=10;'
+                        onchange='this.size=10; this.blur();'>
+                    <option disabled selected value> -- velg en fase --</option>
+                    {% for phase in phases %}
+                        <option value="{{ phase.getPhaseID() }}">{{ phase.getPhaseName }} </option>
+                    {% endfor %}
+                </select>
             </div>
+            <input type="hidden" value="{{ getMac("Change main responsible or phase") }}" name="XSRFPreventionToken">
+            <br><input type="submit" name="phase_change" id="reg_btn" value="Endre fase">
+        </form>
+    </div>
+
+    </section>
+    <div class="container container_menu_lang text" id="tasks_it_is_dependent_on">
+        <br><label for="tasks_it_is_dependent_on">Oppgaver denne oppgaven er avhengig av: </label>
+        <table class="table">
+            <tr>
+                <th>Navn</th>
+                <th>Gruppe</th>
+                <th>Hovenansvarlig</th>
+                <th>Tilhørende oppgave (parent task)</th>
+                <th>Status</th>
+                <th>Se detaljer / endre</th>
+            </tr>
+            {% for task in tasksItIsDependentOn %}
+                <tr>
+                    <td>{{ task.getTaskName() }}</td>
+                    <td>{{ task.groupName }}</td>
+                    <td>{{ task.mainResponsibleName }}</td>
+                    <td>{{ task.parentTaskName }}</td>
+                    <td>{{ task.groupName }}</td>
+                    {% if task.getStatus() == 0 %}
+                        <td>Ventende</td>
+                    {% elseif task.getStatus() == 1 %}
+                        <td>På arbeid</td>
+                    {% elseif v.getStatus() == 2 %}
+                        <td>Pause</td>
+                    {% elseif task.getStatus() == 3 %}
+                        <td>Ferdig</td>
+                    {% endif %}
+                    <td>
+                        <button class="buttons miniButtons" id="contribution"
+                                onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">
+                            Se detaljer
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
 
+    <div class="container container_menu_lang text" id="dependent_tasks">
+        <br><label for="dependent_tasks">Oppgaver som er avhengig av denne oppgaven: </label>
+        <table class="table">
+            <tr>
+                <th>Navn</th>
+                <th>Gruppe</th>
+                <th>Hovenansvarlig</th>
+                <th>Tilhørende oppgave (parent task)</th>
+                <th>Status</th>
+                <th>Se detaljer / endre</th>
+            </tr>
+            {% for task in dependentTasks %}
+                <tr>
+                    <td>{{ task.getTaskName() }}</td>
+                    <td>{{ task.groupName }}</td>
+                    <td>{{ task.mainResponsibleName }}</td>
+                    <td>{{ task.parentTaskName }}</td>
+                    <td>{{ task.groupName }}</td>
+                    {% if task.getStatus() == 0 %}
+                        <td>Ventende</td>
+                    {% elseif task.getStatus() == 1 %}
+                        <td>På arbeid</td>
+                    {% elseif v.getStatus() == 2 %}
+                        <td>Pause</td>
+                    {% elseif task.getStatus() == 3 %}
+                        <td>Ferdig</td>
+                    {% endif %}
+                    <td>
+                        <button class="buttons miniButtons" id="contribution"
+                                onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">
+                            Se detaljer
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
-            <div class="container container_menu_lang text" id="tasks_it_is_dependent_on">
-                <br><label for="tasks_it_is_dependent_on">Oppgaver denne oppgaven er avhengig av: </label>
-                <table class="table">
-                    <tr>
-                        <th>Navn</th>
-                        <th>Gruppe</th>
-                        <th>Hovenansvarlig</th>
-                        <th>Tilhørende oppgave (parent task)</th>
-                        <th>Status</th>
-                        <th>Se detaljer / endre</th>
-                    </tr>
+
+    <div id="text">
+        </p>
+        <form method="post" id="add_dependent_tasks_form">
+            <br><label for="add_dependent_tasks_form">Legg til avhengige oppgaver: </label>
+            <br>
+            <div class="wrapper">
+                <br><select name="dependentTasks[]" id="dependent_tasks" class="form-control" multiple
+                            onfocus='this.size=10;'
+                            onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                    {% for task in nonDependentTasks %}
+                        <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
+                        </option>
+                    {% endfor %}
+                </select></div>
+            <input type="hidden" value="{{ getMac("Add dependent tasks") }}" name="XSRFPreventionToken">
+            <br><input type="submit" name="add_dependent_tasks" id="reg_btn" value="Legg til avhengige oppgaver">
+        </form>
+    </div>
+
+
+    <div id="text">
+        <form method="post" id="remove_dependent_tasks_form">
+            <br><label for="remove_dependent_tasks_form">Fjern avhengige oppgaver: </label>
+            <br>
+            <div class="wrapper">
+                <br><select name="dependentTasks[]" id="dependent_tasks" class="form-control" multiple
+                            onfocus='this.size=10;'
+                            onblur='this.size=10;' onchange='this.size=10; this.blur();'>
                     {% for task in tasksItIsDependentOn %}
-                        <tr>
-                            <td>{{ task.getTaskName() }}</td>
-                            <td>{{ task.groupName }}</td>
-                            <td>{{ task.mainResponsibleName }}</td>
-                            <td>{{ task.parentTaskName }}</td>
-                            <td>{{ task.groupName }}</td>
-                            {% if task.getStatus() == 0 %}
-                                <td>Ventende</td>
-                            {%  elseif task.getStatus() == 1 %}
-                                <td>På arbeid</td>
-                            {%  elseif v.getStatus() == 2 %}
-                                <td>Pause</td>
-                            {%  elseif task.getStatus() == 3 %}
-                                <td>Ferdig</td>
-                            {% endif %}
-                            <td>
-                                <button class="buttons miniButtons" id="contribution"
-                                        onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">
-                                    Se detaljer
-                                </button>
-                            </td>
-                        </tr>
+                        <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
+                        </option>
                     {% endfor %}
-                </table>
-            </div>
+                </select></div>
+            <input type="hidden" value="{{ getMac("Remove dependent tasks") }}" name="XSRFPreventionToken">
+            <br><input type="submit" name="remove_dependent_tasks" id="reg_btn" value="Fjern avhengige oppgaver">
+        </form>
+    </div>
 
 
-            <div class="container container_menu_lang text" id="dependent_tasks">
-                <br><label for="dependent_tasks">Oppgaver som er avhengig av denne oppgaven: </label>
-                <table class="table">
-                    <tr>
-                        <th>Navn</th>
-                        <th>Gruppe</th>
-                        <th>Hovenansvarlig</th>
-                        <th>Tilhørende oppgave (parent task)</th>
-                        <th>Status</th>
-                        <th>Se detaljer / endre</th>
-                    </tr>
-                    {% for task in dependentTasks %}
-                        <tr>
-                            <td>{{ task.getTaskName() }}</td>
-                            <td>{{ task.groupName }}</td>
-                            <td>{{ task.mainResponsibleName }}</td>
-                            <td>{{ task.parentTaskName }}</td>
-                            <td>{{ task.groupName }}</td>
-                            {% if task.getStatus() == 0 %}
-                                <td>Ventende</td>
-                            {%  elseif task.getStatus() == 1 %}
-                                <td>På arbeid</td>
-                            {%  elseif v.getStatus() == 2 %}
-                                <td>Pause</td>
-                            {%  elseif task.getStatus() == 3 %}
-                                <td>Ferdig</td>
-                            {% endif %}
-                            <td>
-                                <button class="buttons miniButtons" id="contribution"
-                                        onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">
-                                    Se detaljer
-                                </button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-
-
-
-            <div id="text">
-                </p>
-                <form method="post" id="add_dependent_tasks_form">
-                    <br><label for="add_dependent_tasks_form">Legg til avhengige oppgaver: </label>
-                    <br>
-                    <div class="wrapper">
-                        <br><select name="dependentTasks[]" id="dependent_tasks" class="form-control" multiple onfocus='this.size=10;'
-                                    onblur='this.size=10;' onchange='this.size=10; this.blur();'>
-                            {% for task in nonDependentTasks %}
-                                <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
-                                </option>
-                            {% endfor %}
-                        </select></div>
-                    <input type="hidden" value="{{ getMac("Add dependent tasks") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="add_dependent_tasks" id="reg_btn" value="Legg til avhengige oppgaver">
-                </form>
-            </div>
-
-
-            <div id="text">
-                <form method="post" id="remove_dependent_tasks_form">
-                    <br><label for="remove_dependent_tasks_form">Fjern avhengige oppgaver: </label>
-                    <br>
-                    <div class="wrapper">
-                        <br><select name="dependentTasks[]" id="dependent_tasks" class="form-control" multiple onfocus='this.size=10;'
-                                    onblur='this.size=10;' onchange='this.size=10; this.blur();'>
-                            {% for task in tasksItIsDependentOn %}
-                                <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
-                                </option>
-                            {% endfor %}
-                        </select></div>
-                    <input type="hidden" value="{{ getMac("Remove dependent tasks") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="remove_dependent_tasks" id="reg_btn" value="Fjern avhengige oppgaver">
-                </form>
-            </div>
-
-
-        <div class="openContainerNoBorder text" id="delete_task">
-            {% if user.isAdmin() %}
-                <form method="post" onsubmit="return confirm('Er du sikker på å slette oppgaven?\n(Kan ikke angres i etterkant!)');">
-                    <input type="hidden" value="{{ getMac("Delete task") }}" name="XSRFPreventionToken">
-                    <input type="submit" name="task_delete" value="Slett oppgave" class="delete"/>
-                </form>
-            {% endif %}
-        </div>
+    <div class="openContainerNoBorder text" id="delete_task">
+        {% if user.isAdmin() %}
+            <form method="post"
+                  onsubmit="return confirm('Er du sikker på å slette oppgaven?\n(Kan ikke angres i etterkant!)');">
+                <input type="hidden" value="{{ getMac("Delete task") }}" name="XSRFPreventionToken">
+                <input type="submit" name="task_delete" value="Slett oppgave" class="delete"/>
+            </form>
+        {% endif %}
+    </div>
 
 
     <div class="container container_big_long text">

@@ -6,7 +6,7 @@
 
         {# Mine timeregistreringer fra gjeldende måned fra innstemplinger #}
         {% if not user.isAdmin %}
-        <div class="openContainerNoBorder text" id="timeTabell">
+        <div class="openContainerNoBorder text scrollY" id="timeTabell">
             <h5 id="overskrift">Mine timeregistreringer fra innstemplinger</h5>
             <table class="table" id="table">
                 <tr>
@@ -158,7 +158,7 @@
 
         {# Mine timeregistreringer fra gjeldende måned for oppgavebidrag #}
         {% if user.isAdmin or user.isProjectLeader or user.userType == 3 %}
-        <div class="openContainerNoBorder text" id="timeTabell">
+        <div class="openContainerNoBorder text scrollY" id="timeTabell">
             <table class="table" id="table">
                 <h5 id="overskrift">Mine timeregistreringer for oppgavebidrag</h5>
                 <tr>
@@ -315,7 +315,7 @@
 
         {# Timeregistreringer for alle brukere for innstemplinger #}
         {% if user.isAdmin or user.isProjectLeader %}
-            <div class="openContainerNoBorder text" id="timeTabell">
+            <div class="openContainerNoBorder text scrollY" id="timeTabell">
                 <h5 id="overskrift">Timeregistreringer for alle brukere for innstemplinger</h5>
                 <table class="table" id="table">
                     <tr>
@@ -474,7 +474,7 @@
 
         {# Timeregistreringer for alle brukere for denne måned for oppgavebidrag #}
         {% if user.isAdmin or user.isProjectLeader %}
-            <div class="openContainerNoBorder text" id="timeTabell">
+            <div class="openContainerNoBorder text scrollY" id="timeTabell">
                 <table class="table" id="table">
                     <h5 id="overskrift">Timeregistreringer for alle brukere for oppgavebidrag</h5>
                     <tr>

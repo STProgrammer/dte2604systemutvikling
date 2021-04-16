@@ -74,14 +74,14 @@
                             {% endif %}
 
                             <!-- if user is admin  -->
-                            {% if user.isAdmin %}
+
                                 <td>
                                     <button class="buttons miniButtons" id="editProject"
                                             onclick="window.location.href='user_edit.php?userid={{ usr.getUserID() }}';">
                                         <img src="" alt=""> Rediger
                                     </button>
                                 </td>
-                            {% endif %}
+
                         </tr>
                     {% endfor %}
                 </table>

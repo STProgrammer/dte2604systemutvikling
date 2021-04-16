@@ -214,7 +214,7 @@ div.openContainerNoBorder {
 }
 div.container_menu { width: 30em; height: 30em; background-color: #eeeeee;
 }
-div.container_menu_form { width: auto; height: auto; background-color: #eeeeee;
+div.container_menu_form { width: auto; height: 40em; background-color: #eeeeee;
     min-height: 20em;
     /*https://stackoverflow.com/questions/3948445/how-to-make-div-on-top-of-all-other-control*/
 }
@@ -232,6 +232,8 @@ div.container_menu_high { width: 30em; height: 45em;  border: none;
 }
 div.container_menu_small { width: 30em; height: 35em;  border: none;
 }
+div.container_menu_xsmall { width: 28em; height: 20em;  border: none;
+}
 div.container_menu_lang_WithBorder { width: 60em; height: 40em;  border: none;
     overflow-y: scroll; scroll-behavior: smooth; background: #eeeeee;
 }
@@ -239,6 +241,8 @@ div.noBorder_NoBackground_NoShadow {
     border: none; background: none; box-shadow: none;
 }
 div.scroll { overflow-y: scroll; scroll-behavior: smooth;
+}
+div.scrollY { overflow-y: scroll; overflow-x: hidden; scroll-behavior: smooth; max-height: 40em;
 }
 /**-----------  BUTTONS  -------------*/
 .buttons {
