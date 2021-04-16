@@ -2,8 +2,6 @@
 {% block content %}
     <section class="employee_dashboard" id="employee_dashboard">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
             {% if status.stampingStatus == 0 %}
                 {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
                 <div id="text">
@@ -46,13 +44,11 @@
             <h5>Mine timeregistreringer fra gjeldende måned</h5>
             <table class="table" id="table">
                 <tr>
-                    <th>Task Navn</th>
-                    <th>Hoved Task</th>
-                    <th>Prosjektnavn</th>
-                    <th>Starttid</th>
+                    <th>Startid</th>
                     <th>Slutttid</th>
                     <th>Lokasjon</th>
-                    <th>Kommentar</th>
+                    <th>Type arbeid</th>
+                    <th>Godkjent</th>
                     {% if user.isAdmin %}
                         <th>Endre</th>
                     {% endif %}
@@ -60,27 +56,68 @@
                 {# hours verdien her kommer fra getAllHoursForUser($userID); så kun denne brukerens kommentarer #}
                 {% for hours in hours %}
                     <tr>
-                        {% for task in tasks %}
-                            {% if task.getTaskID() == hours.taskID %}
-                                <td> {{ task.getTaskName }}</td>
-                                <td> {{ task.getParentTask }}</td>
-                                <td> {{ task.getProjectName }}</td>
-                            {% endif %}
-                        {% endfor %}
                         <td> {{ hours.startTime }}</td>
                         <td> {{ hours.endTime }}</td>
                         <td> {{ hours.getLocation }}</td>
-                        <td> {{ hours.getComment }}</td>
+                        <td> {{ hours.taskType }}</td>
+                        {% if hours.isActivated %}
+                            <td>Godkjent</td>
+                        {% else %}
+                            <td>Ikke godkjent</td>
+                        {% endif %}
+                        {% if user.isAdmin %}
                         <td>
                             <button class="buttons miniButtons" id="miniButtons"
                                     onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
                                 <img src="" alt=""> Rediger
                             </button>
                         </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>
         </div>
+        <table class="table" id="table">
+            <tr>
+                <th>Task Navn</th>
+                <th>Hoved Task</th>
+                <th>Prosjektnavn</th>
+                <th>Starttid</th>
+                <th>Slutttid</th>
+                <th>Lokasjon</th>
+                <th>Godkjent</th>
+                <th>Endre</th>
+                {% if user.isAdmin or user.isProjectLeader or user.getUserId == userID %}
+            <tr>
+                {% for hour in hours %}
+            <tr>
+                {% if hour.taskId > 1 %}
+                <td> {{ hour.taskName }}</td>
+                <td> {{ hour.parentTask }}</td>
+                <td> {{ hour.projectName }}</td>
+                <td> {{ hour.startTime }}</td>
+                <td> {{ hour.endTime }}</td>
+                <td> {{ hour.getLocation }}</td>
+                {% if hours.isActivated %}
+                    <td>Godkjent</td>
+                {% else %}
+                    <td>Ikke godkjent</td>
+                {% endif %}
+                <td>
+                    <button class="buttons miniButtons" id="miniButtons"
+                            onclick="location.href='timeregistrationEdit.php?hourID={{ hours.getHourID }}';">
+                        <img src="" alt=""> Rediger
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" rowspan="1" id="comment_btn" class="comment_btn"><i><b>Kommentar: </b></i>
+                    {{ hours.Comment }}  <i><b>Endre</b></i></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </table>
     </section>
     <section>
         {# Feilmeldinger #}
