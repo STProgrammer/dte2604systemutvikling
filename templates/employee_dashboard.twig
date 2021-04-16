@@ -2,12 +2,23 @@
 {% block content %}
     <section class="employee_dashboard" id="employee_dashboard">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="javascript/employeeDashboard.js"></script>
+        <script>
+            $('document').ready(function(){
+                const categorySelect = document.getElementById("employee_dashboard_category");
+                categorySelect.addEventListener("change", updateSelects({{ tasks|json_encode|raw }}));
 
+                updateSelects({{ tasks|json_encode|raw }})();
+
+                {#const locationSelect = document.getElementById("employee_dashboard_location");#}
+                {#locationSelect.addEventListener("change", getArray({{ tasks|json_encode|raw }}));#}
+            });
+        </script>
         {% if hourID is empty %}
             {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
             <div id="text">
                 <form method="post" id="register_time_form">
-                    <select name="Kategori">
+                    <select name="Kategori" id="employee_dashboard_category">
                         <option value="Administrativt">Administrativt</option>
                         <option value="Kurs">Kurs</option>
                         <option value="Møte">Møte</option>
@@ -15,12 +26,7 @@
                         <option value="Rapportering">Rapportering</option>
                         <option value="Selvstudie">Selvstudie</option>
                     </select>
-                    <select name="Lokasjon">
-                        <option value="Hjemmekontor">Hjemmekontor</option>
-                        <option value="Kontor">Kontor</option>
-                        <option value="Ute">Ute</option>
-                        <option value="Reise">Reise</option>
-                    </select>
+                    <select name="Lokasjon" id="employee_dashboard_location"></select>
                     <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
                 </form>
             </div>

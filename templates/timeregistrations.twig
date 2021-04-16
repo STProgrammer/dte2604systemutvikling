@@ -2,7 +2,7 @@
 {% block content %}
     <section id="timeregistreringer" class="timeregistreringer">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+        <script src="javascript/test.js"></script>
 
         {# Mine timeregistreringer fra gjeldende måned fra innstemplinger #}
         {% if user.isProjectLeader or user.userType == 3 and not user.isAdmin %}
