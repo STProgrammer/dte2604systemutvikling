@@ -69,6 +69,19 @@ small screens (display the links vertically instead of horizontally) */
     }
 }
 /**header slutt--------------------------------------------------------------------*/
+
+/**FELLES*/
+.noPaddingNoMargin {
+    padding: 0.5em;
+    margin: 0.5em;
+}
+.cursor {
+    cursor: pointer;
+}
+.widthFixed {
+    width: 25em;
+}
+
 /**-------------  ALLE  ---------*/
 section.paddingFromBotton {margin-bottom: 3em;}
 
@@ -104,6 +117,8 @@ section.edit_project {margin-top: 6em;}
 section.grupper { margin-top: 6em; }
 
 section.edit_group {margin-top: 6em;}
+
+section.register_group {margin-top: 6em;}
 
 /**-------------  RAPPORTER  -------------------*/
 section.rapporter { margin-top: 6em; }
@@ -157,10 +172,7 @@ div.container{
     box-shadow: 0.1em 0.1em 0.1em #acabab;
     overflow: hidden;
 }
-/*div.container_xxsmall { width: 4em; height: 4em;*/
-/*}*/
-div.container_small { width: 11em; height: 4em; box-shadow: 0.1em 0.1em 0.1em #888888;
-}
+
 div.container_small:hover { border: 0.1em solid #171f28;
 }
 div.container_registrer_inn { width: 20em; height: 5em;
@@ -177,7 +189,7 @@ div.container_medium_long { width: 30em; height: 10em;
 }
 div.container_medium_high { width: 40em; height: 30em;
 }
-div.container_big { width: 60em; height: 40em; min-height: 20em; margin-bottom: 2em;
+div.container_big { width: 48em; height: 40em; min-height: 20em; margin-bottom: 2em;
 }
 div.container_big_long { margin-top: 3em; margin-bottom: 3em; width: 40em; height: auto; min-height: 100%;
     border: none; box-shadow: none; background: #dbd9d9;
@@ -200,9 +212,9 @@ div#edit_commentBoss_hour { width: 100%; height: 7em;
 div.openContainerNoBorder {
     margin-left: 1em;
 }
-div.container_menu { width: 30em; height: 30em; background-color: #eeeeee; border: none;
+div.container_menu { width: 30em; height: 30em; background-color: #eeeeee;
 }
-div.container_menu_form { width: auto; height: auto; background-color: #eeeeee; border: none;
+div.container_menu_form { width: auto; height: auto; background-color: #eeeeee;
     min-height: 20em;
     /*https://stackoverflow.com/questions/3948445/how-to-make-div-on-top-of-all-other-control*/
 }
@@ -215,6 +227,10 @@ div.container_menu_form_project { width: 29em; height: 45em; background-color: #
 }
 div.container_menu_lang { width: 60em; height: 30em;  border: none;
     overflow-y: scroll; overflow-x: scroll;  scroll-behavior: smooth;
+}
+div.container_menu_high { width: 30em; height: 45em;  border: none;
+}
+div.container_menu_small { width: 30em; height: 35em;  border: none;
 }
 div.container_menu_lang_WithBorder { width: 60em; height: 40em;  border: none;
     overflow-y: scroll; scroll-behavior: smooth; background: #eeeeee;
@@ -238,6 +254,8 @@ div.scroll { overflow-y: scroll; scroll-behavior: smooth;
     box-shadow: 0.2em 0.2em 0.4em #888888;
     cursor: pointer;
     white-space: nowrap;
+}
+div.container_small { width: 11em; height: 4em; box-shadow: 0.1em 0.1em 0.1em #888888; /*knapper*/
 }
 /**Rediger knapper*/
 .miniButtons { width: 10em; height: 2em;
@@ -290,6 +308,9 @@ div.scroll { overflow-y: scroll; scroll-behavior: smooth;
     background: none;
     cursor: pointer;
     white-space: nowrap;
+}
+.imgicon {
+    width: 4em;
 }
 .buttons > img {
 }
@@ -579,7 +600,7 @@ h1 { font-family: Segoe UI, serif; font-size: 2.2rem; color: #5f5a5a; margin: 0;
 }
 h2 { font-family: Segoe UI, serif; font-size: 1.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
 }
-h3 { font-family: Segoe UI, serif; font-size: 1.5em; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
+h3 { font-family: Segoe UI, serif; font-size: 1.5rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
 }
 h4 { font-family: Segoe UI, serif; font-size: 1.2rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
 }
@@ -589,6 +610,19 @@ h5#overskrift{ font-family: Segoe UI, serif; font-size: 1rem; color: darkolivegr
 }
 h6 { font-family: Segoe UI, serif; font-size: 0.8rem; color: #5f5a5a; margin: 0; padding: 0.3rem 0.1rem 0.3rem 0;
 }
+
+/*Overskrift*/
+h3#bigColoredName {
+    color: darkgoldenrod; font-size: 1.5rem;
+}
+h6#bigColoredName {
+    color: darkorange; font-size: 0.8rem;
+}
+br#overskriftLiten {
+    color: olive;
+    margin-bottom: 1em;
+}
+
 .marginleft {margin-left: 1em;
 }
 .marginbotton{
@@ -619,9 +653,7 @@ p { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 ul { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 ol { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 
-h3#bigColoredName {
-    color: darkgoldenrod; font-size: 1.5rem;
-}
+
 /* -------------LINK -----------------------*/
 a { font-family: Segoe UI, serif; color: #5f5a5a; font-size: 1rem;
 }

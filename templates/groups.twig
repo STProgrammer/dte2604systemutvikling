@@ -3,7 +3,7 @@
 
     <section id="brukerprofiler" class="brukerprofiler">
         {% if user.isAdmin or user.isProjectLeader %}
-            <div class="container container_small">
+            <div class="container container_small cursor" onclick="window.location.href='group_register.php';">
                 <button id="button" class="button" title="Ny bruker"
                         onclick="window.location.href='group_register.php';">
                     <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny gruppe
@@ -11,9 +11,9 @@
             </div>
         {% endif %}
     </section>
+
     <section>
         <h5>Alle brukere og administratorer</h5>
-
         <div class="text">
             <table class="table" id="table">
                 <tr>
@@ -38,18 +38,18 @@
                         {% else %}
                             <td>Vanlig gruppe</td>
                         {% endif %}
-
-
-                            <td>
-                                <button class="buttons miniButtons" id="miniButtons"
-                                        onclick="window.location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
-                                    <img src="" alt=""> Se Grupper </button>
-                            </td>
+                        <td>
+                            <button class="buttons miniButtons" id="miniButtons"
+                                    onclick="window.location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
+                                <img src="" alt=""> Se Grupper
+                            </button>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
     </section>
+
     <section>
         {# FEILMELDINGER FRA DATABASE #}
         <div class="container container_big_long text">
