@@ -22,19 +22,63 @@
                         <option value="Reise">Reise</option>
                     </select>
                     <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
-                </form>
+                    <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
+            </form>
             </div>
+
         {% endif %}
+
+
 
         {% if not hourID is empty %}
             {# KNAPP - REGISTRER UT HVIS DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 0 #}
+
             <div id="text">
                 <form method="post" id="stop_time_form">
                     <input type="submit" name="stop_time" id="reg_btn"
-                           value="{{ status.hourID }} Stopp timeregistrering">
-                </form>
+                           value="{{ status.hourID }} Stopp timeregistrering" onclick="clearInterval(timerVar)">
+                    <div id="Timer" class="clock" onload="countTimer()"></div>
+                    </form>
             </div>
         {% endif %}
+
+        <script>
+            let timerVar = setInterval(countTimer, 1000);
+            let totalSeconds = 0;
+
+            function countTimer() {
+                ++totalSeconds;
+                let hour = Math.floor(totalSeconds /3600);
+                let minute = Math.floor((totalSeconds - hour*3600)/60);
+                let seconds = totalSeconds - (hour*3600 + minute*60);
+                if(hour < 10)
+                    hour = "0"+hour;
+                if(minute < 10)
+                    minute = "0"+minute;
+                if(seconds < 10)
+                    seconds = "0"+seconds;
+                document.getElementById("Timer").innerHTML = hour + ":" + minute + ":" + seconds;
+            }
+
+            function showTime() {
+                let date = new Date();
+                let s = date.getSeconds(); // 0 - 59
+                let h = date.getHours(); // 0 - 23
+                let m = date.getMinutes(); // 0 - 59
+
+                h = (h < 10) ? "0" + h : h;
+                m = (m < 10) ? "0" + m : m;
+                s = (s < 10) ? "0" + s : s;
+
+                let time = h + ":" + m + ":" + s;
+                document.getElementById("MyClockDisplay").innerText = time;
+                document.getElementById("MyClockDisplay").textContent = time;
+
+                setTimeout(showTime, 1000);
+            }
+
+            showTime();
+        </script>
 
         {# Mine siste timeregistreringer for innstemplinger #}
         <div class="openContainerNoBorder text" id="timeTabell">
@@ -90,24 +134,24 @@
                 </tr>
                 {% for hour in hours %}
                     {% if hour.whoWorked == user.getUserId and hour.taskId is not null %}
-                            <tr>
-                                <td> {{ hour.taskName }}</td>
-                                <td> {{ hour.parentTask }}</td>
-                                <td> {{ hour.projectName }}</td>
-                                <td> {{ hour.startTime }}</td>
-                                <td> {{ hour.endTime }}</td>
-                                <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
-                                <td> {{ hour.location }}</td>
-                                <td> {{ hour.comment }}</td>
-                                {% if user.isAdmin %}
-                                    <td>
-                                        <button class="buttons miniButtons" id="miniButtons"
-                                                onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
-                                            <img src="" alt=""> Rediger
-                                        </button>
-                                    </td>
-                                {% endif %}
-                            </tr>
+                        <tr>
+                            <td> {{ hour.taskName }}</td>
+                            <td> {{ hour.parentTask }}</td>
+                            <td> {{ hour.projectName }}</td>
+                            <td> {{ hour.startTime }}</td>
+                            <td> {{ hour.endTime }}</td>
+                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            <td> {{ hour.location }}</td>
+                            <td> {{ hour.comment }}</td>
+                            {% if user.isAdmin %}
+                                <td>
+                                    <button class="buttons miniButtons" id="miniButtons"
+                                            onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
+                                        <img src="" alt=""> Rediger
+                                    </button>
+                                </td>
+                            {% endif %}
+                        </tr>
                     {% endif %}
                 {% endfor %}
             </table>

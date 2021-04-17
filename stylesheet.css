@@ -688,6 +688,23 @@ a:hover { color: lightyellow;
     background: #555;
 }
 
+/*Visualizations*/
+.clock {
+    /*position: relative;*/
+    display: inline-block;
+    /*top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);*/
+    color: #000000;
+    font-size: 20px;
+    font-family: Orbitron;
+    letter-spacing: 5px;
+
+
+
+}
+
+
 /**-----------FOOTER---------------*/
 footer {
     position: fixed;
