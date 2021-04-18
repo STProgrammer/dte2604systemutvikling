@@ -81,7 +81,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
         }
     }
 
-    // GET ALL TASKS
+    // GET TASKS OF USER
     public function getTasksOfUser($userId) : array {
         $tasks = array();
         $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, parentTasks.taskName as parentTaskName FROM Tasks
@@ -108,7 +108,7 @@ WHERE groupID.userID = :userID AND Tasks.hasSubtask = 0 AND Tasks.status < 3;';
     }
 
 
-    // GET ALL TASKS
+    // GET TASK
     public function getTask($taskId)
     {
         $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
