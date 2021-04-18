@@ -18,47 +18,42 @@ if ($user) {
 //    $hourWithTask = $hourManager->getAllHoursForUserWithTask($userID);
     $hour = $hourManager->getHour($hourId);
     $hourID = $hourManager->activeTimeregForUser($userID);
-}
-if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
-    if ($hourManager->editComment($hour)) {
-        header("Location: " . $request->server->get('REQUEST_URI'));
-        exit();
-    } else {
-        header("Location: " . $request->server->get('REQUEST_URI') . "&failedtaddphase=!");
-        exit();
-    }
-}
-//START time
-if ($request->request->has('register_time')) {
-    if ($hourManager->registerTimeForUser($userID)) {
-        header("Location: ".$requestUri."&registeredhour=1");
-        exit();
-    } else {
-        header("Location: ".$requestUri."&failedtoregistrerhour=1");
-        exit();
-    }
-}
-//STOP time
-if ($request->request->has('stop_time')) {
-    if ($hourManager->activeTimeregForUser($userID)) {
-        //$stopTime = $hourManager->stopTimeForUser($hourID);
-        if ($hourManager->stopTimeForUser($hourID)) {
-            header("Location: ".$requestUri."&stopregisteredhour=1");
+    if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
+        if ($hourManager->editComment($hour)) {
+            header("Location: " . $request->server->get('REQUEST_URI'));
+            exit();
+        } else {
+            header("Location: " . $request->server->get('REQUEST_URI') . "&failedtaddphase=!");
+            exit();
+        }
+    } //START time
+    else if ($request->request->has('register_time')) {
+        if ($hourManager->registerTimeForUser($userID)) {
+            header("Location: " . $requestUri . "&registeredhour=1");
+            exit();
+        } else {
+            header("Location: " . $requestUri . "&failedtoregistrerhour=1");
+            exit();
+        }
+    } //STOP time
+    else if ($request->request->has('stop_time')) {
+        if ($hourManager->activeTimeregForUser($userID)) {
+            //$stopTime = $hourManager->stopTimeForUser($hourID);
+            if ($hourManager->stopTimeForUser($hourID)) {
+                header("Location: " . $requestUri . "&stopregisteredhour=1");
+                exit();
+            }
+        } else {
+            header("Location: " . $requestUri . "&failedtostopregistrerhour=1");
             exit();
         }
     } else {
-        header("Location: ".$requestUri."&failedtostopregistrerhour=1");
-        exit();
+        echo $twig->render('projectleader_dashboard.twig',
+            array('hours' => $hours, 'hour' => $hour, 'hourManager' => $hourManager,
+                'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
+                'TaskManager' => $taskManager, 'hourID' => $hourID));
     }
-}
-if ($user) {
-
-    echo $twig->render('projectleader_dashboard.twig',
-        array('hours' => $hours, 'hour' => $hour, 'hourManager' => $hourManager,
-            'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
-            'TaskManager' => $taskManager, 'hourID' => $hourID));
-
-} else {
+}else {
     header("location: login.php");
     exit();
 }
