@@ -32,25 +32,25 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: ?failedtoaddtasks");
+            header("Location: ".$requestUri."&failedtoaddtasks=1");
             exit();
         }
     }
     else if ($request->request->has('tasks_remove') && XsrfProtection::verifyMac("Remove tasks from phase")) {
         if ($taskManager->removeTasksFromPhase($phaseId)) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&tasksremoved=1");
             exit();
         } else {
-            header("Location: ?failedtoaddtasks");
+            header("Location: ".$requestUri."&failedtoaddtasks=1");
             exit();
         }
     }
     else if ($request->request->has('phase_delete') && XsrfProtection::verifyMac("Delete phase")) {
         if ($projectManager->deletePhase($phaseId)) {
-            header("Location: projects_editProject.php?projectid=".$project->getProjectID());
+            header("Location: projects_editProject.php?projectid=".$project->getProjectID()."&phasedeleted=1");
             exit();
         } else {
-            header("Location: projects_editProject.php?projectid=".$project->getProjectID()."&failedtodeleteprojects=1");
+            header("Location: ".$requestUri."&failedtodeletephase=1");
             exit();
         }
     }

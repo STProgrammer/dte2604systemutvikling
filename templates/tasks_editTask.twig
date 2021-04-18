@@ -256,7 +256,7 @@
                         <td>Ventende</td>
                     {% elseif task.getStatus() == 1 %}
                         <td>På arbeid</td>
-                    {% elseif v.getStatus() == 2 %}
+                    {% elseif task.getStatus() == 2 %}
                         <td>Pause</td>
                     {% elseif task.getStatus() == 3 %}
                         <td>Ferdig</td>

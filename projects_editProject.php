@@ -39,7 +39,7 @@ if (!is_null($user) && !is_null($project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: ?failedtoeditproject");
+            header("Location: ".$requestUri."&failedtoeditproject=1");
             exit();
         }
     }
@@ -48,55 +48,55 @@ if (!is_null($user) && !is_null($project)) {
             $request->request->set('isAdmin', 0);
         }
         if ($projectManager->addGroup($project->getProjectName())) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&groupadded=1");
             exit();
         } else {
-            header("Location: ?failedtoaddmembers");
+            header("Location: ".$requestUri."&failedtoaddgroup=1");
             exit();
         }
     }
     else if ($user->isAdmin() && $request->request->has('project_delete')) {
         if ($projectManager->deleteProject($projectName) && XsrfProtection::verifyMac("Delete project")) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: projects.php?projectdeleted=1");
             exit();
         } else {
-            header("Location: ?failedtodeleteprojects");
+            header("Location: ".$requestUri."&failedtodeleteproject=1");
             exit();
         }
     }
     else if ($user->isAdmin() && $request->request->has('project_verify') && XsrfProtection::verifyMac("Verify project")) {
         if ($projectManager->verifyProjectByAdmin($project->getProjectID())) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&projectverified=1");
             exit();
         } else {
-            header("Location: ".$request->server->get('REQUEST_URI')."&failedtoverifyproject=!");
+            header("Location: ".$requestUri."&failedtoverifyproject=1");
             exit();
         }
     }
     else if ($user->isAdmin()  && $request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
         if ($taskManager->addMainTask($projectName)) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&taskadded=1");
             exit();
         } else {
-            header("Location: ?failedtoaddtasks");
+            header("Location: ".$requestUri."&failedtoaddtasks=1");
             exit();
         }
     }
     else if ($user->isAdmin()  && $request->request->has('remove_member') && XsrfProtection::verifyMac("Project remove member")) {
         if ($projectManager->removeMember($project)) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&memberremoved=1");
             exit();
         } else {
-            header("Location: ?failedtoremovemembers");
+            header("Location: ".$requestUri."&ailedtoremovemembers=1");
             exit();
         }
     }
     else if ($user->isAdmin() && $request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
         if ($projectManager->addPhase($project)) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&phaseadded=1");
             exit();
         } else {
-            header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
+            header("Location: ".$requestUri."&failedtaddphase=1");
             exit();
         }
     }

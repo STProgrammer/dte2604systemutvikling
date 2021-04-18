@@ -21,19 +21,19 @@ if ($user) {
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         $hourID = $request->query->getInt('hourId');
         if ($hourManager->editComment($hourID)) {
-            header("Location: " . $request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&comment=1");
             exit();
         } else {
-            header("Location: " . $request->server->get('REQUEST_URI') . "&failedtaddphase=!");
+            header("Location: ".$requestUri."&failedtocomment=1");
             exit();
         }
     } elseif ($user->isAdmin() && $request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
         $hourID = $request->query->getInt('hourId');
         if ($hourManager->editCommentBoss($hourID)) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&commentbyboss=1");
             exit();
         } else {
-            header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
+            header("Location: ".$requestUri."&failedtocommentbyboss=1");
             exit();
         }
     } else {

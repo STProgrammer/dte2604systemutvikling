@@ -24,7 +24,7 @@ if ($user) {
     //Change email
     elseif ($request->request->has('edit_email') && XsrfProtection::verifyMac("Edit my email address")) {
         if ($userManager->editMyEmailAddress($user)) {
-            header("Location: ?emailedit=1");
+            header("Location: ".$requestUri."&emailedit=1");
             exit();
         } else {
             header("Location: ?failedtoeditemail=1");
@@ -34,20 +34,20 @@ if ($user) {
     //Change username
     elseif ($request->request->has('edit_username') && XsrfProtection::verifyMac("Edit my username")) {
         if ($userManager->editMyUsername($user)) {
-            header("Location: ?usernameedit=1");
+            header("Location: ".$requestUri."&usernameedit=1");
             exit();
         } else {
-            header("Location: ?failedtoeditusername=1");
+            header("Location: ".$requestUri."&failedtoeditusername=1");
             exit();
         }
     }
     //Change password
     elseif ($request->request->has('edit_password') && XsrfProtection::verifyMac("Edit my password")) {
         if ($userManager->editPassword($user)) {
-            header("Location: ?passwordedit=1");
+            header("Location: ".$requestUri."&passwordedit=1");
             exit();
         } else {
-            header("Location: ?failedtoeditpassword=1");
+            header("Location: ".$requestUri."&failedtoeditpassword=1");
             exit();
         }
     }
@@ -55,7 +55,7 @@ if ($user) {
         try {
             echo $twig->render('profile_edit.twig', array('session' => $session,
                 'request' => $request, 'user' => $user));
-        } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+        } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }
     }

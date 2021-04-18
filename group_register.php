@@ -19,7 +19,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
             header("Location: groups.php?registeredgroup=1");
             exit();
         } else {
-            header("Location: ?failedtoregistergroup=1");
+            header("Location: groups.php?failedtoregistergroup=1");
             exit();
         }
 
@@ -27,7 +27,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
         try {
             echo $twig->render('group_register.twig', array('session' => $session,
                 'request' => $request, 'user' => $user, 'employees' => $employees));
-        } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+        } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }
     }

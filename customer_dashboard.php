@@ -3,7 +3,6 @@
 
 require_once "includes.php";
 
-define('FILENAME_TAG', 'image');
 
 $hourManager = new HourManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);

@@ -14,9 +14,14 @@ $customers = $userManager->getAllCustomers("lastName");
 if ($user) {
     if ($request->request->has('addProject') && $user->isAdmin() | $user->isProjectLeader()
         && XsrfProtection::verifyMac("addProject")) {
-        $ProjectManager->addProject();
-        header("location: projects.php");
-        exit();
+        if ($ProjectManager->addProject()) {
+            header("location: projects.php?projectadded=1");
+            exit();
+        }
+        else {
+            header("location: projects.php?failedtoaddproject=1");
+            exit();
+        }
 
     } else {
         echo $twig->render('projects_addProject.twig',

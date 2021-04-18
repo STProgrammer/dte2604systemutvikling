@@ -29,6 +29,7 @@
     else $session = new Session();
     $session->start();
 
+    $requestUri = $request->server->get('REQUEST_URI');
 
     error_reporting(E_ALL);
 

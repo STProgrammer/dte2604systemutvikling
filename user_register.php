@@ -14,7 +14,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
             header("Location: userprofiles.php?registereduser=1");
             exit();
         } else {
-            header("Location: ?failedtoregisteruser=1");
+            header("Location: userprofiles.php?failedtoregisteruser=1");
             exit();
         }
 
