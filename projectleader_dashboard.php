@@ -31,10 +31,10 @@ if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Ed
 //START time
 if ($request->request->has('register_time')) {
     if ($hourManager->registerTimeForUser($userID)) {
-        header("Location: projectleader_dashboard.php?registeredhour=1");
+        header("Location: ".$requestUri."&registeredhour=1");
         exit();
     } else {
-        header("Location: ?failedtoregistrerhour=1");
+        header("Location: ".$requestUri."&failedtoregistrerhour=1");
         exit();
     }
 }
@@ -43,11 +43,11 @@ if ($request->request->has('stop_time')) {
     if ($hourManager->activeTimeregForUser($userID)) {
         //$stopTime = $hourManager->stopTimeForUser($hourID);
         if ($hourManager->stopTimeForUser($hourID)) {
-            header("Location: projectleader_dashboard.php?stopregisteredhour=1");
+            header("Location: ".$requestUri."&stopregisteredhour=1");
             exit();
         }
     } else {
-        header("Location: ?failedtostopregistrerhour=1");
+        header("Location: ".$requestUri."&failedtostopregistrerhour=1");
         exit();
     }
 }

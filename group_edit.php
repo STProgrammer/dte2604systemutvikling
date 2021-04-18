@@ -79,10 +79,12 @@ if (!is_null($user) && !is_null($group) ) {
             }
         }
     } else {
-        header("location: index.php");
+        header("location: groups.php");
         exit();
     }
+} else {
+    header("location: index.php");
+    exit();
 }
-
 
 ?>

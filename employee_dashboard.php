@@ -21,20 +21,20 @@ if ($user) {
     }
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
+            header("Location: ".$requestUri."&failedtocomment=1");
             exit();
         }
     }
     //START time
     if ($request->request->has('register_time')) {
         if ($hourManager->registerTimeForUser($userID)) {
-            header("Location: employee_dashboard.php?registeredhour=1");
+            header("Location: ".$requestUri."&registeredhour=1");
             exit();
         } else {
-            header("Location: ?failedtoregistrerhour=1");
+            header("Location: ".$requestUri."&failedtoregistrerhour=1");
             exit();
         }
     }
@@ -42,11 +42,11 @@ if ($user) {
     if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
             if ($hourManager->stopTimeForUser($hourID)) {
-                header("Location: employee_dashboard.php?stopregisteredhour=1");
+                header("Location: ".$requestUri."&stopregisteredhour=1");
                 exit();
             }
         } else {
-            header("Location: ?failedtostopregistrerhour=1");
+            header("Location: ".$requestUri."&failedtostopregistrerhour=1");
             exit();
         }
     }

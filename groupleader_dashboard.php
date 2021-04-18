@@ -4,8 +4,6 @@
 
 require_once "includes.php";
 
-define('FILENAME_TAG', 'image');
-
     if ($user) {
         $hourManager = new HourManager($db, $request, $session);
         $userManager = new UserManager($db, $request, $session);
@@ -22,20 +20,20 @@ define('FILENAME_TAG', 'image');
     }
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
-            header("Location: ".$request->server->get('REQUEST_URI'));
+            header("Location: ".$requestUri."&comment=1");
             exit();
         } else {
-            header("Location: ".$request->server->get('REQUEST_URI')."&failedtaddphase=!");
+            header("Location: ".$requestUri."&failedtoeditcomment=1");
             exit();
         }
     }
     //START time
     if ($request->request->has('register_time')) {
         if ($hourManager->registerTimeForUser($userID)) {
-            header("Location: groupleader_dashboard.php?registeredhour=1");
+            header("Location: ".$requestUri."&registeredhour=1");
             exit();
         } else {
-            header("Location: ?failedtoregistrerhour=1");
+            header("Location: ".$requestUri."&failedtoregsiterhour=1");
             exit();
         }
     }
@@ -43,11 +41,14 @@ define('FILENAME_TAG', 'image');
     if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
             if ($hourManager->stopTimeForUser($hourID)) {
-                header("Location: groupleader_dashboard.php?stopregisteredhour=1");
+                header("Location: ".$requestUri."&stopregisteredhour=1");
+                exit();
+            } else {
+                header("Location: ".$requestUri."&failedtostopregisterhour=1");
                 exit();
             }
         } else {
-            header("Location: ?failedtostopregistrerhour=1");
+            header("Location: ".$requestUri."&failedtostopregisterhour=1");
             exit();
         }
     }
