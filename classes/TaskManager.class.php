@@ -81,6 +81,32 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
         }
     }
 
+    // GET ALL TASKS
+    public function getTasksOfUser($userId) : array {
+        $tasks = array();
+        $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, parentTasks.taskName as parentTaskName FROM Tasks
+LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
+LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask
+LEFT JOIN UsersAndGroups as groupID on groupID.groupID = Tasks.groupID 
+WHERE groupID.userID = :userID AND Tasks.hasSubtask = 0 AND Tasks.status < 3;';
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam('userID', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            if( $tasks = $stmt->fetchAll(PDO::FETCH_CLASS, "Task")) {
+                return $tasks;
+            }
+            else {
+                $this->notifyUser("Oppgaver ble ikke funnet", "Kunne ikke hente oppgaver");
+                return $tasks;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getTasksOfUser()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return $tasks;
+        }
+    }
+
 
     // GET ALL TASKS
     public function getTask($taskId)
