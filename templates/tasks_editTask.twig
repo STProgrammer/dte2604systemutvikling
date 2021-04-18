@@ -1,7 +1,6 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="edit_project" id="edit_project">
-
         {# TILBAKE KNAPP #}
         <div class="container container_small cursor" onclick="goBack()">
             <button id="button" class="button" title="Ny bruker"
@@ -12,17 +11,18 @@
     </section>
 
     <section>
-
     {# Oppgave detaljer #}
+    <h6 class="marginleft overskrift">Oppgave info side</h6>
+
     <div class="container container_menu text" id="task_info">
-        <h3 id="bigColoredName">Oppgave detaljer: </h3>
-        <br><b>{{ task.getTaskName }}</b>
-        <br>Prosjekt: <b>{{ task.getProjectName }} </b>
-        <br>Gruppe: <b>{{ task.groupName }} </b>
-        <br>Fase: <b>{{ task.phaseName }} </b>
-        <br>Hoved ansvarlig: <b>{{ task.mainResponsibleName }} </b>
-        <br>Estimert tid: <b>{{ task.getEstimatedTime }} </b>
-        <br>Total brukt tid: <b>{{ task.getSpentTime }} </b>
+        <h3 id="bigColoredName">{{ task.getTaskName }} </h3>
+
+        <br>Prosjekt: <b>{{ task.getProjectName }} </b> <br>
+        <br>Gruppe: <b>{{ task.groupName }} </b> <br>
+        <br>Fase: <b>{{ task.phaseName }} </b> <br>
+        <br>Hoved ansvarlig: <b>{{ task.mainResponsibleName }} </b> <br>
+        <br>Estimert tid: <b>{{ task.getEstimatedTime }} </b> <br>
+        <br>Total brukt tid: <b>{{ task.getSpentTime }} </b> <br>
         {% if not task.hasSubtask %}
             <br>Parent task: <a
                 href="tasks_editTask.php?taskid={{ task.getParentTask() }}">{{ task.parentTaskName }}</a>
@@ -85,9 +85,10 @@
         </form>
     </div>
 
-    {# Del oppgaver #}
+    <h6 class="marginleft overskrift">Del oppgaver</h6>
+    {# Reestimer #}
     {% if not task.hasSubtask() %}
-        <div class="container container_menu text" id="reestimate">
+        <div class="container container_menu_small text" id="reestimate">
             <h5 class="overskriftLiten">Del oppgaver</h5>
             <form method="post" id="new_task_form">
                 <br><label for="estimatedTime"><b>Re-estimering</b> </label>
@@ -101,46 +102,46 @@
 
     {# Del oppgaver #}
     {% if task.hasSubtask() %}
-        <section>
-            <div class="container container_menu_lang_WithBorder text" id="sub_tasks">
-                <h5 class="overskriftLiten">Del oppgaver</h5>
-                <br><label for="sub_tasks">Deloppgaver: </label>
-                <table class="table">
+    <section>
+        <div class="container container_menu_lang_WithBorder text" id="sub_tasks">
+            <h5 class="overskriftLiten">Del oppgaver</h5>
+            <br><label for="sub_tasks">Deloppgaver: </label>
+            <table class="table">
+                <tr>
+                    <th>Navn</th>
+                    <th>Tidsbruk</th>
+                    <th>Estimert tid</th>
+                    <th>Gruppe</th>
+                    <th>Hoved ansvarlig</th>
+                    <th>Status</th>
+                    <th>Se detaljer / endre</th>
+                </tr>
+                {% for subTask in subTasks %}
                     <tr>
-                        <th>Navn</th>
-                        <th>Tidsbruk</th>
-                        <th>Estimert tid</th>
-                        <th>Gruppe</th>
-                        <th>Hoved ansvarlig</th>
-                        <th>Status</th>
-                        <th>Se detaljer / endre</th>
+                        <td>{{ subTask.getTaskName() }}</td>
+                        <td>{{ subTask.getTimeSpent() }}</td>
+                        <td>{{ subTask.getEstimatedTime() }}</td>
+                        <td>{{ subTask.groupName }}</td>
+                        <td>{{ subTask.mainResponsibleName }}</td>
+                        {% if subTask.getStatus() == 0 %}
+                            <td>Ventende</td>
+                        {% elseif subTask.getStatus() == 1 %}
+                            <td>På arbeid</td>
+                        {% elseif subTask.getStatus() == 2 %}
+                            <td>Pause</td>
+                        {% elseif subTask.getStatus() == 3 %}
+                            <td>Ferdig</td>
+                        {% endif %}
+                        <td>
+                            <button class="buttons miniButtons" id="contribution"
+                                    onclick="window.location.href='tasks_editTask.php?taskid={{ subTask.getTaskID() }}';">
+                                Se detaljer
+                            </button>
+                        </td>
                     </tr>
-                    {% for subTask in subTasks %}
-                        <tr>
-                            <td>{{ subTask.getTaskName() }}</td>
-                            <td>{{ subTask.getTimeSpent() }}</td>
-                            <td>{{ subTask.getEstimatedTime() }}</td>
-                            <td>{{ subTask.groupName }}</td>
-                            <td>{{ subTask.mainResponsibleName }}</td>
-                            {% if subTask.getStatus() == 0 %}
-                                <td>Ventende</td>
-                            {% elseif subTask.getStatus() == 1 %}
-                                <td>På arbeid</td>
-                            {% elseif subTask.getStatus() == 2 %}
-                                <td>Pause</td>
-                            {% elseif subTask.getStatus() == 3 %}
-                                <td>Ferdig</td>
-                            {% endif %}
-                            <td>
-                                <button class="buttons miniButtons" id="contribution"
-                                        onclick="window.location.href='tasks_editTask.php?taskid={{ subTask.getTaskID() }}';">
-                                    Se detaljer
-                                </button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
+                {% endfor %}
+            </table>
+        </div>
 
         {# Legg til ny deloppgave #}
         <div class="container container_menu_form text" id="add_subtask">
@@ -165,34 +166,35 @@
                 <br><input type="submit" name="subtask_add" id="reg_btn" value="Ny deloppgave">
             </form>
         </div>
-        </section>
+    </section>
 
-        <section>
-            {# Velg gruppe #}
-            <div class="container container_menu_xsmall text scroll">
-                <h5 class="overskriftLiten">Velg gruppe</h5>
-                <form method="post" id="change_group_form">
-                    <br><label for="choose-group">Velg gruppe:</label>
-                    <br>
-                    <div class="wrapper">
-                        <select name="group" id="choose-group" class="form-control" onfocus='this.size=10;' required
-                                onblur='this.size=10;'
-                                onchange='this.size=10; this.blur();'>
-                            <option disabled selected value> -- velg en gruppe --</option>
-                            {% for group in groups %}
-                                <option value="{{ group.getGroupID() }}">{{ group.getGroupName }} </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <input type="hidden" value="{{ getMac("Change group") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="group_change" id="reg_btn" value="Endre gruppe">
-                </form>
+    <section>
+    <h6 class="marginleft overskrift">Endre oppgaver</h6>
+    {# Velg gruppe #}
+    <div class="container container_menu_small text scroll">
+        <h5 class="overskriftLiten">Velg gruppe</h5>
+        <form method="post" id="change_group_form">
+            <br><label for="choose-group">Velg gruppe:</label>
+            <br>
+            <div class="wrapper">
+                <select name="group" id="choose-group" class="form-control" onfocus='this.size=10;' required
+                        onblur='this.size=10;'
+                        onchange='this.size=10; this.blur();'>
+                    <option disabled selected value> -- velg en gruppe --</option>
+                    {% for group in groups %}
+                        <option value="{{ group.getGroupID() }}">{{ group.getGroupName }} </option>
+                    {% endfor %}
+                </select>
             </div>
+            <input type="hidden" value="{{ getMac("Change group") }}" name="XSRFPreventionToken">
+            <br><input type="submit" name="group_change" id="reg_btn" value="Endre gruppe">
+        </form>
+    </div>
 
     {% endif %}
 
     {# Velg hoved ansvarlig: #}
-    <div class="container container_menu_xsmall text scroll">
+    <div class="container container_menu_small text scroll">
         <h5 class="overskriftLiten">Velg hoved ansvarlig</h5>
         <form method="post" id="main_responsible_change_form">
             <br><label>Velg hoved ansvarlig:</label>
@@ -213,7 +215,7 @@
     </div>
 
     {# Velg fase #}
-    <div class="container container_menu_xsmall text scroll">
+    <div class="container container_menu_small text scroll">
         <h5 class="overskriftLiten">Velg fase</h5>
         <form method="post" id="change_phase">
             <br><label>Velg fase:</label>
@@ -234,7 +236,8 @@
     </div>
 
     </section>
-    <div class="container container_menu_lang text" id="tasks_it_is_dependent_on">
+    <h6 class="marginleft overskrift">Avhengighter</h6>
+    <div class="container container_menu_xlang text" id="tasks_it_is_dependent_on">
         <br><label for="tasks_it_is_dependent_on">Oppgaver denne oppgaven er avhengig av: </label>
         <table class="table">
             <tr>
@@ -271,9 +274,10 @@
             {% endfor %}
         </table>
     </div>
+    </section>
 
-
-    <div class="container container_menu_lang text" id="dependent_tasks">
+    <section>
+    <div class="container container_menu_xlang text" id="dependent_tasks">
         <br><label for="dependent_tasks">Oppgaver som er avhengig av denne oppgaven: </label>
         <table class="table">
             <tr>
@@ -310,10 +314,10 @@
             {% endfor %}
         </table>
     </div>
+    </section>
 
-
-    <div id="text">
-        </p>
+    <section>
+    <div class="container container_menu_small text">
         <form method="post" id="add_dependent_tasks_form">
             <br><label for="add_dependent_tasks_form">Legg til avhengige oppgaver: </label>
             <br>
@@ -332,7 +336,7 @@
     </div>
 
 
-    <div id="text">
+    <div class="container container_menu_small text">
         <form method="post" id="remove_dependent_tasks_form">
             <br><label for="remove_dependent_tasks_form">Fjern avhengige oppgaver: </label>
             <br>

@@ -2,55 +2,55 @@
 {% block content %}
     <section class="edit_project" id="edit_project">
 
-        <button class="button buttons" onclick="goBack()">Gå tilbake</button>
-
-        <div>
-            {% if User.isAdmin() == 1 %}
-                <button class="button buttons" id="prosjektKnapper"
+        {# TILBAKE KNAPP #}
+        {% if user.isAdmin() == 1 %}
+            <div class="container container_small cursor" onclick="goBack()">
+                <button id="button" class="button" title="Ny bruker"
                         onclick="goBack()">
-                    <img src="" alt=""> Gå tilbake
+                    <img src="" width="30em"> Gå tilbake
                 </button>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
 
+        <h6 class="marginleft overskrift">Fase info side</h6><br>
+        {# FASE INFO #}
         <div class="container container_menu_form text" id="phase_info">
-            <h3>Prosjekt detaljer: </h3>
-            <br>Prosjekt: <b>{{ project.getProjectName }}</b>
-            <br>Prosjekt Leder: <b>{{ project.leaderName }} </b>
-            <br>Prosjekt Leder: <b>{{ project.customerName }} </b>
-            <br>Prosjekt starttid: <b>{{ project.getStartTime }} </b>
-            <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b>
+            <h5 class="overskriftLiten">Prosjekt detaljer: </h5>
+            <br>Prosjekt: <b>{{ project.getProjectName }}</b><br>
+            <br>Prosjekt Leder: <b>{{ project.leaderName }} </b><br>
+            <br>Prosjekt Leder: <b>{{ project.customerName }} </b><br>
+            <br>Prosjekt starttid: <b>{{ project.getStartTime }} </b><br>
+            <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b><br>
 
             {% if project.getStatus == 0 %}
-                <br>Prosjekt status: <b>Vendende</b>
+                <br>Prosjekt status: <b>Vendende</b><br>
             {% elseif project.getStatus == 1 %}
-                <br>Prosjekt status: <b>Pågår</b>
+                <br>Prosjekt status: <b>Pågår</b><br>
             {% elseif project.getStatus == 2 %}
-                <br>Prosjekt status: <b>Pauset</b>
+                <br>Prosjekt status: <b>Pauset</b><br>
             {% elseif project.getStatus == 3 %}
-                <br>Prosjekt status: <b>Avslått</b>
+                <br>Prosjekt status: <b>Avslått</b><br>
             {% elseif project.getStatus == 4 %}
-                <br>Prosjekt status: <b>Avsluttet</b>
+                <br>Prosjekt status: <b>Avsluttet</b><br>
             {% endif %}
             {% if project.isAcceptedByAdmin() %}
-                <br>Godkjent av admin: <b>Ja, godkjent!</b>
+                <br>Godkjent av admin: <b>Ja, godkjent!</b><br>
             {% else %}
-                <br>Godkjent av admin: <b>Ikke godkjent!</b>
+                <br>Godkjent av admin: <b>Ikke godkjent!</b><br>
                 {% if user.isAdmin() %}
                     <form method="post" action="projects_editProject.php?projectid={{ project.getProjectID }}">
                         <input type="hidden" value="{{ getMac("Verify project") }}" name="XSRFPreventionToken">
                         <button type="submit" name="project_verify" class="buttons miniButtons" id="miniButtons">
                             Godkjenn prosjektet
                         </button>
-                    </form>
-                    {% endif %}
+                    </form><br>
+                {% endif %}
             {% endif %}
 
-
-            <h3>Fase detaljer: </h3>
-            <br>Fase: <b>{{ phase.getPhaseName }}</b>
-            <br>Fase starttid: <b>{{ phase.getStartTime }} </b>
-            <br>Fase sluttid: <b>{{ phase.getFinishTime }} </b>
+            <br><h5 class="overskriftLiten">Fase detaljer: </h5>
+            <br>Fase: <b>{{ phase.getPhaseName }}</b><br>
+            <br>Fase starttid: <b>{{ phase.getStartTime }} </b><br>
+            <br>Fase sluttid: <b>{{ phase.getFinishTime }} </b><br>
 
             {% if phase.getStatus == 0 %}
                 <br>Fase status: <b>Ventende</b>
@@ -64,7 +64,7 @@
         </div>
 
         <div class="container container_menu_lang text" id="project_members">
-            <br><label>Medlemmer i dette prosjektet: </label></br>
+            <br><label class="overskriftLiten">Medlemmer i dette prosjektet: </label></br>
             <table class="table">
                 <tr>
                     <th>Brukernavn</th>
@@ -89,7 +89,7 @@
         </div>
 
         <div class="container container_menu_lang text" id="phase_tasks">
-            <br><label>Oppgaver i denne fasen: </label>
+            <br><label class="overskriftLiten">Oppgaver i denne fasen: </label>
             <table class="table">
                 <tr>
                     <th>Navn</th>
@@ -106,11 +106,11 @@
                         <td>{{ task.mainResponsibleName }}</td>
                         {% if task.getStatus() == 0 %}
                             <td>Ventende</td>
-                        {%  elseif task.getStatus() == 1 %}
+                        {% elseif task.getStatus() == 1 %}
                             <td>På arbeid</td>
-                        {%  elseif task.getStatus() == 2 %}
+                        {% elseif task.getStatus() == 2 %}
                             <td>Pause</td>
-                        {%  elseif Task.getStatus() == 3 %}
+                        {% elseif Task.getStatus() == 3 %}
                             <td>Ferdig</td>
                         {% endif %}
                         <td>
@@ -123,13 +123,14 @@
                 {% endfor %}
             </table>
         </div>
+    </section>
 
-        <br>
+    <section>
         <div class="container container_menu_form text" id="add_tasks_to_phase">
             <form method="post" id="add_tasks_form">
-                <br><label><b>Legg til oppgaver på fasen: </b></label>
+                <br><label class="overskriftLiten"><b>Legg til oppgaver på fasen: </b></label>
                 <br><select name="tasks[]" id="" class="form-control" multiple onfocus='this.size=10;'
-                        onblur='this.size=10;' onchange='this.size=10; this.blur();'>
+                            onblur='this.size=10;' onchange='this.size=10; this.blur();'>
                     {% for task in tasks %}
                         <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
                         </option>
@@ -142,7 +143,7 @@
 
         <div class="container container_menu_form text" id="remove_tasks_from_phase">
             <form method="post" id="remove_tasks_form">
-                <br><label><b>Fjern oppgaver fra fasen: </b></label>
+                <br><label class="overskriftLiten"><b>Fjern oppgaver fra fasen: </b></label>
                 <br><select name="tasks[]" id="" class="form-control" multiple onfocus='this.size=10;'
                             onblur='this.size=10;' onchange='this.size=10; this.blur();'>
                     {% for task in phaseTasks %}
@@ -157,7 +158,7 @@
 
 
         <div class="container container_menu_lang text" id="project_phases">
-            <br><label>Faser i dette prosjektet: </label>
+            <br><label class="overskriftLiten">Faser i dette prosjektet: </label>
             <table class="table">
                 <tr>
                     <th>Fasenavn</th>
@@ -172,13 +173,13 @@
                         <td>{{ ph.getStartTime() }}</td>
                         <td>{{ ph.getFinishTime() }}</td>
                         {% if ph.getStatus() == 0 %}
-                        <td>Ventende</td>
-                        {%  elseif ph.getStatus() == 1 %}
-                        <td>Aktiv</td>
-                        {%  elseif ph.getStatus() == 2 %}
-                        <td>Pause</td>
-                        {%  elseif ph.getStatus() == 3 %}
-                        <td>Avsluttet</td>
+                            <td>Ventende</td>
+                        {% elseif ph.getStatus() == 1 %}
+                            <td>Aktiv</td>
+                        {% elseif ph.getStatus() == 2 %}
+                            <td>Pause</td>
+                        {% elseif ph.getStatus() == 3 %}
+                            <td>Avsluttet</td>
                         {% endif %}
                         <td>
                             <button class="buttons miniButtons" id="contribution"
@@ -196,15 +197,17 @@
     <section>
 
         <div class="container container_menu_form text" id="edit_phase">
-            <b>Endre fase</b>
+            <h5 class="overskriftLiten">Endre fase</h5>
             <form method="post" id="pahse_edit_form">
                 <br><label>Fasenavn: </label>
                 <br><input type="text" name="phaseName" value="{{ phase.getPhaseName() }}" maxlength=45 required
                            id="phaseName"/>
                 <br><label for="startTime">Start tid</label>
-                <br><input id="startTime" type="date" name="startTime" value="{{ phase.getStartTime() }}" placeholder="dd.mm.åååå" maxlength=90 required />
+                <br><input id="startTime" type="date" name="startTime" value="{{ phase.getStartTime() }}"
+                           placeholder="dd.mm.åååå" maxlength=90 required/>
                 <br><label for="finishTime">Slutt tid</label>
-                <br><input id="finishTime" type="date" name="finishTime" value="{{ phase.getFinishTime() }}" placeholder="dd.mm.åååå" maxlength=90 required />
+                <br><input id="finishTime" type="date" name="finishTime" value="{{ phase.getFinishTime() }}"
+                           placeholder="dd.mm.åååå" maxlength=90 required/>
                 <table>
                     <tr>
                         <td colspan="2">
@@ -213,7 +216,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="radio" id="waiting" name="status" value="0" required {% if phase.getStatus() == 0 %} checked {% endif %}>
+                            <input type="radio" id="waiting" name="status" value="0"
+                                   required {% if phase.getStatus() == 0 %} checked {% endif %}>
                         </td>
                         <td>
                             <label for="waiting">Ventende </label>
@@ -221,7 +225,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="radio" id="active" name="status" value="1" required {% if phase.getStatus() == 1 %} checked {% endif %}>
+                            <input type="radio" id="active" name="status" value="1"
+                                   required {% if phase.getStatus() == 1 %} checked {% endif %}>
                         </td>
                         <td>
                             <label for="active">Pågår </label>
@@ -229,7 +234,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="radio" name="status" id="paused" value="2" required {% if phase.getStatus() == 2 %} checked {% endif %}>
+                            <input type="radio" name="status" id="paused" value="2"
+                                   required {% if phase.getStatus() == 2 %} checked {% endif %}>
                         </td>
                         <td>
                             <label for="paused">På pause </label>
@@ -237,7 +243,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="radio" name="status" id="ended" value="3" required {% if phase.getStatus() == 3 %} checked {% endif %}>
+                            <input type="radio" name="status" id="ended" value="3"
+                                   required {% if phase.getStatus() == 3 %} checked {% endif %}>
                         </td>
                         <td>
                             <label for="ended">Avsluttet </label>
@@ -251,7 +258,8 @@
 
         <div class="openContainerNoBorder text" id="delete_project">
             {% if user.isAdmin() %}
-                <form method="post" onsubmit="return confirm('Er du sikker på å slette fasen?\n(Kan ikke angres i etterkant!)');">
+                <form method="post"
+                      onsubmit="return confirm('Er du sikker på å slette fasen?\n(Kan ikke angres i etterkant!)');">
                     <input type="hidden" value="{{ getMac("Delete phase") }}" name="XSRFPreventionToken">
                     <input type="submit" name="phase_delete" value="Slett fase" class="delete"/>
                 </form>

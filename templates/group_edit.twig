@@ -12,29 +12,36 @@
     </section>
 
     <section>
+        <h6 class="marginleft overskrift">Gruppe info side</h6><br>
         {# GROUP INFO #}
         <div class="container container_menu text" id="table_register">
             <h3 id="bigColoredName">{{ group.getGroupName }}</h3>
             <h6 id="bigColoredName">{{ group.getProjectName }}</h6>
 
             <div id="text">
-                <br>Gruppenavn: <b>{{ group.getGroupName }}</b>
-                <br>Gruppeleder: <b>{{ group.leaderName }} </b>
-                <br>Prosjekt: <b>{{ group.getProjectName }}</b>
+                <br>Gruppenavn: <b>{{ group.getGroupName }}</b><br>
+                <br>Gruppeleder: <b>{{ group.leaderName }} </b><br>
+                <br>Prosjekt: <b>{{ group.getProjectName }}</b><br>
                 {% if group.isAdmin %}
-                    <br>Gruppe type: <b>admin gruppe</b>
+                    <br>Gruppe type: <b>admin gruppe</b><br>
                 {% else %}
-                    <br>Gruppe type: <b>vanlig gruppe</b>
+                    <br>Gruppe type: <b>vanlig gruppe</b><br>
                 {% endif %}
-                <br>
-                <br><b>Medlemmer:</b>
-                <ul>
-                    {% for empl in members %}
-                    <li>{{ empl.getFirstName }} {{ empl.getLastName }}
-                        {% endfor %}
-                </ul>
             </div>
         </div>
+
+        {# Medlemmer i denne gruppen #}
+        <div class="container container_menu text" id="project_members">
+            <label class="overskriftLiten"><b>Medlemmer i denne gruppen:</b></label></br>
+            <br>
+            <br><b>Medlemmer:</b><br>
+            <ul>
+                {% for empl in members %}
+                <li>{{ empl.getFirstName }} {{ empl.getLastName }}
+                    {% endfor %}
+            </ul>
+        </div>
+
 
         {# Oppgaver til denne gruppen #}
         <div class="container container_menu_lang text" id="phase_tasks">
@@ -72,10 +79,12 @@
                 {% endfor %}
             </table>
         </div>
+    </section>
 
     <section>
         {# Endre Gruppe #}
         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
+            <h6 class="marginleft overskrift">Endre Gruppe</h6><br>
             <div class="container container_menu_high text">
                 <h5 class="overskriftLiten">Endre Gruppe</h5>
                 <form method="post" id="group_edit_form">

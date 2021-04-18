@@ -228,6 +228,9 @@ div.container_menu_form_project { width: 29em; height: 45em; background-color: #
 div.container_menu_lang { width: 60em; height: 30em;  border: none;
     overflow-y: scroll; overflow-x: scroll;  scroll-behavior: smooth;
 }
+div.container_menu_xlang { width: 70%; height: 30em;  border: none;
+    overflow-y: scroll; overflow-x: hidden;  scroll-behavior: smooth;
+}
 div.container_menu_high { width: 30em; height: 45em;  border: none;
 }
 div.container_menu_small { width: 30em; height: 35em;  border: none;

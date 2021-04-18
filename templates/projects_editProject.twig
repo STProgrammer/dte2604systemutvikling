@@ -3,11 +3,16 @@
     <section class="edit_project" id="edit_project">
 
         {# TILBAKE KNAPP #}
-        <div>
-            <button class="button buttons" id="prosjektKnapper" onclick="goBack()"><img src="" alt=""> Gå tilbake
+        <div class="container container_small cursor" onclick="goBack()">
+            <button id="button" class="button" title="Ny bruker"
+                    onclick="goBack()">
+                <img src="" width="30em"> Gå tilbake
             </button>
         </div>
+    </section>
 
+    <section>
+        <h6 class="marginleft overskrift">Prosjekt info side</h6>
         {# PROSJEKT INFO #}
         <div class="container container_menu text" id="projekt_info">
             <h3 id="bigColoredName">{{ project.getProjectName }}</h3>
@@ -78,7 +83,6 @@
                         {% endfor %}
                     </tr>
                 {% endfor %}
-
             </table>
         </div>
     </section>
