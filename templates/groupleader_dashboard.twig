@@ -6,6 +6,7 @@
             <div id="text">
                 <form method="post" id="register_time_form">
                     <select name="Kategori">
+                        <option value="" disabled selected hidden>Jobbet med hva</option>
                         <option value="Administrativt">Administrativt</option>
                         <option value="Kurs">Kurs</option>
                         <option value="Møte">Møte</option>
@@ -13,13 +14,9 @@
                         <option value="Rapportering">Rapportering</option>
                         <option value="Selvstudie">Selvstudie</option>
                     </select>
-                    <select name="Lokasjon">
-                        <option value="Hjemmekontor">Hjemmekontor</option>
-                        <option value="Kontor">Kontor</option>
-                        <option value="Ute">Ute</option>
-                        <option value="Reise">Reise</option>
-                    </select>
-                    <input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
+                    <input type="text" name="Lokasjon" value="" placeholder="Lokasjon" maxlength=30 required
+                           id="Lokasjon"/>
+                    <br><input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
                 </form>
             </div>
         {% endif %}
@@ -76,4 +73,4 @@
 {% endblock %}
     {# REFERENCES #}
     {# Adobe XD icons #}
-    {# icon_task.png: https://icon-icons.com/icon/task/120291   #}
+    {# icon_task.png: https://icon-icons.com/icon/task/120291    #}
