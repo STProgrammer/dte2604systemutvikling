@@ -2,12 +2,23 @@
 {% block content %}
     <section class="employee_dashboard" id="employee_dashboard">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="javascript/employeeDashboard.js"></script>
+        <script>
+            $('document').ready(function(){
+                const categorySelect = document.getElementById("employee_dashboard_category");
+                categorySelect.addEventListener("change", updateSelects({{ tasks|json_encode|raw }}));
 
+                updateSelects({{ tasks|json_encode|raw }})();
+
+                {#const locationSelect = document.getElementById("employee_dashboard_location");#}
+                {#locationSelect.addEventListener("change", getArray({{ tasks|json_encode|raw }}));#}
+            });
+        </script>
         {% if hourID is empty %}
             {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
             <div id="text">
                 <form method="post" id="register_time_form">
-                    <select name="Kategori">
+                    <select name="Kategori" id="employee_dashboard_category">
                         <option value="" disabled selected hidden>Jobbet med hva</option>
                         <option value="Administrativt">Administrativt</option>
                         <option value="Kurs">Kurs</option>
@@ -17,19 +28,15 @@
                         <option value="Selvstudie">Selvstudie</option>
                     </select>
                     <br><input type="text" name="Lokasjon" value="" placeholder="Sted" maxlength=30 required
-                           id="Lokasjon"/>
+                               id="Lokasjon"/>
                     <br><input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
                     <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
                 </form>
             </div>
-
         {% endif %}
-
-
 
         {% if not hourID is empty %}
             {# KNAPP - REGISTRER UT HVIS DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 0 #}
-
             <div id="text">
                 <form method="post" id="stop_time_form">
                     <input type="submit" name="stop_time" id="reg_btn"
