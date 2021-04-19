@@ -1,7 +1,47 @@
 {% extends "layout.twig" %}
 {% block content %}
+    <section class="rapporter" id="rapporter">
+        <div class="openContainerNoBorder text" id="prosjektTabell">
+            <h3>Prosjekter </h3>
+            <table class="table" id="table">
+                {% if projects %}
+                    <tr>
+                        <th>Prosjekt navn</th>
+                        <th>Status</th>
+                        <th>Detaljer & utskrift</th>
+                    </tr>
+                    {% for project in projects %}
+                        <tr>
+                            {# PROSJEKTNAVN #}
+                            <td>{{ project.getProjectName() }}</td>
 
-    <div id="statistikk_admin" class="statistikk_admin">
+                            {# PROSJEKT STATUS #}
+                            {% if project.getStatus() == 0 %}
+                                <td>Ventende</td>
+                            {% endif %}
+                            {% if project.getStatus() == 1 %}
+                                <td>Pågår</td>
+                            {% endif %}
+                            {% if project.getStatus() == 2 %}
+                                <td>Pauset</td>
+                            {% endif %}
+                            {% if project.getStatus() == 3 %}
+                                <td>Avslått</td>
+                            {% endif %}
+                            {% if project.getStatus() == 4 %}
+                                <td>Avsluttet</td>
+                            {% endif %}
 
-    </div>
+                            <td>
+                                <button class="buttons miniButtons" id="miniButtons"
+                                        onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
+                                    Skriv ut
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </section>
 {% endblock %}
