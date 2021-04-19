@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Morild Data BA</title>
     <link rel="icon" type="image/png" href="images/favicon.ico">
+    <link rel="stylesheet" href="stylesheet_print.css">
 </head>
 <body>
 <script>
@@ -12,11 +13,38 @@
         window.history.back()
     }
 </script>
-<img src="images/morild_logo_150px.png" data-href="index.php" width="300pt" alt="Logo"/>
-<h4>Rapport til utskrift</h4>
-<h3>Her legges all info for valgt prosjekt</h3>
+<page size="A4">
+    <section class="rapport_utskrift" id="rapport_utskrift">
 
-<br><button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
+        <img src="images/morild_logo_150px.png" data-href="index.php" width="300pt" alt="Logo"/>
+        <h3 id="bigColoredName">{{ project.getProjectName }} </h3>
+        <table class="table">
+            <tr>
+                <th>Ansatte</th>
+                <th>Totalt bidrag</th>
+            </tr>
+
+            {# Sorterer først på grupper. Så henter alle medlemmer i den gruppa som tilhører dette prosjektet #}
+            {% for group in groupFromUserAndGroups %}
+                <tr>
+                    {% for member in members %}
+                        {% if member.userID == group.userID and group.projectName == project.getProjectName %}
+                            <td>{{ member.getLastName }}</td>
+                                {% for hour in hours %}
+                                    {% if hour.projectName == project.getProjectName %}
+                                        <td><b>{{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }}</b></td>
+                                    {% endif %}
+                                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </section>
+</page>
+
+<br>
+<button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
 
 </body>
 </html>
