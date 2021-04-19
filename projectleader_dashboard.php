@@ -23,16 +23,16 @@ if ($user) {
             header("Location: " . $request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: " . $request->server->get('REQUEST_URI') . "&failedtaddphase=!");
+            header("Location: " . $request->server->get('REQUEST_URI') );
             exit();
         }
     } //START time
     else if ($request->request->has('register_time')) {
         if ($hourManager->registerTimeForUser($userID)) {
-            header("Location: " . $requestUri . "&registeredhour=1");
+            header("Location: " . $requestUri );
             exit();
         } else {
-            header("Location: " . $requestUri . "&failedtoregistrerhour=1");
+            header("Location: " . $requestUri );
             exit();
         }
     } //STOP time
@@ -40,11 +40,11 @@ if ($user) {
         if ($hourManager->activeTimeregForUser($userID)) {
             //$stopTime = $hourManager->stopTimeForUser($hourID);
             if ($hourManager->stopTimeForUser($hourID)) {
-                header("Location: " . $requestUri . "&stopregisteredhour=1");
+                header("Location: " . $requestUri );
                 exit();
             }
         } else {
-            header("Location: " . $requestUri . "&failedtostopregistrerhour=1");
+            header("Location: " . $requestUri );
             exit();
         }
     } else {
