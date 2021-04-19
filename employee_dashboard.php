@@ -23,27 +23,27 @@ if ($user) {
             header("Location: " . $requestUri);
             exit();
         } else {
-            header("Location: " . $requestUri . "&failedtocomment=1");
+            header("Location: " . $requestUri );
             exit();
         }
     } //START time
     else if ($request->request->has('register_time')) {
         if ($hourManager->registerTimeForUser($userID)) {
-            header("Location: " . $requestUri . "&registeredhour=1");
+            header("Location: " . $requestUri  );
             exit();
         } else {
-            header("Location: " . $requestUri . "&failedtoregistrerhour=1");
+            header("Location: " . $requestUri );
             exit();
         }
     } //STOP time
     else if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
             if ($hourManager->stopTimeForUser($hourID)) {
-                header("Location: " . $requestUri . "&stopregisteredhour=1");
+                header("Location: " . $requestUri );
                 exit();
             }
         } else {
-            header("Location: " . $requestUri . "&failedtostopregistrerhour=1");
+            header("Location: " . $requestUri );
             exit();
         }
     } else {
