@@ -30,11 +30,12 @@
                     {% for member in members %}
                         {% if member.userID == group.userID and group.projectName == project.getProjectName %}
                             <td>{{ member.getLastName }}</td>
-                                {% for hour in hours %}
-                                    {% if hour.projectName == project.getProjectName %}
-                                        <td><b>{{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }}</b></td>
-                                    {% endif %}
-                                {% endfor %}
+                            {% for hour in hours %}
+                                {% if hour.projectName == project.getProjectName %}
+                                    <td><b>{{ hour.getTimeWorked|date('H:i') }}</b></td>
+                                {% endif %}
+
+                            {% endfor %}
                         {% endif %}
                     {% endfor %}
                 </tr>
