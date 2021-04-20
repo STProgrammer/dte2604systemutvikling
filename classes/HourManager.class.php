@@ -273,9 +273,14 @@ class HourManager
                  stampingStatus = 1 WHERE hourID = :hourID");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->execute();
-
             if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Timereg stoppet", "");
+                $this->notifyUser("Timereg stoppet");
+                $hour = $this->getHour($hourID);
+                $taskID = $hour->getTaskID();
+                $timeStr = $hour->getTimeWorked();
+                if (!is_null($taskID)) {
+                    $this->updateTimeWorkedOnTask($taskID, $timeStr);
+                }
                 return true;
             } else {
                 $this->notifyUser("Failed to stop timereg", "stopTimeForUser()");
@@ -285,6 +290,31 @@ class HourManager
             $this->NotifyUser("En feil oppstod, på stopTimeForUser()", $e->getMessage());
             return false;
         }
+    }
+
+    private function updateTimeWorkedOnTask($taskID, $timeStr) {
+        $timestamp = strtotime($timeStr);
+        $hours = date('h', $timestamp);
+        try {
+            $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = timeSpent + :hours WHERE taskID = :taskID");
+            $stmt->bindParam(':hours', $hours, PDO::PARAM_INT);
+            $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() == 1) {
+                $this->notifyUser("Tidsbrukt på task oppdatert");
+                return true;
+            } else {
+                $this->notifyUser("Tidsbrukt på task ble ikke oppdatert", "updateTimeWorkedOnTask()");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod på updateTimeWorkedOnTask()", $e->getMessage());
+            return false;
+        }
+    }
+
+    private function convertToHours($timeStr) {
+
     }
 
     // GET HOUR ---------------------------------------------------------------------------------
