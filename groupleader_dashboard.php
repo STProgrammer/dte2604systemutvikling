@@ -12,6 +12,8 @@ if ($user) {
         $userID = $user->getUserId($user);
         $tasks = $taskManager->getAllTasks();
 
+        $tasksWork = $taskManager->getTasksOfUser($userID);
+
         $hours = $hourManager->getHours(whoWorked: $userID);
         $hoursAll = $hourManager->getAllHours();
         $hourId = $request->query->getInt('hourID');
@@ -19,20 +21,21 @@ if ($user) {
         $hourID = $hourManager->activeTimeregForUser($userID);
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
-            header("Location: ".$requestUri."&comment=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoeditcomment=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     //START time
     else if ($request->request->has('register_time')) {
-        if ($hourManager->registerTimeForUser($userID)) {
-            header("Location: ".$requestUri."&registeredhour=1");
+        $task = $taskManager->getTask($request->request->getInt('taskID', 0));
+        if ($hourManager->registerTimeForUser($userID, $task)) {
+            header("Location: " . $requestUri  );
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoregsiterhour=1");
+            header("Location: " . $requestUri );
             exit();
         }
     }
@@ -40,14 +43,14 @@ if ($user) {
     else if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
             if ($hourManager->stopTimeForUser($hourID)) {
-                header("Location: ".$requestUri."&stopregisteredhour=1");
+                header("Location: ".$requestUri);
                 exit();
             } else {
-                header("Location: ".$requestUri."&failedtostopregisterhour=1");
+                header("Location: ".$requestUri);
                 exit();
             }
         } else {
-            header("Location: ".$requestUri."&failedtostopregisterhour=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
@@ -59,7 +62,8 @@ if ($user) {
                 'hourManager' => $hourManager,
                 'UserID' => $userID, 'tasks' => $tasks,
                 'taskManager'=> $taskManager,
-                'hourID' => $hourID));
+                'hourID' => $hourID,
+                'tasksWork' => $tasksWork));
     }
 } else {
     header("location: login.php");

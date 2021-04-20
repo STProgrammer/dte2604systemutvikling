@@ -10,8 +10,12 @@ $taskManager = new TaskManager($db, $request, $session);
 
 
 if ($user) {
+
+    $tasksWork = $taskManager->getTasksOfUser($userID);
+
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
+
 
     $hours = $hourManager->getAllHours(); //kun denne brukerens kommentarer
     $hourId = $request->query->getInt('hourID');
@@ -28,14 +32,15 @@ if ($user) {
         }
     } //START time
     else if ($request->request->has('register_time')) {
-        if ($hourManager->registerTimeForUser($userID)) {
-            header("Location: " . $requestUri );
+        $task = $taskManager->getTask($request->request->getInt('taskID', 0));
+        if ($hourManager->registerTimeForUser($userID, $task)) {
+            header("Location: " . $requestUri);
             exit();
         } else {
-            header("Location: " . $requestUri );
+            header("Location: " . $requestUri);
             exit();
         }
-    } //STOP time
+    }//STOP time
     else if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
             //$stopTime = $hourManager->stopTimeForUser($hourID);
@@ -51,7 +56,7 @@ if ($user) {
         echo $twig->render('projectleader_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourManager' => $hourManager,
                 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
-                'TaskManager' => $taskManager, 'hourID' => $hourID));
+                'TaskManager' => $taskManager, 'hourID' => $hourID, 'tasksWork' => $tasksWork));
     }
 }else {
     header("location: login.php");

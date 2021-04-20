@@ -1,11 +1,23 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="prosjektleder_dashboard" id="prosjektleder_dashboard">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="javascript/employeeDashboard.js"></script>
+        <script>
+            $('document').ready(function(){
+                const categorySelect = document.getElementById("employee_dashboard_category"); // is null when hourId is not empty
+                if(categorySelect !== undefined && categorySelect !== null) {
+                    categorySelect.addEventListener("change", updateSelects({{ tasksWork|json_encode|raw }}));
+                    console.log({{ tasksWork|json_encode|raw }});
+                    updateSelects({{ tasksWork|json_encode|raw }})();
+                }
+            });
+        </script>
         {% if hourID is empty %}
             {# KNAPP - REGISTRER INN HVIS IKKE DET ER EN AKTIV TIMEREGISTRERING stampingStatus = 1 #}
             <div id="text">
                 <form method="post" id="register_time_form">
-                    <select name="Kategori">
+                    <select name="Kategori" id="employee_dashboard_category">
                         <option value="" disabled selected hidden>Jobbet med hva</option>
                         <option value="Administrativt">Administrativt</option>
                         <option value="Kurs">Kurs</option>
@@ -14,9 +26,11 @@
                         <option value="Rapportering">Rapportering</option>
                         <option value="Selvstudie">Selvstudie</option>
                     </select>
-                    <br><input type="text" name="Lokasjon" value="" placeholder="Lokasjon" maxlength=30 required
-                           id="Lokasjon"/>
+                    <select name="taskID" id="employee_dashboard_location"></select>
+                    <br><input type="text" name="Lokasjon" value="" placeholder="Sted" maxlength=30 required
+                               id="Lokasjon"/>
                     <br><input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
+                    <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
                 </form>
             </div>
         {% endif %}
@@ -26,10 +40,88 @@
             <div id="text">
                 <form method="post" id="stop_time_form">
                     <input type="submit" name="stop_time" id="reg_btn"
-                           value="{{ status.hourID }} Stopp timeregistrering">
+                           value="{{ status.hourID }} Stopp timeregistrering" onclick="clearInterval(timerVar)">
+                    <div id="Timer" class="clock" onload="countTimer()"></div>
                 </form>
             </div>
         {% endif %}
+
+        {# Mine siste timeregistreringer for innstemplinger #}
+        <div class="openContainerNoBorder text" id="timeTabell">
+            <h5>Mine siste timeregistreringer for innstemplinger </h5>
+            <table class="table" id="table">
+                <tr>
+                    <th>Task Type</th>
+                    <th>Lokasjon</th>
+                    <th>Starttid</th>
+                    <th>Slutttid</th>
+                    <th>Antall timer</th>
+                    <th>Godkjent av leder</th>
+                    <th>Kommentar fra bruker</th>
+                    <th>Kommentar fra leder</th>
+                </tr>
+                {% for hour in hours %}
+                    {% if hour.whoWorked == user.getUserId and hour.taskId is null %}
+                        <tr>
+                            <td> {{ hour.taskType }}</td>
+                            <td> {{ hour.location }}</td>
+                            <td> {{ hour.startTime }}</td>
+                            <td> {{ hour.endTime }}</td>
+                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            {% if hour.activated == true %}
+                                <td>Godkjent</td>
+                            {% else %}
+                                <td>Ikke godkjent enda</td>
+                            {% endif %}
+                            <td> {{ hour.comment }}</td>
+                            <td> {{ hour.commentBoss }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+
+        {# Mine siste timeregistreringer for oppgaver #}
+        <div class="openContainerNoBorder text" id="timeTabell">
+            <h5>Mine siste timeregistreringer for oppgaver</h5>
+            <table class="table" id="table">
+                <tr>
+                    <th>Task Navn</th>
+                    <th>Hoved Task</th>
+                    <th>Prosjektnavn</th>
+                    <th>Starttid</th>
+                    <th>Slutttid</th>
+                    <th>Antall timer</th>
+                    <th>Lokasjon</th>
+                    <th>Kommentar fra bruker</th>
+                    {% if user.isAdmin %}
+                        <th>Endre</th>
+                    {% endif %}
+                </tr>
+                {% for hour in hours %}
+                    {% if hour.whoWorked == user.getUserId and hour.taskId is not null %}
+                        <tr>
+                            <td> {{ hour.taskName }}</td>
+                            <td> {{ hour.parentTask }}</td>
+                            <td> {{ hour.projectName }}</td>
+                            <td> {{ hour.startTime }}</td>
+                            <td> {{ hour.endTime }}</td>
+                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            <td> {{ hour.location }}</td>
+                            <td> {{ hour.comment }}</td>
+                            {% if user.isAdmin %}
+                                <td>
+                                    <button class="buttons miniButtons" id="miniButtons"
+                                            onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
+                                        <img src="" alt=""> Rediger
+                                    </button>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
 
         {# Prosjekter og oppgaver #}
         <div class="container container_medium_long scroll">

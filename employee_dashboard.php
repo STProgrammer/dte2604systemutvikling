@@ -13,15 +13,11 @@ if ($user) {
 
     $tasks = $taskManager->getTasksOfUser($userID);
 
-
-
     $hourId = $request->query->getInt('hourID');
     $hour = $hourManager->getHour($hourId);
     $hours = $hourManager->getHours(whoWorked: $userID);
 
     $hourID = $hourManager->activeTimeregForUser($userID);
-
-
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
