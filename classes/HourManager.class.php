@@ -263,6 +263,27 @@ class HourManager
             return array();
         }
     }
+    public function totalTimeWorked($projectName) {
+        try {
+            $stmt = $this->dbase->prepare("SELECT Hours.*, SUM(timeWorked) as sumTW, hourTasks.*, CONCAT(workers.firstName, workers.lastName) as whoWorkedName, 
+                    hourTasks.taskName as taskName FROM Hours 
+                        LEFT JOIN Users as workers on workers.userID = Hours.whoWorked
+                        LEFT JOIN Tasks as hourTasks on hourTasks.taskID = Hours.taskID WHERE hourTasks.projectName = :projectName GROUP BY Hours.whoWorked");
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            $stmt->execute();
+            if ($totalTimeWorked = $stmt->fetchAll()) {
+                return $totalTimeWorked;
+            } else {
+                $this->notifyUser("", "");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            //return new Project();
+            return array();
+        }
+    }
 
     // STOP TIME FOR USER ---------------------------------------------------------------------------
     public function stopTimeForUser(?Hour $hour, ?Task $task): bool

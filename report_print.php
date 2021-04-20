@@ -27,12 +27,14 @@ if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader()) {
     $members = $projectManager->getProjectMembers($project->getProjectName()); //alle medlemmer av dette prosjektet
     $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
 
-    $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
+    $tasks = $taskManager->getAllTasks();
     $phases = $projectManager->getAllPhases($projectName);
 
     $hours = $hourManager->getAllHours();
     $groups = $projectManager->getGroups($projectName);
     $groupFromUserAndGroups = $projectManager->getGroupFromUserAndGroups($projectName); //henter gruppe basert på UsersAndGroups tabell. Joiner Group tabell og sjekker prosjektname
+
+    $totalTimeWorked = $hourManager->totalTimeWorked($projectName);
 
 
     echo $twig->render('report_print.twig',
@@ -43,7 +45,7 @@ if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader()) {
             'employees' => $employees, 'candidates' => $candidates,
 
             'project' => $project,
-
+            'totalTimeWorked' => $totalTimeWorked,
             'phases' => $phases, 'tasks' => $tasks,
             'hours' => $hours,
             'groups' => $groups,

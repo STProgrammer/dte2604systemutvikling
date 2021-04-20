@@ -17,16 +17,22 @@
         <h4>Start tid : {{ project.startTime }}</h4>
         <h4>Slutt tid : {{ project.finishTime }}</h4>
         {% set estimertTid = 0 %}
+        {% set timeSpentSum = 0 %}
         {% for task in tasks %}
-            {% set estimertTid = estimertTid + (task.getEstimatedTime) %}
+            {% if task.projectName == project.projectName %}
+                {% set estimertTid = estimertTid + (task.getEstimatedTime) %}
+                {% set timeSpentSum = timeSpentSum + (task.getTimeSpent) %}
+            {% endif %}
         {% endfor %}
-            <h4>Estimert tid : {{ estimertTid }} timer</h4>
+        <h4>Estimert tid : {{ estimertTid }} timer</h4>
+        <h4>Tid brukt : {{ timeSpentSum }} timer</h4>
+
         <button id="backbtn" class="button miniButtons" onclick="window.history.back()">Gå tilbake</button>
         <button id="printbtn" onclick="window.print()">Print this page</button>
         <table class="table">
             <tr>
                 <th>Ansatte på prosjekt "{{ project.getProjectName }}"</th>
-                <th>Totalt bidrag hh:mm:ss</th>
+                <th>Totalt bidrag</th>
             </tr>
 
             {# Sorterer først på grupper. Så henter alle medlemmer i den gruppa som tilhører dette prosjektet #}
@@ -36,11 +42,9 @@
                         {% if member.userID == group.userID and group.projectName == project.getProjectName %}
                             <td>{{ member.getLastName }}</td>
                             {% for hour in hours %}
-                                {% for task in tasks %}
-                                    {% if member.getUserID == hour.getWhoWorked %}
-                                        {% if hour.getTaskID == task.getTaskId %}
-                                            <td><b>{{ hour.getTimeWorked|date('H:i:s') }}</b></td>
-                                        {% endif %}
+                                {% for tw in totalTimeWorked %}
+                                    {% if member.getUserID == tw.whoWorked %}
+                                            <td><b>{{ tw.sumTW }}</b></td>
                                     {% endif %}
                                 {% endfor %}
                             {% endfor %}
