@@ -8,20 +8,25 @@
     <link rel="stylesheet" href="stylesheet_print.css">
 </head>
 <body>
-<script>
-    function goBack() {
-        window.history.back()
-    }
-</script>
+
 <page size="A4">
     <section class="rapport_utskrift" id="rapport_utskrift">
-
         <img src="images/morild_logo_150px.png" data-href="index.php" width="300pt" alt="Logo"/>
-        <h3 id="bigColoredName">{{ project.getProjectName }} </h3>
+        <h3>{{ project.getProjectName }} </h3>
+        <h4>Kunde : {{ project.customerName }}</h4>
+        <h4>Start tid : {{ project.startTime }}</h4>
+        <h4>Slutt tid : {{ project.finishTime }}</h4>
+        {% set estimertTid = 0 %}
+        {% for task in tasks %}
+            {% set estimertTid = estimertTid + (task.getEstimatedTime) %}
+        {% endfor %}
+            <h4>Estimert tid : {{ estimertTid }} timer</h4>
+        <button id="backbtn" class="button miniButtons" onclick="window.history.back()">Gå tilbake</button>
+        <button id="printbtn" onclick="window.print()">Print this page</button>
         <table class="table">
             <tr>
-                <th>Ansatte</th>
-                <th>Totalt bidrag</th>
+                <th>Ansatte på prosjekt "{{ project.getProjectName }}"</th>
+                <th>Totalt bidrag hh:mm:ss</th>
             </tr>
 
             {# Sorterer først på grupper. Så henter alle medlemmer i den gruppa som tilhører dette prosjektet #}
@@ -31,10 +36,13 @@
                         {% if member.userID == group.userID and group.projectName == project.getProjectName %}
                             <td>{{ member.getLastName }}</td>
                             {% for hour in hours %}
-                                {% if hour.projectName == project.getProjectName %}
-                                    <td><b>{{ hour.getTimeWorked|date('H:i') }}</b></td>
-                                {% endif %}
-
+                                {% for task in tasks %}
+                                    {% if member.getUserID == hour.getWhoWorked %}
+                                        {% if hour.getTaskID == task.getTaskId %}
+                                            <td><b>{{ hour.getTimeWorked|date('H:i:s') }}</b></td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
@@ -43,9 +51,5 @@
         </table>
     </section>
 </page>
-
-<br>
-<button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
-
 </body>
 </html>

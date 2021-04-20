@@ -30,7 +30,7 @@ if ($user->isProjectLeader() or $user->isGroupleader()) {
     $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
     $phases = $projectManager->getAllPhases($projectName);
 
-    $hours = $hourManager->getHours();
+    $hours = $hourManager->getAllHours();
     $groups = $projectManager->getGroups($projectName);
     $groupFromUserAndGroups = $projectManager->getGroupFromUserAndGroups($projectName); //henter gruppe basert på UsersAndGroups tabell. Joiner Group tabell og sjekker prosjektname
 
