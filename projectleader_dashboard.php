@@ -11,11 +11,12 @@ $taskManager = new TaskManager($db, $request, $session);
 
 if ($user) {
 
-    $tasksWork = $taskManager->getTasksOfUser($userID);
+
 
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
 
+    $tasksWork = $taskManager->getTasksOfUser($userID);
 
     $hours = $hourManager->getAllHours(); //kun denne brukerens kommentarer
     $hourId = $request->query->getInt('hourID');
