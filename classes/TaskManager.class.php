@@ -432,7 +432,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
 
     public function changeGroup($taskId): bool //returns boolean value
     {
-        $groupId = $this->request->request->get('groupID');
+        $groupId = $this->request->request->get('group');
         try {
             $stmt = $this->db->prepare("UPDATE Tasks SET groupID = :groupID WHERE taskID = :taskID;
                 UPDATE Tasks SET groupID = :groupID WHERE parentTask = :taskID;");
