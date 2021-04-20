@@ -1,10 +1,19 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section class="rapporter" id="rapporter">
-        <div class="openContainerNoBorder text" id="prosjektTabell">
-            <h3>Rapporter </h3>
-            <table class="table" id="table">
-                {% if projects %}
+        <div class="container container_small cursor" onclick="window.location.href='group_register.php';">
+            <button id="button" class="button" title="Ny bruker"
+                    onclick="window.location.href='group_register.php';">
+                <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny gruppe
+            </button>
+        </div>
+    </section>
+
+    <section>
+        {% if projects %}
+            <div class="openContainerNoBorder text" id="prosjektTabell">
+                <h3>Rapporter </h3>
+                <table class="table" id="table">
                     <tr>
                         <th>Prosjekt navn</th>
                         <th>Status</th>
@@ -40,8 +49,40 @@
                             </td>
                         </tr>
                     {% endfor %}
-                {% endif %}
-            </table>
-        </div>
+                </table>
+            </div>
+        {% endif %}
+    </section>
+
+    <section>
+        {# Fremskrittsdiagram #}
+        {% if projects %}
+            <div class="openContainerNoBorder text" id="prosjektTabell">
+                <h3>Fremskrittsdiagram </h3>
+                <table class="table" id="table">
+                    <tr>
+                        <th>Prosjekt navn</th>
+                        <th>Tid brukt</th>
+                        <th>Estimert totalt</th>
+                    </tr>
+                    {% for project in projects %}
+                        {% set timeSpentSum = 0 %}
+                        {% set estimertTidSum = 0 %}
+                        <tr>
+                            <td>{{ project.getProjectName() }}</td>
+
+                            {% for task in tasks %}
+                                {% if task.projectName == project.projectName %}
+                                    {% set timeSpentSum = timeSpentSum + (task.getTimeSpent) %}
+                                    {% set estimertTidSum = estimertTidSum + (task.getEstimatedTime) %}
+                                {% endif %}
+                            {% endfor %}
+                            <td>{{ timeSpentSum }}</td>
+                            <td>{{ estimertTidSum }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
     </section>
 {% endblock %}

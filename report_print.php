@@ -18,7 +18,7 @@ $hourManager = new HourManager($db, $request, $session);
 
 $project = $projectManager->getProject($request->query->getInt('projectid'));
 
-if ($user->isProjectLeader() or $user->isGroupleader()) {
+if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader()) {
     $projectName = $project->getProjectName();
     $userID = $request->query->getInt('userID');
     $users = $userManager->getAllUsers("firstName"); //alle brukere
