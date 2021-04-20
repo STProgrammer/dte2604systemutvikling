@@ -42,15 +42,15 @@ if ($user) {
     //STOP time
     else if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
-            if ($hourManager->stopTimeForUser($hourID)) {
-                header("Location: ".$requestUri);
-                exit();
-            } else {
-                header("Location: ".$requestUri);
+            $hour = $hourManager->getHour($hourID[0]);
+            $task = $taskManager->getTask($hour->getTaskId());
+            //$stopTime = $hourManager->stopTimeForUser($hourID);
+            if ($hourManager->stopTimeForUser($hour, $task)) {
+                header("Location: " . $requestUri );
                 exit();
             }
         } else {
-            header("Location: ".$requestUri);
+            header("Location: " . $requestUri );
             exit();
         }
     }

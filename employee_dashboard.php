@@ -40,7 +40,10 @@ if ($user) {
     } //STOP time
     else if ($request->request->has('stop_time')) {
         if ($hourManager->activeTimeregForUser($userID)) {
-            if ($hourManager->stopTimeForUser($hourID)) {
+            $hour = $hourManager->getHour($hourID[0]);
+            $task = $taskManager->getTask($hour->getTaskId());
+            //$stopTime = $hourManager->stopTimeForUser($hourID);
+            if ($hourManager->stopTimeForUser($hour, $task)) {
                 header("Location: " . $requestUri );
                 exit();
             }
@@ -48,7 +51,7 @@ if ($user) {
             header("Location: " . $requestUri );
             exit();
         }
-    } else {
+    }  else {
 
         echo $twig->render('employee_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourManager' => $hourManager,
