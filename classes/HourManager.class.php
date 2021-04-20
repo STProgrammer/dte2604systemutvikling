@@ -265,21 +265,28 @@ class HourManager
     }
 
     // STOP TIME FOR USER ---------------------------------------------------------------------------
-    public function stopTimeForUser($hourID): bool
+    public function stopTimeForUser(?Hour $hour, ?Task $task): bool
     {
-        $hourID = $hourID[0];
+        $hourID = $hour->getHourID();
+        if (!is_null($task)) {
+            $taskId = $task->getTaskID();
+            $parentTask = $task->getParentTask();
+        } else {
+            $taskId = null;
+            $parentTask = null;
+        }
         try {
             $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = NOW(), 
                  stampingStatus = 1 WHERE hourID = :hourID");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->execute();
+            $stmt->closeCursor();
             if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Timereg stoppet");
+                $this->notifyUser("Timeregistrering stoppet");
                 $hour = $this->getHour($hourID);
-                $taskID = $hour->getTaskID();
                 $timeStr = $hour->getTimeWorked();
-                if (!is_null($taskID)) {
-                    $this->updateTimeWorkedOnTask($taskID, $timeStr);
+                if (!is_null($taskId)) {
+                    $this->updateTimeWorkedOnTask($taskId, $timeStr, $parentTask);
                 }
                 return true;
             } else {
@@ -292,13 +299,15 @@ class HourManager
         }
     }
 
-    private function updateTimeWorkedOnTask($taskID, $timeStr) {
+    private function updateTimeWorkedOnTask($taskID, $timeStr, $parentTaskID) {
         $timestamp = strtotime($timeStr);
-        $hours = date('h', $timestamp);
+        $hours = date('h', $timestamp) - 12;
         try {
-            $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = timeSpent + :hours WHERE taskID = :taskID");
+            $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = timeSpent + :hours WHERE taskID = :taskID;
+                                 UPDATE Tasks SET timeSpent = (SELECT SUM(timeSpent) total FROM Tasks WHERE parentTask = :parentTaskID) WHERE taskID = :parentTaskID;");
             $stmt->bindParam(':hours', $hours, PDO::PARAM_INT);
             $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
+            $stmt->bindParam(':parentTaskID',  $parentTaskID, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
                 $this->notifyUser("Tidsbrukt på task oppdatert");
@@ -311,10 +320,6 @@ class HourManager
             $this->NotifyUser("En feil oppstod på updateTimeWorkedOnTask()", $e->getMessage());
             return false;
         }
-    }
-
-    private function convertToHours($timeStr) {
-
     }
 
     // GET HOUR ---------------------------------------------------------------------------------
