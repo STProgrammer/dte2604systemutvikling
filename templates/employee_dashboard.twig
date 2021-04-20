@@ -5,13 +5,12 @@
         <script src="javascript/employeeDashboard.js"></script>
         <script>
             $('document').ready(function(){
-                const categorySelect = document.getElementById("employee_dashboard_category");
-                categorySelect.addEventListener("change", updateSelects({{ tasks|json_encode|raw }}));
-
-                updateSelects({{ tasks|json_encode|raw }})();
-
-                {#const locationSelect = document.getElementById("employee_dashboard_location");#}
-                {#locationSelect.addEventListener("change", getArray({{ tasks|json_encode|raw }}));#}
+                const categorySelect = document.getElementById("employee_dashboard_category"); // is null when hourId is not empty
+                if(categorySelect !== undefined && categorySelect !== null) {
+                    categorySelect.addEventListener("change", updateSelects({{ tasks|json_encode|raw }}));
+                    console.log({{ tasks|json_encode|raw }});
+                    updateSelects({{ tasks|json_encode|raw }})();
+                }
             });
         </script>
         {% if hourID is empty %}
@@ -27,7 +26,7 @@
                         <option value="Rapportering">Rapportering</option>
                         <option value="Selvstudie">Selvstudie</option>
                     </select>
-                    <select name="Prosjekt" id="employee_dashboard_location"></select>
+                    <select name="taskID" id="employee_dashboard_location"></select>
                     <br><input type="text" name="Lokasjon" value="" placeholder="Sted" maxlength=30 required
                                id="Lokasjon"/>
                     <br><input type="submit" name="register_time" id="reg_btn" value="Start timeregistrering">
@@ -47,7 +46,7 @@
             </div>
         {% endif %}
 
-        <script>
+       {# <script>
             let timerVar = setInterval(countTimer, 1000);
             let totalSeconds = 0;
 
@@ -83,7 +82,7 @@
             }
 
             showTime();
-        </script>
+        </script>#}
 
         {# Mine siste timeregistreringer for innstemplinger #}
         <div class="openContainerNoBorder text" id="timeTabell">

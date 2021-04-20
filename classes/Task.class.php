@@ -2,12 +2,12 @@
 
 
 class Task {
-    private $taskID;
+    public $taskID;
     private $category;
     private $phaseID;
     private $groupID;
     private $parentTask;
-    private $taskName;
+    public $taskName;
     private $startTime;
     private $finishTime;
     private $status;

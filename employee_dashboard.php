@@ -10,13 +10,18 @@ $taskManager = new TaskManager($db, $request, $session);
 
 if ($user) {
     $userID = $user->getUserId($user);
-    $tasks = $taskManager->getAllTasks();
+
+    $tasks = $taskManager->getTasksOfUser($userID);
+
+
 
     $hourId = $request->query->getInt('hourID');
     $hour = $hourManager->getHour($hourId);
     $hours = $hourManager->getHours(whoWorked: $userID);
 
     $hourID = $hourManager->activeTimeregForUser($userID);
+
+
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
@@ -28,7 +33,8 @@ if ($user) {
         }
     } //START time
     else if ($request->request->has('register_time')) {
-        if ($hourManager->registerTimeForUser($userID)) {
+        $task = $taskManager->getTask($request->request->getInt('taskID', 0));
+        if ($hourManager->registerTimeForUser($userID, $task)) {
             header("Location: " . $requestUri  );
             exit();
         } else {

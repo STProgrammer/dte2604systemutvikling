@@ -185,10 +185,15 @@ class HourManager
 //    }
 
     // REGISTER TIME FOR USER ---------------------------------------------------------------------------
-    public function registerTimeForUser($userID): bool
+    public function registerTimeForUser($userID, ?Task $task): bool
     {
-        $hourID = NULL;
-        $taskID = NULL;
+        if (!is_null($task)) {
+            $taskID = $task->getTaskID();
+            $phaseID = $task->getPhaseID();
+        } else {
+            $taskID = null;
+            $phaseID = null;
+        }
         $startTime = date("Y-m-d H:i:s");
         $timeWorked = 0;
         $activated = 1;
@@ -203,16 +208,15 @@ class HourManager
         $taskType = $this->request->request->get('Kategori');
 
         try {
-            $stmt = $this->dbase->prepare("INSERT INTO Hours (`hourID`, `taskID`, `whoWorked`, `startTime`, 
+            $stmt = $this->dbase->prepare("INSERT INTO Hours (`taskID`, `whoWorked`, `startTime`, 
                    `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
                    `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
-                   VALUES (:hourID, :taskID, :userID, :startTime, 0, :timeWorked, :activated, 
+                   VALUES (:taskID, :userID, :startTime, 0, :timeWorked, :activated, 
                            :location, :phaseID, :absenceType, :overtimeType, :comment, 
                            :commentBoss, :isChanged, :stampingStatus, :taskType)");
 
-            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_STR);
-            $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
-            $stmt->bindParam(':userID', $userID, PDO::PARAM_STR);
+            $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
             $stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_STR);
             $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
