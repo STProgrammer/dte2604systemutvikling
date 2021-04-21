@@ -1,24 +1,17 @@
 <?php
 
 require_once "includes.php";
-define('FILENAME_TAG', 'image');
 
-/* Denne Twig funksjonen er tatt fra https://stackoverflow.com/questions/61407758/how-to-change-one-value-in-get-by-clicking-a-link-or-button-from-twig-with/61407993#61407993 */
-$twig->addFunction(new \Twig\TwigFunction('get_page_url', function ($query = [], $append = true) {
-    $tmp = $append ? $_GET : [];
-    foreach ($query as $key => $value) $tmp[$key] = $value;
 
-    return '?' . http_build_query($tmp);
-}));
 
-$projectManager = new ProjectManager($db, $request, $session);
-$userManager = new UserManager($db, $request, $session);
-$taskManager = new TaskManager($db, $request, $session);
-$hourManager = new HourManager($db, $request, $session);
+if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader())) {
+    $projectManager = new ProjectManager($db, $request, $session);
+    $userManager = new UserManager($db, $request, $session);
+    $taskManager = new TaskManager($db, $request, $session);
+    $hourManager = new HourManager($db, $request, $session);
 
-$project = $projectManager->getProject($request->query->getInt('projectid'));
+    $project = $projectManager->getProject($request->query->getInt('projectid'));
 
-if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader()) {
     $projectName = $project->getProjectName();
     $userID = $request->query->getInt('userID');
     $users = $userManager->getAllUsers("firstName"); //alle brukere
@@ -52,6 +45,6 @@ if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader()) {
             'groupFromUserAndGroups' => $groupFromUserAndGroups,
             'hourManager' => $hourManager));
 } else {
-    header("location:index.php");
+    header("location: index.php");
     exit();
 }

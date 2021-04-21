@@ -34,22 +34,14 @@
                 <th>Ansatte på prosjekt "{{ project.getProjectName }}"</th>
                 <th>Totalt bidrag</th>
             </tr>
-
-            {# Sorterer først på grupper. Så henter alle medlemmer i den gruppa som tilhører dette prosjektet #}
-            {% for group in groupFromUserAndGroups %}
+            {% for member in totalTimeWorked %}
                 <tr>
-                    {% for member in members %}
-                        {% if member.userID == group.userID and group.projectName == project.getProjectName %}
-                            <td>{{ member.getLastName }}</td>
-                            {% for hour in hours %}
-                                {% for tw in totalTimeWorked %}
-                                    {% if member.getUserID == tw.whoWorked %}
-                                            <td><b>{{ tw.sumTW }}</b></td>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
+                    <td>
+                        {{ member.whoWorkedName }}
+                    </td>
+                    <td>
+                        {{ member.sumTW }}
+                    </td>
                 </tr>
             {% endfor %}
         </table>
