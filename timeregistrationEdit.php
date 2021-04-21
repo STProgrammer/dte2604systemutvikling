@@ -26,15 +26,45 @@ if ($user) {
             header("Location: ".$requestUri."&failedtocomment=1");
             exit();
         }
-    }elseif ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
+    }
+
+    elseif ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
         if ($hourManager->editCommentBoss($hourID)) {
-            header("Location: ".$requestUri."&commentbyboss=1");
+            header("Location: " . $requestUri . "&commentbyboss=1");
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtocommentbyboss=1");
+            header("Location: " . $requestUri . "&failedtocommentbyboss=1");
             exit();
         }
-    }else {
+    }
+
+    ## Endrer timeregistreringen
+    elseif ($request->request->has('edit_timereg') && XsrfProtection::verifyMac("Edit Timereg")) {
+        $hourManager->duplicateToLog($hours);
+        $startTime = $request->request->get('startTime');
+        $endTime = $request->request->get('endTime');
+        if ($hourManager->changeTimeForUser($hours, $startTime, $endTime)) {
+            header("Location: " . $requestUri . "&edithour=1");
+            exit();
+        } else {
+            header("Location: " . $requestUri . "&failededithour=1");
+            exit();
+        }
+    }
+
+        ## deaktiverer timeregistreringen
+    elseif ($request->request->has('edit_deactivate') && XsrfProtection::verifyMac("Edit Timereg")) {
+        $hourManager->duplicateToLog($hours);
+        if ($hourManager->deleteTimeForUser($hours)) {
+            header("Location: ".$requestUri."&edithour=1");
+            exit();
+        } else {
+            header("Location: ".$requestUri."&failededithour=1");
+            exit();
+        }
+    }
+
+    else {
         echo $twig->render('timeregistrationsEdit.twig',
                 array('hour' => $hour, 'hours' => $hours, 'HourManager' => $hourManager, 'UserID' => $userID, 'session' => $session,
                     'user' => $user, 'tasks' => $tasks, 'hourID' => $hourID));

@@ -637,6 +637,44 @@
             </div>
         {% endif %}
 
+        {# Slettede Timeregistreringer for alle brukere #}
+        {% if user.isAdmin or user.isProjectLeader %}
+            <div class="openContainerNoBorder text scrollY" id="timeTabell">
+                <table class="table" id="table">
+                    <h5 id="overskrift">Slettede timeregistreringer for alle brukere</h5>
+
+                    <tr>
+                        <th>HourID</th>
+                        <th>TaskID</th>
+                        <th>Ansatt</th>
+                        <th>Starttid</th>
+                        <th>Slutttid</th>
+                        <th>Total tid</th>
+                        <th>Lokasjon</th>
+                        <th>Task Navn</th>
+                    </tr>
+
+                    {% if user.isAdmin or user.isProjectLeader %}
+                        {% for hour in deletedHours %}
+
+                                <tr>
+                                    <td> {{ hour.hourID }} </td>
+                                    <td> {{ hour.taskID }}</td>
+                                    <td> {{ hour.whoWorkedName }}</td>
+                                    <td> {{ hour.startTime }}</td>
+                                    <td> {{ hour.endTime }}</td>
+                                    <td> {{ hour.timeWorked }}</td>
+                                    <td> {{ hour.getLocation }}</td>
+                                    <td> {{ hour.getTaskType }}</td>
+                                </tr>
+
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+        {% endif %}
+
+
         {# FEILMELDINGER FRA DATABASE #}
         <div class="container container_big_long text">
             <h5>Tilbakemeldinger fra database</h5>

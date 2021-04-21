@@ -17,6 +17,7 @@ if ($user) {
 //    $hour = $hourManager->getHour($userID);
     $hours = $hourManager->getHours(whoWorked: $userID);
     $hoursAll = $hourManager->getAllHours();
+    $deletedHours = $hourManager->getDeletedHours();
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         $hourID = $request->query->getInt('hourId');
@@ -42,7 +43,7 @@ if ($user) {
                 'hours' => $hours, 'hoursAll' => $hoursAll,
                 'hourManager' => $hourManager,
                 'userID' => $userID,
-                'tasks' => $tasks));
+                'tasks' => $tasks, 'deletedHours' => $deletedHours));
 
     }
 } else {

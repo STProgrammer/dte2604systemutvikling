@@ -49,23 +49,23 @@
         <div class="container container_menu_form_hour text" id="edit_hour">
             <h5 id="overskrift">Endre Timeegistrering</h5>
             <form method="post" id="edit_hour">
-                <b>TODO denne må fikses. TODO en slette funksjon</b><br>
                 <b class="overskriftLiten">Endre Timeegistrering:</b><br>
 
                 <br><label for="hourID">Timeregistrerings Id: </label>
-                <br><input type="text" name="hourID" value="{{ hour.hourID }}" maxlength=45 required id="hourID"/>
+                <br><input type="text" name="hourID" value="{{ hour.hourID }}" disabled="disabled" maxlength=45 required id="hourID"/>
                 <br><label for="taskID">TaskId: </label>
-                <br><input type="text" name="taskID" value="{{ hour.taskID }}" maxlength=45 required id="taskID"/>
+                <br><input type="text" name="taskID" value="{{ hour.taskID }}" disabled="disabled" maxlength=45 required id="taskID"/>
                 <br><label for="startTime">Starttid: </label>
                 <br><input type="text" name="startTime" value="{{ hour.startTime }}" maxlength=45 required id="startTime"/>
                 <br><label for="endTime">Sluttid: </label>
                 <br><input type="text" name="endTime" value="{{ hour.endTime }}" maxlength=45 required id="endTime"/>
                 <br><label for="phaseId">Fase id: </label>
-                <br><input type="text" name="phaseId" value="{{ hour.phaseID }}" maxlength=45 required id="phaseId"/>
-                <br>En melding vil bli sent til din leder, før endring blir godkjent i systemet.<br> Skriv i kommentar hvorfor du endrer timen.
+                <br><input type="text" name="phaseId" value="{{ hour.phaseID }}" disabled="disabled" maxlength=45 required id="phaseId"/>
 
-                <input type="hidden" value="{{ getMac("Edit Hour") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="edit_hour" id="edit_hour" value="Edit Hour">
+                <input type="hidden" value="{{ getMac("Edit Timereg") }}" name="XSRFPreventionToken">
+                <br>
+                <input type="submit" name="edit_timereg" id="edit_timereg" value="Redigere">
+                <input type="submit" name="edit_deactivate" id="edit_deactivate" value="Deaktivere">
             </form>
         </div>
 

@@ -17,6 +17,7 @@ class Hour {
     private $commentBoss;
     private bool $isChanged;
     private bool $stampingStatus;
+    private $taskType;
 
     public function __construct() {
     }
@@ -33,6 +34,7 @@ class Hour {
     public function getOvertimeType(){return $this->overtimeType;}
     public function getComment(){return $this->comment;}
     public function getCommentBoss(){return $this->commentBoss;}
+    public function getTaskType(){return $this->taskType;}
 
     public function setHourID($hourID): void{$this->hourID = $hourID;}
     public function setTaskID($taskID): void{$this->taskID = $taskID;}
@@ -48,6 +50,7 @@ class Hour {
     public function setComment($comment): void{$this->comment = $comment;}
     public function setIsChanged(bool $isChanged): void{$this->isChanged = $isChanged;}
     public function setStampingStatus(bool $stampingStatus): void{$this->stampingStatus = $stampingStatus;}
+    public function setTaskType($taskType): void{$this->taskType = $taskType;}
 
     public function isActivated(): bool{return $this->activated == 1;}
     public function isChanged(): bool{return $this->isChanged;}

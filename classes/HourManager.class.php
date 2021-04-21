@@ -409,12 +409,6 @@ class HourManager
         }
     }
 
-    //CHANGE TIME USER ----------------------------------------------------------------------------------------
-    public function changeTimeForUser()
-    {
-
-    }
-
     public function checkIfActiveTimereg($userID): array
     {
         try {
@@ -433,6 +427,135 @@ class HourManager
             print $e->getMessage() . PHP_EOL;
             //return new Project();
             return array();
+        }
+    }
+
+    //Edit the hour, deactivate old
+    public function changeTimeForUser($hours, $startTime, $endTime) : bool
+    {
+        $hours = $hours[0];
+        $hourID = $hours->getHourID();
+        $isChanged = 1;
+        try {
+            $stmt = $this->dbase->prepare(query: "UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID");
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            $stmt->bindParam(':startTime', $startTime);
+            $stmt->bindParam(':endTime', $endTime);
+            $stmt->bindParam(':isChanged', $isChanged);
+            if ($stmt->execute()) {
+                $stmt->closeCursor();
+                $this->notifyUser('Timeregistrering forandret!', 'editHour()');
+                return true;
+            } else {
+                $this->notifyUser('Timeregistrering ikke forandret!', 'editHour()');
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Endring misslykkes, feil på 'editHour()': ", $e->getMessage());
+            return false;
+        }
+    }
+    public function duplicateToLog($hours): bool
+    {
+        $hours = $hours[0];
+        $hourID = $hours->getHourID();
+        $taskID = $hours->getTaskID();
+        $userID = $hours->getWhoworked();
+        $startTime = $hours->getStartTime();
+        $endTime = $hours->getEndTime();
+        $timeWorked = $hours->getTimeWorked();
+        $activated = $hours->isActivated();
+        $location = $hours->getLocation();
+        $phaseID = $hours->getPhaseID();
+        $absenceType = $hours->getAbsenceType();
+        $overtimeType = $hours->getOvertimeType();
+        $comment = $hours->getComment();
+        $commentBoss = $hours->getCommentBoss();
+        $isChanged = 1;
+        $stampingStatus = $hours->isStampingStatus();
+        $taskType = $hours->getTaskType();
+
+        try {
+            $stmt = $this->dbase->prepare("INSERT INTO HoursLogs (`hourID`, `taskID`, `whoWorked`, `startTime`, 
+                   `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
+                   `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
+                   VALUES (:hourID, :taskID, :userID, :startTime, :endTime, :timeWorked, :activated, 
+                           :location, :phaseID, :absenceType, :overtimeType, :comment, 
+                           :commentBoss, :isChanged, :stampingStatus, :taskType)");
+
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_STR);
+            $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_STR);
+            $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
+            $stmt->bindParam(':endTime', $endTime, PDO::PARAM_STR);
+            $stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_STR);
+            $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
+            $stmt->bindParam(':location', $location, PDO::PARAM_STR);
+            $stmt->bindParam(':phaseID', $phaseID, PDO::PARAM_STR);
+            $stmt->bindParam(':absenceType', $absenceType, PDO::PARAM_STR);
+            $stmt->bindParam(':overtimeType', $overtimeType, PDO::PARAM_STR);
+            $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+            $stmt->bindParam(':commentBoss', $commentBoss, PDO::PARAM_STR);
+            $stmt->bindParam(':isChanged', $isChanged, PDO::PARAM_STR);
+            $stmt->bindParam(':stampingStatus', $stampingStatus, PDO::PARAM_STR);
+            $stmt->bindParam(':taskType', $taskType, PDO::PARAM_STR);
+
+            $stmt->execute();
+            if ($stmt->rowCount() == 1) {
+                $this->notifyUser("Timeregistreringen ble lagret i log.", "");
+                return true;
+            } else {
+                $this->notifyUser("En feil oppstod ved lagring i log.", "");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på duplicateToLog()", $e->getMessage());
+            return false;
+        }
+    }
+
+    //Deaktivere en timereg.
+    public function deleteTimeForUser($hours) : bool
+    {
+        $hours = $hours[0];
+        $hourID = $hours->getHourID();
+        try {
+            $stmt = $this->dbase->prepare(query: "DELETE FROM Hours WHERE hourID = :hourID");
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            if ($stmt->execute()) {
+                $stmt->closeCursor();
+                $this->notifyUser('Timeregistrering deaktivert!', 'editHour()');
+                return true;
+            } else {
+                $this->notifyUser('Timeregistrering ikke deaktivert!', 'editHour()');
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Endring misslykkes, feil på 'deleteTimeForUser()': ", $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getDeletedHours()
+    {
+        $deletedHours = array();
+        $query = 'SELECT HoursLogs.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName
+                    FROM HoursLogs
+                    LEFT JOIN Users as workers on workers.userID = HoursLogs.whoWorked      
+                    ORDER BY HoursLogs.whoWorked DESC';
+        try {
+            $stmt = $this->dbase->prepare($query);
+            $stmt->execute();
+            if ($deletedHours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $deletedHours;
+            } else {
+                $this->notifyUser("Logger ble ikke funnet", "Kunne ikke hente oppgaver");
+                return $deletedHours;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getDeletedHours()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            return $deletedHours;
         }
     }
 }
