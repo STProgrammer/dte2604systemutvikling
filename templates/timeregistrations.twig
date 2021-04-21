@@ -644,6 +644,7 @@
                     <h5 id="overskrift">Slettede timeregistreringer for alle brukere</h5>
 
                     <tr>
+                        <th>Tid endret</th>
                         <th>HourID</th>
                         <th>TaskID</th>
                         <th>Ansatt</th>
@@ -658,6 +659,7 @@
                         {% for hour in deletedHours %}
 
                                 <tr>
+                                    <td> {{ hour.timeChanged }} </td>
                                     <td> {{ hour.hourID }} </td>
                                     <td> {{ hour.taskID }}</td>
                                     <td> {{ hour.whoWorkedName }}</td>

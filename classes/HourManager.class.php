@@ -481,10 +481,10 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
         $taskType = $hours->getTaskType();
 
         try {
-            $stmt = $this->dbase->prepare("INSERT INTO HoursLogs (`hourID`, `taskID`, `whoWorked`, `startTime`, 
+            $stmt = $this->dbase->prepare("INSERT INTO HoursLogs (`timeChanged`, `hourID`, `taskID`, `whoWorked`, `startTime`, 
                    `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
                    `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
-                   VALUES (:hourID, :taskID, :userID, :startTime, :endTime, :timeWorked, :activated, 
+                   VALUES (NOW(), :hourID, :taskID, :userID, :startTime, :endTime, :timeWorked, :activated, 
                            :location, :phaseID, :absenceType, :overtimeType, :comment, 
                            :commentBoss, :isChanged, :stampingStatus, :taskType)");
 
