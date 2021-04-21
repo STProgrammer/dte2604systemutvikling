@@ -53,7 +53,6 @@
             <label class="overskriftLiten"><b>Medlemmer i dette prosjektetet:</b></label></br>
             <table class="table">
                 <tr>
-                    <th>Gruppenavn</th>
                     <th>Ansatt nr</th>
                     <th>Fornavn</th>
                     <th>Etternavn</th>
@@ -63,11 +62,8 @@
                 </tr>
 
                 {# Sorterer først på grupper. Så henter alle medlemmer i den gruppa som tilhører dette prosjektet #}
-                {% for group in groupFromUserAndGroups %}
-                    <tr>
                         {% for member in members %}
-                            {% if member.userID == group.userID and group.projectName == project.getProjectName %}
-                                <td>{{ group.groupName }}</td>
+                            <tr>
                                 <td>{{ member.getUserId() }}</td>
                                 <td>{{ member.getFirstName }}</td>
                                 <td>{{ member.getLastName }}</td>
@@ -79,10 +75,8 @@
                                         </button>
                                     </td>
                                 {% endif %}
-                            {% endif %}
+            </tr>
                         {% endfor %}
-                    </tr>
-                {% endfor %}
             </table>
         </div>
     </section>

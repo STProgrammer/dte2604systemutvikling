@@ -537,7 +537,7 @@ class UserManager
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllEmployees()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, på getUnverifiedUsers()", $e->getMessage());
             return array();
         }
         return array();

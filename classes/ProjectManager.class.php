@@ -376,40 +376,32 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
         }
     }
 
-
-
-
-    public function removeGroups(Project $project) : bool
+    /*
+    public function getAllMembers($projectName) : array
     {
-        $users = $this->request->request->get('projectMembers');
-        $projectName = $project->getProjectName();
-        $projectLeader = $project->getProjectLeader();
+        $members = array();
         try {
-            $stmt = $this->db->prepare(query: "DELETE FROM UsersAndProjects 
-                    WHERE projectName = :projectName AND userId = :userID;
-                    UPDATE Projects SET Projects.projectLeader = NULL 
-                    WHERE projectName = :projectName AND Projects.projectLeader = :userID;
-                    UPDATE Users SET Users.isProjectLeader = 0
-                    WHERE NOT EXISTS
-                    (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");
-            if (is_array($users)) {
-                foreach ($users as $userID) {
-                    $stmt->bindParam(':projectName', $projectName);
-                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-                    $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                }
-                return true;
+            $stmt = $this->db->prepare("SELECT * FROM Users
+LEFT JOIN UsersAndGroups as usg on usg.userID = Users.userID
+LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :projectName ORDER BY Users.lastName;");
+            $stmt->bindPara(':projectName', $projectName, PDO::PARAM_STR);
+            $stmt->execute();
+            if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $members;
             } else {
-                $this->notifyUser("Failed to remove employee", '..........');
-                return false;
+                $this->notifyUser("Brukere ble ikke funnet");
+                return $members;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to remove employee", $e->getMessage());
-            return false;
+            $this->NotifyUser("En feil oppstod, på getAllMembers()", $e->getMessage());
+            return $members;
         }
-    }
+        return $members;
+    }*/
+
+
+
+
 
 
 
