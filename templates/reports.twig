@@ -8,7 +8,7 @@
             </button>
         </div>
     </section>
-
+<body>
     <section>
         {% if projects %}
             <div class="openContainerNoBorder text" id="prosjektTabell">
@@ -54,12 +54,15 @@
         {% endif %}
     </section>
 
+
+
     <section>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         {# Fremskrittsdiagram #}
         {% if projects %}
             <div class="openContainerNoBorder text" id="prosjektTabell">
                 <h3>Fremskrittsdiagram </h3>
-                <table class="table" id="table">
+                <table class="table" id="progressTable">
                     <tr>
                         <th>Prosjekt navn</th>
                         <th>Tid brukt</th>
@@ -77,12 +80,102 @@
                                     {% set estimertTidSum = estimertTidSum + (task.getEstimatedTime) %}
                                 {% endif %}
                             {% endfor %}
-                            <td>{{ timeSpentSum }}</td>
-                            <td>{{ estimertTidSum }}</td>
+                            <!--td><div class="w3-grey" style="height:24px;{ estimertTidSum }}"></div></td-->
+                            <td id="p2">{{ timeSpentSum }}</td>
+                            <td id="p3">{{ estimertTidSum }}</td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
         {% endif %}
+        <div id="chart_div"></div>
+        <p><input type="button" id="bt" value="Show Table Data" onclick="showProgress()" /></p>
+        <p id="info"></p>
+        <br>
     </section>
+    <section>
+        <script>
+
+            function showProgress() {
+                document.getElementById('info').innerHTML = "";
+                let myTab = document.getElementById('progressTable')
+
+                // LOOP THROUGH EACH ROW OF THE TABLE AFTER HEADER.
+                for (let i = 1; i < myTab.rows.length; i++) {
+
+                    // GET THE CELLS COLLECTION OF THE CURRENT ROW.
+                    const objCells = myTab.rows.item(i).cells;
+
+                    // LOOP THROUGH EACH CELL OF THE CURENT ROW TO READ CELL VALUES.
+                    for (let j = 0; j < objCells.length; j++) {
+                        info.innerHTML = info.innerHTML + ' ' + objCells.item(j).innerHTML;
+                    }
+                    info.innerHTML = info.innerHTML + '<br />';     // ADD A BREAK (TAG).
+                }
+            }
+
+
+            function drawChart() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Project');
+                data.addColumn('number', 'Progress');
+                let myTab = document.getElementById('progressTable')
+
+                // LOOP THROUGH EACH ROW OF THE TABLE AFTER HEADER.
+                for (let i = 1; i < myTab.rows.length; i++) {
+
+                    // GET THE CELLS COLLECTION OF THE CURRENT ROW.
+                    var objCells = myTab.rows.item(i).cells;
+
+                    // LOOP THROUGH EACH CELL OF THE CURENT ROW TO READ CELL VALUES.
+                    for (let j = 0; j < objCells.length; j++) {
+
+                    }
+
+                    data.addRows([
+                        [objCells[0].innerText, {{ timeSpentSum }}/*myTab.rows[i].cells[1].firstChild.value*/]
+                    ]);
+
+
+                }
+
+                // Set chart options
+                var options = {'title':'Fremgang i prosjekt',
+                    'width':500,
+                    'height':300};
+
+                // Instantiate and draw our chart, passing in some options.
+                var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+
+
+
+                /*
+                // Create the data table.
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Project');
+                data.addColumn('number', 'Progress');
+                data.addRows([
+                    ['Mushrooms', 3],
+                    ['Onions', 1],
+                    ['Olives', 1],
+                    ['Zucchini', 1],
+                    ['Pepperoni', 2]
+                ]);
+
+                // Set chart options
+                var options = {'title':'Fremgang i prosjekt',
+                    'width':500,
+                    'height':300};
+
+                // Instantiate and draw our chart, passing in some options.
+                var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+                chart.draw(data, options);*/
+            }
+        </script>
+        {% include 'charts.html' %}
+
+
+    </section>
+</body>
 {% endblock %}
