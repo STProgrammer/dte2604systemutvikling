@@ -109,7 +109,7 @@ WHERE groupID.userID = :userID AND Tasks.hasSubtask >= 0 AND Tasks.status < 3;';
 
 
     // GET TASK
-    public function getTask($taskId)
+    public function getTask(?int $taskId)
     {
         $query = 'SELECT Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
 groupID.groupName as groupName, phaseID.phaseName as phaseName, parentTasks.taskName as parentTaskName

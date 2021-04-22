@@ -8,15 +8,17 @@ $hourManager = new HourManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 $taskManager = new TaskManager($db, $request, $session);
 
+$hourID = $request->query->getInt('hourID', 0);
+$hour = $hourManager->getHour($hourID);
 
-if ($user) {
+if (!is_null($user) and !is_null($hour)) {
     $userID = $user->getUserId($user);
 
     $tasks = $taskManager->getAllTasks(); //trenger vi den?
 
     $hours = $hourManager->getHours(whoWorked: $userID);
-    $hourID = $request->query->getInt('hourID');
-    $hour = $hourManager->getHour($hourID);
+
+    $task = $taskManager->getTask($hour->getTaskID());
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hourID)) {
@@ -40,10 +42,10 @@ if ($user) {
 
     ## Endrer timeregistreringen
     elseif ($request->request->has('edit_timereg') && XsrfProtection::verifyMac("Edit Timereg")) {
-        $hourManager->duplicateToLog($hours);
+        $hourManager->duplicateToLog($hour);
         $startTime = $request->request->get('startTime');
         $endTime = $request->request->get('endTime');
-        if ($hourManager->changeTimeForUser($hours, $startTime, $endTime)) {
+        if ($hourManager->changeTimeForUser($hourID, $startTime, $endTime, $task)) {
             header("Location: " . $requestUri . "&edithour=1");
             exit();
         } else {
@@ -54,8 +56,8 @@ if ($user) {
 
         ## deaktiverer timeregistreringen
     elseif ($request->request->has('edit_deactivate') && XsrfProtection::verifyMac("Edit Timereg")) {
-        $hourManager->duplicateToLog($hours);
-        if ($hourManager->deleteTimeForUser($hours)) {
+        $hourManager->duplicateToLog($hour);
+        if ($hourManager->deleteTimeForUser($hourID, $task)) {
             header("Location: ".$requestUri."&edithour=1");
             exit();
         } else {

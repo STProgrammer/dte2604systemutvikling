@@ -291,14 +291,10 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     // STOP TIME FOR USER ---------------------------------------------------------------------------
     public function stopTimeForUser(?Hour $hour, ?Task $task): bool
     {
-        $hourID = $hour->getHourID();
-        if (!is_null($task)) {
-            $taskId = $task->getTaskID();
-            $parentTask = $task->getParentTask();
-        } else {
-            $taskId = null;
-            $parentTask = null;
+        if (is_null($hour)) {
+            return false;
         }
+        $hourID = $hour->getHourID();
         try {
             $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = NOW(), 
                  stampingStatus = 1 WHERE hourID = :hourID");
@@ -307,10 +303,10 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             $stmt->closeCursor();
             if ($stmt->rowCount() == 1) {
                 $this->notifyUser("Timeregistrering stoppet");
-                $hour = $this->getHour($hourID);
-                $timeStr = $hour->getTimeWorked();
-                if (!is_null($taskId)) {
-                    $this->updateTimeWorkedOnTask($taskId, $timeStr, $parentTask);
+                if (!is_null($task)) {
+                    //$hour = $this->getHour($hourID);
+                    //$timeStr = $hour->getTimeWorked();
+                    $this->updateTimeWorkedOnTask($task);
                 }
                 return true;
             } else {
@@ -323,32 +319,43 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
         }
     }
 
-    private function updateTimeWorkedOnTask($taskID, $timeStr, $parentTaskID) {
-        $timestamp = strtotime($timeStr);
-        $hours = date('h', $timestamp) - 12;
-        try {
-            $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = timeSpent + :hours WHERE taskID = :taskID;
-                                 UPDATE Tasks SET timeSpent = (SELECT SUM(timeSpent) total FROM Tasks WHERE parentTask = :parentTaskID) WHERE taskID = :parentTaskID;");
-            $stmt->bindParam(':hours', $hours, PDO::PARAM_INT);
-            $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
-            $stmt->bindParam(':parentTaskID',  $parentTaskID, PDO::PARAM_INT);
-            $stmt->execute();
-            if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Tidsbrukt på task oppdatert");
-                return true;
-            } else {
-                $this->notifyUser("Tidsbrukt på task ble ikke oppdatert", "updateTimeWorkedOnTask()");
-                return false;
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod på updateTimeWorkedOnTask()", $e->getMessage());
+    private function updateTimeWorkedOnTask(?Task $task, $timeStr = null) {
+        if (is_null($task)) {
             return false;
         }
+        else {
+            $taskID = $task->getTaskID();
+            $parentTaskID = $task->getParentTask();
+           // $timestamp = strtotime($timeStr);
+           // $hours = date('h', $timestamp) - 12;
+            try {
+                $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = ((SELECT SUM(timeWorked) total FROM Hours WHERE taskID = :taskID)/(60*60)) WHERE taskID = :taskID;
+                                 UPDATE Tasks SET timeSpent = (SELECT SUM(timeSpent) total FROM Tasks WHERE parentTask = :parentTaskID) WHERE taskID = :parentTaskID;");
+                //$stmt->bindParam(':hours', $hours, PDO::PARAM_INT);
+                $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
+                $stmt->bindParam(':parentTaskID',  $parentTaskID, PDO::PARAM_INT);
+             //   $stmt->closeCursor();
+                if ($stmt->execute()) {
+                    $this->notifyUser("Tidsbrukt på task oppdatert");
+                    return true;
+                } else {
+                    $this->notifyUser("Tidsbrukt på task ble ikke oppdatert", "updateTimeWorkedOnTask()");
+                    return false;
+                }
+            } catch (Exception $e) {
+                $this->NotifyUser("En feil oppstod på updateTimeWorkedOnTask()", $e->getMessage());
+                return false;
+            }
+
+        }
+
+
     }
 
     // GET HOUR ---------------------------------------------------------------------------------
     public function getHour($hourID)
     {
+        $hour = null;
         try {
             $stmt = $this->dbase->prepare("SELECT * FROM Hours Where hourID = :hourID");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
@@ -358,11 +365,11 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             } else {
                 $this->notifyUser("Comments not found", "Kunne ikke hente kommentarer");
                 //return new Project();
-                return array();
+                return null;
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getHour()", $e->getMessage());
-            return array();
+            return null;
         }
     }
 
@@ -434,19 +441,23 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     }
 
     //Edit the hour, deactivate old
-    public function changeTimeForUser($hours, $startTime, $endTime) : bool
+    public function changeTimeForUser($hourID, $startTime, $endTime, ?Task $task) : bool
     {
-        $hours = $hours[0];
-        $hourID = $hours->getHourID();
         $isChanged = 1;
         try {
-            $stmt = $this->dbase->prepare(query: "UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID");
+            $stmt = $this->dbase->prepare(query: "UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
             $stmt->bindParam(':isChanged', $isChanged);
-            if ($stmt->execute()) {
-                $stmt->closeCursor();
+            $stmt->execute();
+            if ($stmt->rowCount() == 1) {
+                //$stmt->closeCursor();
+                if (!is_null($task)) {
+                    //$hour = $this->getHour($hourID);
+                    //$timeStr = $hour->getTimeWorked();
+                    $this->updateTimeWorkedOnTask($task);
+                }
                 $this->notifyUser('Timeregistrering forandret!', 'editHour()');
                 return true;
             } else {
@@ -458,25 +469,24 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             return false;
         }
     }
-    public function duplicateToLog($hours): bool
+    public function duplicateToLog(Hour $hour): bool
     {
-        $hours = $hours[0];
-        $hourID = $hours->getHourID();
-        $taskID = $hours->getTaskID();
-        $userID = $hours->getWhoworked();
-        $startTime = $hours->getStartTime();
-        $endTime = $hours->getEndTime();
-        $timeWorked = $hours->getTimeWorked();
-        $activated = $hours->isActivated();
-        $location = $hours->getLocation();
-        $phaseID = $hours->getPhaseID();
-        $absenceType = $hours->getAbsenceType();
-        $overtimeType = $hours->getOvertimeType();
-        $comment = $hours->getComment();
-        $commentBoss = $hours->getCommentBoss();
+        $hourID = $hour->getHourID();
+        $taskID = $hour->getTaskID();
+        $userID = $hour->getWhoworked();
+        $startTime = $hour->getStartTime();
+        $endTime = $hour->getEndTime();
+        $timeWorked = $hour->getTimeWorked();
+        $activated = $hour->isActivated();
+        $location = $hour->getLocation();
+        $phaseID = $hour->getPhaseID();
+        $absenceType = $hour->getAbsenceType();
+        $overtimeType = $hour->getOvertimeType();
+        $comment = $hour->getComment();
+        $commentBoss = $hour->getCommentBoss();
         $isChanged = 1;
-        $stampingStatus = $hours->isStampingStatus();
-        $taskType = $hours->getTaskType();
+        $stampingStatus = $hour->isStampingStatus();
+        $taskType = $hour->getTaskType();
 
         try {
             $stmt = $this->dbase->prepare("INSERT INTO HoursLogs (`timeChanged`, `hourID`, `taskID`, `whoWorked`, `startTime`, 
@@ -518,15 +528,19 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     }
 
     //Deaktivere en timereg.
-    public function deleteTimeForUser($hours) : bool
+    public function deleteTimeForUser($hourID, ?Task $task) : bool
     {
-        $hours = $hours[0];
-        $hourID = $hours->getHourID();
         try {
-            $stmt = $this->dbase->prepare(query: "DELETE FROM Hours WHERE hourID = :hourID");
+            $stmt = $this->dbase->prepare(query: "DELETE FROM Hours WHERE hourID = :hourID;
+                                        ");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 $stmt->closeCursor();
+                if (!is_null($task)) {
+                    //$hour = $this->getHour($hourID);
+                    //$timeStr = $hour->getTimeWorked();
+                    $this->updateTimeWorkedOnTask($task);
+                }
                 $this->notifyUser('Timeregistrering deaktivert!', 'editHour()');
                 return true;
             } else {
