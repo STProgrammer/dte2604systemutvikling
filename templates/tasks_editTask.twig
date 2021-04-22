@@ -17,12 +17,12 @@
     <div class="container container_menu text" id="task_info">
         <h3 id="bigColoredName">{{ task.getTaskName }} </h3>
 
-        <br>Prosjekt: <b>{{ task.getProjectName }} </b> <br>
+        <br>Prosjekt: <b>{{ task.getProjectName() }} </b> <br>
         <br>Gruppe: <b>{{ task.groupName }} </b> <br>
         <br>Fase: <b>{{ task.phaseName }} </b> <br>
         <br>Hoved ansvarlig: <b>{{ task.mainResponsibleName }} </b> <br>
-        <br>Estimert tid: <b>{{ task.getEstimatedTime }} </b> <br>
-        <br>Total brukt tid: <b>{{ task.getSpentTime }} </b> <br>
+        <br>Estimert tid: <b>{{ task.getEstimatedTime() }} </b> <br>
+        <br>Total brukt tid: <b>{{ task.getTimeSpent() }} </b> <br>
         {% if not task.hasSubtask %}
             <br>Parent task: <a
                 href="tasks_editTask.php?taskid={{ task.getParentTask() }}">{{ task.parentTaskName }}</a>
@@ -200,7 +200,7 @@
             <br><label>Velg hoved ansvarlig:</label>
             <br>
             <div class="wrapper">
-                <select name="group" id="" class="form-control" onfocus='this.size=10;' required
+                <select name="mainResponsible" id="" class="form-control" onfocus='this.size=10;' required
                         onblur='this.size=10;'
                         onchange='this.size=10; this.blur();'>
                     <option disabled selected value> -- velg en hoved ansvarlig for oppgaven --</option>
@@ -221,7 +221,7 @@
             <br><label>Velg fase:</label>
             <br>
             <div class="wrapper">
-                <select name="group" id="" class="form-control" onfocus='this.size=10;' required
+                <select name="phaseID" id="" class="form-control" onfocus='this.size=10;' required
                         onblur='this.size=10;'
                         onchange='this.size=10; this.blur();'>
                     <option disabled selected value> -- velg en fase --</option>

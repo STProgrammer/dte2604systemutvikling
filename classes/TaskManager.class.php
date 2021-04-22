@@ -282,7 +282,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
         $tasksItIsDependentOn = array();
         try {
             $stmt = $this->db->prepare('SELECT TaskDependencies.*, Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
-groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
+groupID.groupName as groupName, phaseID.phaseName as phaseName, parentTasks.taskName as parentTaskName
 FROM TaskDependencies
 LEFT JOIN Tasks on TaskDependencies.firstTask = Tasks.taskID
 LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
@@ -310,7 +310,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
         $dependentTasks = array();
         try {
             $stmt = $this->db->prepare('SELECT TaskDependencies.*, Tasks.*, CONCAT(mainResponsible.firstName, " ", mainResponsible.lastName, " (", mainResponsible.username, ")") as mainResponsibleName, 
-groupID.groupName as groupName, phaseID.phaseName as phaseName, Tasks.parentTask as parentTaskName
+groupID.groupName as groupName, phaseID.phaseName as phaseName, parentTasks.taskName as parentTaskName
 FROM TaskDependencies
 LEFT JOIN Tasks on TaskDependencies.secondTask = Tasks.taskID
 LEFT JOIN Users as mainResponsible on mainResponsible.userID = Tasks.mainResponsible
