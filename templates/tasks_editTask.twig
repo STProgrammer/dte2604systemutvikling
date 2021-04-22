@@ -39,6 +39,8 @@
         {% endif %}
     </div>
 
+        {% if user.isProjectLeader() or user.isAdmin() or user.isGroupLeader() or user.getUserId() == task.getMainResponsible() %}
+
     <div class="container container_menu text" id="edit_status">
         <h5 class="overskriftLiten">Endre status på oppgaven</h5>
         <form method="post" id="task_status_edit_form">
@@ -85,11 +87,15 @@
         </form>
     </div>
 
-    <h6 class="marginleft overskrift">Del oppgaver</h6>
+        {% endif %}
+
+
+    <h6 class="marginleft overskrift">   </h6>
     {# Reestimer #}
     {% if not task.hasSubtask() %}
         <div class="container container_menu_small text" id="reestimate">
-            <h5 class="overskriftLiten">Del oppgaver</h5>
+            <h5 class="overskriftLiten">Endre estimert tid</h5>
+            <br>Estimert tid: <b>{{ task.getEstimatedTime() }} </b> <br>
             <form method="post" id="new_task_form">
                 <br><label for="estimatedTime"><b>Re-estimering</b> </label>
                 <br><input type="number" name="estimatedTime" value="" placeholder="Estimert tid" maxlength=45 required
@@ -99,6 +105,8 @@
             </form>
         </div>
     {% endif %}
+
+
 
     {# Del oppgaver #}
     {% if task.hasSubtask() %}
@@ -143,6 +151,8 @@
             </table>
         </div>
 
+        {% if user.isProjectLeader() or user.isAdmin() or user.isGroupLeader() or user.getUserId() == task.getMainResponsible() %}
+
         {# Legg til ny deloppgave #}
         <div class="container container_menu_form text" id="add_subtask">
             <h5 class="overskriftLiten">Legg til ny deloppgave</h5>
@@ -168,6 +178,10 @@
         </div>
     </section>
 
+        {% endif %}
+
+        {% if user.isProjectLeader() or user.isAdmin() %}
+
     <section>
     <h6 class="marginleft overskrift">Endre oppgaver</h6>
     {# Velg gruppe #}
@@ -191,11 +205,16 @@
         </form>
     </div>
 
+        {% endif %}
+
     {% endif %}
+
+        {% if user.isProjectLeader() or user.isAdmin() or user.isGroupLeader() %}
 
     {# Velg hoved ansvarlig: #}
     <div class="container container_menu_small text scroll">
-        <h5 class="overskriftLiten">Velg hoved ansvarlig</h5>
+        <h5 class="overskriftLiten">Endre hoved ansvarlig</h5>
+        <br>Hoved ansvarlig: <b>{{ task.mainResponsibleName }} </b> <br>
         <form method="post" id="main_responsible_change_form">
             <br><label>Velg hoved ansvarlig:</label>
             <br>
@@ -216,7 +235,8 @@
 
     {# Velg fase #}
     <div class="container container_menu_small text scroll">
-        <h5 class="overskriftLiten">Velg fase</h5>
+        <h5 class="overskriftLiten">Endre fase</h5>
+        <br>Fase: <b>{{ task.phaseName }} </b> <br>
         <form method="post" id="change_phase">
             <br><label>Velg fase:</label>
             <br>
@@ -234,6 +254,8 @@
             <br><input type="submit" name="phase_change" id="reg_btn" value="Endre fase">
         </form>
     </div>
+
+        {% endif %}
 
     </section>
     <h6 class="marginleft overskrift">Avhengighter</h6>
@@ -299,7 +321,7 @@
                         <td>Ventende</td>
                     {% elseif task.getStatus() == 1 %}
                         <td>På arbeid</td>
-                    {% elseif v.getStatus() == 2 %}
+                    {% elseif task.getStatus() == 2 %}
                         <td>Pause</td>
                     {% elseif task.getStatus() == 3 %}
                         <td>Ferdig</td>
@@ -316,7 +338,8 @@
     </div>
     </section>
 
-    <section>
+    {% if user.isProjectLeader() or user.isAdmin() or user.isGroupLeader() or user.getUserId() == task.getMainResponsible() %}
+
     <div class="container container_menu_small text">
         <form method="post" id="add_dependent_tasks_form">
             <br><label for="add_dependent_tasks_form">Legg til avhengige oppgaver: </label>
@@ -354,17 +377,19 @@
         </form>
     </div>
 
+    {% endif %}
+
+    {% if user.isProjectLeader() or user.isAdmin() %}
 
     <div class="openContainerNoBorder text" id="delete_task">
-        {% if user.isAdmin() %}
             <form method="post"
                   onsubmit="return confirm('Er du sikker på å slette oppgaven?\n(Kan ikke angres i etterkant!)');">
                 <input type="hidden" value="{{ getMac("Delete task") }}" name="XSRFPreventionToken">
                 <input type="submit" name="task_delete" value="Slett oppgave" class="delete"/>
             </form>
-        {% endif %}
     </div>
 
+    {% endif %}
 
     <div class="container container_big_long text">
         <h5>Tilbakemeldinger fra database</h5>

@@ -12,7 +12,7 @@ $group = $groupManager->getGroup($request->query->getInt('groupid'));
 
 
 if (!is_null($user) && !is_null($group) ) {
-    if (!is_null($user) && !is_null($group) && ($user->isAdmin() or $user->isProjectLeader() == 1 or ($user->getUserID() == $group->getGroupLeader()))) {
+    if ($user->isAdmin() or $user->isProjectLeader() or ($user->getUserID() == $group->getGroupLeader())) {
         $groupID = $group->getGroupID();
 
         $employees = $groupManager->getAllNonMembers($groupID);

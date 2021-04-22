@@ -10,9 +10,22 @@ $groupManager = new GroupManager($db, $request, $session);
 $task = $taskManager->getTask($request->query->getInt('taskid'));
 
 
-if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectLeader())) {
+if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader()) or $user->isUser()) {
     $taskId = $task->getTaskID();
     $projectName = $task->getProjectName();
+
+    $isAnyLeader = false;
+    if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader()) {
+        $isAnyLeader = true;
+    }
+    $isAdminOrProjectLeader = false;
+    if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader()) {
+        $isAdminOrProjectLeader = true;
+    }
+    $isMainResponsible = false;
+    if ($user->getUserId() == $task->getMainResponsible()) {
+        $isMainResponsible = true;
+    }
 
     $projectId = $projectManager->getProjectByName($projectName);
     $groups = $projectManager->getGroups($projectName);
@@ -26,7 +39,8 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
     $parentTask = $taskManager->getTask($task->getParentTask());
     $tasks = $taskManager->getAllTasks(projectName: $projectName);
     $subTasks = $taskManager->getAllTasks(hasSubtask: 0, parentTask: $taskId);
-    if ($request->request->has('task_status_edit') && XsrfProtection::verifyMac("Edit task status")) {
+    if ($request->request->has('task_status_edit') && XsrfProtection::verifyMac("Edit task status")
+    && ($isAnyLeader or $isMainResponsible)) {
         if ($taskManager->editStatus($taskId)) {
             header("Location: ".$requestUri."&taskstatusedited=1");
             exit();
@@ -44,7 +58,8 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
             exit();
         }
     }
-    else if ($request->request->has('subtask_add') && XsrfProtection::verifyMac("Add subtask")) {
+    else if ($request->request->has('subtask_add') && XsrfProtection::verifyMac("Add subtask")
+    && $isAnyLeader) {
         if ($taskManager->addSubTask($projectName, $task->getTaskID(), $task->getGroupID())) {
             header("Location: ".$requestUri."&subtaskadded=1");
             exit();
@@ -53,7 +68,8 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
             exit();
         }
     }
-    else if ($request->request->has('group_change') && XsrfProtection::verifyMac("Change group")) {
+    else if ($request->request->has('group_change') && XsrfProtection::verifyMac("Change group")
+    && $isAdminOrProjectLeader) {
         if ($taskManager->changeGroup($taskId)) {
             header("Location: ".$requestUri."&groupchanged=1");
             exit();
@@ -63,7 +79,8 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
         }
     }
     else if (($request->request->has('main_responsible_change') or $request->request->has('phase_change'))
-        && XsrfProtection::verifyMac("Change main responsible or phase")) {
+        && XsrfProtection::verifyMac("Change main responsible or phase")
+        && $isAnyLeader) {
         if ($taskManager->editTask($task)) {
             header("Location: ".$requestUri."&taskedited=1");
             exit();
@@ -72,7 +89,8 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
             exit();
         }
     }
-    else if ($request->request->has('add_dependent_tasks') && XsrfProtection::verifyMac("Add dependent tasks")) {
+    else if ($request->request->has('add_dependent_tasks') && XsrfProtection::verifyMac("Add dependent tasks")
+        && ($isAnyLeader or $isMainResponsible)) {
         if ($taskManager->addDependencies($taskId)) {
             header("Location: ".$requestUri."&dependenttasksadded=1");
             exit();
@@ -81,7 +99,8 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
             exit();
         }
     }
-    else if ($request->request->has('remove_dependent_tasks') && XsrfProtection::verifyMac("Remove dependent tasks")) {
+    else if ($request->request->has('remove_dependent_tasks') && XsrfProtection::verifyMac("Remove dependent tasks")
+    && ($isAnyLeader or $isMainResponsible)) {
         if ($taskManager->removeDependencies($taskId)) {
             header("Location: ".$requestUri."&dependenttasksremoved=1");
             exit();
@@ -90,7 +109,8 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
             exit();
         }
     }
-    else if ($request->request->has('task_delete') && XsrfProtection::verifyMac("Delete task")) {
+    else if ($request->request->has('task_delete') && XsrfProtection::verifyMac("Delete task")
+    && $isAdminOrProjectLeader){
         if ($taskManager->deleteTask($taskId, $task->getParentTask())) {
             header("Location: projects_editProject.php?projectid=".$projectId."&taskdeleted=1");
             exit();
