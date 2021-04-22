@@ -329,7 +329,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
            // $timestamp = strtotime($timeStr);
            // $hours = date('h', $timestamp) - 12;
             try {
-                $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = ((SELECT SUM(timeWorked) total FROM Hours WHERE taskID = :taskID)/(60*60)) WHERE taskID = :taskID;
+                $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = (SELECT SUM(TIME_TO_SEC(timeWorked)/3600) total FROM Hours WHERE taskID = :taskID) WHERE taskID = :taskID;
                                  UPDATE Tasks SET timeSpent = (SELECT SUM(timeSpent) total FROM Tasks WHERE parentTask = :parentTaskID) WHERE taskID = :parentTaskID;");
                 //$stmt->bindParam(':hours', $hours, PDO::PARAM_INT);
                 $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
