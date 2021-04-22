@@ -269,8 +269,7 @@ class HourManager
 LEFT JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID 
 LEFT JOIN Groups ON UsersAndGroups.groupID = Groups.groupID 
 LEFT JOIN 
-(SELECT TIME_FORMAT(SEC_TO_TIME(SUM(timeWorked)), '%H:%i') as sumTW, hourTasks.taskID as taskid, Hours.whoWorked as userid FROM Hours 
-LEFT JOIN Users as workers on workers.userID = Hours.whoWorked 
+(SELECT TIME_FORMAT(SEC_TO_TIME(SUM(timeWorked)), '%H:%i') as sumTW, hourTasks.taskID as taskid, Hours.whoWorked as userid FROM Hours
 LEFT JOIN Tasks as hourTasks on hourTasks.taskID = Hours.taskID WHERE hourTasks.projectName = :projectName GROUP BY Hours.whoWorked) as hrs on hrs.userid = Users.userID 
 WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
@@ -278,12 +277,11 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($totalTimeWorked = $stmt->fetchAll()) {
                 return $totalTimeWorked;
             } else {
-                $this->notifyUser("", "");
+                $this->notifyUser("Ingen brukere hentet");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+            $this->NotifyUser("Feil ved henting av brukere totalTimeWorked()", $e->getMessage());
             //return new Project();
             return array();
         }
