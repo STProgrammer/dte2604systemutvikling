@@ -1,7 +1,7 @@
 <?php
 
 require_once "includes.php";
-define('FILENAME_TAG', 'image');
+
 if ($user) {
     $hourManager = new HourManager($db, $request, $session);
     $userManager = new UserManager($db, $request, $session);
@@ -9,11 +9,12 @@ if ($user) {
     $projectManager = new ProjectManager($db, $request, $session);
     $timeSpentSum = null;
     $estimertTidSum = null;
+    $projects = $projectManager->getAllProjectsForReport();
+    $userManager = new UserManager($db, $request, $session);
+    $users = $userManager->getAllUsers("lastName");
 
     if ($user->isAdmin() or $user->isProjectleader()) {
-        $projects = $projectManager->getAllProjects();
-        $userManager = new UserManager($db, $request, $session);
-        $users = $userManager->getAllUsers("lastName");
+
         $tasks = $taskManager->getAllTasks();
 
         echo $twig->render('reports.twig',
@@ -23,28 +24,16 @@ if ($user) {
                 'timeSpentSum' => $timeSpentSum, 'estimertTidSum' => $estimertTidSum));
 
     } elseif ($user->isGroupLeader()) {
-        $projects = $projectManager->getAllProjects();
-
-        $userManager = new UserManager($db, $request, $session);
-        $users = $userManager->getAllUsers("lastName");
 
         echo $twig->render('reports.twig',
             array('projects' => $projects, 'ProjectManager' => $projectManager, 'session' => $session,
                 'user' => $user, 'users' => $users));
     } elseif ($user->isEmployee()) {
-        $projects = $projectManager->getAllProjects();
-
-        $userManager = new UserManager($db, $request, $session);
-        $users = $userManager->getAllUsers("lastName");
 
         echo $twig->render('reports.twig',
             array('projects' => $projects, 'ProjectManager' => $projectManager, 'session' => $session,
                 'user' => $user, 'users' => $users));
     } elseif ($user->isCustomer()) {
-        $projects = $projectManager->getAllProjects();
-
-        $userManager = new UserManager($db, $request, $session);
-        $users = $userManager->getAllUsers("lastName");
 
         echo $twig->render('reports.twig',
             array('projects' => $projects, 'ProjectManager' => $projectManager, 'session' => $session,

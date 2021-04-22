@@ -69,20 +69,11 @@
                         <th>Estimert totalt</th>
                     </tr>
                     {% for project in projects %}
-                        {% set timeSpentSum = 0 %}
-                        {% set estimertTidSum = 0 %}
                         <tr>
                             <td>{{ project.getProjectName() }}</td>
-
-                            {% for task in tasks %}
-                                {% if task.projectName == project.projectName %}
-                                    {% set timeSpentSum = timeSpentSum + (task.getTimeSpent) %}
-                                    {% set estimertTidSum = estimertTidSum + (task.getEstimatedTime) %}
-                                {% endif %}
-                            {% endfor %}
                             <!--td><div class="w3-grey" style="height:24px;{ estimertTidSum }}"></div></td-->
-                            <td id="p2">{{ timeSpentSum }}</td>
-                            <td id="p3">{{ estimertTidSum }}</td>
+                            <td id="p2">{{ project.sumTimeSpent }}</td>
+                            <td id="p3">{{ project.sumEstimate }}</td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -173,7 +164,6 @@
                 chart.draw(data, options);*/
             }
         </script>
-        {% include 'charts.html' %}
 
 
     </section>

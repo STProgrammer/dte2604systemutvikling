@@ -56,8 +56,30 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer ORDER BY Proj
             return array();
         }
     }
-    // GET ALL PROJECTS FOR USER
-    //TODO
+
+
+
+    // GET ALL PROJECTS FOR REPORT
+    public function getAllProjectsForReport(): array
+    {
+        try {
+            $stmt = $this->db->prepare('SELECT Projects.*, CASE WHEN Tasks.estimatedTime IS NULL THEN 0 ELSE SUM(Tasks.estimatedTime) END AS sumEstimate, CASE WHEN Tasks.timeSpent IS NULL THEN 0 ELSE SUM(Tasks.timeSpent) END AS sumTimeSpent FROM Projects 
+LEFT JOIN Tasks on Projects.projectName = Tasks.projectName 
+WHERE Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL GROUP BY Projects.projectName ORDER BY Projects.projectName;');
+            $stmt->execute();
+            if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
+                return $projects;
+            } else {
+                $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getallProjectsForReport()", $e->getMessage());
+            //return new Project();
+            return array();
+        }
+    }
 
 
     //GET PROJECT
@@ -257,6 +279,8 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
             return array();
         }
     }
+
+
 
     public function addGroup($projectName): bool //returns boolean value
     {
