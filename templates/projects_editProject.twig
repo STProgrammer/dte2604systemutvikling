@@ -23,14 +23,14 @@
             <br>Prosjekt sluttid: <b>{{ project.getFinishTime }} </b><br>
 
             {% if project.getStatus == 0 %}
-                <br>Prosjekt status: <b>Vendende</b><br>
+                <br>Prosjekt status: <b>Ventende</b><br>
             {% elseif project.getStatus == 1 %}
                 <br>Prosjekt status: <b>Pågår</b><br>
             {% elseif project.getStatus == 2 %}
                 <br>Prosjekt status: <b>Pauset</b><br>
             {% elseif project.getStatus == 3 %}
-                <br>Prosjekt status: <b>Avslått</b><br>
-            {% elseif project.getStatus == 3 %}
+                <br>Prosjekt status: <b></b><br>
+            {% elseif project.getStatus == 4 %}
                 <br>Prosjekt status: <b>Avsluttet</b><br>
             {% endif %}
             {% if project.isAcceptedByAdmin() %}
