@@ -12,20 +12,12 @@
 <page size="A4">
     <section class="rapport_utskrift" id="rapport_utskrift">
         <img src="images/morild_logo_150px.png" data-href="index.php" width="300pt" alt="Logo"/>
-        <h3>{{ project.getProjectName }} </h3>
+        <h3>{{ project.getProjectName() }} </h3>
         <h4>Kunde : {{ project.customerName }}</h4>
         <h4>Start tid : {{ project.startTime }}</h4>
         <h4>Slutt tid : {{ project.finishTime }}</h4>
-        {% set estimertTid = 0 %}
-        {% set timeSpentSum = 0 %}
-        {% for task in tasks %}
-            {% if task.projectName == project.projectName %}
-                {% set estimertTid = estimertTid + (task.getEstimatedTime) %}
-                {% set timeSpentSum = timeSpentSum + (task.getTimeSpent) %}
-            {% endif %}
-        {% endfor %}
-        <h4>Estimert tid : {{ estimertTid }} timer</h4>
-        <h4>Tid brukt : {{ timeSpentSum }} timer</h4>
+        <h4>Estimert tid : {{ project.sumEstimate }} timer</h4>
+        <h4>Tid brukt : {{ project.sumTimeSpent }} timer</h4>
 
         <button id="backbtn" class="button miniButtons" onclick="window.history.back()">Gå tilbake</button>
         <button id="printbtn" onclick="window.print()">Print this page</button>

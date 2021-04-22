@@ -10,7 +10,7 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $taskManager = new TaskManager($db, $request, $session);
     $hourManager = new HourManager($db, $request, $session);
 
-    $project = $projectManager->getProject($request->query->getInt('projectid'));
+    $project = $projectManager->getDataOnProjectForReport($request->query->getInt('projectid'));
 
     $projectName = $project->getProjectName();
     $userID = $request->query->getInt('userID');
@@ -20,7 +20,7 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $members = $projectManager->getProjectMembers($project->getProjectName()); //alle medlemmer av dette prosjektet
     $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
 
-    $tasks = $taskManager->getAllTasks();
+    $tasks = $taskManager->getAllTasks(hasSubtask: 1);
     $phases = $projectManager->getAllPhases($projectName);
 
     $hours = $hourManager->getAllHours();

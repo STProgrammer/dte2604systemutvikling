@@ -105,6 +105,32 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
         }
     }
 
+    //GET PROJECT
+    public function getDataOnProjectForReport(int $projectID)
+    {
+        try {
+            $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
+CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName,
+CASE WHEN Tasks.estimatedTime IS NULL THEN 0 ELSE SUM(Tasks.estimatedTime) END AS sumEstimate, CASE WHEN Tasks.timeSpent IS NULL THEN 0 ELSE SUM(Tasks.timeSpent) END AS sumTimeSpent
+FROM Projects
+LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+LEFT JOIN Users as customer on customer.userID = Projects.customer 
+LEFT JOIN Tasks on Projects.projectName = Tasks.projectName 
+WHERE Projects.projectID = :projectID AND (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) GROUP BY Projects.projectName;');
+            $stmt->bindParam(':projectID', $projectID, PDO::PARAM_INT, 100);
+            $stmt->execute();
+            if ($project = $stmt->fetchObject("Project")) {
+                return $project;
+            } else {
+                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
+                return null;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            return null;
+        }
+    }
+
 
     //GET PROJECT BY NAME
     public function getProjectByName(String $projectName)
