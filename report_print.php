@@ -26,8 +26,71 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $progressData = $projectManager->getProgressData($projectName);
     $progressDataJson = json_encode($progressData);
 
+    $actualBurn = array();
+    $day = 0;
+    $n = 1;
+    $startDate = strtotime($project->getStartTime());
+    $finishDate = strtotime($project->getFinishTime());
+
+    $prevSumEstimateDone = 0;
+
+    foreach ($progressData as $data) {
+        $date = strtotime($data['registerDate']);
+        $day = intval(($date - $startDate)/(60*60*24));
+        if ($n < $day) {
+            $z = $n;
+            for($i = $z; $i < $day; $i++) {
+                $actualBurn[] = $prevSumEstimateDone;
+                $n++;
+            }
+        } else if ($n == $day) {
+            $actualBurn[] = floatval($data['sumEstimateDone']);
+            $n++;
+        }
+        //$actualBurn[] = floatval($data['sumEstimateDone']);
+        $prevSumEstimateDone = floatval($data['sumEstimateDone']);
+    }
+
     $sumDays = strtotime($project->getFinishTime()) - strtotime($project->getStartTime());
     $sumDays = round($sumDays / (60 * 60 * 24));
+    $sumEstimate = $project->sumEstimate;
+    $idealHoursPerDay = $sumEstimate / $sumDays;
+
+    $idealTrendArray =  range(0, $sumEstimate, $idealHoursPerDay);
+
+    $idealXArray = array();
+    $n = 1;
+    foreach ($idealTrendArray as $value){
+        $n++;
+        $idealXArray[] = 'Day '.$n;
+    }
+
+
+
+
+    $datesArray = range(strtotime($project->getStartTime())/(60 * 60 * 24), strtotime($project->getFinishTime())/(60 * 60 * 24), 1);
+
+
+
+    $dataArray = array_combine($idealTrendArray, $datesArray);
+
+
+    $length = count($idealTrendArray);
+    $dataArray = range(0, $length, 1);
+
+    for($n = 0; $n<$length; $n++) {
+
+        $doneSize = 0;
+        if ($datesArray[$n])
+        $dataArray[$n] = [$idealTrendArray[$n], $datesArray[$n]];
+
+    }
+
+    $n = 1;
+    $test = $idealTrendArray[$n];
+
+
+
 
 
     $hours = $hourManager->getAllHours();
@@ -52,7 +115,12 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
             'groupFromUserAndGroups' => $groupFromUserAndGroups,
             'hourManager' => $hourManager,
             'progressData' => $progressData,
-            'progressDataJson' => $progressDataJson));
+            'idealTrendArray' => $idealTrendArray,
+            'datesArray' => $datesArray,
+            'length' => $length,
+            'idealXArray' => $idealXArray,
+            'sumEstimate' => $sumEstimate,
+            'actualBurn' => $actualBurn));
 } else {
     header("location: index.php");
     exit();

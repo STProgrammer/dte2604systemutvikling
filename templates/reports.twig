@@ -67,7 +67,7 @@
                         <th>Prosjekt navn</th>
                         <th>Tid brukt</th>
                         <th>Estimert totalt</th>
-                        <th>Tid igjen</th>
+                        <th>Estimert tid igjen</th>
                     </tr>
                     {% for project in projects %}
                         <tr>
@@ -75,7 +75,7 @@
                             <!--td><div class="w3-grey" style="height:24px;{ estimertTidSum }}"></div></td-->
                             <td id="p2">{{ project.sumTimeSpent }}</td>
                             <td id="p3">{{ project.sumEstimate }}</td>
-                            <td id="p3">{{ project.sumEstimate - project.sumTimeSpent }}</td>
+                            <td id="p3">{{ project.sumEstimate - project.sumEstimateDone }}</td>
                         </tr>
                     {% endfor %}
                 </table>
