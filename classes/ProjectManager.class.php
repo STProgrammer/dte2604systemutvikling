@@ -557,6 +557,25 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
     // END EDIT PHASE
 
 
+    public function getProgressData($projectName) {
+        $datas = array();
+        try{
+            $sth = $this->db->prepare("SELECT * FROM ProgressTable WHERE projectName = :projectName ORDER BY registerDate;");
+            $sth->bindParam(":projectName", $projectName, PDO::PARAM_STR);
+            $sth->execute();
+            if ($datas = $sth->fetchAll()) {
+                $this->notifyUser("Progress data hentent ");
+                return $datas;
+            } else {
+                $this->notifyUser("Feil ved henting av progress data!");
+                return $datas;
+            }
+        } catch (Exception $e) {
+            $this->notifyUser("Feil ved henting av progress data!", $e->getMessage());
+            return $datas;
+        }
+    }
+
 
     // DELETE PHASE
     public function deletePhase ($phaseId) : bool

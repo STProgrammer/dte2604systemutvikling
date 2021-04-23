@@ -20,8 +20,15 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $members = $projectManager->getProjectMembers($project->getProjectName()); //alle medlemmer av dette prosjektet
     $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
 
-    $tasks = $taskManager->getAllTasks(hasSubtask: 1);
+    $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
     $phases = $projectManager->getAllPhases($projectName);
+
+    $progressData = $projectManager->getProgressData($projectName);
+    $progressDataJson = json_encode($progressData);
+
+    $sumDays = strtotime($project->getFinishTime()) - strtotime($project->getStartTime());
+    $sumDays = round($sumDays / (60 * 60 * 24));
+
 
     $hours = $hourManager->getAllHours();
     $groups = $projectManager->getGroups($projectName);
@@ -43,7 +50,9 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
             'hours' => $hours,
             'groups' => $groups,
             'groupFromUserAndGroups' => $groupFromUserAndGroups,
-            'hourManager' => $hourManager));
+            'hourManager' => $hourManager,
+            'progressData' => $progressData,
+            'progressDataJson' => $progressDataJson));
 } else {
     header("location: index.php");
     exit();

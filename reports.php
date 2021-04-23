@@ -23,17 +23,7 @@ if ($user) {
                 'tasks' => $tasks,
                 'timeSpentSum' => $timeSpentSum, 'estimertTidSum' => $estimertTidSum));
 
-    } elseif ($user->isGroupLeader()) {
-
-        echo $twig->render('reports.twig',
-            array('projects' => $projects, 'ProjectManager' => $projectManager, 'session' => $session,
-                'user' => $user, 'users' => $users));
-    } elseif ($user->isEmployee()) {
-
-        echo $twig->render('reports.twig',
-            array('projects' => $projects, 'ProjectManager' => $projectManager, 'session' => $session,
-                'user' => $user, 'users' => $users));
-    } elseif ($user->isCustomer()) {
+    } else if ($user->isGroupLeader() or $user->isEmployee() or $user->isCustomer()) {
 
         echo $twig->render('reports.twig',
             array('projects' => $projects, 'ProjectManager' => $projectManager, 'session' => $session,

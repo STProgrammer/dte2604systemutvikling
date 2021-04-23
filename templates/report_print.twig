@@ -6,9 +6,33 @@
     <title>Morild Data BA</title>
     <link rel="icon" type="image/png" href="images/favicon.ico">
     <link rel="stylesheet" href="stylesheet_print.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Tid', 'Oppgaver gjort', 'Oppgaver igjen'],
+                {% for data in progressData %}
+                ['{{data['registerDate']}}', {{data['sumEstimateDone']}}, {{data['sumEstimate']-data['sumEstimateDone']}}],
+                {% endfor %}
+
+            ]);
+
+            var options = {
+                title: 'Fremskritt',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+    </script>
 </head>
 <body>
-
 <page size="A4">
     <section class="rapport_utskrift" id="rapport_utskrift">
         <img src="images/morild_logo_150px.png" data-href="index.php" width="300pt" alt="Logo"/>
@@ -37,6 +61,73 @@
                 </tr>
             {% endfor %}
         </table>
+        <table class="table">
+            <tr>
+                <th>Sum estimert tid på prosjektet "{{ project.getProjectName }}"</th>
+                <th>Estimert arbeid gjort ferdig</th>
+                <th>Estimert arbeid igjen</th>
+                <th>Total brukt tid</th>
+                <th>Tidspunkt</th>
+            </tr>
+            {% for data in progressData %}
+                <tr>
+                    <td>
+                        {{ data['sumEstimate'] }}
+                    </td>
+                    <td>
+                        {{ data['sumEstimateDone'] }}
+                    </td>
+                    <td>
+                        {{ data['sumEstimate'] - data['sumEstimateDone'] }}
+                    </td>
+                    <td>
+                        {{ data['sumTimeSpent'] }}
+                    </td>
+                    <td>
+                        {{ data['registerDate'] }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div id="curve_chart" style="width: 600px; height: 350px"></div>
+    </section>
+
+
+
+</page>
+<page size="A4">
+    <section class="rapport_utskrift" id="rapport_utskrift">
+        <h2>Oppgaver til prosjektet</h2>
+    <table class="table">
+        <tr>
+            <th>Oppgavenavn </th>
+            <th>Estimert tid på oppgave</th>
+            <th>Tid brukt på oppgave</th>
+            <th>Status</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>
+                    {{ task.getTaskName() }}
+                </td>
+                <td>
+                    {{ task.getEstimatedTime() }}
+                </td>
+                <td>
+                    {{ task.getTimeSpent() }}
+                </td>
+                {% if task.getStatus() == 0 %}
+                    <td>Ventende</td>
+                {% elseif task.getStatus() == 1 %}
+                    <td>På arbeid</td>
+                {% elseif task.getStatus() == 2 %}
+                    <td>Pause</td>
+                {% elseif task.getStatus() == 3 %}
+                    <td>Ferdig</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
     </section>
 </page>
 </body>
