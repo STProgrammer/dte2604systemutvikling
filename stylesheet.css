@@ -704,21 +704,52 @@ a:hover { color: lightyellow;
     letter-spacing: 5px;
 }
 
-progress {
+/*progress {
     text-align:center;
     width: 20rem;
     height: 4rem;
     border: 0.3rem solid rgba(128, 51, 0, 0.66);
+    vertical-align: middle;
 }
 
 progress:before {
+
     content: 'Value is ' attr(value);
     position:center;
 }
 
 .unique:before {
     content: attr(data-label);
+}*/
+
+#progressbar {
+    border: 0.3rem solid rgba(33, 120, 55, 0.89);
+    position: relative;
+    text-align: center;
+    background-color: lightgrey;
+    padding: 3px;
 }
+
+#progressbar>div {
+    background-color: #d58a2e;
+    height: 20px;
+}
+
+.progress-label {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .9em;
+    margin: 0;
+    height: 26px;
+}
+
+
+
 /**-----------FOOTER---------------*/
 footer {
     position: fixed;

@@ -79,12 +79,20 @@
                         <tr>
                             <td>{{ project.getProjectName() }}</td>
                             {% if estimatedTimeSum != 0 %}
-                                <td>
+                                <!--td>
                                     <progress class="unique"
-                                              value={{ (timeSpentSum/estimatedTimeSum)*100 }} max="100"
-                                              data-label={{ ((timeSpentSum/estimatedTimeSum)*100)|round }}%>
+                                              value={#  #}{ (timeSpentSum/estimatedTimeSum)*100 }} max="100"
+                                              data-label={#  #}{ ((timeSpentSum/estimatedTimeSum)*100)|round }}%>
                                     </progress>
-                                </td>
+                                </td-->
+                            <td>
+                                <div id="progressbar">
+                                    <div style="width:{{ (timeSpentSum/estimatedTimeSum)*100 }}%;">
+                                        <p class="progress-label"><strong>{{ ((timeSpentSum/estimatedTimeSum)*100)|round }}%
+                                            </strong></p>
+                                    </div>
+                                </div>
+                            </td>
                             {% endif %}
                             <td>{{ project.sumTimeSpent }}</td>
                             <td>{{ project.sumEstimate }}</td>
