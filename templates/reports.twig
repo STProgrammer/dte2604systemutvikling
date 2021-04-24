@@ -66,6 +66,8 @@
                         <th>Estimert totalt</th>
                     </tr>
                     {% for project in projects %}
+{#                        {% set projectsWithTasks = taskManager->getAllTasks(projectName: project)%}#}
+
                         {% set timeSpentSum = 0 %}
                         {% set estimertTidSum = 0 %}
                         <tr>

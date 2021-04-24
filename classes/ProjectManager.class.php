@@ -33,15 +33,15 @@ class ProjectManager
     /// PROJECTS
     /////////////////////////////////////////////////////////////////////////////
 
-    // GET ALL PROJECTS
+    // GET ALL PROJECTS ------------------------------------------------------------------------------------------------
     public function getAllProjects(): array
     {
         try {
             $stmt = $this->db->prepare('SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
-CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
-FROM Projects
-LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
-LEFT JOIN Users as customer on customer.userID = Projects.customer ORDER BY Projects.startTime DESC;');
+                            CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
+                            FROM Projects
+                            LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+                            LEFT JOIN Users as customer on customer.userID = Projects.customer ORDER BY Projects.startTime DESC;');
             $stmt->execute();
             if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
@@ -56,19 +56,17 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer ORDER BY Proj
             return array();
         }
     }
-    // GET ALL PROJECTS FOR USER
-    //TODO
 
 
-    //GET PROJECT
+    //GET PROJECT ------------------------------------------------------------------------------------------------
     public function getProject(int $projectID)
     {
         try {
             $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
-CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
-FROM Projects
-LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
-LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectID = :projectID;');
+                            CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
+                            FROM Projects
+                            LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+                            LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectID = :projectID;');
             $stmt->bindParam(':projectID', $projectID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($project = $stmt->fetchObject("Project")) {
@@ -84,15 +82,15 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
     }
 
 
-    //GET PROJECT BY NAME
+    //GET PROJECT BY NAME ------------------------------------------------------------------------------------------------
     public function getProjectByName(String $projectName)
     {
         try {
             $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
-CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
-FROM Projects
-LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
-LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectName = :projectName;');
+                                    CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
+                                    FROM Projects
+                                    LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+                                    LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectName = :projectName;');
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($project = $stmt->fetchObject("Project")) {
@@ -108,8 +106,7 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
     }
 
 
-
-    // ADD PROJECT
+    // ADD PROJECT ------------------------------------------------------------------------------------------------
     public function addProject(): bool
     {
         $isAcceptedByAdmin = $this->session->get('User')->isAdmin() ? 1:0;
@@ -161,7 +158,7 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
 
 
 
-    //EDIT PROJECT
+    //EDIT PROJECT ------------------------------------------------------------------------------------------------
     public function editProject(Project $project): bool
     {
         $projectName = $project->getProjectName();
@@ -201,10 +198,7 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
     }
 
 
-
-
-
-
+    //REMOVE MEMBER ------------------------------------------------------------------------------------------------
     public function removeMember(Project $project) : bool
     {
         $userId = $this->request->request->get('projectMember');
@@ -237,7 +231,7 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
         }
     }
 
-    //GET MEMBERS
+    //GET MEMBERS ------------------------------------------------------------------------------------------------
     public function getProjectMembers(string $projectName) : array {
         try {
             $stmt = $this->db->prepare("SELECT DISTINCT Users.* FROM Users
@@ -257,7 +251,7 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
             return array();
         }
     }
-
+    // ADD GROUP ------------------------------------------------------------------------------------------------
     public function addGroup($projectName): bool //returns boolean value
     {
         $groupName = $this->request->request->get('groupName');
@@ -285,7 +279,7 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
             return false;
         }
     }
-
+    // ADD EMPLOYEES ------------------------------------------------------------------------------------------------
     public function addEmployees($groupID)
     {
         $users = $this->request->request->get('groupMembers');
@@ -308,7 +302,7 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
         }
         return true;
     }
-
+    // GET ALL GROUPS ------------------------------------------------------------------------------------------------
     public function getGroups($projectName) : array {
         $groups = array();
         try {
@@ -330,7 +324,7 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
             return $groups;}
     }
 
-    //GET GROUP FROM USERSANDGROUPS
+    //GET GROUP FROM USERSANDGROUPS ------------------------------------------------------------------------------------
     public function getGroupFromUserAndGroups($projectName) : array {
         $groupsFromUsersAndGroups = array();
         try {
@@ -350,18 +344,18 @@ LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Project
             return $groupsFromUsersAndGroups;}
     }
 
-
+    // GET LEADER CANDIDATE ------------------------------------------------------------------------------------------------
     public function getLeaderCandidates(String $projectName) : array
     {
         $candidates = array();
         try {
             $stmt = $this->db->prepare("SELECT DISTINCT Users.*
-FROM Users
-JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
-JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
-WHERE Groups.projectName = :projectName
-AND NOT EXISTS(SELECT Groups.groupLeader FROM Groups WHERE Users.userID = Groups.groupLeader
-AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
+                    FROM Users
+                    JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID
+                    JOIN Groups ON UsersAndGroups.groupID = Groups.groupID
+                    WHERE Groups.projectName = :projectName
+                    AND NOT EXISTS(SELECT Groups.groupLeader FROM Groups WHERE Users.userID = Groups.groupLeader
+                    AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             $stmt->execute();
             if ($candidates = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
@@ -378,7 +372,7 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
 
-
+    // REMOVE GROUPS ------------------------------------------------------------------------------------------------
     public function removeGroups(Project $project) : bool
     {
         $users = $this->request->request->get('projectMembers');
@@ -413,7 +407,7 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
 
-    //DELETE PROJECT
+    //DELETE PROJECT ------------------------------------------------------------------------------------------------
     public function deleteProject(String $projectName) : bool
     {
         $projectLeader = $this->request->request->get('projectLeader');
@@ -440,7 +434,7 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
 
 
 
-    // ADD PHASE
+    // ADD PHASE ------------------------------------------------------------------------------------------------
     public function addPhase (Project $project) : bool
     {
         $projectName = $project->getProjectName();
@@ -474,10 +468,9 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             return false;
         }
     }
-    // END ADD PHASE
 
 
-    // EDIT PHASE
+    // EDIT PHASE ------------------------------------------------------------------------------------------------
     public function editPhase (Phase $phase, Project $project) : bool
     {
         $phaseId = $phase->getPhaseID();
@@ -512,11 +505,8 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             return false;
         }
     }
-    // END EDIT PHASE
 
-
-
-    // DELETE PHASE
+    // DELETE PHASE ------------------------------------------------------------------------------------------------
     public function deletePhase ($phaseId) : bool
     {
         try{
@@ -535,10 +525,8 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             return false;
         }
     }
-    // END DELETE PHASE
 
-
-    // GET PHASE
+    // GET PHASE -----------------------------------------------------------------------------------------------
     public function getPhase($phaseId)
     {
         try {
@@ -556,11 +544,8 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             return null;
         }
     }
-    // END GET PHASE
 
-
-
-    // GET ALL PHASES
+    // GET ALL PHASES ------------------------------------------------------------------------------------------------
     public function getAllPhases ($projectName) : array
     {
         $phases = array();
@@ -579,14 +564,7 @@ AND Groups.projectName = :projectName) ORDER BY Users.lastName;");
             return $phases;
         }
     }
-    // END GET ALL PHASES
-
-
-
-
-
-
-
+    // VERIFY PROJECT BY ADMIN ------------------------------------------------------------------------------------------------
     public function verifyProjectByAdmin(int $projectID) : bool {
         try {
             $sth = $this->db->prepare("update Projects set isAcceptedByAdmin = 1 where projectID = :projectID");

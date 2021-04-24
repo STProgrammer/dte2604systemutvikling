@@ -12,6 +12,7 @@ if ($user) {
 
     if ($user->isAdmin() or $user->isProjectleader()) {
         $projects = $projectManager->getAllProjects();
+
         $userManager = new UserManager($db, $request, $session);
         $users = $userManager->getAllUsers("lastName");
         $tasks = $taskManager->getAllTasks();
