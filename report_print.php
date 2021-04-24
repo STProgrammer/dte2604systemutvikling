@@ -61,8 +61,8 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $idealXArray = array();
     $n = 1;
     foreach ($idealTrendArray as $value){
-        $n++;
         $idealXArray[] = 'Dag '.$n;
+        $n++;
     }
 
 
