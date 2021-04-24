@@ -22,7 +22,7 @@ if (!is_null($user) and !is_null($hour)) {
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hourID)) {
-            header("Location: ".$requestUri."&comment=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
             header("Location: ".$requestUri."&failedtocomment=1");
@@ -32,7 +32,7 @@ if (!is_null($user) and !is_null($hour)) {
 
     elseif ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
         if ($hourManager->editCommentBoss($hourID)) {
-            header("Location: " . $requestUri . "&commentbyboss=1");
+            header("Location: " . $requestUri );
             exit();
         } else {
             header("Location: " . $requestUri . "&failedtocommentbyboss=1");
@@ -46,7 +46,7 @@ if (!is_null($user) and !is_null($hour)) {
         $startTime = $request->request->get('startTime');
         $endTime = $request->request->get('endTime');
         if ($hourManager->changeTimeForUser($hourID, $startTime, $endTime, $task)) {
-            header("Location: " . $requestUri . "&edithour=1");
+            header("Location: " . $requestUri );
             exit();
         } else {
             header("Location: " . $requestUri . "&failededithour=1");
