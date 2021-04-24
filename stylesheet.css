@@ -702,12 +702,23 @@ a:hover { color: lightyellow;
     font-size: 20px;
     font-family: Orbitron;
     letter-spacing: 5px;
-
-
-
 }
 
+progress {
+    text-align:center;
+    width: 20rem;
+    height: 4rem;
+    border: 0.3rem solid rgba(128, 51, 0, 0.66);
+}
 
+progress:before {
+    content: 'Value is ' attr(value);
+    position:center;
+}
+
+.unique:before {
+    content: attr(data-label);
+}
 /**-----------FOOTER---------------*/
 footer {
     position: fixed;
