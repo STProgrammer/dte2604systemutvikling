@@ -53,6 +53,7 @@
                     <th>Tidsbruk</th>
                     <th>Estimert tid</th>
                     <th>Status</th>
+                    <th>Hoved ansvarlig</th>
                     <th>Se detaljer / endre</th>
                 </tr>
                 {% for task in tasks %}
@@ -69,6 +70,7 @@
                         {% elseif task.getStatus() == 3 %}
                             <td>Ferdig</td>
                         {% endif %}
+                        <td>{{ task.mainResponsibleName }}</td>
                         <td>
                             <button class="buttons miniButtons" id="contribution"
                                     onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">

@@ -5,28 +5,22 @@ require_once "includes.php";
 if ($user) {
     $hourManager = new HourManager($db, $request, $session);
     $userManager = new UserManager($db, $request, $session);
-    $taskManager = new TaskManager($db, $request, $session);
-    $projectManager = new ProjectManager($db, $request, $session);
-    $timeSpentSum = null;
-    $estimertTidSum = null;
-    $projects = $projectManager->getAllProjectsForReport();
+    $reportGenerator = new ReportGenerator($db, $request, $session);
+    $projects = $reportGenerator->getAllProjectsForReport();
     $userManager = new UserManager($db, $request, $session);
     $users = $userManager->getAllUsers("lastName");
 
     if ($user->isAdmin() or $user->isProjectleader()) {
 
-        $tasks = $taskManager->getAllTasks();
 
         echo $twig->render('reports.twig',
             array('session' => $session, 'user' => $user, 'users' => $users,
-                'projects' => $projects, 'ProjectManager' => $projectManager,
-                'tasks' => $tasks,
-                'timeSpentSum' => $timeSpentSum, 'estimertTidSum' => $estimertTidSum));
+                'projects' => $projects, 'reportGenerator' => $reportGenerator));
 
     } else if ($user->isGroupLeader() or $user->isEmployee() or $user->isCustomer()) {
 
         echo $twig->render('reports.twig',
-            array('projects' => $projects, 'ProjectManager' => $projectManager, 'session' => $session,
+            array('projects' => $projects, 'ProjectManager' => $reportGenerator, 'session' => $session,
                 'user' => $user, 'users' => $users));
     } else {
         header("location: index.php");

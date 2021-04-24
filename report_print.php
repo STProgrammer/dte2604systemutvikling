@@ -2,28 +2,28 @@
 
 require_once "includes.php";
 
+$reportGenerator = new ReportGenerator($db, $request, $session);
 
+$project = $reportGenerator->getDataOnProjectForReport($request->query->getInt('projectid'));
 
-if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader())) {
-    $projectManager = new ProjectManager($db, $request, $session);
+if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader())
+    and !is_null($project)) {
+
     $userManager = new UserManager($db, $request, $session);
     $taskManager = new TaskManager($db, $request, $session);
     $hourManager = new HourManager($db, $request, $session);
-
-    $project = $projectManager->getDataOnProjectForReport($request->query->getInt('projectid'));
+    $projectManager = new ProjectManager($db, $request, $session);
 
     $projectName = $project->getProjectName();
     $userID = $request->query->getInt('userID');
     $users = $userManager->getAllUsers("firstName"); //alle brukere
     $customers = $userManager->getAllCustomers("firstName"); //alle kunder
     $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
-    $members = $projectManager->getProjectMembers($project->getProjectName()); //alle medlemmer av dette prosjektet
-    $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
 
     $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
     $phases = $projectManager->getAllPhases($projectName);
 
-    $progressData = $projectManager->getProgressData($projectName);
+    $progressData = $reportGenerator->getProgressData($projectName);
     $progressDataJson = json_encode($progressData);
 
     $actualBurn = array();
@@ -62,35 +62,8 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $n = 1;
     foreach ($idealTrendArray as $value){
         $n++;
-        $idealXArray[] = 'Day '.$n;
+        $idealXArray[] = 'Dag '.$n;
     }
-
-
-
-
-    $datesArray = range(strtotime($project->getStartTime())/(60 * 60 * 24), strtotime($project->getFinishTime())/(60 * 60 * 24), 1);
-
-
-
-    $dataArray = array_combine($idealTrendArray, $datesArray);
-
-
-    $length = count($idealTrendArray);
-    $dataArray = range(0, $length, 1);
-
-    for($n = 0; $n<$length; $n++) {
-
-        $doneSize = 0;
-        if ($datesArray[$n])
-        $dataArray[$n] = [$idealTrendArray[$n], $datesArray[$n]];
-
-    }
-
-    $n = 1;
-    $test = $idealTrendArray[$n];
-
-
-
 
 
     $hours = $hourManager->getAllHours();
@@ -104,9 +77,8 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
         array('session' => $session, 'request' => $request, 'user' => $user,
 
             'users' => $users,
-            'customers' => $customers, 'members' => $members,
-            'employees' => $employees, 'candidates' => $candidates,
-
+            'customers' => $customers,
+            'employees' => $employees,
             'project' => $project,
             'totalTimeWorked' => $totalTimeWorked,
             'phases' => $phases, 'tasks' => $tasks,
@@ -116,12 +88,10 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
             'hourManager' => $hourManager,
             'progressData' => $progressData,
             'idealTrendArray' => $idealTrendArray,
-            'datesArray' => $datesArray,
-            'length' => $length,
             'idealXArray' => $idealXArray,
             'sumEstimate' => $sumEstimate,
             'actualBurn' => $actualBurn));
 } else {
-    header("location: index.php");
+    header("location: reports.php");
     exit();
 }

@@ -115,39 +115,9 @@
                 </tr>
             {% endfor %}
         </table>
-        <table class="table">
-            <tr>
-                <th>Sum estimert tid på prosjektet "{{ project.getProjectName }}"</th>
-                <th>Estimert arbeid gjort ferdig</th>
-                <th>Estimert arbeid igjen</th>
-                <th>Total brukt tid</th>
-                <th>Tidspunkt</th>
-            </tr>
-            {% for data in progressData %}
-                <tr>
-                    <td>
-                        {{ data['sumEstimate'] }}
-                    </td>
-                    <td>
-                        {{ data['sumEstimateDone'] }}
-                    </td>
-                    <td>
-                        {{ data['sumEstimate'] - data['sumEstimateDone'] }}
-                    </td>
-                    <td>
-                        {{ data['sumTimeSpent'] }}
-                    </td>
-                    <td>
-                        {{ data['registerDate'] }}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+
         <div id="container-burndown" style="max-width: 510px; height: 400px;"></div>
     </section>
-
-
-
 </page>
 <page size="A4">
     <section class="rapport_utskrift" id="rapport_utskrift">

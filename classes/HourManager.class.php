@@ -282,10 +282,13 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             }
         } catch (Exception $e) {
             $this->NotifyUser("Feil ved henting av brukere totalTimeWorked()", $e->getMessage());
-            //return new Project();
             return array();
         }
     }
+
+    // TOTAL TIME USERS
+
+
 
 
     // STOP TIME FOR USER ---------------------------------------------------------------------------

@@ -12,11 +12,15 @@
     <section>
         {% if projects %}
             <div class="openContainerNoBorder text" id="prosjektTabell">
-                <h3>Rapporter </h3>
+                {% if user.isAdmin() or user.isProjectLeader() %}
+                <h3>Prosjekt rapporter </h3>
                 <table class="table" id="table">
                     <tr>
                         <th>Prosjekt navn</th>
                         <th>Status</th>
+                        <th>Tid brukt</th>
+                        <th>Estimert totalt</th>
+                        <th>Estimert tid igjen</th>
                         <th>Detaljer & utskrift</th>
                     </tr>
                     {% for project in projects %}
@@ -40,7 +44,9 @@
                             {% if project.getStatus() == 4 %}
                                 <td>Avsluttet</td>
                             {% endif %}
-
+                            <td id="p2">{{ project.sumTimeSpent }}</td>
+                            <td id="p3">{{ project.sumEstimate }}</td>
+                            <td id="p3">{{ project.sumEstimate - project.sumEstimateDone }}</td>
                             <td>
                                 <button class="buttons miniButtons" id="miniButtons"
                                         onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
@@ -49,6 +55,7 @@
                             </td>
                         </tr>
                     {% endfor %}
+                    {% endif %}
                 </table>
             </div>
         {% endif %}
@@ -56,36 +63,7 @@
 
 
 
-    <section>
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        {# Fremskrittsdiagram #}
-        {% if projects %}
-            <div class="openContainerNoBorder text" id="prosjektTabell">
-                <h3>Fremskrittsdiagram </h3>
-                <table class="table" id="progressTable">
-                    <tr>
-                        <th>Prosjekt navn</th>
-                        <th>Tid brukt</th>
-                        <th>Estimert totalt</th>
-                        <th>Estimert tid igjen</th>
-                    </tr>
-                    {% for project in projects %}
-                        <tr>
-                            <td>{{ project.getProjectName() }}</td>
-                            <!--td><div class="w3-grey" style="height:24px;{ estimertTidSum }}"></div></td-->
-                            <td id="p2">{{ project.sumTimeSpent }}</td>
-                            <td id="p3">{{ project.sumEstimate }}</td>
-                            <td id="p3">{{ project.sumEstimate - project.sumEstimateDone }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        {% endif %}
-        <div id="chart_div"></div>
-        <p><input type="button" id="bt" value="Show Table Data" onclick="showProgress()" /></p>
-        <p id="info"></p>
-        <br>
-    </section>
+
     <section>
         <script>
 
