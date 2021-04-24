@@ -95,7 +95,7 @@
         <h4>Slutt tid : {{ project.finishTime }}</h4>
         <h4>Estimert tid : {{ project.sumEstimate }} timer</h4>
         <h4>Tid brukt : {{ project.sumTimeSpent }} timer</h4>
-        <h4>Estimert igjen : {{ project.sumEstimate - project.sumEstimateDone }} timer</h4>
+        <h4>Estimert igjen : {{ project.sumEstimate - project.sumEstimateDone }} timer ({{ project.sumEstimateDone/project.sumEstimate }} % ferdig)</h4>
 
         <button id="backbtn" class="button miniButtons" onclick="window.history.back()">Gå tilbake</button>
         <button id="printbtn" onclick="window.print()">Print this page</button>
@@ -122,13 +122,15 @@
 <page size="A4">
     <section class="rapport_utskrift" id="rapport_utskrift">
         <h2>Oppgaver til prosjektet</h2>
-    <table class="table">
+    <section class="table">
+        <table>
         <tr>
             <th>Oppgavenavn </th>
             <th>Estimert tid på oppgave</th>
             <th>Tid brukt på oppgave</th>
             <th>Status</th>
         </tr>
+        {% set i = 0 %}
         {% for task in tasks %}
             <tr>
                 <td>
@@ -150,8 +152,30 @@
                     <td>Ferdig</td>
                 {% endif %}
             </tr>
+            {% set i = i + 1 %}
+        {% if i > 40 %}
+        {% set i = 0 %}
+        </table>
+    </section>
+    </section>
+    </page>
+
+
+<page size="A4">
+    <section class="rapport_utskrift" id="rapport_utskrift">
+        <section class="table">
+            <table>
+                <tr>
+                    <th>Oppgavenavn </th>
+                    <th>Estimert tid på oppgave</th>
+                    <th>Tid brukt på oppgave</th>
+                    <th>Status</th>
+                </tr>
+
+    {% endif %}
         {% endfor %}
     </table>
+        </section>
     </section>
 </page>
 </body>
