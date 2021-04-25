@@ -76,7 +76,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="radio" id="worker" name="status" value="2" required>
+                                <input type="radio" id="worker" name="userType" value="2" required>
                             </td>
                             <td>
                                 <label for="wroker">Fast arbeider </label>
@@ -84,7 +84,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="radio" id="temporary" name="status" value="1" required>
+                                <input type="radio" id="temporary" name="userType" value="1" required>
                             </td>
                             <td>
                                 <label for="temporary">Innleid arbeider </label>
@@ -92,7 +92,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="radio" name="status" id="customer" value="0" required>
+                                <input type="radio" name="userType" id="customer" value="0" required>
                             </td>
                             <td>
                                 <label for="customer">Kunde </label>
@@ -101,7 +101,7 @@
                         {% if user.isAdmin() %}
                         <tr>
                             <td>
-                                <input type="radio" name="status" id="admin" value="3" required>
+                                <input type="radio" name="userType" id="admin" value="3" required>
                             </td>
                             <td>
                                 <label for="admin">Admin </label>

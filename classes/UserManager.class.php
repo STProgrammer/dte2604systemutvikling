@@ -42,7 +42,7 @@ class UserManager
         if (!$user->isAdmin() && $userType >= 3 | $userType < 0) {
             $userType = 2;
         }
-        $status = $userType == 0 ? "N/A": "Free";
+        $status = $userType == 0 ? "N/A": "Fri";
         $isVerifiedByAdmin = $user->isAdmin() ? 1:0;
         try{
             $hash = password_hash($password, PASSWORD_DEFAULT);
