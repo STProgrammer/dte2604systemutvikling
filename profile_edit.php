@@ -12,6 +12,8 @@ $userManager = new UserManager($db, $request, $session);
 
 if ($user) {
     // Change user details
+    $hours = $userManager->getUserStatistics($user->getUserID());
+
     if ($request->request->has('profile_edit') && XsrfProtection::verifyMac("Edit my information")) {
         if ($userManager->editMyProfile($user)) {
             header("Location: ?useredit=1");
@@ -54,7 +56,7 @@ if ($user) {
     else {
         try {
             echo $twig->render('profile_edit.twig', array('session' => $session,
-                'request' => $request, 'user' => $user));
+                'request' => $request, 'user' => $user, 'hours' => $hours));
         } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             echo $e->getMessage();
         }

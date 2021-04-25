@@ -16,7 +16,7 @@
                     {% endfor %}
                 {% endif %}
             </div>
-            <div class="container container_menu text" id="projekt_info">
+            <div class="container container_menu text" id="user_info">
                 <h3 id="bigColoredName">{{ userToEdit.getUsername() }}</h3>
                 <br>Brukernavn: <b>{{ userToEdit.getUsername() }} </b><br>
                 {% if user.getUserType() == 0 %}
@@ -42,6 +42,28 @@
                     <br>Godkjent av admin: <b>Ikke verifisert!</b><br>
                 {% endif %}
             </div>
+
+            {% if userToEdit.getUserType() > 0 %}
+            <div class="container container_menu_lang text" id="user_hours">
+                <label class="overskriftLiten"><b>Tidsbruk av brukeren:</b></label></br>
+                <table class="table">
+                    <tr>
+                        <th>Type</th>
+                        <th>Sum tidsbruk denne måned</th>
+                        <th>Sum tidsbruk totalt</th>
+                    </tr>
+
+                    {% for hour in hours %}
+                        <tr>
+                            <td>{{ hour['categoryName'] }}</td>
+                            <td>{{ hour['sumThisMonth'] }}</td>
+                            <td>{{ hour['sumTW'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+
             <form method="post" id="edit_form">
                 <br id="text">
                 <br><label for="address">Adresse:</label>

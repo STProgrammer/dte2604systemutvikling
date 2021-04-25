@@ -147,27 +147,7 @@ WHERE Users.userType > 0 AND Users.isVerifiedByAdmin = 1 GROUP BY Users.userID O
     }
 
 
-    // GET SINGLE USER STATISTICS
-    public function getUserStatistics($userID): array
-    {
-        try {
-            $stmt = $this->db->prepare("SELECT DISTINCT Hours.*, CONCAT(Users.firstName, ' ', Users.lastName, ' (', Users.username, ')') as whoWorkedName, CASE WHEN SUM(timeWorked) is null then '00:00' ELSE TIME_FORMAT(SUM(timeWorked), '%H:%i') END as sumTW FROM Users 
-LEFT JOIN Hours on Hours.whoWorked = Users.userID 
-WHERE Users.userType > 0 AND Hours.stampingStatus = 1 GROUP BY Hours.whoWorked ORDER BY whoWorkedName");
-            $stmt->execute();
-            if ($users = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
-                return $users;
-            } else {
-                $this->notifyUser("Brukere ble ikke funnet", "Kunne ikke hente brukere");
-                //return new Project();
-                return array();
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllUserStatistics()", $e->getMessage());
-            //return new Project();
-            return array();
-        }
-    }
+
 
 
     //GET PROJECT
