@@ -15,7 +15,7 @@ $userManager = new UserManager($db, $request, $session);
 $taskManager = new TaskManager($db, $request, $session);
 
 $project = $projectManager->getProject($request->query->getInt('projectid'));
-
+$isMember = false;
 
 if (!is_null($user) && !is_null($project)) {
     $projectName = $project->getProjectName();
