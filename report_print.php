@@ -43,9 +43,13 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
                 $actualBurn[] = $prevSumEstimateDone;
                 $n++;
             }
+            $actualBurn[] = floatval($data['sumEstimateDone']);
+            $n++;
         } else if ($n == $day) {
             $actualBurn[] = floatval($data['sumEstimateDone']);
             $n++;
+        } else if ($n > $day) {
+            $actualBurn[$n-2] = floatval($data['sumEstimateDone']);
         }
         //$actualBurn[] = floatval($data['sumEstimateDone']);
         $prevSumEstimateDone = floatval($data['sumEstimateDone']);
