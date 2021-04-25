@@ -2,30 +2,32 @@
 {% block content %}
     <section id="prosjekter" class="prosjekter">
 
-        {#KNAPP - NYTT PROSJEKT#}
-        {% if user.isAdmin() == 1 %}
-        <div class="container container_small">
+        {# KNAPP - NYTT PROSJEKT #}
+        {% if user.isAdmin() %}
+            <div class="container container_small">
                 <button class="button" id="button"
                         onclick="window.location.href='projects_addProject.php';">
-                    <img src="images/icon_addproject.png"  width="30em" alt=""> Nytt prosjekt
+                    <img src="images/icon_addproject.png" width="30em" alt=""> Nytt prosjekt
                 </button>
-        </div>
+            </div>
         {% endif %}
 
-        {#KNAPP - LEGG INN NY FUNSKJONER#}
-        {% if user.isAdmin() == 1 or user.isProjectLeader() == 1 %}
-        <div class="container container_small">
+        {# KNAPP - LEGG INN NY FUNSKJONER #}
+        {% if user.isAdmin() or user.isProjectLeader() %}
+            <div class="container container_small">
                 <button class="button" id="button" onclick="">
-                    <img src="images/icon_addproject.png"  width="30em" alt=""> Legge inn funksjoner
+                    <img src="images/icon_addproject.png" width="30em" alt=""> Legge inn funksjoner
                 </button>
-        </div>
+            </div>
         {% endif %}
 
     </section>
 
     <section>
+
+        {# Mine prosjekter #}
         <div class="openContainerNoBorder text" id="prosjektTabell">
-            <h3>Prosjekter </h3>
+            <h5>Mine Prosjekter </h5>
             <table class="table" id="table">
                 {% if projects %}
                     <tr>
@@ -38,9 +40,9 @@
                         <th>Godkjent av admin</th>
                         <th>Detaljer & rediger</th>
                     </tr>
-                    {% for project in projects %}
+                    {% for project in projectsOfUser %}
                         <tr>
-                            {#PROSJEKTNAVN#}
+                            {# PROSJEKTNAVN #}
                             <td>{{ project.getProjectName() }}</td>
 
                             <td>{{ project.leaderName }} </td>
@@ -48,7 +50,7 @@
                             <td>{{ project.getStartTime() }}</td>
                             <td>{{ project.getFinishTime() }}</td>
 
-                            {#PROSJEKT STATUS#}
+                            {# PROSJEKT STATUS #}
                             {% if project.getStatus() == 0 %}
                                 <td>Ventende</td>
                             {% endif %}
@@ -65,30 +67,102 @@
                                 <td>Avsluttet</td>
                             {% endif %}
 
-                            {#PROSJEKT KUNDE#}
+                            {# PROSJEKT KUNDE #}
                             <td>{{ project.customerName }}</td>
 
-                            {#PROSJEKT GODKJENT AV ADMIN#}
+                            {# PROSJEKT GODKJENT AV ADMIN #}
                             {% if project.isAcceptedByAdmin() %}
                                 <td>Godkjent</td>
                             {% else %}
                                 <td>Ikke godkjent</td>
                             {% endif %}
 
-                            {#HVIS ADMIN, REDIGER KNAPP#}
-                            {#{% if user.isAdmin %}#}
-                            {#Alle kan se alle prosjekter. Bortsett fra kunde. Kunde ser kun sin egen prosjekt
-                            inne på editProject må vi legge inn bruker rettigheter#}
-                            <td><button class="buttons miniButtons" id="miniButtons"
-                                        onclick="location.href='projects_editProject.php?projectid={{ project.getProjectID()}}';">
+                            {# Alle kan se alle prosjekter. Bortsett fra kunde. Kunde ser kun sin egen prosjekt
+                            inne på editProject må vi legge inn bruker rettigheter #}
+                            <td>
+                                <button class="buttons miniButtons" id="miniButtons"
+                                        onclick="location.href='projects_editProject.php?projectid={{ project.getProjectID() }}';">
                                     Se detaljer
-                                </button></td>
-                            {#{% endif %}#}
+                                </button>
+                            </td>
                         </tr>
                     {% endfor %}
                 {% endif %}
             </table>
         </div>
+
+
+        {# Alle prosjekter #}
+        <div class="openContainerNoBorder text" id="prosjektTabell">
+            <h5>Prosjekter </h5>
+            <table class="table" id="table">
+                {% if projects %}
+                    <tr>
+                        <th>Prosjekt navn</th>
+                        <th>Prosjektleder</th>
+                        <th>Starttid</th>
+                        <th>Slutttid</th>
+                        <th>Status</th>
+                        <th>Kunde</th>
+                        <th>Godkjent av admin</th>
+                        {% if user.isAdmin() or user.isProjectLeader() %}
+                            <th>Detaljer & rediger</th>
+                        {% endif %}
+                    </tr>
+                    {% for project in projects %}
+                        <tr>
+                            {# PROSJEKTNAVN #}
+                            <td>{{ project.getProjectName() }}</td>
+
+                            <td>{{ project.leaderName }} </td>
+
+                            <td>{{ project.getStartTime() }}</td>
+                            <td>{{ project.getFinishTime() }}</td>
+
+                            {# PROSJEKT STATUS #}
+                            {% if project.getStatus() == 0 %}
+                                <td>Ventende</td>
+                            {% endif %}
+                            {% if project.getStatus() == 1 %}
+                                <td>Pågår</td>
+                            {% endif %}
+                            {% if project.getStatus() == 2 %}
+                                <td>Pauset</td>
+                            {% endif %}
+                            {% if project.getStatus() == 3 %}
+                                <td>Avslått</td>
+                            {% endif %}
+                            {% if project.getStatus() == 4 %}
+                                <td>Avsluttet</td>
+                            {% endif %}
+
+                            {# PROSJEKT KUNDE #}
+                            <td>{{ project.customerName }}</td>
+
+                            {# PROSJEKT GODKJENT AV ADMIN #}
+                            {% if project.isAcceptedByAdmin() %}
+                                <td>Godkjent</td>
+                            {% else %}
+                                <td>Ikke godkjent</td>
+                            {% endif %}
+
+                            {# Alle kan se alle prosjekter. Bortsett fra kunde. Kunde ser kun sin egen prosjekt
+                            inne på editProject må vi legge inn bruker rettigheter #}
+                            {% if user.isAdmin() or user.isProjectLeader() %}
+                                <td>
+                                    <button class="buttons miniButtons" id="miniButtons"
+                                            onclick="location.href='projects_editProject.php?projectid={{ project.getProjectID() }}';">
+                                        Se detaljer
+                                    </button>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+
+
         <div class="container container_big_long text scroll">
             <h5>Tilbakemeldinger fra database</h5>
             {% if session.getFlashBag.has('header') %}

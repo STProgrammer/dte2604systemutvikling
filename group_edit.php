@@ -9,16 +9,24 @@ $projectManager = new ProjectManager($db, $request, $session);
 $taskManager = new TaskManager($db, $request, $session);
 
 $group = $groupManager->getGroup($request->query->getInt('groupid'));
+$groupID = $group->getGroupID();
+$members = $groupManager->getGroupMembers($groupID);
 
+/* Sjekk om bruker er medlem i fremviste gruppe */
+$member = null;
+foreach ($member as $members) {
+    if ($user->getUserId() == $member->getUserId()) {
+        $isMember = true;
+    }
+}
 
 if (!is_null($user) && !is_null($group) ) {
-    if ($user->isAdmin() or $user->isProjectLeader() or ($user->getUserID() == $group->getGroupLeader())) {
+    if ($user->isAdmin() or $user->isProjectLeader() or ($user->getUserID() == $group->getGroupLeader()) or $isMember) {
         $groupID = $group->getGroupID();
 
         $employees = $groupManager->getAllNonMembers($groupID);
-        $members = $groupManager->getGroupMembers($groupID);
-        $candidates = $groupManager->getLeaderCandidates($groupID);
 
+        $candidates = $groupManager->getLeaderCandidates($groupID);
 
         $projects = $projectManager->getAllProjects();
 
@@ -69,13 +77,15 @@ if (!is_null($user) && !is_null($group) ) {
                 exit();
             }
         } else {
-            try {
-                echo $twig->render('group_edit.twig', array('session' => $session,
-                    'request' => $request, 'user' => $user, 'employees' => $employees,
-                    'group' => $group, 'members' => $members, 'candidates' => $candidates,
-                    'projects' => $projects, 'tasks' => $tasks));
-            } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-                echo $e->getMessage();
+            if ($isMember or $user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader()) {
+                try {
+                    echo $twig->render('group_edit.twig', array('session' => $session,
+                        'request' => $request, 'user' => $user, 'employees' => $employees,
+                        'group' => $group, 'members' => $members, 'candidates' => $candidates,
+                        'projects' => $projects, 'tasks' => $tasks));
+                } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+                    echo $e->getMessage();
+                }
             }
         }
     } else {

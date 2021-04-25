@@ -382,7 +382,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
         $hourID = $this->request->request->get('hourID');
         $comment = $this->request->request->get('comment');
         try {
-            $stmt = $this->dbase->prepare(query: "UPDATE Hours SET comment = :comment WHERE hourID = :hourID;");
+            $stmt = $this->dbase->prepare("UPDATE Hours SET comment = :comment WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':comment', $comment);
             if ($stmt->execute()) {
@@ -405,7 +405,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
         $hourID = $this->request->request->get('hourID');
         $commentBoss = $this->request->request->get('commentBoss');
         try {
-            $stmt = $this->dbase->prepare(query: "UPDATE Hours SET commentBoss = :commentBoss WHERE hourID = :hourID;");
+            $stmt = $this->dbase->prepare( "UPDATE Hours SET commentBoss = :commentBoss WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':commentBoss', $commentBoss);
             if ($stmt->execute()) {
@@ -425,7 +425,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     public function checkIfActiveTimereg($userID): array
     {
         try {
-            $stmt = $this->dbase->prepare(query: "SELECT stampingStatus, hourID FROM Hours WHERE whoWorked = :userID ;");
+            $stmt = $this->dbase->prepare( "SELECT stampingStatus, hourID FROM Hours WHERE whoWorked = :userID ;");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if ($timeregCheck = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
@@ -448,7 +448,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     {
         $isChanged = 1;
         try {
-            $stmt = $this->dbase->prepare(query: "UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID;");
+            $stmt = $this->dbase->prepare( "UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
@@ -534,7 +534,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     public function deleteTimeForUser($hourID, ?Task $task) : bool
     {
         try {
-            $stmt = $this->dbase->prepare(query: "DELETE FROM Hours WHERE hourID = :hourID;
+            $stmt = $this->dbase->prepare( "DELETE FROM Hours WHERE hourID = :hourID;
                                         ");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             if ($stmt->execute()) {

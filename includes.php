@@ -36,12 +36,14 @@
 
     // Twig templates
     $loader = new FilesystemLoader($homedir . 'templates');
-    $twig = new Environment($loader, ['debug' => true]);
+    $twig = new Environment($loader, ['debug' => true, 'auto_reload' => true]);
     $twig->addExtension(new DebugExtension());
 
     $twig->addFunction(new \Twig\TwigFunction('getMac', function($action) {
         return XsrfProtection::getMac($action);
     }));
+
+//    $twig->addExtension(new \Twig\Extension\DebugExtension());
 
 
 

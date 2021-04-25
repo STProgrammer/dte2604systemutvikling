@@ -13,8 +13,44 @@
     </section>
 
     <section>
-        <h5>Alle brukere og administratorer</h5>
-        <div class="text">
+
+        <div class="openContainerNoBorder text">
+            <h5>Mine grupper</h5>
+            <table class="table" id="table">
+                <tr>
+                    <th>Gruppenavn</th>
+                    <th>Gruppeleder</th>
+                    <th>Prosjekt</th>
+                    <th>Antall medlemmer</th>
+                    <th>Gruppetype</th>
+                    <th>Se detaljer og rediger</th>
+                </tr>
+                {% for grp in groupsOfUser %}
+                    <tr>
+                        <td>{{ grp.getGroupName }}</td>
+                        <td>{{ grp.leaderName }}</td>
+                        <td>{{ grp.getProjectName }}</td>
+                        <td>{{ grp.nrOfMembers }}</td>
+
+                        {% if grp.isAdmin() %}
+                            <td>Admin gruppe</td>
+                        {% else %}
+                            <td>Vanlig gruppe</td>
+                        {% endif %}
+                        <td>
+                            <button class="buttons miniButtons" id="miniButtons"
+                                    onclick="location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
+                                Se Grupper
+                            </button>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="openContainerNoBorder text">
+            <h5>Alle grupper</h5>
             <table class="table" id="table">
                 <tr>
                     <th>Gruppenavn</th>
@@ -38,12 +74,14 @@
                         {% else %}
                             <td>Vanlig gruppe</td>
                         {% endif %}
+                        {% if user.isAdmin() or user.isProjectLeader() %}
                         <td>
                             <button class="buttons miniButtons" id="miniButtons"
                                     onclick="window.location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
                                 Se Grupper
                             </button>
                         </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>
