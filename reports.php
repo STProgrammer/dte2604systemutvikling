@@ -8,7 +8,7 @@ if ($user) {
     $reportGenerator = new ReportGenerator($db, $request, $session);
     $projects = $reportGenerator->getAllProjectsForReport();
     $userManager = new UserManager($db, $request, $session);
-    $users = $userManager->getAllUsers("lastName");
+    $users = $reportGenerator->getAllUserStatistics();
 
     if ($user->isAdmin() or $user->isProjectleader()) {
 

@@ -5,7 +5,7 @@
     <section class="edit_user" id="edit_user">
         <div class="openContainerNoBorder text" id="table_edit">
             <h3>Profilen til {{ userToEdit.getFirstName() }}  {{ userToEdit.getLastName() }}</h3>
-            <h5 class="marginleft overskrift">Endre din profil</h5>
+            <h5 class="marginleft overskrift">Endre profil</h5>
             <div class>
                 {% if session.getFlashBag.has('header') %}
                     {% for header in session.getFlashBag.get('header', []) %}
@@ -14,6 +14,32 @@
                     {% for message in session.getFlashBag.get('message', []) %}
                         <p>{{ message }}</p>
                     {% endfor %}
+                {% endif %}
+            </div>
+            <div class="container container_menu text" id="projekt_info">
+                <h3 id="bigColoredName">{{ userToEdit.getUsername() }}</h3>
+                <br>Brukernavn: <b>{{ userToEdit.getUsername() }} </b><br>
+                {% if user.getUserType() == 0 %}
+                    <br>Type bruker: <b>Kunde</b><br>
+                {% elseif userToEdit.getUserType() == 1 %}
+                    <br>Type bruker: <b>Innleid arbeider</b><br>
+                {% elseif userToEdit.getUserType() == 2 %}
+                    <br>Type bruker: <b>Utvikler</b><br>
+                {% elseif userToEdit.getUserType() == 3 %}
+                    <br>Type bruker: <b>Admin</b><br>
+                {% endif %}
+                <br>Registrert dato: <b>{{ userToEdit.getDateRegistered() }} </b><br>
+                <br>Telefon nummer: <b>{{ userToEdit.getPhoneNumber() }}</b><br>
+                <br>Addresse: <b>{{ userToEdit.getAddress() }} <br>
+                    {{ userToEdit.getZipCode() }}  {{ userToEdit.getCity() }}</b><br>
+                <br>Email: <b>{{ userToEdit.getEmailAddress() }} </b><br>
+                <br>IM: <b>{{ userToEdit.getIMAddress() }} </b><br>
+                <br>Status: <b>{{ userToEdit.getStatus() }} </b><br>
+
+                {% if userToEdit.isVerifiedByAdmin() %}
+                    <br>Godkjent av admin: <b>Ja, verifisert!</b><br>
+                {% else %}
+                    <br>Godkjent av admin: <b>Ikke verifisert!</b><br>
                 {% endif %}
             </div>
             <form method="post" id="edit_form">

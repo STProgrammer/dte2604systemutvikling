@@ -18,12 +18,16 @@
                     <tr>
                         <th>Prosjekt navn</th>
                         <th>Status</th>
-                        <th>Tid brukt</th>
                         <th>Estimert totalt</th>
-                        <th>Estimert tid igjen</th>
+                        <th>Tid brukt</th>
+                        <th>Points ferdig</th>
+                        <th>Avvik (ferdig - brukt tid)</th>
+                        <th>Fremdrift</th>
                         <th>Detaljer & utskrift</th>
                     </tr>
                     {% for project in projects %}
+                        {% set estimatedProgress = project.sumEstimateDone | trim %}
+                        {% set estimatedTimeSum = project.sumEstimate | trim %}
                         <tr>
                             {# PROSJEKTNAVN #}
                             <td>{{ project.getProjectName() }}</td>
@@ -44,9 +48,26 @@
                             {% if project.getStatus() == 4 %}
                                 <td>Avsluttet</td>
                             {% endif %}
-                            <td id="p2">{{ project.sumTimeSpent }}</td>
-                            <td id="p3">{{ project.sumEstimate }}</td>
-                            <td id="p3">{{ project.sumEstimate - project.sumEstimateDone }}</td>
+                            <td>{{ project.sumEstimate }}</td>
+                            <td>{{ project.sumTimeSpent }}</td>
+                            <td>{{ project.sumEstimateDone }}</td>
+                            <td>{{ project.sumEstimateDone - project.sumTimeSpent }}</td>
+                            <td>
+                            {% if estimatedTimeSum != 0 %}
+                                <!--td>
+                                    <progress class="unique"
+                                              value={#  #}{ (timeSpentSum/estimatedTimeSum)*100 }} max="100"
+                                              data-label={#  #}{ ((timeSpentSum/estimatedTimeSum)*100)|round }}%>
+                                    </progress>
+                                </td-->
+                                    <div id="progressbar">
+                                        <div style="width:{{ (timeSpentSum/estimatedTimeSum)*100 }}%;">
+                                            <p class="progress-label"><strong>{{ ((estimatedProgress/estimatedTimeSum)*100)|round }}%
+                                                </strong></p>
+                                        </div>
+                                    </div>
+                            {% endif %}
+                            </td>
                             <td>
                                 <button class="buttons miniButtons" id="miniButtons"
                                         onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
@@ -62,47 +83,39 @@
     </section>
 
     <section>
-        <link rel="stylesheet" href="stylesheet.css">
-        {# Fremskrittsdiagram #}
-        {% if projects %}
+        {% if user.isAdmin() or user.isProjectLeader() %}
             <div class="openContainerNoBorder text" id="prosjektTabell">
-                <table class="table" id="progressTable">
+                <h3>Bruker rapporter </h3>
+                <table class="table" id="table">
                     <tr>
-                        <th>Prosjekt navn</th>
-                        <th>Fremdrift</th>
-                        <th>Tid brukt</th>
-                        <th>Estimert totalt</th>
+                        <th>Navn</th>
+                        <th>Status</th>
+                        <th>Registrert dato</th>
+                        <th>Sum timer hittil</th>
+                        <th>Sum timer i denne måned</th>
+                        <th>Detaljer & utskrift</th>
                     </tr>
-                    {% for project in projects %}
-                        {% set timeSpentSum = project.sumTimeSpent | trim %}
-                        {% set estimatedTimeSum = project.sumEstimate | trim %}
+                    {% for user in users %}
                         <tr>
-                            <td>{{ project.getProjectName() }}</td>
-                            {% if estimatedTimeSum != 0 %}
-                                <!--td>
-                                    <progress class="unique"
-                                              value={#  #}{ (timeSpentSum/estimatedTimeSum)*100 }} max="100"
-                                              data-label={#  #}{ ((timeSpentSum/estimatedTimeSum)*100)|round }}%>
-                                    </progress>
-                                </td-->
+                            {# PROSJEKTNAVN #}
+                            <td>{{ user.whoWorkedName }}</td>
+
+                            <td>{{ user.getStatus() }}</td>
+
+                            <td>{{ user.getDateRegistered() }}</td>
+                            <td>{{ user.sumTW }}</td>
+                            <td>{{ user.sumThisMonth }}</td>
                             <td>
-                                <div id="progressbar">
-                                    <div style="width:{{ (timeSpentSum/estimatedTimeSum)*100 }}%;">
-                                        <p class="progress-label"><strong>{{ ((timeSpentSum/estimatedTimeSum)*100)|round }}%
-                                            </strong></p>
-                                    </div>
-                                </div>
+                                <button class="buttons miniButtons" id="miniButtons"
+                                        onclick="location.href='user_edit.php?userid={{user.getUserID()}}';">
+                                    Skriv ut
+                                </button>
                             </td>
-                            {% endif %}
-                            <td>{{ project.sumTimeSpent }}</td>
-                            <td>{{ project.sumEstimate }}</td>
                         </tr>
                     {% endfor %}
+                    {% endif %}
                 </table>
             </div>
-        {% endif %}
-        <div id="chart_div"></div>
-        <br>
     </section>
     </body>
 {% endblock %}

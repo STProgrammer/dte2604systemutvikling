@@ -95,7 +95,7 @@
         <h4>Slutt tid : {{ project.finishTime }}</h4>
         <h4>Estimert tid : {{ project.sumEstimate }} timer</h4>
         <h4>Tid brukt : {{ project.sumTimeSpent }} timer</h4>
-        <h4>Estimert igjen : {{ project.sumEstimate - project.sumEstimateDone }} timer ({{ project.sumEstimateDone/project.sumEstimate }} % ferdig)</h4>
+        <h4>Estimert igjen : {{ project.sumEstimate - project.sumEstimateDone }} timer {%  if project.sumEstimate != 0 %}({{ project.sumEstimateDone/project.sumEstimate * 100 }} % ferdig) {% endif %}</h4>
 
         <button id="backbtn" class="button miniButtons" onclick="window.history.back()">Gå tilbake</button>
         <button id="printbtn" onclick="window.print()">Print this page</button>
@@ -126,9 +126,11 @@
         <table>
         <tr>
             <th>Oppgavenavn </th>
-            <th>Estimert tid på oppgave</th>
-            <th>Tid brukt på oppgave</th>
+            <th>Estimert tid</th>
+            <th>Tid brukt</th>
+            <th>Avvik</th>
             <th>Status</th>
+            <th>Hoved ansvarlig</th>
         </tr>
         {% set i = 0 %}
         {% for task in tasks %}
@@ -142,6 +144,9 @@
                 <td>
                     {{ task.getTimeSpent() }}
                 </td>
+                <td>
+                    {{ task.getEstimatedTime() - task.getTimeSpent() }}
+                </td>
                 {% if task.getStatus() == 0 %}
                     <td>Ventende</td>
                 {% elseif task.getStatus() == 1 %}
@@ -151,6 +156,9 @@
                 {% elseif task.getStatus() == 3 %}
                     <td>Ferdig</td>
                 {% endif %}
+                <td>
+                    {{ task.mainResponsibleName }}
+                </td>
             </tr>
             {% set i = i + 1 %}
         {% if i > 40 %}
@@ -167,9 +175,11 @@
             <table>
                 <tr>
                     <th>Oppgavenavn </th>
-                    <th>Estimert tid på oppgave</th>
-                    <th>Tid brukt på oppgave</th>
+                    <th>Estimert tid</th>
+                    <th>Tid brukt</th>
+                    <th>Avvik</th>
                     <th>Status</th>
+                    <th>Hoved ansvarlig</th>
                 </tr>
 
     {% endif %}

@@ -121,6 +121,54 @@ WHERE Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL GROUP BY Projects.project
         }
     }
 
+    // GET ALL USER STATISTICS
+    public function getAllUserStatistics(): array
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT DISTINCT Hours.whoWorked, Hours.timeWorked, Users.*, CONCAT(Users.firstName, ' ', Users.lastName, ' (', Users.username, ')') as whoWorkedName, CASE WHEN SUM(timeWorked) is null then '00:00' ELSE TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i') END as sumTW, 
+CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00' 
+ELSE 
+TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i') END as sumThisMonth FROM Users 
+LEFT JOIN Hours on Hours.whoWorked = Users.userID 
+WHERE Users.userType > 0 AND Users.isVerifiedByAdmin = 1 GROUP BY Users.userID ORDER BY whoWorkedName");
+            $stmt->execute();
+            if ($users = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $users;
+            } else {
+                $this->notifyUser("Brukere ble ikke funnet", "Kunne ikke hente brukere");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllUserStatistics()", $e->getMessage());
+            //return new Project();
+            return array();
+        }
+    }
+
+
+    // GET SINGLE USER STATISTICS
+    public function getUserStatistics($userID): array
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT DISTINCT Hours.*, CONCAT(Users.firstName, ' ', Users.lastName, ' (', Users.username, ')') as whoWorkedName, CASE WHEN SUM(timeWorked) is null then '00:00' ELSE TIME_FORMAT(SUM(timeWorked), '%H:%i') END as sumTW FROM Users 
+LEFT JOIN Hours on Hours.whoWorked = Users.userID 
+WHERE Users.userType > 0 AND Hours.stampingStatus = 1 GROUP BY Hours.whoWorked ORDER BY whoWorkedName");
+            $stmt->execute();
+            if ($users = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
+                return $users;
+            } else {
+                $this->notifyUser("Brukere ble ikke funnet", "Kunne ikke hente brukere");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getAllUserStatistics()", $e->getMessage());
+            //return new Project();
+            return array();
+        }
+    }
+
 
     //GET PROJECT
     public function getGroupForReport(int $groupID)
