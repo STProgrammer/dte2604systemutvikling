@@ -428,7 +428,7 @@ class UserManager
 
 
     // GET USER
-    public function getUser ($userID) : User {
+    public function getUser ($userID) {
         try
         {
             $stmt = $this->dbase->prepare("SELECT * FROM Users WHERE userID=:userID");
@@ -439,11 +439,11 @@ class UserManager
             }
             else {
                 $this->notifyUser("User not found", "");
-                return new User();
+                return null;
             }
         }
         catch(Exception $e) { $this->notifyUser("Something went wrong!", $e->getMessage());
-            return new User();
+            return null;
         }
     }
     // END GET USER
@@ -519,6 +519,33 @@ class UserManager
         return array();
     }
     // END GET ALL EMPLOYEES
+
+
+    // GET SINGLE USER STATISTICS
+    public function getUserStatistics($userID): array
+    {
+        try {
+            $stmt = $this->dbase->prepare("SELECT * FROM TaskCategories
+LEFT JOIN (SELECT DISTINCT CASE WHEN Hours.whoWorked = :userID THEN Hours.whoWorked ELSE NULL END as whoWorked, Hours.taskType, Hours.timeWorked, CASE WHEN SUM(timeWorked) is null then '00:00' ELSE TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i') END as sumTW, 
+CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00' 
+ELSE 
+TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i') END as sumThisMonth FROM Hours
+WHERE Hours.whoWorked = :userID OR whoWorked is NULL GROUP BY Hours.taskType) as Hours on Hours.taskType = TaskCategories.categoryName WHERE 1;");
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($hours = $stmt->fetchAll()) {
+                return $hours;
+            } else {
+                $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente timer");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getUserStatistics()", $e->getMessage());
+            //return new Project();
+            return array();
+        }
+    }
 
 
     // GET ALL UNVERIFIED USERS

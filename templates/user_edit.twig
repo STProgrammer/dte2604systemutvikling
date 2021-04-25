@@ -5,7 +5,7 @@
     <section class="edit_user" id="edit_user">
         <div class="container container_big_long text" id="table_edit">
             <h3>Profilen til {{ userToEdit.getFirstName() }}  {{ userToEdit.getLastName() }}</h3>
-            <h5 class="marginleft overskrift">Endre din profil</h5>
+            <h5 class="marginleft overskrift">Endre profil</h5>
             <div class>
                 {% if session.getFlashBag.has('header') %}
                     {% for header in session.getFlashBag.get('header', []) %}
@@ -16,6 +16,54 @@
                     {% endfor %}
                 {% endif %}
             </div>
+            <div class="container container_menu text" id="user_info">
+                <h3 id="bigColoredName">{{ userToEdit.getUsername() }}</h3>
+                <br>Brukernavn: <b>{{ userToEdit.getUsername() }} </b><br>
+                {% if user.getUserType() == 0 %}
+                    <br>Type bruker: <b>Kunde</b><br>
+                {% elseif userToEdit.getUserType() == 1 %}
+                    <br>Type bruker: <b>Innleid arbeider</b><br>
+                {% elseif userToEdit.getUserType() == 2 %}
+                    <br>Type bruker: <b>Utvikler</b><br>
+                {% elseif userToEdit.getUserType() == 3 %}
+                    <br>Type bruker: <b>Admin</b><br>
+                {% endif %}
+                <br>Registrert dato: <b>{{ userToEdit.getDateRegistered() }} </b><br>
+                <br>Telefon nummer: <b>{{ userToEdit.getPhoneNumber() }}</b><br>
+                <br>Addresse: <b>{{ userToEdit.getAddress() }} <br>
+                    {{ userToEdit.getZipCode() }}  {{ userToEdit.getCity() }}</b><br>
+                <br>Email: <b>{{ userToEdit.getEmailAddress() }} </b><br>
+                <br>IM: <b>{{ userToEdit.getIMAddress() }} </b><br>
+                <br>Status: <b>{{ userToEdit.getStatus() }} </b><br>
+
+                {% if userToEdit.isVerifiedByAdmin() %}
+                    <br>Godkjent av admin: <b>Ja, verifisert!</b><br>
+                {% else %}
+                    <br>Godkjent av admin: <b>Ikke verifisert!</b><br>
+                {% endif %}
+            </div>
+
+            {% if userToEdit.getUserType() > 0 %}
+            <div class="container container_menu_lang text" id="user_hours">
+                <label class="overskriftLiten"><b>Tidsbruk av brukeren:</b></label></br>
+                <table class="table">
+                    <tr>
+                        <th>Type</th>
+                        <th>Sum tidsbruk denne måned</th>
+                        <th>Sum tidsbruk totalt</th>
+                    </tr>
+
+                    {% for hour in hours %}
+                        <tr>
+                            <td>{{ hour['categoryName'] }}</td>
+                            <td>{{ hour['sumThisMonth'] }}</td>
+                            <td>{{ hour['sumTW'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+
             <form method="post" id="edit_form">
                 <br id="text">
                 <br><label for="address">Adresse:</label>

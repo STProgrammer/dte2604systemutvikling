@@ -28,6 +28,47 @@
     <section id="profile_edit" class="profile_edit">
         <div class=" container_big_long noBorder_NoBackground_NoShadow  text" id="table_edit">
             <h3>Min profil</h3>
+            <div class="container container_menu text" id="user_info">
+                <h3 id="bigColoredName">{{ user.getUsername() }}</h3>
+                <br>Brukernavn: <b>{{ user.getUsername() }} </b><br>
+                {% if user.getUserType() == 0 %}
+                    <br>Type bruker: <b>Kunde</b><br>
+                {% elseif user.getUserType() == 1 %}
+                    <br>Type bruker: <b>Innleid arbeider</b><br>
+                {% elseif user.getUserType() == 2 %}
+                    <br>Type bruker: <b>Utvikler</b><br>
+                {% elseif user.getUserType() == 3 %}
+                    <br>Type bruker: <b>Admin</b><br>
+                {% endif %}
+                <br>Registrert dato: <b>{{ user.getDateRegistered() }} </b><br>
+                <br>Telefon nummer: <b>{{ user.getPhoneNumber() }}</b><br>
+                <br>Addresse: <b>{{ user.getAddress() }} <br>
+                    {{ user.getZipCode() }}  {{ user.getCity() }}</b><br>
+                <br>Email: <b>{{ user.getEmailAddress() }} </b><br>
+                <br>IM: <b>{{ user.getIMAddress() }} </b><br>
+                <br>Status: <b>{{ user.getStatus() }} </b><br>
+            </div>
+
+            {% if user.getUserType() > 0 %}
+                <div class="container container_menu_lang text" id="user_hours">
+                    <label class="overskriftLiten"><b>Tidsbruk av brukeren:</b></label></br>
+                    <table class="table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Sum tidsbruk denne måned</th>
+                            <th>Sum tidsbruk totalt</th>
+                        </tr>
+
+                        {% for hour in hours %}
+                            <tr>
+                                <td>{{ hour['categoryName'] }}</td>
+                                <td>{{ hour['sumThisMonth'] }}</td>
+                                <td>{{ hour['sumTW'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
 
             <form method="post" id="profile_edit_form">
                 <div id="text">
