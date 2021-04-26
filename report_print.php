@@ -24,13 +24,32 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $phases = $projectManager->getAllPhases($projectName);
 
     $progressData = $reportGenerator->getProgressData($projectName);
-    $progressDataJson = json_encode($progressData);
+
+
+    $startDate = strtotime($project->getStartTime());
+    $finishDate = strtotime($project->getFinishTime());
+    $sumDays = $finishDate - $startDate;
+    $sumDays = round($sumDays / (60 * 60 * 24));
+    $sumEstimate = 50; //$project->sumEstimate;
+    $idealHoursPerDay = $sumEstimate / $sumDays;
+
+    if ($sumEstimate <= 0) {
+        $idealTrendArray = array_fill(0, $sumDays, 0);
+    }
+    else {
+        $idealTrendArray =  range(0, $sumEstimate, $idealHoursPerDay);
+    }
+
+    $idealXArray = array();
+    $n = 1;
+    for($i = 1; $i <= $sumDays; $i++){
+        $idealXArray[] = 'Dag '.$i;
+    }
 
     $actualBurn = array();
     $day = 0;
     $n = 1;
-    $startDate = strtotime($project->getStartTime());
-    $finishDate = strtotime($project->getFinishTime());
+
     $curDate = time();
     $curDay = intval(($curDate - $startDate)/(60*60*24));
 
@@ -57,7 +76,7 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
         $prevSumEstimateDone = floatval($data['sumEstimateDone']);
     }
 
-    if ($n < $curDay) {
+    if ($n < $curDay and $curDay <= $sumDays) {
         for($i = $n; $i <= $curDay; $i++) {
             $actualBurn[] = $prevSumEstimateDone;
         }
@@ -65,23 +84,7 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
 
 
 
-    $sumDays = strtotime($project->getFinishTime()) - strtotime($project->getStartTime());
-    $sumDays = round($sumDays / (60 * 60 * 24));
-    $sumEstimate = $project->sumEstimate;
-    $idealHoursPerDay = $sumEstimate / $sumDays;
 
-    if ($sumEstimate <= 0) {
-        $idealTrendArray = array_fill(0, $sumDays, 0);
-    }
-    else {
-        $idealTrendArray =  range(0, $sumEstimate, $idealHoursPerDay);
-    }
-
-    $idealXArray = array();
-    $n = 1;
-    for($i = 1; $i <= $sumDays; $i++){
-        $idealXArray[] = 'Dag '.$i;
-    }
 
 
     $hours = $hourManager->getAllHours();
