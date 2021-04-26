@@ -67,7 +67,7 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
 
     $sumDays = strtotime($project->getFinishTime()) - strtotime($project->getStartTime());
     $sumDays = round($sumDays / (60 * 60 * 24));
-    $sumEstimate = 50;
+    $sumEstimate = $project->sumEstimate;
     $idealHoursPerDay = $sumEstimate / $sumDays;
 
     if ($sumEstimate <= 0) {
