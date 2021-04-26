@@ -38,7 +38,7 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
 
     foreach ($progressData as $data) {
         $date = strtotime($data['registerDate']);
-        $day = intval(($date - $startDate)/(60*60*24));
+        $day = intval(($date - $startDate)/(60*60*24)) + 1;
         if ($n < $day) {
             $z = $n;
             for($i = $z; $i < $day; $i++) {
@@ -58,7 +58,7 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     }
 
     if ($n < $curDay) {
-        for($i = $n; $i < $curDay; $i++) {
+        for($i = $n; $i <= $curDay; $i++) {
             $actualBurn[] = $prevSumEstimateDone;
         }
     }
@@ -67,7 +67,7 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
 
     $sumDays = strtotime($project->getFinishTime()) - strtotime($project->getStartTime());
     $sumDays = round($sumDays / (60 * 60 * 24));
-    $sumEstimate = $project->sumEstimate;
+    $sumEstimate = 50;
     $idealHoursPerDay = $sumEstimate / $sumDays;
 
     if ($sumEstimate <= 0) {
