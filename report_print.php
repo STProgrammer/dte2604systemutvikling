@@ -31,6 +31,8 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $n = 1;
     $startDate = strtotime($project->getStartTime());
     $finishDate = strtotime($project->getFinishTime());
+    $curDate = time();
+    $curDay = intval(($curDate - $startDate)/(60*60*24));
 
     $prevSumEstimateDone = 0;
 
@@ -55,18 +57,30 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
         $prevSumEstimateDone = floatval($data['sumEstimateDone']);
     }
 
+    if ($n < $curDay) {
+        for($i = $n; $i < $curDay; $i++) {
+            $actualBurn[] = $prevSumEstimateDone;
+        }
+    }
+
+
+
     $sumDays = strtotime($project->getFinishTime()) - strtotime($project->getStartTime());
     $sumDays = round($sumDays / (60 * 60 * 24));
     $sumEstimate = $project->sumEstimate;
     $idealHoursPerDay = $sumEstimate / $sumDays;
 
-    $idealTrendArray =  range(0, $sumEstimate, $idealHoursPerDay);
+    if ($sumEstimate <= 0) {
+        $idealTrendArray = array_fill(0, $sumDays, 0);
+    }
+    else {
+        $idealTrendArray =  range(0, $sumEstimate, $idealHoursPerDay);
+    }
 
     $idealXArray = array();
     $n = 1;
-    foreach ($idealTrendArray as $value){
-        $idealXArray[] = 'Dag '.$n;
-        $n++;
+    for($i = 1; $i <= $sumDays; $i++){
+        $idealXArray[] = 'Dag '.$i;
     }
 
 
