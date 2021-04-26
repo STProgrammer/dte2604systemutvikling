@@ -77,7 +77,7 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
         header("Location: " . $requestUri . "&failedtoverifyproject=1");
         exit();
     }
-} else if ($user->isAdmin() && $request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
+} else if (($user->isAdmin() or $user->isProjectLeader()) && $request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
     if ($taskManager->addMainTask($projectName)) {
         header("Location: " . $requestUri . "&taskadded=1");
         exit();

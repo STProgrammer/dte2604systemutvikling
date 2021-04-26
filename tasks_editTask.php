@@ -10,7 +10,7 @@ $groupManager = new GroupManager($db, $request, $session);
 $task = $taskManager->getTask($request->query->getInt('taskid'));
 
 
-if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader()) or $user->isUser()) {
+if (!is_null($user) and !is_null($task) and ($user->getUserType() > 0)) {
     $taskId = $task->getTaskID();
     $projectName = $task->getProjectName();
 
@@ -27,7 +27,8 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
         $isMainResponsible = true;
     }
 
-    $projectId = $projectManager->getProjectByName($projectName);
+    $project = $projectManager->getProjectByName($projectName);
+    $projectId = $project->getProjectID();
     $groups = $projectManager->getGroups($projectName);
     $phases = $projectManager->getAllPhases($projectName);
     $groupMembers = $groupManager->getGroupMembers($task->getGroupID());
@@ -130,7 +131,7 @@ if (!is_null($user) && !is_null($task) && ($user->isAdmin() or $user->isProjectL
         }
     }
 } else {
-    header("location: index.php");
+    header("location: projects.php");
     exit();
 }
 

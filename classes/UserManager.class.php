@@ -525,7 +525,7 @@ class UserManager
     public function getUserStatistics($userID): array
     {
         try {
-            $stmt = $this->dbase->prepare("SELECT * FROM TaskCategories
+            $stmt = $this->dbase->prepare("SELECT *, CASE WHEN sumTW IS NULL THEN '00:00' ELSE sumTW END AS sumTW, CASE WHEN sumThisMonth IS NULL THEN '00:00' ELSE sumThisMonth END AS sumThisMonth FROM TaskCategories
 LEFT JOIN (SELECT DISTINCT CASE WHEN Hours.whoWorked = :userID THEN Hours.whoWorked ELSE NULL END as whoWorked, Hours.taskType, Hours.timeWorked, CASE WHEN SUM(timeWorked) is null then '00:00' ELSE TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i') END as sumTW, 
 CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00' 
 ELSE 

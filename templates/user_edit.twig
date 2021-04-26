@@ -3,7 +3,7 @@
 
 
     <section class="edit_user" id="edit_user">
-        <div class="container container_big_long text" id="table_edit">
+        <div class="container_big_long noBorder_NoBackground_NoShadow  text" id="table_edit">
             <h3>Profilen til {{ userToEdit.getFirstName() }}  {{ userToEdit.getLastName() }}</h3>
             <h5 class="marginleft overskrift">Endre profil</h5>
             <div class>
@@ -91,8 +91,9 @@
                            value="{{ userToEdit.getIMAddress() }}" required/>
 
 
-                <table>
+
                     {% if user.isAdmin %}
+                <table>
                     <tr>
                         <td>
                             {% if userToEdit.isAdmin %}
@@ -110,24 +111,34 @@
                             {% endif %}
                         </td>
                     </tr>
+                </table>
                     {% endif %}
                     <tr></tr>
                     <tr>
                         {% if not userToEdit.isCustomer() %}
-                            <td><label>Endre stilling: </label></td>
-                            <td><label for="worker">Fast arbeider</label></td>
-                            <td><input type="radio" id="worker" name="userType" value="2"></td>
-                            <td><label for="temporary">Innleid arbeider</label></td>
-                            <td><input type="radio" id="temporary" name="userType" value="1"></td>
-                            {% if user.isAdmin() %}
-                                <td>
-                                    <input type="radio" id="admin" name="userType" value="3">
-                                    <label for="admin">Admin</label>
-                                </td>
-                            {% endif %}
-                        {% endif %}
+                        <table>
+                            <tr>
+                                <th colspan="2">
+                                    Endre stilling:
+                                </th>
+                            </tr>
+                    <tr>
+                        <td><input type="radio" id="worker" name="userType" value="2"></td>
+                        <td><label for="worker">Fast arbeider</label></td>
                     </tr>
-                </table>
+                    <tr>
+                        <td><input type="radio" id="temporary" name="userType" value="1"></td>
+                        <td><label for="temporary">Innleid arbeider</label></td>
+                    </tr>
+                            {% if user.isAdmin() %}
+                                <tr>
+                                    <td><input type="radio" id="admin" name="userType" value="3"></td>
+                                    <td><label for="admin">Admin</label></td>
+                                </tr>
+
+                            {% endif %}
+                        </table>
+                        {% endif %}
 
                 {% if not userToEdit.isCustomer() %}
                 <p>Status: <b>{{ userToEdit.getStatus() }}</b><br>
