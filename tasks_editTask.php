@@ -14,6 +14,13 @@ if (!is_null($user) and !is_null($task) and ($user->getUserType() > 0)) {
     $taskId = $task->getTaskID();
     $projectName = $task->getProjectName();
 
+    $isMember = $projectManager->checkIfMemberOfProject($projectName, $user->getUserID());
+
+    if (!(($isMember and $user->getUserType() > 0) or $user->isAdmin() or $user->isProjectLeader())) {
+        header("location: projects.php");
+        exit();
+    }
+
     $isAnyLeader = false;
     if ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader()) {
         $isAnyLeader = true;

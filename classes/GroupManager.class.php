@@ -207,6 +207,27 @@ WHERE NOT EXISTS
         return true;
     }
 
+    //CHECK IF MEMBER OF GROUP
+    public function checkIfMemberOfGroup($groupId, $userId) : bool {
+        try {
+            $stmt = $this->db->prepare('SELECT Groups.*
+                            FROM Groups
+                            LEFT JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+WHERE (UsersAndGroups.userID = :userID OR groupLeader = :userID) AND Groups.GroupID = :groupID GROUP BY GroupID;');
+            $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT);
+            $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() >= 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }  catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på checkIfMemberOfGroup(groupId, userId)", $e->getMessage());
+            return false;
+        }
+    }
+
     public function addToProject(Group $group) : bool
     {
         $projectName = $this->request->get('projectName');

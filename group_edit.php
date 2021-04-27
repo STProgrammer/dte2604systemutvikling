@@ -17,12 +17,16 @@ if (!is_null($user) && !is_null($group) ) {
     $isMember = false;
 
     /* Sjekk om bruker er medlem i fremviste gruppe */
-    $member = null;
+
+    $isMember = $groupManager->checkIfMemberOfGroup($group->getGroupID(), $user->getUserID());
+
+    /*$member = null;
     foreach ($members as $member) {
         if ($user->getUserId() == $member->getUserId()) {
             $isMember = true;
         }
-    }
+    }*/
+
     if ($isMember or $user->isAdmin() or $user->isProjectLeader() or ($user->getUserID() == $group->getGroupLeader())) {
         $groupID = $group->getGroupID();
 
