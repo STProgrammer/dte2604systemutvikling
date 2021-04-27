@@ -708,29 +708,11 @@ a:hover { color: lightyellow;
     /*top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);*/
-    color: #000000;
-    font-size: 20px;
-    font-family: Orbitron;
+    color: #a09e9e;
+    font-size: 40px;
+    font-family: "Segoe UI Semibold";
     letter-spacing: 5px;
 }
-
-/*progress {
-    text-align:center;
-    width: 20rem;
-    height: 4rem;
-    border: 0.3rem solid rgba(128, 51, 0, 0.66);
-    vertical-align: middle;
-}
-
-progress:before {
-
-    content: 'Value is ' attr(value);
-    position:center;
-}
-
-.unique:before {
-    content: attr(data-label);
-}*/
 
 #progressbar {
     border: 0.3rem solid rgba(33, 120, 55, 0.89);

@@ -41,45 +41,11 @@
                 <form method="post" id="stop_time_form">
                     <input type="submit" name="stop_time" id="reg_btn"
                            value="{{ status.hourID }} Stopp timeregistrering" onclick="clearInterval(timerVar)">
-                    <div id="Timer" class="clock" onload="countTimer()"></div>
                 </form>
             </div>
         {% endif %}
 
        <script>
-            let timerVar = setInterval(countTimer, 1000);
-
-            let totalSeconds = 0;
-
-            let button_clicked = document.getElementById('reg_btn');
-
-            button_name = button_clicked.name; //stop_time or register_time
-
-            if(button_name === "stop_time") {
-                totalSeconds = window.name;
-            } else {
-                totalSeconds = 0;
-            }
-
-           console.log(totalSeconds)
-
-            function countTimer() {
-                ++totalSeconds;
-                let hour = Math.floor(totalSeconds / 3600);
-                let minute = Math.floor((totalSeconds - hour * 3600) / 60);
-                let seconds = totalSeconds - (hour * 3600 + minute * 60);
-                if (hour < 10)
-                    hour = "0" + hour;
-                if (minute < 10)
-                    minute = "0" + minute;
-                if (seconds < 10)
-                    seconds = "0" + seconds;
-                document.getElementById("Timer").innerHTML = hour + ":" + minute + ":" + seconds;
-                window.name = totalSeconds;
-            }
-
-
-
             function showTime() {
                 let date = new Date();
                 let s = date.getSeconds(); // 0 - 59
@@ -96,7 +62,6 @@
 
                 setTimeout(showTime, 1000);
             }
-
             showTime();
         </script>
 
