@@ -1,15 +1,7 @@
 {% extends "layout.twig" %}
 {% block content %}
-    <section class="rapporter" id="rapporter">
-        <div class="container container_small cursor" onclick="window.location.href='group_register.php';">
-            <button id="button" class="button" title="Ny bruker"
-                    onclick="window.location.href='group_register.php';">
-                <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny gruppe
-            </button>
-        </div>
-    </section>
     <body>
-    <section>
+    <section class="rapporter" id="rapporter">
         {% if projects %}
             <div class="openContainerNoBorder text" id="prosjektTabell">
                 {% if user.isAdmin() or user.isProjectLeader() %}

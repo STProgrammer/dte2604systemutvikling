@@ -471,6 +471,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
         $phaseName = $this->request->request->get('phaseName');
         $startTime = $this->request->request->get('startTime');
         $finishTime = $this->request->request->get('finishTime');
+        $status = $this->request->request->getInt('status', 0);
 
         if (strtotime($startTime) < strtotime($project->getStartTime())) {
             $startTime = $project->getStartTime();
@@ -480,11 +481,12 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
         }
         try{
             $sth = $this->db->prepare("insert into Phases (phaseName, projectName, startTime, finishTime, status) 
-                values (:phaseName, :projectName, :startTime, :finishTime, 0);");
+                values (:phaseName, :projectName, :startTime, :finishTime, :status);");
             $sth->bindParam(':phaseName', $phaseName, PDO::PARAM_STR);
             $sth->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             $sth->bindParam(':startTime',  $startTime, PDO::PARAM_STR);
             $sth->bindParam(':finishTime', $finishTime, PDO::PARAM_STR);
+            $sth->bindParam(':status', $status, PDO::PARAM_INT);
             $sth->execute();
             if ($sth->rowCount() == 1) {
                 $this->notifyUser("Ny fase ble lagt til");
@@ -581,7 +583,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
         $phases = array();
         try{
             $sth = $this->db->prepare("select * from Phases where projectName = :projectName;");
-            $sth->bindParam(":projectName", $projectName, PDO::PARAM_INT);
+            $sth->bindParam(":projectName", $projectName, PDO::PARAM_STR);
             $sth->execute();
             if ($phases = $sth->fetchAll(PDO::FETCH_CLASS, "Phase")) {
                 return $phases;

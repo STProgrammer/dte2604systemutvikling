@@ -303,6 +303,7 @@
 
             {# LEGG TIL GRUPPE #}
             {# {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %} #}
+            {% if user.isAdmin() or user.isProjectLeader() %}
             <div class="container container_menu_form_project text" id="add_user_to_project">
                 <div class="marginbotton">
                     <b id="overskriftLiten">Legg til ny gruppe i dette prosjektet</b><br>
@@ -376,6 +377,8 @@
             </div>
         {% endif %}
     </section>
+
+    {% endif %}
 
 
     {# SLETT PROSJEKT #}

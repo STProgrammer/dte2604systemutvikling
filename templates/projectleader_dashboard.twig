@@ -67,7 +67,7 @@
                             <td> {{ hour.location }}</td>
                             <td> {{ hour.startTime }}</td>
                             <td> {{ hour.endTime }}</td>
-                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            <td> {{ hour.getTimeWorked() }} </td>
                             {% if hour.activated == true %}
                                 <td>Godkjent</td>
                             {% else %}

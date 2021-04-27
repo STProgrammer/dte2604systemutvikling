@@ -3,20 +3,11 @@
     <section id="prosjekter" class="prosjekter">
 
         {# KNAPP - NYTT PROSJEKT #}
-        {% if user.isAdmin() %}
+        {% if user.isAdmin() or user.isProjectLeader() %}
             <div class="container container_small">
                 <button class="button" id="button"
                         onclick="window.location.href='projects_addProject.php';">
                     <img src="images/icon_addproject.png" width="30em" alt=""> Nytt prosjekt
-                </button>
-            </div>
-        {% endif %}
-
-        {# KNAPP - LEGG INN NY FUNSKJONER #}
-        {% if user.isAdmin() or user.isProjectLeader() %}
-            <div class="container container_small">
-                <button class="button" id="button" onclick="">
-                    <img src="images/icon_addproject.png" width="30em" alt=""> Legge inn funksjoner
                 </button>
             </div>
         {% endif %}

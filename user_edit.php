@@ -15,7 +15,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader()) && !is_null($userToEd
 
     if ($request->request->has('user_edit') && XsrfProtection::verifyMac("Edit user's information")) {
         //Only admins can make other users admin, cheating not allowed
-        $userType = $request->request->getInt('userType');
+        $userType = $request->request->getInt('userType', $userToEdit->getUserType());
         if (!$user->isAdmin() && $userType == 3) {
             $request->request->set('userType', 2);
         }

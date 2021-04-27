@@ -93,7 +93,7 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
         header("Location: " . $requestUri . "&ailedtoremovemembers=1");
         exit();
     }
-} else if ($user->isAdmin() && $request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
+} else if (($user->isAdmin() or $user->isProjectLeader()) && $request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
     if ($projectManager->addPhase($project)) {
         header("Location: " . $requestUri . "&phaseadded=1");
         exit();
