@@ -3,109 +3,109 @@
     <body>
     <section class="rapporter" id="rapporter">
         {% if projects %}
-            <div class="openContainerNoBorder text" id="prosjektTabell">
-                <h3>Prosjekt rapporter </h3>
-                <table class="table" id="table">
+        <div class="openContainerNoBorder text" id="prosjektTabell">
+            <h3>Prosjekt rapporter </h3>
+            <table class="table" id="table">
+                <tr>
+                    <th>Prosjekt navn</th>
+                    <th>Status</th>
+                    <th>Estimert totalt</th>
+                    <th>Tid brukt</th>
+                    <th>Points ferdig</th>
+                    <th>Avvik (ferdig - brukt tid)</th>
+                    <th>Fremdrift</th>
+                    <th>Detaljer & utskrift</th>
+                </tr>
+                {% for project in projects %}
+                    {% set estimatedProgress = project.sumTimeSpent | trim %}
+                    {% set estimatedTimeSum = project.sumEstimate | trim %}
                     <tr>
-                        <th>Prosjekt navn</th>
-                        <th>Status</th>
-                        <th>Estimert totalt</th>
-                        <th>Tid brukt</th>
-                        <th>Points ferdig</th>
-                        <th>Avvik (ferdig - brukt tid)</th>
-                        <th>Fremdrift</th>
-                        <th>Detaljer & utskrift</th>
-                    </tr>
-                    {% for project in projects %}
-                        {% set estimatedProgress = project.sumTimeSpent | trim %}
-                        {% set estimatedTimeSum = project.sumEstimate | trim %}
-                        <tr>
-                            {# PROSJEKTNAVN #}
-                            <td>{{ project.getProjectName() }}</td>
+                        {# PROSJEKTNAVN #}
+                        <td>{{ project.getProjectName() }}</td>
 
-                            {# PROSJEKT STATUS #}
-                            {% if project.getStatus() == 0 %}
-                                <td>Ventende</td>
-                            {% endif %}
-                            {% if project.getStatus() == 1 %}
-                                <td>Pågår</td>
-                            {% endif %}
-                            {% if project.getStatus() == 2 %}
-                                <td>Pauset</td>
-                            {% endif %}
-                            {% if project.getStatus() == 3 %}
-                                <td>Avslått</td>
-                            {% endif %}
-                            {% if project.getStatus() == 4 %}
-                                <td>Avsluttet</td>
-                            {% endif %}
-                            <td>{{ project.sumEstimate }}</td>
-                            <td>{{ project.sumTimeSpent }}</td>
-                            <td>{{ project.sumEstimateDone }}</td>
-                            <td>{{ project.sumEstimateDone - project.sumTimeSpent }}</td>
-                            <td>
-                            {% if estimatedTimeSum != 0 %}
-                                <!--td>
-                                    <progress class="unique"
-                                              value={#  #}{ (timeSpentSum/estimatedTimeSum)*100 }} max="100"
-                                              data-label={#  #}{ ((timeSpentSum/estimatedTimeSum)*100)|round }}%>
-                                    </progress>
-                                </td-->
-                                    <div id="progressbar">
-                                        <div style="width:{{ (estimatedProgress/estimatedTimeSum)*100 }}%;">
-                                            <p class="progress-label"><strong>{{ ((estimatedProgress/estimatedTimeSum)*100)|round }}%
-                                                </strong></p>
-                                        </div>
+                        {# PROSJEKT STATUS #}
+                        {% if project.getStatus() == 0 %}
+                            <td>Ventende</td>
+                        {% endif %}
+                        {% if project.getStatus() == 1 %}
+                            <td>Pågår</td>
+                        {% endif %}
+                        {% if project.getStatus() == 2 %}
+                            <td>Pauset</td>
+                        {% endif %}
+                        {% if project.getStatus() == 3 %}
+                            <td>Avslått</td>
+                        {% endif %}
+                        {% if project.getStatus() == 4 %}
+                            <td>Avsluttet</td>
+                        {% endif %}
+                        <td>{{ project.sumEstimate }}</td>
+                        <td>{{ project.sumTimeSpent }}</td>
+                        <td>{{ project.sumEstimateDone }}</td>
+                        <td>{{ project.sumEstimateDone - project.sumTimeSpent }}</td>
+                        <td>
+                            <div id="progressbar">
+                                {% if estimatedTimeSum != 0 %}
+                                    <div style="width:{{ (estimatedProgress/estimatedTimeSum)*100 }}%;">
+                                        <p class="progress-label">
+                                            <strong>{{ ((estimatedProgress/estimatedTimeSum)*100)|round }}%
+                                            </strong></p>
                                     </div>
-                            {% endif %}
-                            </td>
-                            <td>
-                                <button class="buttons miniButtons" id="miniButtons"
-                                        onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
-                                    Skriv ut
-                                </button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    {% endif %}
-                </table>
-            </div>
+                                {% else %}
+                                    <div style="width:{{ 0 }}%;">
+                                        <p class="progress-label"><strong>{{ 0 }}%
+                                            </strong></p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <button class="buttons miniButtons" id="miniButtons"
+                                    onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
+                                Skriv ut
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% endif %}
+            </table>
+        </div>
     </section>
 
     <section>
         {% if user.isAdmin() or user.isProjectLeader() %}
-            <div class="openContainerNoBorder text" id="prosjektTabell">
-                <h3>Bruker rapporter </h3>
-                <table class="table" id="table">
+        <div class="openContainerNoBorder text" id="prosjektTabell">
+            <h3>Bruker rapporter </h3>
+            <table class="table" id="table">
+                <tr>
+                    <th>Navn</th>
+                    <th>Status</th>
+                    <th>Registrert dato</th>
+                    <th>Sum timer hittil</th>
+                    <th>Sum timer i denne måned</th>
+                    <th>Detaljer & utskrift</th>
+                </tr>
+                {% for user in users %}
                     <tr>
-                        <th>Navn</th>
-                        <th>Status</th>
-                        <th>Registrert dato</th>
-                        <th>Sum timer hittil</th>
-                        <th>Sum timer i denne måned</th>
-                        <th>Detaljer & utskrift</th>
+                        {# PROSJEKTNAVN #}
+                        <td>{{ user.whoWorkedName }}</td>
+
+                        <td>{{ user.getStatus() }}</td>
+
+                        <td>{{ user.getDateRegistered() }}</td>
+                        <td>{{ user.sumTW }}</td>
+                        <td>{{ user.sumThisMonth }}</td>
+                        <td>
+                            <button class="buttons miniButtons" id="miniButtons"
+                                    onclick="location.href='user_edit.php?userid={{ user.getUserID() }}';">
+                                Se profil
+                            </button>
+                        </td>
                     </tr>
-                    {% for user in users %}
-                        <tr>
-                            {# PROSJEKTNAVN #}
-                            <td>{{ user.whoWorkedName }}</td>
-
-                            <td>{{ user.getStatus() }}</td>
-
-                            <td>{{ user.getDateRegistered() }}</td>
-                            <td>{{ user.sumTW }}</td>
-                            <td>{{ user.sumThisMonth }}</td>
-                            <td>
-                                <button class="buttons miniButtons" id="miniButtons"
-                                        onclick="location.href='user_edit.php?userid={{user.getUserID()}}';">
-                                    Se profil
-                                </button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    {% endif %}
-                </table>
-            </div>
+                {% endfor %}
+                {% endif %}
+            </table>
+        </div>
     </section>
     </body>
 {% endblock %}
