@@ -17,7 +17,7 @@
                         <th>Detaljer & utskrift</th>
                     </tr>
                     {% for project in projects %}
-                        {% set estimatedProgress = project.sumEstimateDone | trim %}
+                        {% set estimatedProgress = project.sumTimeSpent | trim %}
                         {% set estimatedTimeSum = project.sumEstimate | trim %}
                         <tr>
                             {# PROSJEKTNAVN #}
@@ -52,7 +52,7 @@
                                     </progress>
                                 </td-->
                                     <div id="progressbar">
-                                        <div style="width:{{ (timeSpentSum/estimatedTimeSum)*100 }}%;">
+                                        <div style="width:{{ (estimatedProgress/estimatedTimeSum)*100 }}%;">
                                             <p class="progress-label"><strong>{{ ((estimatedProgress/estimatedTimeSum)*100)|round }}%
                                                 </strong></p>
                                         </div>
