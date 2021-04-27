@@ -33,12 +33,7 @@ if (!is_null($user) && !is_null($project)) {
     $groupFromUserAndGroups = $projectManager->getGroupFromUserAndGroups($projectName); //henter gruppe basert på UsersAndGroups tabell. Joiner Group tabell og sjekker prosjektname
 
     /* Sjekk om bruker er medlem i fremviste prosjekt */
-    $projectsOfUser = [];
-    foreach ($members as $member) {
-        if ($user->getUserId() == $member->getUserId()) {
-            $isMember = true;
-        }
-    }
+    $isMember = $projectManager->checkIfMemberOfProject($projectName, $user->getUserID());
 
 
 

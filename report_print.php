@@ -6,8 +6,7 @@ $reportGenerator = new ReportGenerator($db, $request, $session);
 
 $project = $reportGenerator->getDataOnProjectForReport($request->query->getInt('projectid'));
 
-if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->isGroupleader())
-    and !is_null($project)) {
+if (!is_null($user) and !is_null($project)) {
 
     $userManager = new UserManager($db, $request, $session);
     $taskManager = new TaskManager($db, $request, $session);
@@ -19,6 +18,14 @@ if (!is_null($user) and ($user->isAdmin() or $user->isProjectLeader() or $user->
     $users = $userManager->getAllUsers("firstName"); //alle brukere
     $customers = $userManager->getAllCustomers("firstName"); //alle kunder
     $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
+
+    /* Sjekk om bruker er medlem i fremviste prosjekt */
+    $isMember = $projectManager->checkIfMemberOfProject($projectName, $user->getUserID());
+
+    if (!($user->isAdmin() or $user->isProjectLeader() or $isMember)) {
+        header("location: reports.php");
+        exit();
+    }
 
     $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
     $phases = $projectManager->getAllPhases($projectName);

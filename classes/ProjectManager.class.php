@@ -282,6 +282,29 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
         }
     }
 
+    public function checkIfMemberOfProject($projectName, $userId) : bool {
+        try {
+            $stmt = $this->db->prepare('SELECT Projects.*
+                            FROM Projects
+                            LEFT JOIN Groups ON Groups.projectName = Projects.projectName
+                            LEFT JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+                            LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+                            LEFT JOIN Users as customer on customer.userID = Projects.customer 
+WHERE (UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :userID) AND Projects.projectName = :projectName GROUP BY ProjectID ORDER BY Projects.startTime DESC;');
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
+            $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() >= 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }  catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på checkIfMemberOfProject(projectName, userId)", $e->getMessage());
+            return false;
+        }
+    }
+
 
 
     // ADD GROUP ------------------------------------------------------------------------------------------------
