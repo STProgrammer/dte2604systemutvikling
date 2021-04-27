@@ -45,8 +45,8 @@ if (!is_null($user) and !is_null($task) and ($user->getUserType() > 0)) {
     $nonDependentTasks = $taskManager->getNonDependentTasks($task);
 
     $parentTask = $taskManager->getTask($task->getParentTask());
-    $tasks = $taskManager->getAllTasks(projectName: $projectName);
-    $subTasks = $taskManager->getAllTasks(hasSubtask: 0, parentTask: $taskId);
+    $tasks = $taskManager->getAllTasks(null, $projectName);
+    $subTasks = $taskManager->getAllTasks(0, null,null,null,null,null, $taskId);
     if ($request->request->has('task_status_edit') && XsrfProtection::verifyMac("Edit task status")
     && ($isAnyLeader or $isMainResponsible)) {
         if ($taskManager->editStatus($taskId)) {

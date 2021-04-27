@@ -15,7 +15,7 @@ if ($user) {
 
     $hourId = $request->query->getInt('hourID');
     $hour = $hourManager->getHour($hourId);
-    $hours = $hourManager->getHours(whoWorked: $userID);
+    $hours = $hourManager->getHours(null, $userID);
 
     $hourID = $hourManager->activeTimeregForUser($userID);
 
