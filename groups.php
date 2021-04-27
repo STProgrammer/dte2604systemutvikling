@@ -10,15 +10,15 @@ $employees = $userManager->getAllEmployees("firstName");
 if (!is_null($user)) {
     $groups = $groupManager->getAllGroups();
 
-    $groupsOfUser = [];
-    foreach ($groups as $group) {
+    $groupsOfUser = $groupManager->getGroupsOfUser($user->getUserID());
+    /*foreach ($groups as $group) {
         $groupMember = $groupManager->getGroupMembers($group->getGroupID());
         foreach ($groupMember as $member) {
             if ($user->getUserId() ==  $member->getUserId()) {
                 array_push($groupsOfUser, $group);
             }
         }
-    }
+    }*/
 
     try {
         echo $twig->render('groups.twig',

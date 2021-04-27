@@ -50,6 +50,34 @@ LEFT JOIN Users as groupLeader on groupLeader.userID = Groups.groupLeader GROUP 
         }
     }
 
+    //GET GROUPS OF USER
+    public function getGroupsOfUser($userId): array
+    {
+        try {
+            $stmt = $this->db->prepare('SELECT Groups.*, CONCAT(groupLeader.firstName, " ", groupLeader.lastName, " (", groupLeader.username, ")") as leaderName,
+       count(UsersAndGroups.groupID) as nrOfMembers
+FROM Groups
+    LEFT JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+LEFT JOIN Users as groupLeader on groupLeader.userID = Groups.groupLeader 
+WHERE UsersAndGroups.userID = :userID OR Groups.groupLeader = :userID 
+GROUP BY Groups.groupID ORDER BY Groups.groupName ASC;');
+            $stmt->bindParam(":userID", $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
+                return $groups;
+            } else {
+                $this->notifyUser("Groups not found", "Kunne ikke hente mine grupper");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getGroupsOfUser()", $e->getMessage());
+            return array();
+        }
+    }
+
+
+
+
     public function newGroup(): bool //returns boolean value
     {
         $groupName = $this->request->request->get('groupName');

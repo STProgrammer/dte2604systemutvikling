@@ -58,6 +58,36 @@ class ProjectManager
     }
 
 
+    // GET PROJECTS OF USER ------------------------------------------------------------------------------------------------
+    public function getProjectsOfUser($userId): array
+    {
+        try {
+            $stmt = $this->db->prepare('SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
+                            CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
+                            FROM Projects
+                            LEFT JOIN Groups ON Groups.projectName = Projects.projectName
+                            LEFT JOIN UsersAndGroups ON Groups.groupID = UsersAndGroups.groupID
+                            LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
+                            LEFT JOIN Users as customer on customer.userID = Projects.customer 
+WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :userID GROUP BY ProjectID ORDER BY Projects.startTime DESC;');
+            $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
+                return $projects;
+            } else {
+                $this->notifyUser("Projects not found", "Kunne ikke hente mine prosjekter");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getProjectsOfUser()", $e->getMessage());
+            //return new Project();
+            return array();
+        }
+    }
+
+
+
     //GET PROJECT ------------------------------------------------------------------------------------------------
     public function getProject(int $projectID)
     {
@@ -578,7 +608,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
     }
 
     // GET ALL PHASES ------------------------------------------------------------------------------------------------
-    public function getAllPhases ($projectName) : array
+    public function getAllPhases($projectName) : array
     {
         $phases = array();
         try{

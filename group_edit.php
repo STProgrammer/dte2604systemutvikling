@@ -9,19 +9,20 @@ $projectManager = new ProjectManager($db, $request, $session);
 $taskManager = new TaskManager($db, $request, $session);
 
 $group = $groupManager->getGroup($request->query->getInt('groupid'));
-$groupID = $group->getGroupID();
-$members = $groupManager->getGroupMembers($groupID);
-$isMember = false;
 
-/* Sjekk om bruker er medlem i fremviste gruppe */
-$member = null;
-foreach ($members as $member) {
-    if ($user->getUserId() == $member->getUserId()) {
-        $isMember = true;
-    }
-}
 
 if (!is_null($user) && !is_null($group) ) {
+    $groupID = $group->getGroupID();
+    $members = $groupManager->getGroupMembers($groupID);
+    $isMember = false;
+
+    /* Sjekk om bruker er medlem i fremviste gruppe */
+    $member = null;
+    foreach ($members as $member) {
+        if ($user->getUserId() == $member->getUserId()) {
+            $isMember = true;
+        }
+    }
     if ($isMember or $user->isAdmin() or $user->isProjectLeader() or ($user->getUserID() == $group->getGroupLeader())) {
         $groupID = $group->getGroupID();
 

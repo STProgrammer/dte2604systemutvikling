@@ -6,9 +6,16 @@ if ($user) {
     $hourManager = new HourManager($db, $request, $session);
     $userManager = new UserManager($db, $request, $session);
     $reportGenerator = new ReportGenerator($db, $request, $session);
-    $projects = $reportGenerator->getAllProjectsForReport();
     $userManager = new UserManager($db, $request, $session);
     $users = $reportGenerator->getAllUserStatistics();
+
+    $projects = array();
+
+    if ($user->isAdmin()) {
+        $projects = $reportGenerator->getAllProjectsForReport();
+    } else {
+        $projects = $reportGenerator->getProjectsForUserForReport($user->getUserID());
+    }
 
     if ($user->isAdmin() or $user->isProjectleader()) {
 

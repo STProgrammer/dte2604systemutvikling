@@ -121,12 +121,12 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
             echo $e->getMessage();
         }
     }else {
-        header("location: index.php");
+        header("location: projects.php");
         exit();
     }
 }
 } else {
-    header("location: index.php");
+    header("location: projects.php");
     exit();
 }
 

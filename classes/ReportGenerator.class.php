@@ -43,7 +43,34 @@ WHERE Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL GROUP BY Projects.project
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getallProjectsForReport()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, på getAllProjectsForReport()", $e->getMessage());
+            //return new Project();
+            return array();
+        }
+    }
+
+
+    // GET ALL PROJECTS FOR REPORT
+    public function getProjectsForUserForReport($userId): array
+    {
+        try {
+            $stmt = $this->db->prepare('SELECT Projects.*, CASE WHEN Tasks.estimatedTime IS NULL THEN 0 ELSE SUM(Tasks.estimatedTime) END AS sumEstimate, CASE WHEN Tasks.estimatedTime IS NULL THEN 0 ELSE SUM(CASE WHEN Tasks.status = 3 THEN Tasks.estimatedTime ELSE 0 END) END AS sumEstimateDone,
+       CASE WHEN Tasks.timeSpent IS NULL THEN 0 ELSE SUM(Tasks.timeSpent) END AS sumTimeSpent FROM Projects 
+LEFT JOIN Tasks on Projects.projectName = Tasks.projectName
+LEFT JOIN Groups ON Groups.projectName = Tasks.projectName
+LEFT JOIN UsersAndGroups ON UsersAndGroups.groupID = Groups.groupID
+WHERE (Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL) AND (UsersAndGroups.userID = :userID OR Projects.projectLeader = :userID OR Projects.customer = :userID) GROUP BY Projects.projectName ORDER BY Projects.projectName;');
+            $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
+                return $projects;
+            } else {
+                $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
+                //return new Project();
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på getProjectsForUserForRerpot(userId)", $e->getMessage());
             //return new Project();
             return array();
         }

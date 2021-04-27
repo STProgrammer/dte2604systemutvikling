@@ -4,7 +4,6 @@
     <section class="rapporter" id="rapporter">
         {% if projects %}
             <div class="openContainerNoBorder text" id="prosjektTabell">
-                {% if user.isAdmin() or user.isProjectLeader() %}
                 <h3>Prosjekt rapporter </h3>
                 <table class="table" id="table">
                     <tr>
@@ -71,7 +70,6 @@
                     {% endif %}
                 </table>
             </div>
-        {% endif %}
     </section>
 
     <section>
