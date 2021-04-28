@@ -3,20 +3,18 @@
     <section class="edit_project" id="edit_project">
 
         {# TILBAKE KNAPP #}
-        {% if user.isAdmin() == 1 %}
-            <div class="container container_small cursor" onclick="goBack()">
-                <button id="button" class="button" title="Ny bruker"
-                        onclick="goBack()">
-                    <img src="" width="30em"> Gå tilbake
-                </button>
-            </div>
-        {% endif %}
+        <div class="container container_small cursor" onclick="goBack()">
+            <button id="button" class="button" title="Ny bruker"
+                    onclick="goBack()">
+                <img src="" width="30em"> Gå tilbake
+            </button>
+        </div>
 
-        <h6 class="marginleft overskrift">Fase info side</h6><br>
+        <h6 class="marginleft overskrift">Fase info side</h6>
         {# FASE INFO #}
         <div class="container container_menu_form text" id="phase_info">
             <h5 class="overskriftLiten">Prosjekt detaljer: </h5>
-            <br>Prosjekt: <b>{{ project.getProjectName }}</b><br>
+            Prosjekt: <b>{{ project.getProjectName }}</b><br>
             <br>Prosjekt Leder: <b>{{ project.leaderName }} </b><br>
             <br>Prosjekt Leder: <b>{{ project.customerName }} </b><br>
             <br>Prosjekt starttid: <b>{{ project.getStartTime }} </b><br>
@@ -37,7 +35,7 @@
                 <br>Godkjent av admin: <b>Ja, godkjent!</b><br>
             {% else %}
                 <br>Godkjent av admin: <b>Ikke godkjent!</b><br>
-                {% if user.isAdmin() %}
+                {% if user.isAdmin() or user.isGroupLeader()  or user.isGroupLeader() or user.isProjectLeader() %}
                     <form method="post" action="projects_editProject.php?projectid={{ project.getProjectID }}">
                         <input type="hidden" value="{{ getMac("Verify project") }}" name="XSRFPreventionToken">
                         <button type="submit" name="project_verify" class="buttons miniButtons" id="miniButtons">
@@ -48,7 +46,7 @@
             {% endif %}
 
             <br><h5 class="overskriftLiten">Fase detaljer: </h5>
-            <br>Fase: <b>{{ phase.getPhaseName }}</b><br>
+            Fase: <b>{{ phase.getPhaseName }}</b><br>
             <br>Fase starttid: <b>{{ phase.getStartTime }} </b><br>
             <br>Fase sluttid: <b>{{ phase.getFinishTime }} </b><br>
 
