@@ -15,7 +15,7 @@ if ($user) {
     $tasks = $taskManager->getAllTasks();
 
 //    $hour = $hourManager->getHour($userID);
-    $hours = $hourManager->getHours(whoWorked: $userID, stampingStatus: 1);
+    $hours = $hourManager->getHours(null, $userID, null,null,null,null,null,null,null,null,null,1);
     $hoursAll = $hourManager->getAllHours();
     $deletedHours = $hourManager->getDeletedHours();
 

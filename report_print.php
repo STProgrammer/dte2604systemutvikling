@@ -27,7 +27,7 @@ if (!is_null($user) and !is_null($project)) {
         exit();
     }
 
-    $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
+    $tasks = $taskManager->getAllTasks(1, $projectName);
     $phases = $projectManager->getAllPhases($projectName);
 
     $progressData = $reportGenerator->getProgressData($projectName);

@@ -16,8 +16,8 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
     $employees = $userManager->getAllEmployees("firstName"); //alle arbeidere
     $phases = $projectManager->getAllPhases($projectName);
     $members = $projectManager->getProjectMembers($project->getProjectName());
-    $tasks = $taskManager->getAllTasks(hasSubtask: 0, projectName: $projectName);
-    $phaseTasks = $taskManager->getAllTasks(hasSubtask: 0, phaseID: $phaseId);
+    $tasks = $taskManager->getAllTasks( 0, $projectName);
+    $phaseTasks = $taskManager->getAllTasks(0, null, $phaseId);
     if ($request->request->has('phase_edit') && XsrfProtection::verifyMac("Edit phase")) {
         if ($projectManager->editPhase($phase, $project)) {
             header("Location: ".$request->server->get('REQUEST_URI'));

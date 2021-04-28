@@ -36,7 +36,7 @@ if (!is_null($user) && !is_null($group) ) {
 
         $projects = $projectManager->getAllProjects();
 
-        $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $group->getProjectName(), groupID: $groupID);
+        $tasks = $taskManager->getAllTasks( 1, $group->getProjectName(), null, $groupID);
 
         if ($request->request->has('group_edit') && XsrfProtection::verifyMac("Group edit")) {
             if (!$user->isAdmin()) {

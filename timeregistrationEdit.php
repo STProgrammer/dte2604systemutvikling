@@ -16,7 +16,7 @@ if (!is_null($user) and !is_null($hour)) {
 
     $tasks = $taskManager->getAllTasks(); //trenger vi den?
 
-    $hours = $hourManager->getHours(whoWorked: $userID);
+    $hours = $hourManager->getHours(null, $userID);
 
     $task = $taskManager->getTask($hour->getTaskID());
 

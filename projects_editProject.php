@@ -26,7 +26,7 @@ if (!is_null($user) && !is_null($project)) {
     $members = $projectManager->getProjectMembers($project->getProjectName()); //alle medlemmer av dette prosjektet
     $candidates = $projectManager->getLeaderCandidates($projectName); //alle som kan bli prosjektleder
 
-    $tasks = $taskManager->getAllTasks(hasSubtask: 1, projectName: $projectName);
+    $tasks = $taskManager->getAllTasks(1, $projectName);
     $phases = $projectManager->getAllPhases($projectName);
 
     $groups = $projectManager->getGroups($projectName);

@@ -15,7 +15,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     $userID = $request->query->getInt('userID');
     $userToView = $userManager->getUser($userID);
 
-    $hours = $hourManager->getHours(whoWorked: $userID);
+    $hours = $hourManager->getHours(null, $userID);
 //    $hour = $hourManager->getHour($userID);
 
     if ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {

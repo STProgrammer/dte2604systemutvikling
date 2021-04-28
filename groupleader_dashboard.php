@@ -14,7 +14,7 @@ if ($user) {
 
         $tasksWork = $taskManager->getTasksOfUser($userID);
 
-        $hours = $hourManager->getHours(whoWorked: $userID);
+        $hours = $hourManager->getHours(null, $userID);
         $hoursAll = $hourManager->getAllHours();
         $hourId = $request->query->getInt('hourID');
         $hour = $hourManager->getHour($hourId);
