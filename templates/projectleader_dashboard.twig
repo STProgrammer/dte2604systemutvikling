@@ -4,9 +4,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="javascript/employeeDashboard.js"></script>
         <script>
-            $('document').ready(function(){
+            $('document').ready(function () {
                 const categorySelect = document.getElementById("employee_dashboard_category"); // is null when hourId is not empty
-                if(categorySelect !== undefined && categorySelect !== null) {
+                if (categorySelect !== undefined && categorySelect !== null) {
                     categorySelect.addEventListener("change", updateSelects({{ tasksWork|json_encode|raw }}));
                     console.log({{ tasksWork|json_encode|raw }});
                     updateSelects({{ tasksWork|json_encode|raw }})();
@@ -46,103 +46,35 @@
             </div>
         {% endif %}
 
-        {# Mine siste timeregistreringer for innstemplinger #}
-        <div class="openContainerNoBorder text" id="timeTabell">
-            <h5>Mine siste timeregistreringer for innstemplinger </h5>
-            <table class="table" id="table">
-                <tr>
-                    <th>Task Type</th>
-                    <th>Lokasjon</th>
-                    <th>Starttid</th>
-                    <th>Slutttid</th>
-                    <th>Antall timer</th>
-                    <th>Godkjent av leder</th>
-                    <th>Kommentar fra bruker</th>
-                    <th>Kommentar fra leder</th>
-                </tr>
-                {% for hour in hours %}
-                    {% if hour.whoWorked == user.getUserId and hour.taskId is null %}
-                        <tr>
-                            <td> {{ hour.taskType }}</td>
-                            <td> {{ hour.location }}</td>
-                            <td> {{ hour.startTime }}</td>
-                            <td> {{ hour.endTime }}</td>
-                            <td> {{ hour.getTimeWorked() }} </td>
-                            {% if hour.activated == true %}
-                                <td>Godkjent</td>
-                            {% else %}
-                                <td>Ikke godkjent enda</td>
-                            {% endif %}
-                            <td> {{ hour.comment }}</td>
-                            <td> {{ hour.commentBoss }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
-        </div>
-
-        {# Mine siste timeregistreringer for oppgaver #}
-        <div class="openContainerNoBorder text" id="timeTabell">
-            <h5>Mine siste timeregistreringer for oppgaver</h5>
-            <table class="table" id="table">
-                <tr>
-                    <th>Task Navn</th>
-                    <th>Hoved Task</th>
-                    <th>Prosjektnavn</th>
-                    <th>Starttid</th>
-                    <th>Slutttid</th>
-                    <th>Antall timer</th>
-                    <th>Lokasjon</th>
-                    <th>Kommentar fra bruker</th>
-                    {% if user.isAdmin %}
-                        <th>Endre</th>
-                    {% endif %}
-                </tr>
-                {% for hour in hours %}
-                    {% if hour.whoWorked == user.getUserId and hour.taskId is not null %}
-                        <tr>
-                            <td> {{ hour.taskName }}</td>
-                            <td> {{ hour.parentTask }}</td>
-                            <td> {{ hour.projectName }}</td>
-                            <td> {{ hour.startTime }}</td>
-                            <td> {{ hour.endTime }}</td>
-                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
-                            <td> {{ hour.location }}</td>
-                            <td> {{ hour.comment }}</td>
-                            {% if user.isAdmin %}
-                                <td>
-                                    <button class="buttons miniButtons" id="miniButtons"
-                                            onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
-                                        <img src="" alt=""> Rediger
-                                    </button>
-                                </td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
-        </div>
-
-        {# Databaseoppføringer #}
-        <div class="container container_medium">
+        {# Totale lønnsutgifter i dag #}
+        <div class="container container_medium cursor" onclick="location.href='reports.php';" >
             <img src="images/icon_databse.png" width="40px" alt="Icon"/>
-            <h6>Databaseoppføringer i dag</h6>
+            <h6>Totale lønnsutgifter i dag</h6>
             <div class="text">
-                Databaseoppføring i dag: 20 oppføringer
+
+            </div>
+        </div>
+
+        {# Totale lønnsutgifter denne måned #}
+        <div class="container container_medium cursor" onclick="location.href='reports.php';" >
+            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
+            <h6>Totale lønnsutgifter denne måned</h6>
+            <div class="text">
+
             </div>
         </div>
 
         {# Totale timeregistreringer i dag #}
-        <div class="container container_medium">
+        <div class="container container_medium cursor" onclick="location.href='timeregistration.php';">
             <img src="images/icon_clock.png" width="40px" alt="Icon"/>
             <h6>Totale timeregistreringer i dag</h6>
             <div class="text_bigtime">
-                20:40
+                {{ count.count }}
             </div>
         </div>
 
         {# Feilmeldinger #}
-        <div class="container container_medium_long scroll">
+        <div class="container container_medium_long scroll cursor" onclick="location.href='reports.php';">
             <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/>
             <h6>Feilmeldinger i dag</h6>
             {% if session.getFlashBag.has('header') %}
@@ -156,14 +88,14 @@
         </div>
 
         {# Registrer fravær / Rediger timeføringer #}
-        <div class="container container_medium">
+        <div class="container container_medium cursor" onclick="location.href='userprofiles.php';">
             <img src="images/icon_clock.png" width="40px" alt="Icon"/>
-            <h6>Registrer fravær / </h6>
-            <h6>Rediger timeføringer</h6>
+            <h6>Registrer fravær / Rediger timeføringer </h6>
+            <h6></h6>
         </div>
 
         {# Prosjekter og oppgaver #}
-        <div class="container container_medium_long scroll">
+        <div class="container container_medium_long scroll cursor" onclick="location.href='projects.php';">
             <img src="images/icon_task.png" width="40px" alt="Icon"/>
             <h6>Prosjekter og oppgaver</h6>
             <div class="text">
@@ -192,7 +124,7 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="container container_big text scroll">
+        <div class="container container_big text scroll cursor">
             <img src="images/icon_kommentar.png" width="40px" alt="Icon"/>
             Siste kommentarer fra ledere <br><br>
             {% for hour in hours %}
@@ -211,7 +143,89 @@
         </div>
     </section>
 
+    {% if hours %}
+        <section>
+            {# Mine siste timeregistreringer for oppgaver #}
+            <div class="openContainerNoBorder text" id="timeTabell">
+                <h5>Mine siste timeregistreringer for oppgaver</h5>
+                <table class="table" id="table">
+                    <tr>
+                        <th>Task Navn</th>
+                        <th>Hoved Task</th>
+                        <th>Prosjektnavn</th>
+                        <th>Starttid</th>
+                        <th>Slutttid</th>
+                        <th>Antall timer</th>
+                        <th>Lokasjon</th>
+                        <th>Kommentar fra bruker</th>
+                        {% if user.isAdmin %}
+                            <th>Endre</th>
+                        {% endif %}
+                    </tr>
+                    {% for hour in hours %}
+                        {% if hour.taskId is not null %}
+                            <tr>
+                                <td> {{ hour.taskName }}</td>
+                                <td> {{ hour.parentTask }}</td>
+                                <td> {{ hour.projectName }}</td>
+                                <td> {{ hour.startTime }}</td>
+                                <td> {{ hour.endTime }}</td>
+                                <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                                <td> {{ hour.location }}</td>
+                                <td> {{ hour.comment }}</td>
+                                {% if user.isAdmin %}
+                                    <td>
+                                        <button class="buttons miniButtons" id="miniButtons"
+                                                onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
+                                            <img src="" alt=""> Rediger
+                                        </button>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+
+            {# Mine siste timeregistreringer for innstemplinger #}
+            <div class="openContainerNoBorder text" id="timeTabell">
+                <h5>Mine siste timeregistreringer for innstemplinger </h5>
+                <table class="table" id="table">
+                    <tr>
+                        <th>Task Type</th>
+                        <th>Lokasjon</th>
+                        <th>Starttid</th>
+                        <th>Slutttid</th>
+                        <th>Antall timer</th>
+                        <th>Godkjent av leder</th>
+                        <th>Kommentar fra bruker</th>
+                        <th>Kommentar fra leder</th>
+                    </tr>
+                    {% for hour in hours %}
+                        {% if hour.taskId is null %}
+                            <tr>
+                                <td> {{ hour.taskType }}</td>
+                                <td> {{ hour.location }}</td>
+                                <td> {{ hour.startTime }}</td>
+                                <td> {{ hour.endTime }}</td>
+                                <td> {{ hour.getTimeWorked() }} </td>
+                                {% if hour.activated == true %}
+                                    <td>Godkjent</td>
+                                {% else %}
+                                    <td>Ikke godkjent enda</td>
+                                {% endif %}
+                                <td> {{ hour.comment }}</td>
+                                <td> {{ hour.commentBoss }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </section>
+    {% endif %}
+
+
 {% endblock %}
     {# REFERENCES #}
     {# Adobe XD icons #}
-    {# icon_task.png: https://icon-icons.com/icon/task/120291        #}
+    {# icon_task.png: https://icon-icons.com/icon/task/120291            #}

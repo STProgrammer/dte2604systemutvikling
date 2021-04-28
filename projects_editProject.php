@@ -97,7 +97,7 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
         exit();
     }
 } else {
-    if ($isMember or $user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader()) {
+    if ($isMember or $user->isAdmin() or $user->isProjectLeader() or $user->isGroupLeader() or $user->getUserId() ==  $project->getCustomer() ) {
         try {
             echo $twig->render('projects_editProject.twig',
                 array('session' => $session, 'request' => $request, 'user' => $user,
