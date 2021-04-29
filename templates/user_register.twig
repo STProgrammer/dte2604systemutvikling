@@ -24,81 +24,70 @@
         function validate() {
             return check();
         }
-
     </script>
+
     <section class="register_user" id="register_user">
-        <div class="openContainerNoBorder text" id="table_edit">
+        <div class="container container_big_long text" id="table_edit">
             <h3>Lag ny bruker</h3>
-            <div class>
-                {% if session.getFlashBag.has('header') %}
-                    {% for header in session.getFlashBag.get('header', []) %}
-                        <h3>{{ header }}</h3>
-                    {% endfor %}
-                    {% for message in session.getFlashBag.get('message', []) %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div id="text">
-                <form method="post" id="user_register_form" onsubmit="return validate();">
-                    <br><label>Fornavn: </label>
-                    <br><input type="text" name="firstName" value="" placeholder="Fornavn" maxlength=90 required
-                               id="firstname"/>
+            <form method="post" id="user_register_form" onsubmit="return validate();">
+                <br><label>Fornavn: </label>
+                <br><input type="text" name="firstName" value="" placeholder="Fornavn" maxlength=90 required
+                           id="firstname"/>
 
-                    <br><label>Etternavn:</label>
-                    <br><input type="text" name="lastName" value="" placeholder="Etternavn" maxlength=90 required
-                               id="lastname"/>
+                <br><label>Etternavn:</label>
+                <br><input type="text" name="lastName" value="" placeholder="Etternavn" maxlength=90 required
+                           id="lastname"/>
 
-                    <div><br><label>Epost:</label>
+                <div><br><label>Epost:</label>
                     <br><input type="email" name="emailAddress" value="" placeholder="Epost" maxlength=60
                                required id="emailAddress"/>
                     <span></span></div>
 
-                    <div><br><label>Brukernavn:</label>
+                <div><br><label>Brukernavn:</label>
                     <br><input type="text" name="username" value="" placeholder="Brukernavn" maxlength=45 required
                                id="username"/>
                     <span></span></div>
 
-                    <br><label>Passord: </label>
-                    <br><input type="password" name="password" required id="password1" placeholder="Passord"
-                               minlength=8 maxlength=40 value="" onkeyup='check();'>
+                <br><label>Passord: </label>
+                <br><input type="password" name="password" required id="password1" placeholder="Passord"
+                           minlength=8 maxlength=40 value="" onkeyup='check();'>
 
-                    <br><label>Gjenta passord:</label>
-                    <br><input type="password" name="password2" required id="password2" placeholder="Gjenta passord"
-                               minlength=8 maxlength=40 value="" onkeyup='check();'/>
-                    <span id='message'></span>
+                <br><label>Gjenta passord:</label>
+                <br><input type="password" name="password2" required id="password2" placeholder="Gjenta passord"
+                           minlength=8 maxlength=40 value="" onkeyup='check();'/>
+                <span id='message'></span>
 
-                    <table>
-                        <tr>
-                            <td colspan="2">
-                                <label>Bruker type: </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="radio" id="worker" name="userType" value="2" required>
-                            </td>
-                            <td>
-                                <label for="wroker">Fast arbeider </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="radio" id="temporary" name="userType" value="1" required>
-                            </td>
-                            <td>
-                                <label for="temporary">Innleid arbeider </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="radio" name="userType" id="customer" value="0" required>
-                            </td>
-                            <td>
-                                <label for="customer">Kunde </label>
-                            </td>
-                        </tr>
-                        {% if user.isAdmin() %}
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <label>Bruker type: </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="worker" name="userType" value="2" required>
+                        </td>
+                        <td>
+                            <label for="wroker">Fast arbeider </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="temporary" name="userType" value="1" required>
+                        </td>
+                        <td>
+                            <label for="temporary">Innleid arbeider </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="userType" id="customer" value="0" required>
+                        </td>
+                        <td>
+                            <label for="customer">Kunde </label>
+                        </td>
+                    </tr>
+                    {% if user.isAdmin() %}
                         <tr>
                             <td>
                                 <input type="radio" name="userType" id="admin" value="3" required>
@@ -107,28 +96,37 @@
                                 <label for="admin">Admin </label>
                             </td>
                         </tr>
-                        {% endif %}
-                    </table>
+                    {% endif %}
+                </table>
 
-                    <br><label>Addresse:</label>
-                    <br><input type="text" name="address" value="" placeholder="Addresse" maxlength=90 required/>
-                    <br><label>Postnummer:</label>
-                    <br><input type="text" name="zipCode" value="" placeholder="Post nr" maxlength=10 required/>
-                    <br><label>By:</label>
-                    <br><input type="text" name="city" value="" placeholder="By" maxlength=45 required/>
-                    <br><label>Telefon nummer: </label>
-                    <br><input type="text" name="phoneNumber" value="" placeholder="+471234568" maxlength=45/>
-                    <br><label>Mobil nummer:</label>
-                    <br><input type="text" name="mobileNumber" value="" placeholder="+471234567" maxlength=45/>
-                    <br><label>IM addresse:</label>
-                    <br><input type="text" name="IMAddress" value="" placeholder="IM addresse" maxlength=45/>
-                    <input type="hidden" value="{{ getMac("user_register") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="register" id="reg_btn" value="Lag ny bruker">
-                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-                    <script src="user_register_check.js"></script>
-
-                </form>
-            </div>
-            <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
+                <br><label>Addresse:</label>
+                <br><input type="text" name="address" value="" placeholder="Addresse" maxlength=90 required/>
+                <br><label>Postnummer:</label>
+                <br><input type="text" name="zipCode" value="" placeholder="Post nr" maxlength=10 required/>
+                <br><label>By:</label>
+                <br><input type="text" name="city" value="" placeholder="By" maxlength=45 required/>
+                <br><label>Telefon nummer: </label>
+                <br><input type="text" name="phoneNumber" value="" placeholder="+471234568" maxlength=45/>
+                <br><label>Mobil nummer:</label>
+                <br><input type="text" name="mobileNumber" value="" placeholder="+471234567" maxlength=45/>
+                <br><label>IM addresse:</label>
+                <br><input type="text" name="IMAddress" value="" placeholder="IM addresse" maxlength=45/>
+                <input type="hidden" value="{{ getMac("user_register") }}" name="XSRFPreventionToken">
+                <br><input type="submit" name="register" id="reg_btn" value="Lag ny bruker">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                <script src="user_register_check.js"></script>
+            </form>
+        </div>
+        <div>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h3>{{ header }}</h3>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
 
 {% endblock %}

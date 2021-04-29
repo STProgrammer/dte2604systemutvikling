@@ -1,7 +1,141 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    <section  class="customer_dashboard" id="customer_dashboard">
+
+    <section class="customer_dashboard" id="customer_dashboard">
+        {# Siste kommentarer fra brukere og ledere #}
+        <div class="container_customerDashboard text">
+            <h5>Fremgang på mine prosjekter som kunde</h5>
+            <table class="table" id="table">
+                <tr>
+                    <th>Prosjekt navn</th>
+                    <th>Prosjektleder</th>
+                    <th>Starttid</th>
+                    <th>Slutttid</th>
+                    <th>Status</th>
+                    <th>Kunde</th>
+                    <th>Godkjent av admin</th>
+                    <th>Detaljer & rediger</th>
+                </tr>
+                {% for project in projectsOfUser %}
+
+                <tr>
+                    {# PROSJEKTNAVN #}
+                    <td>{{ project.getProjectName() }}</td>
+
+                    <td>{{ project.leaderName }} </td>
+
+                    <td>{{ project.getStartTime() }}</td>
+                    <td>{{ project.getFinishTime() }}</td>
+
+                    {# PROSJEKT STATUS #}
+                    {% if project.getStatus() == 0 %}
+                        <td>Ventende</td>
+                    {% endif %}
+                    {% if project.getStatus() == 1 %}
+                        <td>Pågår</td>
+                    {% endif %}
+                    {% if project.getStatus() == 2 %}
+                        <td>Pauset</td>
+                    {% endif %}
+                    {% if project.getStatus() == 3 %}
+                        <td>Avslått</td>
+                    {% endif %}
+                    {% if project.getStatus() == 4 %}
+                        <td>Avsluttet</td>
+                    {% endif %}
+
+                    {# PROSJEKT KUNDE #}
+                    <td>{{ project.customerName }}</td>
+
+                    {# PROSJEKT GODKJENT AV ADMIN #}
+                    {% if project.isAcceptedByAdmin() %}
+                        <td>Godkjent</td>
+                    {% else %}
+                        <td>Ikke godkjent</td>
+                    {% endif %}
+
+                    <td>
+                        <button class="buttons miniButtons" id="miniButtons"
+                                onclick="location.href='projects_editProject.php?projectid={{ project.getProjectID() }}';">
+                            Se detaljer
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            {% endfor %}
+        </div>
+
+        <div class="openContainerNoBorder text" >
+            <h3>Rapporter på mine prosjekter</h3>
+            <table class="table" id="table">
+                <tr>
+                    <th>Prosjekt navn</th>
+                    <th>Status</th>
+                    <th>Estimert totalt</th>
+                    <th>Tid brukt</th>
+                    <th>Points ferdig</th>
+                    <th>Avvik (ferdig - brukt tid)</th>
+                    <th>Fremdrift</th>
+                    <th>Detaljer & utskrift</th>
+                </tr>
+                {% for project in projects %}
+                    {% set estimatedProgress = project.sumEstimateDone | trim %}
+                    {% set estimatedTimeSum = project.sumEstimate | trim %}
+                    <tr>
+                        {# PROSJEKTNAVN #}
+                        <td>{{ project.getProjectName() }}</td>
+
+                        {# PROSJEKT STATUS #}
+                        {% if project.getStatus() == 0 %}
+                            <td>Ventende</td>
+                        {% endif %}
+                        {% if project.getStatus() == 1 %}
+                            <td>Pågår</td>
+                        {% endif %}
+                        {% if project.getStatus() == 2 %}
+                            <td>Pauset</td>
+                        {% endif %}
+                        {% if project.getStatus() == 3 %}
+                            <td>Avslått</td>
+                        {% endif %}
+                        {% if project.getStatus() == 4 %}
+                            <td>Avsluttet</td>
+                        {% endif %}
+                        <td>{{ project.sumEstimate }}</td>
+                        <td>{{ project.sumTimeSpent }}</td>
+                        <td>{{ project.sumEstimateDone }}</td>
+                        <td>{{ project.sumEstimateDone - project.sumTimeSpent }}</td>
+                        <td>
+                            {% if estimatedTimeSum != 0 %}
+                                <!--td>
+                                    <progress class="unique"
+                                              value={# #}{ (timeSpentSum/estimatedTimeSum)*100 }} max="100"
+                                              data-label={# #}{ ((timeSpentSum/estimatedTimeSum)*100)|round }}%>
+                                    </progress>
+                                </td-->
+                                <div id="progressbar">
+                                    <div style="width:{{ (timeSpentSum/estimatedTimeSum)*100 }}%;">
+                                        <p class="progress-label">
+                                            <strong>{{ ((estimatedProgress/estimatedTimeSum)*100)|round }}%
+                                            </strong></p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="buttons miniButtons" id="miniButtons"
+                                    onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
+                                Skriv ut
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+
+    <section>
         {# Feilmeldinger #}
         <div class="container container_big_long text scroll">
             <h5>Tilbakemeldinger fra database</h5>

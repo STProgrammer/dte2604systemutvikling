@@ -32,6 +32,47 @@ class HourManager
         return $hourCount->format('%H:%I');
     }
 
+    // COUNT HOURS SUM FROM TODAY -------------------------------------------------
+    public function countSumHoursFromToday() { //antall timeføringer
+        $count = 0;
+        try {
+            $stmt = $this->dbase->prepare("SELECT count(*) as count FROM Hours WHERE startTime >= date_sub(now(), INTERVAL 1 day)");
+            $stmt->execute();
+            if ($count = $stmt->fetch()) {
+                return $count;
+            } else {
+                $this->notifyUser("Kunne ikke telle antall timer, ", "countSumHoursFromToday()");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på countSumHoursFromToday()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            //return new Project();
+            return array();
+        }
+    }
+
+
+    // COUNT HOURS FROM TODAY -------------------------------------------------
+    public function countHoursFromToday() { //antall timer
+        $hoursTimeWorked = array();
+        try {
+            $stmt = $this->dbase->prepare("SELECT timeWorked FROM Hours WHERE startTime >= date_sub(now(), INTERVAL 1 month)");
+            $stmt->execute();
+            if ($hoursTimeWorked = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+                return $hoursTimeWorked;
+            } else {
+                $this->notifyUser("Kunne ikke telle antall timer, ", "countHoursFromToday()");
+                return array();
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på countHoursFromToday()", $e->getMessage());
+            print $e->getMessage() . PHP_EOL;
+            //return new Project();
+            return array();
+        }
+    }
+
     // GET ALL Hours With All Users --------------------------------------------------------------------------------
     public function getAllHours()
     {
@@ -130,7 +171,7 @@ class HourManager
             $params[':projectName'] = $projectName;
         }
         if (!is_null($orderBy)) {
-            $query .= " ORDER BY " . $orderBy;
+            $query .= " ORDER BY " . $orderBy . " DESC";
         }else{
             $query .= " ORDER BY Hours.startTime DESC"; //hvis null så DESC på startime
         }

@@ -18,7 +18,7 @@
     <div class="header" id="myHeader">
         <img src="images/morild_logo_150px.png" data-href="index.php" width="230pt" alt="Logo"/>
 
-        {% if user.isAdmin %}
+        {% if user.isAdmin() %}
             <a href="index.php">Admin: <b>{{user.getFirstName()}}</b></a>
             <a href="timeregistration.php">Timeregistreringer </a>
             <a href="userprofiles.php">Brukerprofiler</a>
@@ -27,7 +27,7 @@
             <a href="reports.php">Rapporter</a>
             <a href="profile_edit.php">Min profil</a>
 
-        {% elseif user.isProjectLeader %}
+        {% elseif user.isProjectLeader() %}
             <a href="index.php">Prsj.leder: <b>{{user.getFirstName()}}</b></a>
             <a href="timeregistration.php">Timeregistreringer </a>
             <a href="userprofiles.php">Brukerprofiler</a>
@@ -45,7 +45,7 @@
             <a href="reports.php">Rapporter</a>
             <a href="profile_edit.php">Min profil</a>
 
-        {% elseif user.isEmployee %}
+        {% elseif user.isEmployee() %}
             <a href="index.php">Ansatt: <b>{{user.getFirstName()}} </b></a>
             <a href="timeregistration.php">Mine timeregistreringer </a>
             <a href="projects.php">Prosjekter</a>
@@ -53,7 +53,7 @@
             <a href="reports.php">Rapporter</a>
             <a href="profile_edit.php">Min profil</a>
 
-        {% elseif user.isCustomer %}
+        {% elseif user.isCustomer() %}
             <a href="index.php">Velkommen til kundesiden: <b>{{user.getFirstName()}} </b></a>
             <a href="projects.php">Prosjektets fremgang</a>
             <a href="reports.php">Prosjektets rapporter</a>

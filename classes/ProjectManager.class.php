@@ -92,7 +92,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
     public function getProject(int $projectID)
     {
         try {
-            $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
+            $stmt = $this->db->prepare('SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
                             CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
                             FROM Projects
                             LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
@@ -116,7 +116,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
     public function getProjectByName(String $projectName)
     {
         try {
-            $stmt = $this->db->prepare(query: 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
+            $stmt = $this->db->prepare( 'SELECT Projects.*, CONCAT(projectLeader.firstName, " ", projectLeader.lastName, " (", projectLeader.username, ")") as leaderName, 
                                     CONCAT(customer.firstName, " ", customer.lastName, " (", customer.username, ")") as customerName
                                     FROM Projects
                                     LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
@@ -163,7 +163,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
 
         try {
             $stmt = $this->db->prepare(
-                query: "insert into Projects (projectName, startTime, finishTime, status, customer, isAcceptedByAdmin) 
+                 "insert into Projects (projectName, startTime, finishTime, status, customer, isAcceptedByAdmin) 
                 values (:projectName, :startTime, :finishTime, :status, :customer, :isAcceptedByAdmin);");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
@@ -199,7 +199,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
         $customer = $this->request->request->get('customer', $project->getCustomer());
         $oldProjectLeader = $project->getProjectLeader();
         try {
-            $stmt = $this->db->prepare(query: "update Projects set projectName = :projectName, projectLeader = :projectLeader, startTime = :startTime, 
+            $stmt = $this->db->prepare( "update Projects set projectName = :projectName, projectLeader = :projectLeader, startTime = :startTime, 
                         finishTime = :finishTime, status = :status, customer = :customer 
                         WHERE projectName = :projectName;
                         UPDATE Users SET Users.isProjectLeader = 0
@@ -235,7 +235,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
         $projectName = $project->getProjectName();
         $projectLeader = $project->getProjectLeader();
         try {
-            $stmt = $this->db->prepare(query: "DELETE FROM UsersAndGroups 
+            $stmt = $this->db->prepare( "DELETE FROM UsersAndGroups 
                     WHERE userId = :userID 
                       AND EXISTS (
                           SELECT * FROM Groups WHERE Groups.projectName = :projectName 
@@ -494,7 +494,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
     {
         $projectLeader = $this->request->request->get('projectLeader');
         try {
-            $stmt = $this->db->prepare(query: "DELETE FROM Projects WHERE projectName = :projectName;
+            $stmt = $this->db->prepare("DELETE FROM Projects WHERE projectName = :projectName;
                                     UPDATE Users SET Users.isProjectLeader = 0
                                     WHERE NOT EXISTS
                                     (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");
@@ -614,7 +614,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
     public function getPhase($phaseId)
     {
         try {
-            $stmt = $this->db->prepare(query: 'SELECT * FROM Phases WHERE phaseID = :phaseID;');
+            $stmt = $this->db->prepare( 'SELECT * FROM Phases WHERE phaseID = :phaseID;');
             $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($phase = $stmt->fetchObject("Phase")) {

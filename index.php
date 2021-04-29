@@ -8,6 +8,7 @@ if ($user) {
     $hourManager = new HourManager($db, $request, $session);
     $userManager = new UserManager($db, $request, $session);
     $taskManager = new TaskManager($db, $request, $session);
+    $projectManager = new ProjectManager($db, $request, $session);
 
     $userID = $user->getUserId($user);
     $users = $userManager->getAllUsers('dateRegistered');
