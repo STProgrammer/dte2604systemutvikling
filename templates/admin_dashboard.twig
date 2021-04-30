@@ -79,7 +79,7 @@
                 {% if hour.comment is not empty %}
                     <table>
                         <tr>
-                            <td class="widthFixed"><b>{{ hour.whoWorkedName }} :</b></td>
+                            <td class="widthFixed"><b id="name">{{ hour.whoWorkedName }} :</b></td>
                             <td>{{ hour.startTime }}</td>
                         </tr>
                         <tr>
@@ -96,7 +96,7 @@
                 {% if hour.commentBoss is not empty %}
                     <table>
                         <tr>
-                            <td class="widthFixed"><b>{{ hour.whoWorkedName }} :</b></td>
+                            <td class="widthFixed"><b id="name">{{ hour.whoWorkedName }} :</b></td>
                             <td>{{ hour.startTime }}</td>
                         </tr>
                         <tr>

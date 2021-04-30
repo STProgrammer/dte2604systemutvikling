@@ -30,7 +30,7 @@ if ($user) {
     $sumTime =  date("H:i:s",$sum3);
 
     //PAYMENT
-    $sumPayment = $sumTime * 1500;
+    $sumPayment = intval($sumTime) * 1500;
 
 
     if ($user->isAdmin()) {

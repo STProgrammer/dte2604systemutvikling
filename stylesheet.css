@@ -679,7 +679,7 @@ b#overskriftLiten {
     padding-bottom: 1em;
 
 }
-/*b { margin-left: 1em}*/
+b#name { color: #4c4747}
 
 p { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 
