@@ -6,8 +6,8 @@
         <div class="container container_medium cursor" onclick="location.href='reports.php';" >
             <img src="images/icon_databse.png" width="40px" alt="Icon"/>
             <h6>Totale lønnsutgifter i dag</h6>
-            <div class="text">
-
+            <div class="text_bigtime">
+                kr {{ sumPayment  / 30 }}
             </div>
         </div>
 
@@ -16,7 +16,7 @@
             <img src="images/icon_databse.png" width="40px" alt="Icon"/>
             <h6>Totale lønnsutgifter denne måned</h6>
             <div class="text_bigtime">
-                {{ sumPayment }}
+                kr {{ sumPayment }}
             </div>
         </div>
 
