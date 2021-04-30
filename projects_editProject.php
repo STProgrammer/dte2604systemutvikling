@@ -50,7 +50,7 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
         $request->request->set('isAdmin', 0);
     }
     if ($projectManager->addGroup($project->getProjectName())) {
-        header("Location: " . $requestUri . "&groupadded=1");
+        header("Location: " . $requestUri );
         exit();
     } else {
         header("Location: " . $requestUri . "&failedtoaddgroup=1");
@@ -66,7 +66,7 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
     }
 } else if ($user->isAdmin() && $request->request->has('project_verify') && XsrfProtection::verifyMac("Verify project")) {
     if ($projectManager->verifyProjectByAdmin($project->getProjectID())) {
-        header("Location: " . $requestUri . "&projectverified=1");
+        header("Location: " . $requestUri );
         exit();
     } else {
         header("Location: " . $requestUri . "&failedtoverifyproject=1");
@@ -74,7 +74,7 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
     }
 } else if (($user->isAdmin() or $user->isProjectLeader()) && $request->request->has('new_task') && XsrfProtection::verifyMac("New task")) {
     if ($taskManager->addMainTask($projectName)) {
-        header("Location: " . $requestUri . "&taskadded=1");
+        header("Location: " . $requestUri );
         exit();
     } else {
         header("Location: " . $requestUri . "&failedtoaddtasks=1");
@@ -82,7 +82,7 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
     }
 } else if ($user->isAdmin() && $request->request->has('remove_member') && XsrfProtection::verifyMac("Project remove member")) {
     if ($projectManager->removeMember($project)) {
-        header("Location: " . $requestUri . "&memberremoved=1");
+        header("Location: " . $requestUri );
         exit();
     } else {
         header("Location: " . $requestUri . "&ailedtoremovemembers=1");
@@ -90,7 +90,7 @@ if ($user->isAdmin() && $request->request->has('project_edit') && XsrfProtection
     }
 } else if (($user->isAdmin() or $user->isProjectLeader()) && $request->request->has('phase_add') && XsrfProtection::verifyMac("Add phase")) {
     if ($projectManager->addPhase($project)) {
-        header("Location: " . $requestUri . "&phaseadded=1");
+        header("Location: " . $requestUri );
         exit();
     } else {
         header("Location: " . $requestUri . "&failedtaddphase=1");

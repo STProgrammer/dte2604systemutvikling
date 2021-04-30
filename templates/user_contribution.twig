@@ -16,7 +16,7 @@
 
     <section>
         {# Mine bidrag til oppgaver i antall timer for denne gjeldende måned #}
-        {% if user.isAdmin or user.isProjectLeader or user.isGroupLeader == 3 %}
+        {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
             <div class="openContainerNoBorder text" id="timeTabell">
                 <h5 id="overskrift">Mine bidrag til oppgaver i antall timer for denne gjeldende måned</h5>
                 <table class="table" id="table">
@@ -28,7 +28,10 @@
                         <th>Slutttid</th>
                         <th>Total tid</th>
                         <th>Lokasjon</th>
-                        <th>Endre</th>
+                        <th>Godkjent time</th>
+                        {% if user.isAdmin() or user.isProjectLeader() %}
+                            <th>Endre</th>
+                        {% endif %}
                     </tr>
                     {% for hour in hours %}
                         {% if hour.taskID is not null and userToView.userID == hour.whoWorked %}
@@ -45,12 +48,14 @@
                                 {% else %}
                                     <td> Ikke godkjent</td>
                                 {% endif %}
+                        {% if user.isAdmin() or user.isProjectLeader() %}
                                 <td>
                                     <button class="buttons miniButtons" id="miniButtons"
                                             onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
                                         <img src="" alt=""> Rediger
                                     </button>
                                 </td>
+                        {% endif %}
                             </tr>
                             {# Kommentar bruker #}
                             <tr>
@@ -68,7 +73,8 @@
                             {# Endre kommentar fra leder #}
                             {% if user.isAdmin %}
                                 <tr>
-                                    <td colspan="8" rowspan="1" id="comment_form_boss_show" class="comment_form_boss_show">
+                                    <td colspan="8" rowspan="1" id="comment_form_boss_show"
+                                        class="comment_form_boss_show">
                                         <div class="container edit_commentBoss_hour text" id="edit_commentBoss_hour">
                                             <form method="post" id="edit_comment_hour" class="edit_comment_hour">
                                                 <input id="hourID" type="hidden" name="hourID"
@@ -85,8 +91,10 @@
                                             </form>
                                         </div>
                                     </td>
-                                    <td colspan="1" id="comment_btn_back_boss" class="comment_btn_back_boss style_CommentBackBtnBoss">
-                                        Gå tilbake:</td>
+                                    <td colspan="1" id="comment_btn_back_boss"
+                                        class="comment_btn_back_boss style_CommentBackBtnBoss">
+                                        Gå tilbake:
+                                    </td>
                                 </tr>
                             {% endif %}
                         {% endif %}

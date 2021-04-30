@@ -237,7 +237,7 @@ class HourManager
         }
         $startTime = date("Y-m-d H:i:s");
         $timeWorked = 0;
-        $activated = 1;
+        $activated = 0;
         $location = $this->request->request->get('Lokasjon');
         $phaseID = NULL;
         $absenceType = NULL;

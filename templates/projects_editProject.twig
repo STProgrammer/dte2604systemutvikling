@@ -67,6 +67,9 @@
                         <td>{{ member.getUserId() }}</td>
                         <td>{{ member.getFirstName }}</td>
                         <td>{{ member.getLastName }}</td>
+
+                        {# TODO HALIL KAN DU SE PÅ DETTE. Gruppeleder får opp sine timer #}
+
                         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
                             <td>
                                 <button class="buttons miniButtons" id="contribution"
@@ -128,8 +131,8 @@
             </table>
         </div>
 
-        {# LEGG TIL NY OPPGAVE #}
-        {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
+        {# LEGG TIL NY OPPGAVE  - Fjernet tillatelse for gruppeleder (hadde ikke tillatelse i db)#}
+        {% if user.isAdmin() or user.isProjectLeader() %}
             <div class="container container_menu_form_project text" id="add_user_to_project">
                 <form method="post" id="new_task_form">
                     <b class="overskriftLiten">Legg til ny oppgave: </b><br>
@@ -204,8 +207,8 @@
         </table>
     </div>
 
-    {# LEGG TIL FASE #}
-    {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
+    {# LEGG TIL FASE - Fjernet tillatelse for gruppeleder (hadde ikke tillatelse i db) #}
+    {% if user.isAdmin() or user.isProjectLeader() %}
         <div class="container container_menu_form_project text" id="add_phase_to_project">
             <b class="overskriftLiten">Legg til ny fase</b>
             <form method="post" id="phase_register_form">
@@ -312,7 +315,6 @@
     </div>
 
     {# LEGG TIL GRUPPE #}
-    {# {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %} #}
     {% if user.isAdmin() or user.isProjectLeader() %}
         <div class="container container_menu_form_project text" id="add_user_to_project">
             <div class="marginbotton">
