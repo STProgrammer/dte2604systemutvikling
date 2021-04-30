@@ -5,6 +5,7 @@ require_once "includes.php";
 $hourManager = new HourManager($db, $request, $session);
 $userManager = new UserManager($db, $request, $session);
 $taskManager = new TaskManager($db, $request, $session);
+$reportGenerator = new ReportGenerator($db, $request, $session);
 
 if ($user) {
     $userID = $user->getUserId($user);
@@ -21,6 +22,20 @@ if ($user) {
     $hourID = $hourManager->activeTimeregForUser($userID);
 
     $count = $hourManager->countSumHoursFromToday();
+
+    //SUM OF ALL HOURS
+    $statistics = $reportGenerator->getAllUserStatistics();
+    $sum = strtotime('00:00:00');
+    $sum2 = 0;
+    foreach ($statistics as $statistic){
+        $sum1 = strtotime($statistic->sumThisMonth) - $sum;
+        $sum2 = $sum2 + $sum1;
+    }
+    $sum3=$sum+$sum2;
+    $sumTime =  date("H:i:s",$sum3);
+
+    //PAYMENT
+    $sumPayment = intval($sumTime) * 1500;
 
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
@@ -59,7 +74,7 @@ if ($user) {
     } else {
         echo $twig->render('projectleader_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourManager' => $hourManager,
-                'count' => $count,
+                'count' => $count,  'sumTime' => $sumTime, 'sumPayment' => $sumPayment,
 
                 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
 

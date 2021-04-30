@@ -13,13 +13,13 @@ if ($user) {
 
     $userID = $user->getUserId($user);
     $users = $userManager->getAllUsers('dateRegistered');
-    $statistics = $reportGenerator->getAllUserStatistics();
 
     $hours = $hourManager->getAllHours();
     $categories = $taskManager->getCategories();
     $tasks = $taskManager->getAllTasks();
 
     //SUM OF ALL HOURS
+    $statistics = $reportGenerator->getAllUserStatistics();
     $sum = strtotime('00:00:00');
     $sum2 = 0;
     foreach ($statistics as $statistic){
@@ -32,14 +32,14 @@ if ($user) {
     //PAYMENT
     $sumPayment = intval($sumTime) * 1500;
 
+    $array = array( 'session' => $session, 'request' => $request,
+            'user' => $user, 'users' => $users,
+            'hours' => $hours, 'hourManager' => $hourManager, 'sumTime' => $sumTime, 'sumPayment' => $sumPayment,
+            'tasks' => $tasks);
 
     if ($user->isAdmin()) {
         try {
-            echo $twig->render('admin_dashboard.twig',
-                array( 'session' => $session, 'request' => $request,
-                    'user' => $user, 'users' => $users,
-                    'hours' => $hours, 'hourManager' => $hourManager, 'sumTime' => $sumTime, 'sumPayment' => $sumPayment,
-                    'tasks' => $tasks));
+            echo $twig->render('admin_dashboard.twig', $array);
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
             echo $e->getMessage();
         }
