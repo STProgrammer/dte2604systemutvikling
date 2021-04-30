@@ -25,7 +25,7 @@
                             <td> {{ hour.location }}</td>
                             <td> {{ hour.startTime }}</td>
                             <td> {{ hour.endTime }}</td>
-                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }}</td>
+                            <td> {{ hour.timeWorked }}</td>
                             {% if hour.activated == true %}
                                 <td>Godkjent</td>
                             {% else %}
@@ -180,7 +180,7 @@
                             <td> {{ hour.projectName }} </td>
                             <td> {{ hour.startTime }} </td>
                             <td> {{ hour.endTime }} </td>
-                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            <td> {{ hour.timeWorked }} </td>
                             <td> {{ hour.getLocation }} </td>
                             {% if hour.isActivated %}
                                 <td> Godkjent</td>
@@ -336,7 +336,7 @@
                                 <td> {{ hour.location }}</td>
                                 <td> {{ hour.startTime }}</td>
                                 <td> {{ hour.endTime }}</td>
-                                <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }}</td>
+                                <td> {{ hour.timeWorked }}</td>
                                 {% if hour.activated == true %}
                                     <td>Godkjent</td>
                                 {% else %}
@@ -499,7 +499,7 @@
                                     <td> {{ hour.whoWorkedName }}</td>
                                     <td> {{ hour.startTime }}</td>
                                     <td> {{ hour.endTime }}</td>
-                                    <td>{{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }}</td>
+                                    <td>{{ hour.timeWorked }}</td>
                                     <td> {{ hour.getLocation }}</td>
                                     {% if hour.isActivated %}
                                         <td>Godkjent</td>

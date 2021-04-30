@@ -15,17 +15,17 @@
         <div class="container container_medium cursor" onclick="location.href='reports.php';" >
             <img src="images/icon_databse.png" width="40px" alt="Icon"/>
             <h6>Totale lønnsutgifter denne måned</h6>
-            <div class="text">
-
+            <div class="text_bigtime">
+                {{ sumPayment }}
             </div>
         </div>
 
-        {# Totale timeregistreringer i dag #}
+        {# Totale timeregistreringer denne måned #}
         <div class="container container_medium cursor" onclick="location.href='timeregistration.php';">
             <img src="images/icon_clock.png" width="40px" alt="Icon"/>
-            <h6>Totale timeregistreringer i dag</h6>
+            <h6>Totale timeregistreringer denne måned</h6>
             <div class="text_bigtime">
-                {{ count.count }}
+                {{ sumTime }}
             </div>
         </div>
 

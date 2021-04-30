@@ -390,7 +390,19 @@ input#submit {
     cursor: pointer;
     white-space: nowrap;
 }
+input#reg_btn {
+    font-family: Segoe UI, serif; color: white; font-size: 0.8rem;
+    background: #599871;
+    width: 15em;
+    padding: 2em 15em 2em 5em;
+    margin: 0.5em 0.5em 0.5em 0em;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
 
+}
 input#password {
     font-family: Segoe UI, serif;
     width: 70%;

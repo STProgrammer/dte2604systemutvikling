@@ -73,6 +73,38 @@ class HourManager
         }
     }
 
+//    // GET Total Hours Worked
+//    public function getTotalHoursWorked(): array {
+//        $timeWorkedSUM = 0;
+//
+//        try {
+//            $stmt = $this->dbase->prepare("SELECT Hours.timeWorked, Hours.whoWorked, Hours.activated, Hours.activated, Users.firstName, Users.lastName,
+//                CONCAT(Users.firstName, ' ', Users.lastName) as whoWorkedName,
+//                CASE WHEN SUM(timeWorked) is null then '00:00'
+//                    ELSE
+//                        TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i')
+//                    END as sumTimeWorked,
+//                CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00'
+//                    ELSE
+//                        TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i')
+//                    END as sumThisMonth FROM Hours
+//                LEFT JOIN Users on Users.userID = Hours.whoWorked
+//                WHERE Users.userType > 0 AND Users.isVerifiedByAdmin = 1 GROUP BY Users.userID ORDER BY whoWorkedName");
+//            $stmt->execute();
+//            if ($hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+//                return $hours;
+//            } else {
+//                $this->notifyUser("Brukere ble ikke funnet", "Kunne ikke hente brukere");
+//                //return new Project();
+//                return array();
+//            }
+//        } catch (Exception $e) {
+//            $this->NotifyUser("En feil oppstod, på getAllUserStatistics()", $e->getMessage());
+//            //return new Project();
+//            return array();
+//        }
+//    }
+
     // GET ALL Hours With All Users --------------------------------------------------------------------------------
     public function getAllHours()
     {

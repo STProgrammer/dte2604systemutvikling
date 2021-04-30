@@ -19,12 +19,16 @@
                 <form method="post" id="register_time_form">
                     <select name="Kategori" id="employee_dashboard_category">
                         <option value="" disabled selected hidden>Jobbet med hva</option>
-                        <option value="Administrativt">Administrativt</option>
-                        <option value="Kurs">Kurs</option>
-                        <option value="Møte">Møte</option>
-                        <option value="Prosjekt">Prosjekt</option>
-                        <option value="Rapportering">Rapportering</option>
-                        <option value="Selvstudie">Selvstudie</option>
+                        {% for cat in taskCategories %}
+                            <option value= {{ cat.categoryName }}> {{ cat.categoryName }}</option>
+{#                        <option value="Hjemmekontor">Administrativt</option>#}
+{#                        <option value="Prosjekt">Prosjekt</option>#}
+{#                        <option value="Administrativt">Administrativt</option>#}
+{#                        <option value="Kurs">Kurs</option>#}
+{#                        <option value="Møte">Møte</option>#}
+{#                        <option value="Rapportering">Rapportering</option>#}
+{#                        <option value="Selvstudie">Selvstudie</option>#}
+                        {% endfor %}
                     </select>
                     <select name="taskID" id="employee_dashboard_location"></select>
                     <br><input type="text" name="Lokasjon" value="" placeholder="Sted" maxlength=30 required

@@ -550,16 +550,16 @@ WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
         try {
             $stmt = $this->db->prepare("SELECT * FROM TaskCategories");
             $stmt->execute();
-            if( $categories = $stmt->fetchAll()) {
+            if( $categories = $stmt->fetchAll(PDO::FETCH_CLASS, "TaskCategory")) {
                 return $categories;
             }
             else {
                 $this->notifyUser("categories not found", "Kunne ikke hente kategorier");
-                return array();
+                return $categories;
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getCategoryName()", $e->getMessage());
-            return array();
+            return $categories();
         }
     }
 
