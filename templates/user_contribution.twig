@@ -5,20 +5,11 @@
         <div>
             <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
         </div>
-    </section>
 
-    <section>
-        <div>
-            <h6 class="marginleft ">Bidrag fra bruker:</h6>
-            <h4 class="marginleft greenText">{{ userToView.getLastName }}, {{ userToView.getFirstName }} </h4><br>
-        </div>
-    </section>
-
-    <section>
         {# Mine bidrag til oppgaver i antall timer for denne gjeldende måned #}
         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
             <div class="openContainerNoBorder text" id="timeTabell">
-                <h5 id="overskrift">Mine bidrag til oppgaver i antall timer for denne gjeldende måned</h5>
+                <h5 id="overskrift">{{ userToView.getLastName }}, {{ userToView.getFirstName }} - sitt bidrag til oppgaver i antall timer for denne gjeldende måned</h5>
                 <table class="table" id="table">
                     <tr>
                         <th>Task Navn</th>
