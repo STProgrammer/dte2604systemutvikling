@@ -2,51 +2,59 @@
 {% block content %}
     <section class="admin_dashboard" id="admin_dashboard">
 
-        {# Totale lønnsutgifter i dag #}
-        <div class="container container_medium cursor" onclick="location.href='reports.php';" >
-            <h6>Totale lønnsutgifter i dag</h6>
+        {# Totale timeregistreringer i dag #}
+        <div class="container container_medium_admin cursor snow" onclick="location.href='timeregistration.php';">
+            <h6>Totale timeregistreringer i dag</h6>
             <div class="text_bigtime">
-                kr {{ sumPayment  / 30 }}
+                {{ sumTimeToday }}
             </div>
         </div>
 
-        {# Totale lønnsutgifter denne måned #}
-        <div class="container container_medium cursor" onclick="location.href='reports.php';" >
-            <h6>Totale lønnsutgifter denne måned</h6>
+        {# Totale lønnsutgifter i dag #}
+        <div class="container container_medium_admin cursor snow" onclick="location.href='reports.php';" >
+            <h6>Totale lønnsutgifter i dag</h6>
             <div class="text_bigtime">
-                kr {{ sumPayment }}
+                kr {{ sumPaymentToday }}
             </div>
         </div>
 
         {# Totale timeregistreringer denne måned #}
-        <div class="container container_medium cursor" onclick="location.href='timeregistration.php';">
+        <div class="container container_medium_admin cursor snow" onclick="location.href='timeregistration.php';">
             <h6>Totale timeregistreringer denne måned</h6>
             <div class="text_bigtime">
-                {{ sumTime }}
+                {{ sumTimeMonth }}
+            </div>
+        </div>
+
+        {# Totale lønnsutgifter denne måned #}
+        <div class="container container_medium_admin cursor snow" onclick="location.href='reports.php';" >
+            <h6>Totale lønnsutgifter denne måned</h6>
+            <div class="text_bigtime">
+                kr {{ sumPaymentMonth }}
             </div>
         </div>
 
         {# Feilmeldinger #}
-        <div class="container container_medium_long scroll cursor" onclick="location.href='reports.php';">
+        <div class="container container_medium_admin cursor snow scrollY" onclick="location.href='reports.php';">
             <h6>Feilmeldinger i dag</h6>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
+                    <p>Header: {{ header }}</p>
                 {% endfor %}
                 {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
+                    <p>Message: {{ message }}</p>
                 {% endfor %}
             {% endif %}
         </div>
 
         {# Registrer fravær / Rediger timeføringer #}
-        <div class="container container_medium cursor" onclick="location.href='userprofiles.php';">
+        <div class="container container_medium_admin cursor snow" onclick="location.href='userprofiles.php';">
             <h6>Registrer fravær / Rediger timeføringer </h6>
             <h6></h6>
         </div>
 
         {# Prosjekter og oppgaver #}
-        <div class="container container_medium_long scroll cursor" onclick="location.href='projects.php';">
+        <div class="container container_medium_admin cursor snow" onclick="location.href='projects.php';">
             <h6>Prosjekter og oppgaver</h6>
             <div class="text">
                 Se prosjekter og oppgaver
@@ -54,7 +62,7 @@
         </div>
 
         {# Nye brukere til godkjenning #}
-        <div class="container container_medium cursor" onclick="location.href='userprofiles.php?verify=1';">
+        <div class="container container_medium_admin cursor snow" onclick="location.href='userprofiles.php?verify=1';">
             <h6>Nye brukere til godkjenning</h6>
             <div class="text">
                 Brukere som skal godkjennes kommer her

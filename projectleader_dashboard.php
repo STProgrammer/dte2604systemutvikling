@@ -2,12 +2,12 @@
 
 require_once "includes.php";
 
-$hourManager = new HourManager($db, $request, $session);
-$userManager = new UserManager($db, $request, $session);
-$taskManager = new TaskManager($db, $request, $session);
-$reportGenerator = new ReportGenerator($db, $request, $session);
-
 if ($user) {
+    $hourManager = new HourManager($db, $request, $session);
+    $userManager = new UserManager($db, $request, $session);
+    $taskManager = new TaskManager($db, $request, $session);
+    $reportGenerator = new ReportGenerator($db, $request, $session);
+
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
 
@@ -21,7 +21,15 @@ if ($user) {
     $hour = $hourManager->getHour($hourId);
     $hourID = $hourManager->activeTimeregForUser($userID);
 
-    $count = $hourManager->countSumHoursFromToday();
+    //PAYMENT ---------------------------
+    $statistics = $reportGenerator->getAllUserStatistics();
+    $calculateDay = $hourManager->calculateDay($statistics);
+    $calculateMonth = $hourManager->calculateMonth($statistics);
+
+    $sumTimeToday = $calculateDay[1];
+    $sumPaymentToday = $calculateDay[0];
+    $sumTimeMonth = $calculateMonth[1];
+    $sumPaymentMonth = $calculateMonth[0];
 
     //SUM OF ALL HOURS
     $statistics = $reportGenerator->getAllUserStatistics();
@@ -74,7 +82,9 @@ if ($user) {
     } else {
         echo $twig->render('projectleader_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourManager' => $hourManager,
-                'count' => $count,  'sumTime' => $sumTime, 'sumPayment' => $sumPayment,
+
+                'sumTimeMonth' => $sumTimeMonth, 'sumPaymentMonth' => $sumPaymentMonth,
+                'sumTimeToday' => $sumTimeToday, 'sumPaymentToday' => $sumPaymentToday,
 
                 'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
 

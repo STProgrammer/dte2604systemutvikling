@@ -46,6 +46,28 @@
             </div>
         {% endif %}
 
+
+        {# Prosjekter og oppgaver #}
+        <div class="container container_medium_admin cursor snow" onclick="location.href='projects.php';">
+            <h6>Prosjekter og oppgaver</h6>
+            <div class="text">
+                Se prosjekter og oppgaver
+            </div>
+        </div>
+
+        {# Feilmeldinger #}
+        <div class="container container_medium_admin cursor snow scrollY" onclick="location.href='reports.php';">
+            <h6>Feilmeldinger i dag</h6>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <p>Header: {{ header }}</p>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>Message: {{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
         {# Mine siste timeregistreringer for innstemplinger #}
         <div class="openContainerNoBorder text" id="timeTabell">
             <h5>Mine siste timeregistreringer for innstemplinger </h5>
@@ -121,29 +143,6 @@
                     {% endif %}
                 {% endfor %}
             </table>
-        </div>
-
-        {# Prosjekter og oppgaver #}
-        <div class="container container_medium_long scroll">
-            <img src="images/icon_task.png" width="40px" alt="Icon"/>
-            <h6>Prosjekter og oppgaver</h6>
-            <div class="text">
-                Se prosjekter og oppgaver
-            </div>
-        </div>
-
-        {# Feilmeldinger #}
-        <div class="container container_medium_long scroll">
-            <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/>
-            <h6>Feilmeldinger i dag</h6>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
         </div>
 
     </section>

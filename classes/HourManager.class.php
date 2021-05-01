@@ -23,55 +23,114 @@ class HourManager
         $this->session->getFlashBag()->add('message', $strMessage);
     }
 
-    // CALCULATE TIME IN PHASE -------------------------------------------------
-    public function spentTimePhase($starTime, $endTime) { //blir brukt fra twig. Kalles fra user_contribution.twig
-        $startTime = new DateTime($starTime);
-        $endTime = new DateTime($endTime);
-
-        $hourCount = $endTime->diff($startTime);
-        return $hourCount->format('%H:%I');
-    }
-
-    // COUNT HOURS SUM FROM TODAY -------------------------------------------------
-    public function countSumHoursFromToday() { //antall timeføringer
-        $count = 0;
-        try {
-            $stmt = $this->dbase->prepare("SELECT count(*) as count FROM Hours WHERE startTime >= date_sub(now(), INTERVAL 1 day)");
-            $stmt->execute();
-            if ($count = $stmt->fetch()) {
-                return $count;
-            } else {
-                $this->notifyUser("Kunne ikke telle antall timer, ", "countSumHoursFromToday()");
-                return array();
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på countSumHoursFromToday()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
-            //return new Project();
-            return array();
+    //PAYMENT ---------------------------
+    function calculateDay($statistics): array
+    {
+        $array = array();
+        $sum0 = strtotime('00:00');
+        $sum2 = 0;
+        foreach ($statistics as $statistic) {
+            $sum1 = strtotime($statistic->sumTW) - $sum0;
+            $sum2 = $sum2 + $sum1;
         }
+        $sum3 = $sum0 + $sum2;
+        $sumTime = date("H:i", $sum3);
+
+        $timeprice = 1500;
+        $a = preg_split('/[: ]/', $sumTime);
+        $hour = $a[0];
+        $minute = $a[1];
+        $payment = $hour * 1500 + $minute * $timeprice / 60;
+        array_push($array, $payment, $sumTime);
+        return $array;
     }
 
-
-    // COUNT HOURS FROM TODAY -------------------------------------------------
-    public function countHoursFromToday() { //antall timer
-        $hoursTimeWorked = array();
-        try {
-            $stmt = $this->dbase->prepare("SELECT timeWorked FROM Hours WHERE startTime >= date_sub(now(), INTERVAL 1 month)");
-            $stmt->execute();
-            if ($hoursTimeWorked = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-                return $hoursTimeWorked;
-            } else {
-                $this->notifyUser("Kunne ikke telle antall timer, ", "countHoursFromToday()");
-                return array();
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på countHoursFromToday()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
-            //return new Project();
-            return array();
+    function calculateMonth($statistics): array
+    {
+        $array = array();
+        $sum0 = strtotime('00:00');
+        $sum2 = 0;
+        foreach ($statistics as $statistic) {
+            $sum1 = strtotime($statistic->sumThisMonth) - $sum0;
+            $sum2 = $sum2 + $sum1;
         }
+        $sum3 = $sum0 + $sum2;
+        $sumTime = date("H:i", $sum3);
+
+        $timeprice = 1500;
+        $a = preg_split('/[: ]/', $sumTime);
+        $hour = $a[0];
+        $minute = $a[1];
+        $payment = $hour * 1500 + $minute * $timeprice / 60;
+        array_push($array, $payment, $sumTime);
+        return $array;
     }
+
+//    // CALCULATE TIME IN PHASE -------------------------------------------------
+//    public function spentTimePhase($starTime, $endTime) { //blir brukt fra twig. Kalles fra user_contribution.twig
+//        $startTime = new DateTime($starTime);
+//        $endTime = new DateTime($endTime);
+//
+//        $hourCount = $endTime->diff($startTime);
+//        return $hourCount->format('%H:%I');
+//    }
+
+//    // COUNT HOURS SUM FROM THIS MONTH -------------------------------------------------
+//    public function countSumHoursFromThisMonth() { //antall timeføringer
+//        $hoursTimeWorked = array();
+//        try {
+//            $stmt = $this->dbase->prepare("SELECT Hours.timeWorked, Hours.whoWorked, Hours.activated, Users.firstName, Users.lastName,
+//                CONCAT(Users.firstName, ' ', Users.lastName) as whoWorkedName,
+//                CASE WHEN SUM(timeWorked) is null then '00:00:00'
+//                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i:%s') END as sumTimeWorked,
+//                CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00:00'
+//                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i:%s')
+//                END as sumThisDay FROM Hours
+//                LEFT JOIN Users on Users.userID = Hours.whoWorked
+//                WHERE Users.userType > 0 AND Users.isVerifiedByAdmin = 1 GROUP BY Users.userID ORDER BY whoWorkedName");
+//            $stmt->execute();
+//            if ($hoursTimeWorked = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+//                return $hoursTimeWorked;
+//            } else {
+//                $this->notifyUser("Kunne ikke telle antall timer, ", "countHoursFromToday()");
+//                return array();
+//            }
+//        } catch (Exception $e) {
+//            $this->NotifyUser("En feil oppstod, på countHoursFromToday()", $e->getMessage());
+//            print $e->getMessage() . PHP_EOL;
+//            //return new Project();
+//            return array();
+//        }
+//    }
+
+
+//    // COUNT HOURS FROM TODAY -------------------------------------------------
+//    public function countHoursFromToday() { //antall timer
+//        $hoursTimeWorked = array();
+//        try {
+//            $stmt = $this->dbase->prepare("SELECT Hours.timeWorked, Hours.whoWorked, Hours.activated, Users.firstName, Users.lastName,
+//                CONCAT(Users.firstName, ' ', Users.lastName) as whoWorkedName,
+//                CASE WHEN SUM(timeWorked) is null then '00:00:00'
+//                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i:%s') END as sumTimeWorked,
+//                CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-%d') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00:00'
+//                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i:%s')
+//                END as sumThisDay FROM Hours
+//                LEFT JOIN Users on Users.userID = Hours.whoWorked
+//                WHERE Users.userType > 0 AND Users.isVerifiedByAdmin = 1 GROUP BY Users.userID ORDER BY whoWorkedName");
+//            $stmt->execute();
+//            if ($hoursTimeWorked = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+//                return $hoursTimeWorked;
+//            } else {
+//                $this->notifyUser("Kunne ikke telle antall timer, ", "countHoursFromToday()");
+//                return array();
+//            }
+//        } catch (Exception $e) {
+//            $this->NotifyUser("En feil oppstod, på countHoursFromToday()", $e->getMessage());
+//            print $e->getMessage() . PHP_EOL;
+//            //return new Project();
+//            return array();
+//        }
+//    }
 
 //    // GET Total Hours Worked
 //    public function getTotalHoursWorked(): array {
@@ -105,6 +164,7 @@ class HourManager
 //        }
 //    }
 
+
     // GET ALL Hours With All Users --------------------------------------------------------------------------------
     public function getAllHours()
     {
@@ -131,6 +191,33 @@ class HourManager
             return $hoursAll;
         }
     }
+
+//    // GET ALL Hours With All Users FOR TODAY--------------------------------------------------------------------------------
+//    public function getAllHoursForToday()
+//    {
+//        $hoursAll = array();
+//        $query = 'SELECT Hours.*, hourTasks.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName,
+//                    hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
+//                    FROM Hours
+//                    LEFT JOIN Users as workers on workers.userID = Hours.whoWorked
+//                    LEFT JOIN Tasks as hourTasks on hourTasks.taskID = Hours.taskID
+//                    LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE Hours.stampingStatus = 1
+//                    ORDER BY Hours.startTime DESC';
+//        try {
+//            $stmt = $this->dbase->prepare($query);
+//            $stmt->execute();
+//            if ($hoursAll = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
+//                return $hoursAll;
+//            } else {
+//                $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente oppgaver");
+//                return $hoursAll;
+//            }
+//        } catch (Exception $e) {
+//            $this->NotifyUser("En feil oppstod, på getAllHours()", $e->getMessage());
+//            print $e->getMessage() . PHP_EOL;
+//            return $hoursAll;
+//        }
+//    }
 
     // GET ALL TASKS -------------------------------------------------------------------------------------
     public function getHours($taskId = null, $whoWorked = null, $phaseId = null, $startTime = null, $endTime = null,
@@ -204,7 +291,7 @@ class HourManager
         }
         if (!is_null($orderBy)) {
             $query .= " ORDER BY " . $orderBy . " DESC";
-        }else{
+        } else {
             $query .= " ORDER BY Hours.startTime DESC"; //hvis null så DESC på startime
         }
         if (!is_null($limit)) {
@@ -336,7 +423,9 @@ class HourManager
             return array();
         }
     }
-    public function totalTimeWorked($projectName) {
+
+    public function totalTimeWorked($projectName)
+    {
         try {
             $stmt = $this->dbase->prepare("SELECT DISTINCT Users.*, CONCAT(Users.firstName, ' ', Users.lastName) as whoWorkedName, CASE WHEN hrs.sumTW is null then '00:00' ELSE hrs.sumTW END as sumTW FROM Users 
 LEFT JOIN UsersAndGroups ON Users.userID = UsersAndGroups.userID 
@@ -360,8 +449,6 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     }
 
     // TOTAL TIME USERS
-
-
 
 
     // STOP TIME FOR USER ---------------------------------------------------------------------------
@@ -395,22 +482,22 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
         }
     }
 
-    private function updateTimeWorkedOnTask(?Task $task, $timeStr = null) {
+    private function updateTimeWorkedOnTask(?Task $task, $timeStr = null)
+    {
         if (is_null($task)) {
             return false;
-        }
-        else {
+        } else {
             $taskID = $task->getTaskID();
             $parentTaskID = $task->getParentTask();
-           // $timestamp = strtotime($timeStr);
-           // $hours = date('h', $timestamp) - 12;
+            // $timestamp = strtotime($timeStr);
+            // $hours = date('h', $timestamp) - 12;
             try {
                 $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = (SELECT SUM(TIME_TO_SEC(timeWorked)/3600) total FROM Hours WHERE taskID = :taskID) WHERE taskID = :taskID;
                                  UPDATE Tasks SET timeSpent = (SELECT SUM(timeSpent) total FROM Tasks WHERE parentTask = :parentTaskID) WHERE taskID = :parentTaskID;");
                 //$stmt->bindParam(':hours', $hours, PDO::PARAM_INT);
                 $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
-                $stmt->bindParam(':parentTaskID',  $parentTaskID, PDO::PARAM_INT);
-             //   $stmt->closeCursor();
+                $stmt->bindParam(':parentTaskID', $parentTaskID, PDO::PARAM_INT);
+                //   $stmt->closeCursor();
                 if ($stmt->execute()) {
                     $this->notifyUser("Tidsbrukt på task oppdatert");
                     return true;
@@ -478,7 +565,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
         $hourID = $this->request->request->get('hourID');
         $commentBoss = $this->request->request->get('commentBoss');
         try {
-            $stmt = $this->dbase->prepare( "UPDATE Hours SET commentBoss = :commentBoss WHERE hourID = :hourID;");
+            $stmt = $this->dbase->prepare("UPDATE Hours SET commentBoss = :commentBoss WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':commentBoss', $commentBoss);
             if ($stmt->execute()) {
@@ -498,7 +585,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     public function checkIfActiveTimereg($userID): array
     {
         try {
-            $stmt = $this->dbase->prepare( "SELECT stampingStatus, hourID FROM Hours WHERE whoWorked = :userID ;");
+            $stmt = $this->dbase->prepare("SELECT stampingStatus, hourID FROM Hours WHERE whoWorked = :userID ;");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if ($timeregCheck = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
@@ -517,11 +604,11 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     }
 
     //Edit the hour, deactivate old
-    public function changeTimeForUser($hourID, $startTime, $endTime, ?Task $task) : bool
+    public function changeTimeForUser($hourID, $startTime, $endTime, ?Task $task): bool
     {
         $isChanged = 1;
         try {
-            $stmt = $this->dbase->prepare( "UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID;");
+            $stmt = $this->dbase->prepare("UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
@@ -545,6 +632,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             return false;
         }
     }
+
     public function duplicateToLog(Hour $hour): bool
     {
         $hourID = $hour->getHourID();
@@ -604,10 +692,10 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     }
 
     //Deaktivere en timereg.
-    public function deleteTimeForUser($hourID, ?Task $task) : bool
+    public function deleteTimeForUser($hourID, ?Task $task): bool
     {
         try {
-            $stmt = $this->dbase->prepare( "DELETE FROM Hours WHERE hourID = :hourID;
+            $stmt = $this->dbase->prepare("DELETE FROM Hours WHERE hourID = :hourID;
                                         ");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             if ($stmt->execute()) {

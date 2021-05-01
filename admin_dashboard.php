@@ -1,6 +1,7 @@
 <?php
 
 require_once "includes.php";
+
 if ($user) {
 
     $hourManager = new HourManager($db, $request, $session);
@@ -16,33 +17,33 @@ if ($user) {
     $categories = $taskManager->getCategories();
     $tasks = $taskManager->getAllTasks();
 
-    //SUM OF ALL HOURS
+
+    //PAYMENT ---------------------------
     $statistics = $reportGenerator->getAllUserStatistics();
-    $sum = strtotime('00:00:00');
-    $sum2 = 0;
-    foreach ($statistics as $statistic){
-        $sum1 = strtotime($statistic->sumThisMonth) - $sum;
-        $sum2 = $sum2 + $sum1;
-    }
-    $sum3=$sum+$sum2;
-    $sumTime =  date("H:i:s",$sum3);
+    $calculateDay = $hourManager->calculateDay($statistics);
+    $calculateMonth = $hourManager->calculateMonth($statistics);
 
-    //PAYMENT
-    $sumPayment = intval($sumTime) * 1500;
+    $sumTimeToday = $calculateDay[1];
+    $sumPaymentToday = $calculateDay[0];
+    $sumTimeMonth = $calculateMonth[1];
+    $sumPaymentMonth = $calculateMonth[0];
 
-    $array = array( 'session' => $session, 'request' => $request,
+    //TWIG ----------------------------------------------------
+    $array = array('session' => $session, 'request' => $request,
         'user' => $user, 'users' => $users,
-        'hours' => $hours, 'hourManager' => $hourManager, 'sumTime' => $sumTime, 'sumPayment' => $sumPayment,
+        'hours' => $hours, 'hourManager' => $hourManager,
+        'sumTimeMonth' => $sumTimeMonth, 'sumPaymentMonth' => $sumPaymentMonth,
+        'sumTimeToday' => $sumTimeToday, 'sumPaymentToday' => $sumPaymentToday,
         'tasks' => $tasks);
 
-
-}
-
-
-if (!empty($twig)) {
-    try {
-        echo $twig->render('admin_dashboard.twig', $array);
-    } catch (LoaderError | RuntimeError | SyntaxError $e) {
-        echo $e->getMessage();
+    if (!empty($twig)) {
+        try {
+            echo $twig->render('admin_dashboard.twig', $array);
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            echo $e->getMessage();
+        }
     }
 }
+
+
+

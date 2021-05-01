@@ -21,17 +21,17 @@
                 {% for hour in hours %}
                     {% if hour.taskId is null and hour.whoWorked == userID %}
                         <tr>
-                            <td><b> {{ hour.taskType }} </b></td>
-                            <td> {{ hour.location }}</td>
-                            <td> {{ hour.startTime }}</td>
-                            <td> {{ hour.endTime }}</td>
-                            <td> {{ hour.timeWorked }}</td>
+                            <td id="backgroundColor"><b> {{ hour.taskType }} </b></td>
+                            <td id="backgroundColor"> {{ hour.location }}</td>
+                            <td id="backgroundColor"> {{ hour.startTime }}</td>
+                            <td id="backgroundColor"> {{ hour.endTime }}</td>
+                            <td id="backgroundColor"> {{ hour.timeWorked }}</td>
                             {% if hour.activated == true %}
-                                <td>Godkjent</td>
+                                <td id="backgroundColor">Godkjent</td>
                             {% else %}
-                                <td>Ikke godkjent enda</td>
+                                <td id="backgroundColor">Ikke godkjent enda</td>
                             {% endif %}
-                            <td>
+                            <td id="backgroundColor">
                                 <button class="buttons miniButtons" id="miniButtons"
                                         onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
                                     <img src="" alt=""> Rediger
@@ -39,12 +39,12 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="noNthColor">
                             {# Endre kommentar fra bruker #}
                             <td colspan="6" rowspan="1" id="comment_user" class="comment_user">
                                 >>Endre<< Kommentar fra {{ hour.whoWorkedName }}: <i>{{ hour.comment }} </i></td>
                         </tr>
-                        <tr>
+                        <tr class="noNthColor">
                             {# Endre kommentar fra leder #}
                             <td colspan="6" rowspan="1" id="comment_admin" class="comment_admin">
                                 {% if user.isAdmin %}
@@ -175,31 +175,31 @@
                 {% for hour in hours %}
                     {% if hour.taskId is not null %}
                         <tr>
-                            <td><b> {{ hour.taskName }} </b></td>
-                            <td> {{ hour.parentTask }} </td>
-                            <td> {{ hour.projectName }} </td>
-                            <td> {{ hour.startTime }} </td>
-                            <td> {{ hour.endTime }} </td>
-                            <td> {{ hour.timeWorked }} </td>
-                            <td> {{ hour.getLocation }} </td>
+                            <td id="backgroundColor"><b> {{ hour.taskName }} </b></td>
+                            <td id="backgroundColor"> {{ hour.parentTask }} </td>
+                            <td id="backgroundColor"> {{ hour.projectName }} </td>
+                            <td id="backgroundColor"> {{ hour.startTime }} </td>
+                            <td id="backgroundColor"> {{ hour.endTime }} </td>
+                            <td id="backgroundColor"> {{ hour.timeWorked }} </td>
+                            <td id="backgroundColor"> {{ hour.getLocation }} </td>
                             {% if hour.isActivated %}
-                                <td> Godkjent</td>
+                                <td id="backgroundColor"> Godkjent</td>
                             {% else %}
-                                <td> Ikke godkjent</td>
+                                <td id="backgroundColor"> Ikke godkjent</td>
                             {% endif %}
-                            <td>
+                            <td id="backgroundColor">
                                 <button class="buttons miniButtons" id="miniButtons"
                                         onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
                                     <img src="" alt=""> Rediger
                                 </button>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="noNthColor">
                             {# Endre kommentar fra bruker #}
                             <td colspan="8" rowspan="1" id="comment_user1" class="comment_user1">
                                 >>Endre<< Kommentar fra {{ hour.whoWorkedName }}: <i>{{ hour.comment }} </i></td>
                         </tr>
-                        <tr>
+                        <tr class="noNthColor">
                             {# Endre kommentar fra leder #}
                             <td colspan="8" rowspan="1" id="comment_admin1" class="comment_admin1">
                                 {% if user.isAdmin %}
@@ -331,18 +331,18 @@
                     {% for hour in hoursAll %}
                         {% if hour.taskId is null %}
                             <tr>
-                                <td><b> {{ hour.whoWorkedName }}</b></td>
-                                <td> {{ hour.taskType }}</td>
-                                <td> {{ hour.location }}</td>
-                                <td> {{ hour.startTime }}</td>
-                                <td> {{ hour.endTime }}</td>
-                                <td> {{ hour.timeWorked }}</td>
+                                <td id="backgroundColor"><b> {{ hour.whoWorkedName }}</b></td>
+                                <td id="backgroundColor"> {{ hour.taskType }}</td>
+                                <td id="backgroundColor"> {{ hour.location }}</td>
+                                <td id="backgroundColor"> {{ hour.startTime }}</td>
+                                <td id="backgroundColor"> {{ hour.endTime }}</td>
+                                <td id="backgroundColor"> {{ hour.timeWorked }}</td>
                                 {% if hour.activated == true %}
-                                    <td>Godkjent</td>
+                                    <td id="backgroundColor">Godkjent</td>
                                 {% else %}
-                                    <td>Ikke godkjent enda</td>
+                                    <td id="backgroundColor">Ikke godkjent enda</td>
                                 {% endif %}
-                                <td>
+                                <td id="backgroundColor">
                                     <button class="buttons miniButtons" id="miniButtons"
                                             onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
                                         <img src="" alt=""> Rediger
@@ -350,13 +350,13 @@
                                 </td>
                             </tr>
 
-                            <tr>
+                            <tr class="noNthColor">
                                 {# Endre kommentar fra bruker #}
                                 <td colspan="6" rowspan="1" id="comment_user2" class="comment_user2">
                                     >>Endre<< Kommentar fra {{ hour.whoWorkedName }}: <i>{{ hour.comment }} </i>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="noNthColor">
                                 {# Endre kommentar fra leder #}
                                 <td colspan="6" rowspan="1" id="comment_admin2" class="comment_admin2">
                                     {% if user.isAdmin %}
@@ -492,21 +492,21 @@
                     {% if user.isAdmin or user.isProjectLeader %}
                         {% for hour in hoursAll %}
                             {% if hour.taskId is not null %}
-                                <tr>
-                                    <td><b> {{ hour.taskName }} </b></td>
-                                    <td> {{ hour.parentTask }}</td>
-                                    <td> {{ hour.projectName }}</td>
-                                    <td> {{ hour.whoWorkedName }}</td>
-                                    <td> {{ hour.startTime }}</td>
-                                    <td> {{ hour.endTime }}</td>
-                                    <td>{{ hour.timeWorked }}</td>
-                                    <td> {{ hour.getLocation }}</td>
+                                <tr class="noNthColor">
+                                    <td id="backgroundColor"><b> {{ hour.taskName }} </b></td>
+                                    <td id="backgroundColor"> {{ hour.parentTask }}</td>
+                                    <td id="backgroundColor"> {{ hour.projectName }}</td>
+                                    <td id="backgroundColor"> {{ hour.whoWorkedName }}</td>
+                                    <td id="backgroundColor"> {{ hour.startTime }}</td>
+                                    <td id="backgroundColor"> {{ hour.endTime }}</td>
+                                    <td id="backgroundColor">{{ hour.timeWorked }}</td>
+                                    <td id="backgroundColor"> {{ hour.getLocation }}</td>
                                     {% if hour.isActivated %}
-                                        <td>Godkjent</td>
+                                        <td id="backgroundColor">Godkjent</td>
                                     {% else %}
-                                        <td>Ikke godkjent enda</td>
+                                        <td id="backgroundColor">Ikke godkjent enda</td>
                                     {% endif %}
-                                    <td>
+                                    <td id="backgroundColor">
                                         <button class="buttons miniButtons" id="miniButtons"
                                                 onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
                                             <img src="" alt=""> Rediger
@@ -514,13 +514,13 @@
                                     </td>
                                 </tr>
 
-                                <tr>
+                                <tr class="noNthColor">
                                     {# Endre kommentar fra bruker #}
                                     <td colspan="8" rowspan="1" id="comment_user3" class="comment_user3">
                                         >>Endre<< Kommentar fra {{ hour.whoWorkedName }}: <i>{{ hour.comment }} </i>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr class="noNthColor">
                                     {# Endre kommentar fra leder #}
                                     <td colspan="8" rowspan="1" id="comment_admin3" class="comment_admin3">
                                         {% if user.isAdmin %}
