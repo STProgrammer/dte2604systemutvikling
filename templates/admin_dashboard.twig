@@ -4,7 +4,6 @@
 
         {# Totale lønnsutgifter i dag #}
         <div class="container container_medium cursor" onclick="location.href='reports.php';" >
-            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
             <h6>Totale lønnsutgifter i dag</h6>
             <div class="text_bigtime">
                 kr {{ sumPayment  / 30 }}
@@ -13,7 +12,6 @@
 
         {# Totale lønnsutgifter denne måned #}
         <div class="container container_medium cursor" onclick="location.href='reports.php';" >
-            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
             <h6>Totale lønnsutgifter denne måned</h6>
             <div class="text_bigtime">
                 kr {{ sumPayment }}
@@ -22,7 +20,6 @@
 
         {# Totale timeregistreringer denne måned #}
         <div class="container container_medium cursor" onclick="location.href='timeregistration.php';">
-            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
             <h6>Totale timeregistreringer denne måned</h6>
             <div class="text_bigtime">
                 {{ sumTime }}
@@ -31,7 +28,6 @@
 
         {# Feilmeldinger #}
         <div class="container container_medium_long scroll cursor" onclick="location.href='reports.php';">
-            <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/>
             <h6>Feilmeldinger i dag</h6>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
@@ -45,14 +41,12 @@
 
         {# Registrer fravær / Rediger timeføringer #}
         <div class="container container_medium cursor" onclick="location.href='userprofiles.php';">
-            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
             <h6>Registrer fravær / Rediger timeføringer </h6>
             <h6></h6>
         </div>
 
         {# Prosjekter og oppgaver #}
         <div class="container container_medium_long scroll cursor" onclick="location.href='projects.php';">
-            <img src="images/icon_task.png" width="40px" alt="Icon"/>
             <h6>Prosjekter og oppgaver</h6>
             <div class="text">
                 Se prosjekter og oppgaver
@@ -61,7 +55,6 @@
 
         {# Nye brukere til godkjenning #}
         <div class="container container_medium cursor" onclick="location.href='userprofiles.php?verify=1';">
-            <img src="images/icon_verify_user.png" width="40px" alt="Icon"/>
             <h6>Nye brukere til godkjenning</h6>
             <div class="text">
                 Brukere som skal godkjennes kommer her
