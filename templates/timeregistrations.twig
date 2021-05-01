@@ -6,7 +6,7 @@
 
         {# Mine timeregistreringer fra gjeldende måned fra innstemplinger #}
         {% if not user.isAdmin %}
-        <div class="openContainerNoBorder text scrollY" id="timeTabell">
+        <div class="timeTable text scrollY" id="timeTabell">
             <h5 id="overskrift">Mine timeregistreringer fra innstemplinger</h5>
             <table class="table" id="table">
                 <tr>
@@ -38,6 +38,7 @@
                                 </button>
                             </td>
                         </tr>
+
 
                         <tr class="noNthColor">
                             {# Endre kommentar fra bruker #}
@@ -158,7 +159,7 @@
 
         {# Mine timeregistreringer fra gjeldende måned for oppgavebidrag #}
         {% if user.isAdmin or user.isProjectLeader or user.userType == 3 %}
-        <div class="openContainerNoBorder text scrollY" id="timeTabell">
+        <div class="timeTable text scrollY" id="timeTabell">
             <table class="table" id="table">
                 <h5 id="overskrift">Mine timeregistreringer for oppgavebidrag</h5>
                 <tr>
@@ -315,7 +316,7 @@
 
         {# Timeregistreringer for alle brukere for innstemplinger #}
         {% if user.isAdmin or user.isProjectLeader %}
-            <div class="openContainerNoBorder text scrollY" id="timeTabell">
+            <div class="timeTable text scrollY" id="timeTabell">
                 <h5 id="overskrift">Timeregistreringer for alle brukere for innstemplinger</h5>
                 <table class="table" id="table">
                     <tr>
@@ -327,6 +328,7 @@
                         <th>Antall timer</th>
                         <th>Godkjent</th>
                         <th>Endre</th>
+                        <th>Godkjen timen</th>
                     </tr>
                     {% for hour in hoursAll %}
                         {% if hour.taskId is null %}
@@ -344,10 +346,15 @@
                                 {% endif %}
                                 <td id="backgroundColor">
                                     <button class="buttons miniButtons" id="miniButtons"
-                                            onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
-                                        <img src="" alt=""> Rediger
+                                            onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">Rediger
                                     </button>
                                 </td>
+                                {% if user.isAdmin %}
+                                    <td id="backgroundColor">
+                                     <button class="buttons miniButtons" id="miniButtons"
+                                             onclick="location.href='verifyHour.php?hourID={{ hour.getHourID }}">Godkjen</button>
+                                    </td>
+                                {% endif %}
                             </tr>
 
                             <tr class="noNthColor">
@@ -474,7 +481,7 @@
 
         {# Timeregistreringer for alle brukere for denne måned for oppgavebidrag #}
         {% if user.isAdmin or user.isProjectLeader %}
-            <div class="openContainerNoBorder text scrollY" id="timeTabell">
+            <div class="timeTable text scrollY" id="timeTabell">
                 <table class="table" id="table">
                     <h5 id="overskrift">Timeregistreringer for alle brukere for oppgavebidrag</h5>
                     <tr>
@@ -488,6 +495,7 @@
                         <th>Lokasjon</th>
                         <th>Godkjent</th>
                         <th>Endre</th>
+                        <th>Godkjen timen</th>
                     </tr>
                     {% if user.isAdmin or user.isProjectLeader %}
                         {% for hour in hoursAll %}
@@ -512,6 +520,15 @@
                                             <img src="" alt=""> Rediger
                                         </button>
                                     </td>
+                                    {% if user.isAdmin %}
+                                        <td id="backgroundColor">
+                                            <button class="buttons miniButtons" id="miniButtons"
+                                                {# TODO verify må fikses virker ikke #}
+                                                    onclick="location.href='verifyHour.php?hourID={{ hour.getHourID }}">
+                                                <img src="" alt=""> Godkjen
+                                            </button>
+                                        </td>
+                                    {% endif %}
                                 </tr>
 
                                 <tr class="noNthColor">
@@ -639,7 +656,7 @@
 
         {# Slettede Timeregistreringer for alle brukere #}
         {% if user.isAdmin or user.isProjectLeader %}
-            <div class="openContainerNoBorder text scrollY" id="timeTabell">
+            <div class="timeTable text scrollY" id="timeTabell">
                 <table class="table" id="table">
                     <h5 id="overskrift">Slettede timeregistreringer for alle brukere</h5>
 
@@ -658,17 +675,17 @@
                     {% if user.isAdmin or user.isProjectLeader %}
                         {% for hour in deletedHours %}
 
-                                <tr>
-                                    <td> {{ hour.timeChanged }} </td>
-                                    <td> {{ hour.hourID }} </td>
-                                    <td> {{ hour.taskID }}</td>
-                                    <td> {{ hour.whoWorkedName }}</td>
-                                    <td> {{ hour.startTime }}</td>
-                                    <td> {{ hour.endTime }}</td>
-                                    <td> {{ hour.timeWorked }}</td>
-                                    <td> {{ hour.getLocation }}</td>
-                                    <td> {{ hour.getTaskType }}</td>
-                                </tr>
+                            <tr>
+                                <td> {{ hour.timeChanged }} </td>
+                                <td> {{ hour.hourID }} </td>
+                                <td> {{ hour.taskID }}</td>
+                                <td> {{ hour.whoWorkedName }}</td>
+                                <td> {{ hour.startTime }}</td>
+                                <td> {{ hour.endTime }}</td>
+                                <td> {{ hour.timeWorked }}</td>
+                                <td> {{ hour.getLocation }}</td>
+                                <td> {{ hour.getTaskType }}</td>
+                            </tr>
 
                         {% endfor %}
                     {% endif %}
