@@ -19,7 +19,7 @@
                     {% endif %}
                 </tr>
                 {% for project in projects %}
-                    {% set estimatedProgress = project.sumTimeSpent | trim %}
+                    {% set estimatedProgress = project.sumEstimateDone | trim %}
                     {% set estimatedTimeSum = project.sumEstimate | trim %}
                     <tr>
                         {# PROSJEKTNAVN #}
