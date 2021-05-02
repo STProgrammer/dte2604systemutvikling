@@ -149,7 +149,7 @@ WHERE Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL GROUP BY Projects.project
     }
 
     // GET ALL USER STATISTICS
-    public function getAllUserStatistics(): array
+    public function getAllUserStatistics(): array //TODO sjekk om sumThisDay og sumThisMonth virker som den skal
     {
         try {
             $stmt = $this->db->prepare("SELECT DISTINCT Hours.whoWorked, Hours.timeWorked, Users.*, 

@@ -2,13 +2,17 @@
 {% block content %}
     <section id="timeregistreringer" class="timeregistreringer">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="javascript/test.js"></script>
+        {# TABLE ORDERING JS #}
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
 
         {# Mine timeregistreringer fra gjeldende måned fra innstemplinger #}
-        {% if not user.isAdmin %}
-        <div class="timeTable text scrollY" id="timeTabell">
+        {% if not user.isAdmin() or user.isCustomer() %}
+        <div class="timeTable text scrollY scrollX" id="timeTabell">
             <h5 id="overskrift">Mine timeregistreringer fra innstemplinger</h5>
-            <table class="table" id="table">
+            <table class="table" id="table0">
+                <thead>
                 <tr>
                     <th>Task Type</th>
                     <th>Lokasjon</th>
@@ -18,91 +22,93 @@
                     <th>Godkjent</th>
                     <th>Endre</th>
                 </tr>
+                </thead>
                 {% for hour in hours %}
-                    {% if hour.taskId is null and hour.whoWorked == userID %}
-                        <tr>
-                            <td id="backgroundColor"><b> {{ hour.taskType }} </b></td>
-                            <td id="backgroundColor"> {{ hour.location }}</td>
-                            <td id="backgroundColor"> {{ hour.startTime }}</td>
-                            <td id="backgroundColor"> {{ hour.endTime }}</td>
-                            <td id="backgroundColor"> {{ hour.timeWorked }}</td>
-                            {% if hour.activated == true %}
-                                <td id="backgroundColor">Godkjent</td>
-                            {% else %}
-                                <td id="backgroundColor">Ikke godkjent enda</td>
-                            {% endif %}
-                            <td id="backgroundColor">
-                                <button class="buttons miniButtons" id="miniButtons"
-                                        onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
-                                    <img src="" alt=""> Rediger
-                                </button>
-                            </td>
-                        </tr>
-
-
-                        <tr class="noNthColor">
-                            {# Endre kommentar fra bruker #}
-                            <td colspan="6" rowspan="1" id="comment_user" class="comment_user">
-                                >>Endre<< Kommentar fra {{ hour.whoWorkedName }}: <i>{{ hour.comment }} </i></td>
-                        </tr>
-                        <tr class="noNthColor">
-                            {# Endre kommentar fra leder #}
-                            <td colspan="6" rowspan="1" id="comment_admin" class="comment_admin">
-                                {% if user.isAdmin %}
-                                    <i>>>Endre<< </i>
-                                {% endif %}
-                                Kommentar fra leder: <i>{{ hour.commentBoss }}</i></td>
-                        </tr>
-                        <tr>
-                            {# Form kommentar bruker #}
-                            <td colspan="5" rowspan="1" id="comment_form_user_show" class="comment_form_user_show">
-                                <div class="container container_addComment text" id="add_comment">
-                                    <form method="post" id="edit_comment_hour" class="edit_comment_hour">
-                                        <input id="hourID" type="hidden" name="hourID" value="{{ hour.getHourID }}"
-                                               maxlength=45 required/>
-                                        <label for="comment">Endre din egen kommentar: </label>
-                                        <textarea id="comment" name="comment"
-                                                  required>{{ hour.getComment }}</textarea>
-                                        <input type="hidden" value="{{ getMac("Edit Comment") }}"
-                                               name="XSRFPreventionToken">
-                                        <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour"
-                                                   value="Endre / legg til kommentar">
-                                    </form>
-                                </div>
-                            </td>
-                            <td colspan="1" id="comment_btn_back_user"
-                                class="comment_btn_back_user style_CommentBackBtnUser">Gå tilbake
-                            </td>
-                        </tr>
-
-                        {# Endre kommentar fra sjef #}
-                        {% if user.isAdmin %}
-                            <tr>
-                                <td colspan="5" rowspan="1" id="comment_form_boss_show"
-                                    class="comment_form_boss_show">
-                                    <div class="container edit_commentBoss_hour text" id="edit_commentBoss_hour">
-                                        <form method="post" id="edit_comment_hour" class="edit_comment_hour">
-                                            <input id="hourID" type="hidden" name="hourID"
-                                                   value="{{ hour.getHourID }}"
-                                                   maxlength=45 required/>
-                                            <label for="commentBoss">Endre kommentar fra sjefen: </label>
-                                            <textarea id="commentBoss" name="commentBoss"
-                                                      required>{{ hour.getCommentBoss() }}</textarea>
-                                            <input type="hidden" value="{{ getMac("Edit Comment Boss") }}"
-                                                   name="XSRFPreventionToken">
-                                            <br><input type="submit" name="edit_commentBoss_hour"
-                                                       id="edit_commentBoss_hour"
-                                                       value="Endre / legg til kommentar">
-                                        </form>
-                                    </div>
-                                </td>
-                                <td colspan="1" id="comment_btn_back_boss"
-                                    class="comment_btn_back_boss style_CommentBackBtnBoss">Gå
-                                    tilbake
-                                </td>
-                            </tr>
-                        {% endif %}
+                {% if hour.taskId is null and hour.whoWorked == userID %}
+                <tbody>
+                <tr>
+                    <td id="backgroundColor"><b> {{ hour.taskType }} </b></td>
+                    <td id="backgroundColor"> {{ hour.location }}</td>
+                    <td id="backgroundColor"> {{ hour.startTime }}</td>
+                    <td id="backgroundColor"> {{ hour.endTime }}</td>
+                    <td id="backgroundColor"> {{ hour.timeWorked }}</td>
+                    {% if hour.activated == true %}
+                        <td id="backgroundColor">Godkjent</td>
+                    {% else %}
+                        <td id="backgroundColor">Ikke godkjent enda</td>
                     {% endif %}
+                    <td id="backgroundColor">
+                        <button class="buttons miniButtons" id="miniButtons"
+                                onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
+                            <img src="" alt=""> Rediger
+                        </button>
+                    </td>
+                </tr>
+
+
+                <tr class="noNthColor">
+                    {# Endre kommentar fra bruker #}
+                    <td colspan="6" rowspan="1" id="comment_user" class="comment_user">
+                        >>Endre<< Kommentar fra {{ hour.whoWorkedName }}: <i>{{ hour.comment }} </i></td>
+                </tr>
+                <tr class="noNthColor">
+                    {# Endre kommentar fra leder #}
+                    <td colspan="6" rowspan="1" id="comment_admin" class="comment_admin">
+                        {% if user.isAdmin %}
+                            <i>>>Endre<< </i>
+                        {% endif %}
+                        Kommentar fra leder: <i>{{ hour.commentBoss }}</i></td>
+                </tr>
+                <tr>
+                    {# Form kommentar bruker #}
+                    <td colspan="5" rowspan="1" id="comment_form_user_show" class="comment_form_user_show">
+                        <div class="container container_addComment text" id="add_comment">
+                            <form method="post" id="edit_comment_hour" class="edit_comment_hour">
+                                <input id="hourID" type="hidden" name="hourID" value="{{ hour.getHourID }}"
+                                       maxlength=45 required/>
+                                <label for="comment">Endre din egen kommentar: </label>
+                                <textarea id="comment" name="comment"
+                                          required>{{ hour.getComment }}</textarea>
+                                <input type="hidden" value="{{ getMac("Edit Comment") }}"
+                                       name="XSRFPreventionToken">
+                                <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour"
+                                           value="Endre / legg til kommentar">
+                            </form>
+                        </div>
+                    </td>
+                    <td colspan="1" id="comment_btn_back_user"
+                        class="comment_btn_back_user style_CommentBackBtnUser">Gå tilbake
+                    </td>
+                </tr>
+
+                {# Endre kommentar fra sjef #}
+                {% if user.isAdmin() %}
+                    <tr>
+                        <td colspan="5" rowspan="1" id="comment_form_boss_show"
+                            class="comment_form_boss_show">
+                            <div class="container edit_commentBoss_hour text" id="edit_commentBoss_hour">
+                                <form method="post" id="edit_comment_hour" class="edit_comment_hour">
+                                    <input id="hourID" type="hidden" name="hourID"
+                                           value="{{ hour.getHourID }}"
+                                           maxlength=45 required/>
+                                    <label for="commentBoss">Endre kommentar fra sjefen: </label>
+                                    <textarea id="commentBoss" name="commentBoss"
+                                              required>{{ hour.getCommentBoss() }}</textarea>
+                                    <input type="hidden" value="{{ getMac("Edit Comment Boss") }}"
+                                           name="XSRFPreventionToken">
+                                    <br><input type="submit" name="edit_commentBoss_hour"
+                                               id="edit_commentBoss_hour"
+                                               value="Endre / legg til kommentar">
+                                </form>
+                            </div>
+                        </td>
+                        <td colspan="1" id="comment_btn_back_boss"
+                            class="comment_btn_back_boss style_CommentBackBtnBoss">Gå
+                            tilbake
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endif %}
                 {% endfor %}
                 {% endif %}
                 {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
@@ -154,171 +160,177 @@
                             });
                     });
                 </script>
+                </tbody>
             </table>
         </div>
 
         {# Mine timeregistreringer fra gjeldende måned for oppgavebidrag #}
-        {% if user.isAdmin or user.isProjectLeader or user.userType == 3 %}
-        <div class="timeTable text scrollY" id="timeTabell">
-            <table class="table" id="table">
-                <h5 id="overskrift">Mine timeregistreringer for oppgavebidrag</h5>
-                <tr>
-                    <th>Task Navn</th>
-                    <th>Hoved Task</th>
-                    <th>Prosjektnavn</th>
-                    <th>Starttid</th>
-                    <th>Slutttid</th>
-                    <th>Total tid</th>
-                    <th>Lokasjon</th>
-                    <th>Godkjent</th>
-                    <th>Endre</th>
-                </tr>
-                {% for hour in hours %}
-                    {% if hour.taskId is not null %}
-                        <tr>
-                            <td id="backgroundColor"><b> {{ hour.taskName }} </b></td>
-                            <td id="backgroundColor"> {{ hour.parentTask }} </td>
-                            <td id="backgroundColor"> {{ hour.projectName }} </td>
-                            <td id="backgroundColor"> {{ hour.startTime }} </td>
-                            <td id="backgroundColor"> {{ hour.endTime }} </td>
-                            <td id="backgroundColor"> {{ hour.timeWorked }} </td>
-                            <td id="backgroundColor"> {{ hour.getLocation }} </td>
-                            {% if hour.isActivated %}
-                                <td id="backgroundColor"> Godkjent</td>
-                            {% else %}
-                                <td id="backgroundColor"> Ikke godkjent</td>
-                            {% endif %}
-                            <td id="backgroundColor">
-                                <button class="buttons miniButtons" id="miniButtons"
-                                        onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
-                                    <img src="" alt=""> Rediger
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="noNthColor">
-                            {# Endre kommentar fra bruker #}
-                            <td colspan="8" rowspan="1" id="comment_user1" class="comment_user1">
-                                >>Endre<< Kommentar fra {{ hour.whoWorkedName }}: <i>{{ hour.comment }} </i></td>
-                        </tr>
-                        <tr class="noNthColor">
-                            {# Endre kommentar fra leder #}
-                            <td colspan="8" rowspan="1" id="comment_admin1" class="comment_admin1">
-                                {% if user.isAdmin %}
-                                    <i>>>Endre<< </i>
-                                {% endif %}
-                                Kommentar fra leder: <i>{{ hour.commentBoss }}</i></td>
-                        </tr>
-                        <tr>
-                            {# Form kommentar bruker #}
-                            <td colspan="8" rowspan="1" id="comment_form_user_show1"
-                                class="comment_form_user_show1">
-                                <div class="container container_addComment text" id="add_comment">
-                                    <form method="post" id="edit_comment_hour" class="edit_comment_hour">
-                                        <input id="hourID" type="hidden" name="hourID" value="{{ hour.getHourID }}"
-                                               maxlength=45 required/>
-                                        <label for="comment">Endre din egen kommentar: </label>
-                                        <textarea id="comment" name="comment"
-                                                  required>{{ hour.getComment }}</textarea>
-                                        <input type="hidden" value="{{ getMac("Edit Comment") }}"
-                                               name="XSRFPreventionToken">
-                                        <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour"
-                                                   value="Endre kommentar">
-                                    </form>
-                                </div>
-                            </td>
-                            <td colspan="1" id="comment_btn_back_user1"
-                                class="comment_btn_back_user1 style_CommentBackBtnUser">Gå tilbake
-                            </td>
-                        </tr>
+        {% if not user.isCustomer() %}
+            <div class="timeTable text scrollY  scrollX" id="timeTabell">
+                <table class="table display" id="table1">
+                    <h5 id="overskrift">Mine timeregistreringer for oppgavebidrag</h5>
+                    <thead>
+                    <tr>
+                        <th>Task Navn</th>
+                        <th>Hoved Task</th>
+                        <th>Prosjektnavn</th>
+                        <th>Starttid</th>
+                        <th>Slutttid</th>
+                        <th>Total tid</th>
+                        <th>Lokasjon</th>
+                        <th>Godkjent</th>
+                        <th>Endre</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for hour in hours %}
+                        {% if hour.taskId is not null %}
 
-                        {# Endre kommentar fra sjef #}
-                        {% if user.isAdmin %}
                             <tr>
-                                <td colspan="8" rowspan="1" id="comment_form_boss_show1"
-                                    class="comment_form_boss_show1">
-                                    <div class="container edit_commentBoss_hour text" id="edit_commentBoss_hour">
+                                <td id="backgroundColor"><b> {{ hour.taskName }} </b></td>
+                                <td id="backgroundColor"> {{ hour.parentTask }} </td>
+                                <td id="backgroundColor"> {{ hour.projectName }} </td>
+                                <td id="backgroundColor"> {{ hour.startTime }} </td>
+                                <td id="backgroundColor"> {{ hour.endTime }} </td>
+                                <td id="backgroundColor"> {{ hour.timeWorked }} </td>
+                                <td id="backgroundColor"> {{ hour.getLocation }} </td>
+                                {% if hour.isActivated %}
+                                    <td id="backgroundColor"> Godkjent</td>
+                                {% else %}
+                                    <td id="backgroundColor"> Ikke godkjent</td>
+                                {% endif %}
+                                <td id="backgroundColor">
+                                    <button class="buttons miniButtons" id="miniButtons"
+                                            onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
+                                        <img src="" alt=""> Rediger
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="noNthColor">
+                                {# Endre kommentar fra bruker #}
+                                <td colspan="8" rowspan="1" id="comment_user1" class="comment_user1">
+                                    >>Endre<< Kommentar fra {{ hour.whoWorkedName }}: <i>{{ hour.comment }} </i></td>
+                            </tr>
+                            <tr class="noNthColor">
+                                {# Endre kommentar fra leder #}
+                                <td colspan="8" rowspan="1" id="comment_admin1" class="comment_admin1">
+                                    {% if user.isAdmin %}
+                                        <i>>>Endre<< </i>
+                                    {% endif %}
+                                    Kommentar fra leder: <i>{{ hour.commentBoss }}</i></td>
+                            </tr>
+                            <tr>
+                                {# Form kommentar bruker #}
+                                <td colspan="8" rowspan="1" id="comment_form_user_show1"
+                                    class="comment_form_user_show1">
+                                    <div class="container container_addComment text" id="add_comment">
                                         <form method="post" id="edit_comment_hour" class="edit_comment_hour">
-                                            <input id="hourID" type="hidden" name="hourID"
-                                                   value="{{ hour.getHourID }}"
+                                            <input id="hourID" type="hidden" name="hourID" value="{{ hour.getHourID }}"
                                                    maxlength=45 required/>
-                                            <label for="commentBoss">Endre kommentar fra sjefen: </label>
-                                            <textarea id="commentBoss" name="commentBoss"
-                                                      required>{{ hour.getCommentBoss() }}</textarea>
-                                            <input type="hidden" value="{{ getMac("Edit Comment Boss") }}"
+                                            <label for="comment">Endre din egen kommentar: </label>
+                                            <textarea id="comment" name="comment"
+                                                      required>{{ hour.getComment }}</textarea>
+                                            <input type="hidden" value="{{ getMac("Edit Comment") }}"
                                                    name="XSRFPreventionToken">
-                                            <br><input type="submit" name="edit_commentBoss_hour"
-                                                       id="edit_commentBoss_hour"
-                                                       value="Endre / legg til kommentar">
+                                            <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour"
+                                                       value="Endre kommentar">
                                         </form>
                                     </div>
                                 </td>
-                                <td colspan="1" id="comment_btn_back_boss1"
-                                    class="comment_btn_back_boss1 style_CommentBackBtnBoss">Gå tilbake
+                                <td colspan="1" id="comment_btn_back_user1"
+                                    class="comment_btn_back_user1 style_CommentBackBtnUser">Gå tilbake
                                 </td>
                             </tr>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-                {% endif %}
-                </tr>
-                {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
-                {# https://www.w3schools.com/jquery/jquery_hide_show.asp #}
-                <script>
-                    $(document).ready(function () {
-                        $('.comment_user1').show();
-                        $('.comment_admin1').show();
-                        $('.comment_form_boss_show1').hide();
-                        $('.comment_form_user_show1').hide();
-                        $('.comment_btn_back_user1').hide();
-                        $('.comment_btn_back_boss1').hide();
 
-                        $('.comment_user1').click(
-                            function () {
-                                $('.comment_form_boss_show1').hide();
-                                $('.comment_form_user_show1').fadeIn(1000);
-                                $('.comment_user1').show();
-                                $('.comment_admin1').hide();
-                                $('.comment_btn_back_user1').fadeIn(1000);
-                                $('.comment_btn_back_boss1').hide();
-                            });
-                        $('.comment_admin1').click(
-                            function () {
-                                $('.comment_form_boss_show1').fadeIn(1000);
-                                $('.comment_form_user_show1').hide();
-                                $('.comment_user1').show();
-                                $('.comment_admin1').show();
-                                $('.comment_btn_back_user1').hide();
-                                $('.comment_btn_back_boss1').fadeIn(1000);
-                            });
-                        $('.comment_btn_back_user1').click(
-                            function () {
-                                $('.comment_form_boss_show1').hide();
-                                $('.comment_form_user_show1').hide();
-                                $('.comment_btn_back_user1').hide();
-                                $('.comment_btn_back_boss1').hide();
-                                $('.comment_user1').fadeIn(1000);
-                                $('.comment_admin1').fadeIn(1000);
-                            });
-                        $('.comment_btn_back_boss1').click(
-                            function () {
-                                $('.comment_form_boss_show1').hide();
-                                $('.comment_form_user_show1').hide();
-                                $('.comment_btn_back_user1').hide();
-                                $('.comment_btn_back_boss1').hide();
-                                $('.comment_user1').fadeIn(1000);
-                                $('.comment_admin1').fadeIn(1000);
-                            });
-                    });
-                </script>
-                {# endre kommentar slutt #}
-            </table>
-        </div>
+                            {# Endre kommentar fra sjef #}
+                            {% if user.isAdmin() %}
+                                <tr>
+                                    <td colspan="8" rowspan="1" id="comment_form_boss_show1"
+                                        class="comment_form_boss_show1">
+                                        <div class="container edit_commentBoss_hour text" id="edit_commentBoss_hour">
+                                            <form method="post" id="edit_comment_hour" class="edit_comment_hour">
+                                                <input id="hourID" type="hidden" name="hourID"
+                                                       value="{{ hour.getHourID }}"
+                                                       maxlength=45 required/>
+                                                <label for="commentBoss">Endre kommentar fra sjefen: </label>
+                                                <textarea id="commentBoss" name="commentBoss"
+                                                          required>{{ hour.getCommentBoss() }}</textarea>
+                                                <input type="hidden" value="{{ getMac("Edit Comment Boss") }}"
+                                                       name="XSRFPreventionToken">
+                                                <br><input type="submit" name="edit_commentBoss_hour"
+                                                           id="edit_commentBoss_hour"
+                                                           value="Endre / legg til kommentar">
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td colspan="1" id="comment_btn_back_boss1"
+                                        class="comment_btn_back_boss1 style_CommentBackBtnBoss">Gå tilbake
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+
+                    {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
+                    {# https://www.w3schools.com/jquery/jquery_hide_show.asp #}
+                    <script>
+                        $(document).ready(function () {
+                            $('.comment_user1').show();
+                            $('.comment_admin1').show();
+                            $('.comment_form_boss_show1').hide();
+                            $('.comment_form_user_show1').hide();
+                            $('.comment_btn_back_user1').hide();
+                            $('.comment_btn_back_boss1').hide();
+
+                            $('.comment_user1').click(
+                                function () {
+                                    $('.comment_form_boss_show1').hide();
+                                    $('.comment_form_user_show1').fadeIn(1000);
+                                    $('.comment_user1').show();
+                                    $('.comment_admin1').hide();
+                                    $('.comment_btn_back_user1').fadeIn(1000);
+                                    $('.comment_btn_back_boss1').hide();
+                                });
+                            $('.comment_admin1').click(
+                                function () {
+                                    $('.comment_form_boss_show1').fadeIn(1000);
+                                    $('.comment_form_user_show1').hide();
+                                    $('.comment_user1').show();
+                                    $('.comment_admin1').show();
+                                    $('.comment_btn_back_user1').hide();
+                                    $('.comment_btn_back_boss1').fadeIn(1000);
+                                });
+                            $('.comment_btn_back_user1').click(
+                                function () {
+                                    $('.comment_form_boss_show1').hide();
+                                    $('.comment_form_user_show1').hide();
+                                    $('.comment_btn_back_user1').hide();
+                                    $('.comment_btn_back_boss1').hide();
+                                    $('.comment_user1').fadeIn(1000);
+                                    $('.comment_admin1').fadeIn(1000);
+                                });
+                            $('.comment_btn_back_boss1').click(
+                                function () {
+                                    $('.comment_form_boss_show1').hide();
+                                    $('.comment_form_user_show1').hide();
+                                    $('.comment_btn_back_user1').hide();
+                                    $('.comment_btn_back_boss1').hide();
+                                    $('.comment_user1').fadeIn(1000);
+                                    $('.comment_admin1').fadeIn(1000);
+                                });
+                        });
+                    </script>
+                </table>
+            </div>
+        {% endif %}
 
         {# Timeregistreringer for alle brukere for innstemplinger #}
-        {% if user.isAdmin or user.isProjectLeader %}
-            <div class="timeTable text scrollY" id="timeTabell">
+        {% if user.isAdmin() or user.isProjectLeader() %}
+            <div class="timeTable text scrollY  scrollX" id="timeTabell">
                 <h5 id="overskrift">Timeregistreringer for alle brukere for innstemplinger</h5>
-                <table class="table" id="table">
+                <table class="table" id="table2">
+                    <thead>
                     <tr>
                         <th>Ansatt</th>
                         <th>Task Type</th>
@@ -330,6 +342,8 @@
                         <th>Endre</th>
                         <th>Godkjen timen</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     {% for hour in hoursAll %}
                         {% if hour.taskId is null %}
                             <tr>
@@ -346,13 +360,22 @@
                                 {% endif %}
                                 <td id="backgroundColor">
                                     <button class="buttons miniButtons" id="miniButtons"
-                                            onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">Rediger
+                                            onclick="location.href='timeregistrationEdit.php?hourID={{ hour.getHourID }}';">
+                                        Rediger
                                     </button>
                                 </td>
                                 {% if user.isAdmin %}
+                                    {# Verify hour #}
                                     <td id="backgroundColor">
-                                     <button class="buttons miniButtons" id="miniButtons"
-                                             onclick="location.href='verifyHour.php?hourID={{ hour.getHourID }}">Godkjen</button>
+                                        <form method="post" id="verify_hour" class="verify_hour">
+                                            <input id="hourID" type="hidden" name="hourID"
+                                                   value="{{ hour.getHourID }}"
+                                                   maxlength=45 required/>
+                                            <input type="hidden" value="{{ getMac("Verify hour") }}"
+                                                   name="XSRFPreventionToken">
+                                            <input type="submit" name="verify_hour" id="verify_hour"
+                                                   value="Godkjen time">
+                                        </form>
                                     </td>
                                 {% endif %}
                             </tr>
@@ -391,13 +414,12 @@
                                     </div>
                                 </td>
                                 <td colspan="1" id="comment_btn_back_user"
-                                    class="comment_btn_back_user2 style_CommentBackBtnUser">Gå
-                                    tilbake
+                                    class="comment_btn_back_user2 style_CommentBackBtnUser">Gå tilbake
                                 </td>
                             </tr>
 
                             {# Endre kommentar fra sjef #}
-                            {% if user.isAdmin %}
+                            {% if user.isAdmin() %}
                                 <tr>
                                     <td colspan="7" rowspan="1" id="comment_form_boss_show2"
                                         class="comment_form_boss_show2">
@@ -426,6 +448,8 @@
                             {% endif %}
                         {% endif %}
                     {% endfor %}
+                    </tbody>
+
                     {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
                     {# https://www.w3schools.com/jquery/jquery_hide_show.asp #}
                     <script>
@@ -480,10 +504,11 @@
         {% endif %}
 
         {# Timeregistreringer for alle brukere for denne måned for oppgavebidrag #}
-        {% if user.isAdmin or user.isProjectLeader %}
-            <div class="timeTable text scrollY" id="timeTabell">
-                <table class="table" id="table">
+        {% if user.isAdmin() or user.isProjectLeader() %}
+            <div class="timeTable text scrollY  scrollX" id="timeTabell">
+                <table class="table" id="table3">
                     <h5 id="overskrift">Timeregistreringer for alle brukere for oppgavebidrag</h5>
+                    <thead>
                     <tr>
                         <th>Task Navn</th>
                         <th>Hoved Task</th>
@@ -497,6 +522,8 @@
                         <th>Endre</th>
                         <th>Godkjen timen</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     {% if user.isAdmin or user.isProjectLeader %}
                         {% for hour in hoursAll %}
                             {% if hour.taskId is not null %}
@@ -521,12 +548,17 @@
                                         </button>
                                     </td>
                                     {% if user.isAdmin %}
+                                        {# Verify hour #}
                                         <td id="backgroundColor">
-                                            <button class="buttons miniButtons" id="miniButtons"
-                                                {# TODO verify må fikses virker ikke #}
-                                                    onclick="location.href='verifyHour.php?hourID={{ hour.getHourID }}">
-                                                <img src="" alt=""> Godkjen
-                                            </button>
+                                            <form method="post" id="verify_hour" class="verify_hour">
+                                                <input id="hourID" type="hidden" name="hourID"
+                                                       value="{{ hour.getHourID }}"
+                                                       maxlength=45 required/>
+                                                <input type="hidden" value="{{ getMac("Verify hour") }}"
+                                                       name="XSRFPreventionToken">
+                                                <input type="submit" name="verify_hour" id="verify_hour"
+                                                       value="Godkjen time">
+                                            </form>
                                         </td>
                                     {% endif %}
                                 </tr>
@@ -570,7 +602,7 @@
                                 </tr>
 
                                 {# Endre kommentar fra sjef #}
-                                {% if user.isAdmin %}
+                                {% if user.isAdmin() %}
                                     <tr>
                                         <td colspan="9" rowspan="1" id="comment_form_boss_show3"
                                             class="comment_form_boss_show3">
@@ -599,7 +631,8 @@
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                    </tr>
+                    </tbody>
+
                     {# SCRIPT For å vise og fjerne kommentarfelt etter id til td (tabel data) #}
                     {# https://www.w3schools.com/jquery/jquery_hide_show.asp #}
                     <script>
@@ -655,11 +688,11 @@
         {% endif %}
 
         {# Slettede Timeregistreringer for alle brukere #}
-        {% if user.isAdmin or user.isProjectLeader %}
-            <div class="timeTable text scrollY" id="timeTabell">
-                <table class="table" id="table">
+        {% if user.isAdmin() or user.isProjectLeader() %}
+            <div class="timeTable text scrollY scrollX" id="timeTabell">
+                <table class="table display" id="table4">
                     <h5 id="overskrift">Slettede timeregistreringer for alle brukere</h5>
-
+                    <thead>
                     <tr>
                         <th>Tid endret</th>
                         <th>HourID</th>
@@ -671,10 +704,10 @@
                         <th>Lokasjon</th>
                         <th>Task Navn</th>
                     </tr>
-
-                    {% if user.isAdmin or user.isProjectLeader %}
+                    </thead>
+                    <tbody>
+                    {% if user.isAdmin() or user.isProjectLeader() %}
                         {% for hour in deletedHours %}
-
                             <tr>
                                 <td> {{ hour.timeChanged }} </td>
                                 <td> {{ hour.hourID }} </td>
@@ -689,9 +722,77 @@
 
                         {% endfor %}
                     {% endif %}
+                    </tbody>
                 </table>
             </div>
         {% endif %}
+
+        {# Table ordering JS #}
+        {# https://datatables.net/examples/basic_init/multi_col_sort.html #}
+        <script>
+            $(document).ready(function () { {# TODO ingen av scriptene virker når tabell har innhold #}
+                $('#table0').DataTable({
+                    columnDefs0: [{
+                        targets0: [0],
+                        orderData0: [0, 1]
+                    }, {
+                        targets0: [1],
+                        orderData0: [1, 0]
+                    }, {
+                        targets0: [4],
+                        orderData0: [4, 0]
+                    }]
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#table1').DataTable({
+                    columnDefs1: [{
+                        targets1: [0],
+                        orderData1: [0, 1]
+                    }, {
+                        targets1: [1],
+                        orderData1: [1, 0]
+                    }, {
+                        targets1: [4],
+                        orderData1: [4, 0]
+                    }]
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#table2').DataTable({
+                    columnDefs2: [{
+                        targets2: [0],
+                        orderData2: [0, 1]
+                    }, {
+                        targets2: [1],
+                        orderData2: [1, 0]
+                    }, {
+                        targets2: [4],
+                        orderData2: [4, 0]
+                    }]
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#table3').DataTable({
+                    columnDefs3: [{
+                        targets3: [0],
+                        orderData3: [0, 1]
+                    }, {
+                        targets3: [1],
+                        orderData3: [1, 0]
+                    }, {
+                        targets3: [4],
+                        orderData3: [4, 0]
+                    }]
+                });
+            });
+        </script>
 
 
         {# FEILMELDINGER FRA DATABASE #}

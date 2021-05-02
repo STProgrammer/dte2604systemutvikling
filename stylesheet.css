@@ -209,9 +209,7 @@ div#edit_commentBoss_hour { width: 100%; height: 7em;
 div.openContainerNoBorder {
     margin-left: 1em; margin-bottom: 2em; background: snow; width: auto;
 }
-div.timeTable {
-margin-left: 1em; margin-bottom: 2em; background: snow; width: 90%;
-}
+
 div.container_menu { width: 30em; height: 30em; background-color: #eeeeee;
 }
 div.container_menu_form { width: auto; height: 40em; background-color: #eeeeee;
@@ -246,9 +244,9 @@ div.container_menu_lang_WithBorder { width: 60em; height: 40em;  border: none;
 div.noBorder_NoBackground_NoShadow {
     border: none; background: none; box-shadow: none;
 }
-div.scroll { overflow-y: scroll; scroll-behavior: smooth;
+div.scrollX { overflow-x: scroll; scroll-behavior: smooth;
 }
-div.scrollY { overflow-y: scroll; overflow-x: hidden; scroll-behavior: smooth; max-height: 40em;
+div.scrollY { overflow-y: scroll; scroll-behavior: smooth; max-height: 40em;
 }
 div.green {
     background: lightgreen;
@@ -286,6 +284,7 @@ div.container_small { width: 11em; height: 4em; box-shadow: 0.1em 0.1em 0.1em #8
     cursor: pointer; border: none;
     box-shadow: 0.1em 0.1em 0.1em #888888;
 }
+
 .miniButtons_green  {
     color: white;
     font-size: 0.8rem;
@@ -371,6 +370,18 @@ label {
     margin-left: 1em;
     margin-right: 1em;
     float: left;
+}
+input#verify_hour {
+    font-family: Segoe UI, serif;
+    color: #5b4e48;
+    font-size: 0.8rem;
+    width: 10em; height: 2em;
+    background: white;
+    padding: 0em; margin: 0em;
+    border-radius: 0.5em;
+    cursor: pointer; border: none;
+    box-shadow: 0.1em 0.1em 0.1em #888888;
+    font-weight: normal;
 }
 input#user {
     font-family: Segoe UI, serif;
@@ -565,10 +576,71 @@ select{
     padding: 0.5em;
     margin: 0.5em;
     white-space: nowrap;
-    width: 100%;
+    width: 80%;
 
 }
+/*TIME TABLES*/
+div.timeTable {
+    margin-left: 1em; margin-bottom: 3em; background: snow; /*width: 95%;*/
+}
 
+.dataTable {
+    width: 80%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.table#table0 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+.table#table1 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+.table#table2 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+.table#table3 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+.table#table4 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+/*slutt time tables----------------------------*/
+
+/*User profiles----------------------------*/
+tr#table5:nth-child(even) {
+    background-color: #f2f2f2;
+}
+table#table5 {
+    height: auto; max-height: 100em;
+    box-sizing: revert;
+}
 th { background-color: darkgray; color: white;
 }
 td {
@@ -769,9 +841,6 @@ a:hover { color: lightyellow;
 
 /**-----------FOOTER---------------*/
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
     width: 100%;
     height: 2em;
     background-color: #D9D2D2;
@@ -795,6 +864,5 @@ footer p[class = rightText] {
     text-align: right;
     margin-top: 0em;
     font-family: Segoe UI, serif;
-    font-weight: bold;
 }
 /**--------------------------------------------------------------------------------------------------------*/

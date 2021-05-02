@@ -45,7 +45,8 @@ if (!is_null($user) and !is_null($hour)) {
         $hourManager->duplicateToLog($hour);
         $startTime = $request->request->get('startTime');
         $endTime = $request->request->get('endTime');
-        if ($hourManager->changeTimeForUser($hourID, $startTime, $endTime, $task)) {
+        $activated = $request->request->get('activated');
+        if ($hourManager->changeTimeForUser($hourID, $startTime, $endTime, $activated, $task)) {
             header("Location: " . $requestUri );
             exit();
         } else {

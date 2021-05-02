@@ -45,7 +45,7 @@ class HourManager
         return $array;
     }
 
-    function calculateMonth($statistics): array //TODO kommer bare null på den. Feil med funskjonen ReportGenerator - > getAllUserStatistics()
+    function calculateMonth($statistics): array //TODO sjekk om det virker riktig
     {
         $array = array();
         $sum0 = strtotime('00:00');
@@ -310,7 +310,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     }
 
     //EDIT COMMENT BOSS--------------------------------------------------------------------------------
-    public function editCommentBoss($hourId): bool
+    public function editCommentBoss($hourID): bool
     {
         $hourID = $this->request->request->get('hourID');
         $commentBoss = $this->request->request->get('commentBoss');
@@ -354,15 +354,16 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     }
 
     //Edit the hour, deactivate old
-    public function changeTimeForUser($hourID, $startTime, $endTime, ?Task $task): bool
+    public function changeTimeForUser($hourID, $startTime, $endTime, $activated, ?Task $task): bool
     {
         $isChanged = 1;
         try {
-            $stmt = $this->dbase->prepare("UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID;");
+            $stmt = $this->dbase->prepare("UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime, activated = :activated WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
             $stmt->bindParam(':isChanged', $isChanged);
+            $stmt->bindParam(':activated', $activated);
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
                 //$stmt->closeCursor();

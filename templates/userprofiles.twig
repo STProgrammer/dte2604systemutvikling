@@ -2,6 +2,11 @@
 {% block content %}
 
     <section id="brukerprofiler" class="brukerprofiler">
+        {# TABLE ORDERING JS #}
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+
         {% if user.isAdmin or user.isProjectLeader %}
             <div class="container container_small">
                 <button id="button" class="button" title="Ny bruker"
@@ -22,8 +27,8 @@
     <section>
         <h5>Alle brukere og administratorer</h5>
 
-        <div class="openContainerNoBorder text">
-            <table class="table" id="table">
+        <div class="openContainerNoBorder text scrollY">
+            <table class="table" id="table5">
                 <tr>
                     <th>Etternavn</th>
                     <th>Fornavn</th>
@@ -41,7 +46,7 @@
                     {% endif %}
                 </tr>
                 {% for usr in users %}
-                    <tr>
+                    <tr id="table5">
                         <td>{{ usr.getLastName }}</td>
                         <td>{{ usr.getFirstName }}</td>
 
@@ -87,7 +92,28 @@
                 {% endfor %}
             </table>
         </div>
+
+        {# Table ordering JS #}
+        {# https://datatables.net/examples/basic_init/multi_col_sort.html #}
+        <script>
+            $(document).ready(function () {
+                $('#table5').DataTable({
+                    columnDefs0: [{
+                        targets0: [0],
+                        orderData0: [0, 1]
+                    }, {
+                        targets0: [1],
+                        orderData0: [1, 0]
+                    }, {
+                        targets0: [4],
+                        orderData0: [4, 0]
+                    }]
+                });
+            });
+        </script>
+
     </section>
+
     <div class="container container_big_long text">
         {% if session.getFlashBag.has('header') %}
             {% for header in session.getFlashBag.get('header', []) %}
