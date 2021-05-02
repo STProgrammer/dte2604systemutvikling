@@ -94,7 +94,7 @@
                     <th>Gruppe</th>
                     <th>Status</th>
                     <th>Hoved ansvarlig</th>
-                    {% if not user.getUserId() ==  project.getCustomer() %}
+                    {% if user.isAdmin() or user.projectLeader() or user.getUserId() == project.getCustomer() %}
                         <th>Se detaljer / endre</th>
                     {% endif %}
                 </tr>
@@ -115,7 +115,7 @@
                         {% endif %}
                         <td>{{ task.mainResponsibleName }}</td>
 
-                        {% if not user.getUserId() ==  project.getCustomer() %}
+                        {% if user.isAdmin() or user.projectLeader() or user.getUserId() == project.getCustomer() %}
                             <td>
                                 <button class="buttons miniButtons" id="contribution"
                                         onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">
@@ -172,7 +172,7 @@
                 <th>Start dato</th>
                 <th>Slutt date</th>
                 <th>Status</th>
-                {% if not user.getUserId() ==  project.getCustomer() %}
+                {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() or user.getUserId() == project.getCustomer() %}
                     <th>Se detaljer</th>
                 {% endif %}
             </tr>
@@ -191,7 +191,7 @@
                         <td>Avsluttet</td>
                     {% endif %}
 
-                    {% if not user.getUserId() ==  project.getCustomer() %}
+                    {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() or user.getUserId() == project.getCustomer() %}
                         <td>
                             <button class="buttons miniButtons" id="contribution"
                                     onclick="window.location.href='phases_editPhase.php?phaseid={{ phase.getPhaseID() }}';">
