@@ -128,7 +128,7 @@
                             <td> {{ hour.projectName }}</td>
                             <td> {{ hour.startTime }}</td>
                             <td> {{ hour.endTime }}</td>
-                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            <td> {{ hour.getTimeWorked() }}  </td>
                             <td> {{ hour.location }}</td>
                             <td> {{ hour.comment }}</td>
                             {% if user.isAdmin %}
