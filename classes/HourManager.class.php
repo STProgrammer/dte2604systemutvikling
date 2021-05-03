@@ -104,7 +104,7 @@ class HourManager
             $taskID = null;
             $phaseID = null;
         }
-        $startTime = date("Y-m-d H:i:s");
+       // $startTime = date("Y-m-d H:i:s");
         $timeWorked = 0;
         $activated = 0;
         $location = $this->request->request->get('Lokasjon');
@@ -121,13 +121,13 @@ class HourManager
             $stmt = $this->dbase->prepare("INSERT INTO Hours (`taskID`, `whoWorked`, `startTime`, 
                    `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
                    `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
-                   VALUES (:taskID, :userID, :startTime, 0, :timeWorked, :activated, 
+                   VALUES (:taskID, :userID, NOW(), 0, :timeWorked, :activated, 
                            :location, :phaseID, :absenceType, :overtimeType, :comment, 
                            :commentBoss, :isChanged, :stampingStatus, :taskType)");
 
             $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-            $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
+           // $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
             $stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_STR);
             $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
             $stmt->bindParam(':location', $location, PDO::PARAM_STR);
@@ -153,6 +153,40 @@ class HourManager
             return false;
         }
     }
+
+
+    // STOP TIME FOR USER ---------------------------------------------------------------------------
+    public function stopTimeForUser(?Hour $hour, ?Task $task): bool
+    {
+        if (is_null($hour)) {
+            return false;
+        }
+        $hourID = $hour->getHourID();
+        try {
+            $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = NOW(), 
+                 stampingStatus = 1 WHERE hourID = :hourID");
+            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->closeCursor();
+            if ($stmt->rowCount() == 1) {
+                $this->notifyUser("Timeregistrering stoppet");
+                if (!is_null($task)) {
+                    //$hour = $this->getHour($hourID);
+                    //$timeStr = $hour->getTimeWorked();
+                    $this->updateTimeWorkedOnTask($task);
+                }
+                return true;
+            } else {
+                $this->notifyUser("Failed to stop timereg", "stopTimeForUser()");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->NotifyUser("En feil oppstod, på stopTimeForUser()", $e->getMessage());
+            return false;
+        }
+    }
+
+
 
     public function activeTimeregForUser($userID)
     {
@@ -201,36 +235,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     // TOTAL TIME USERS
 
 
-    // STOP TIME FOR USER ---------------------------------------------------------------------------
-    public function stopTimeForUser(?Hour $hour, ?Task $task): bool
-    {
-        if (is_null($hour)) {
-            return false;
-        }
-        $hourID = $hour->getHourID();
-        try {
-            $stmt = $this->dbase->prepare("UPDATE Hours SET endTime = NOW(), 
-                 stampingStatus = 1 WHERE hourID = :hourID");
-            $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
-            $stmt->execute();
-            $stmt->closeCursor();
-            if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Timeregistrering stoppet");
-                if (!is_null($task)) {
-                    //$hour = $this->getHour($hourID);
-                    //$timeStr = $hour->getTimeWorked();
-                    $this->updateTimeWorkedOnTask($task);
-                }
-                return true;
-            } else {
-                $this->notifyUser("Failed to stop timereg", "stopTimeForUser()");
-                return false;
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på stopTimeForUser()", $e->getMessage());
-            return false;
-        }
-    }
+
 
     private function updateTimeWorkedOnTask(?Task $task, $timeStr = null)
     {
