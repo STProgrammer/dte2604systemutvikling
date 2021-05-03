@@ -105,7 +105,7 @@ class HourManager
             $phaseID = null;
         }
        // $startTime = date("Y-m-d H:i:s");
-        $timeWorked = 0;
+        //$timeWorked = 0;
         $activated = 0;
         $location = $this->request->request->get('Lokasjon');
         $phaseID = NULL;
@@ -121,23 +121,23 @@ class HourManager
             $stmt = $this->dbase->prepare("INSERT INTO Hours (`taskID`, `whoWorked`, `startTime`, 
                    `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
                    `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
-                   VALUES (:taskID, :userID, NOW(), 0, :timeWorked, :activated, 
+                   VALUES (:taskID, :userID, NOW(), 0, 0, 0, 
                            :location, :phaseID, :absenceType, :overtimeType, :comment, 
-                           :commentBoss, :isChanged, :stampingStatus, :taskType)");
+                           :commentBoss, 0, 0, :taskType)");
 
             $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
            // $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
-            $stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_STR);
-            $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
+            //$stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_INT);
+            //$stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
             $stmt->bindParam(':location', $location, PDO::PARAM_STR);
             $stmt->bindParam(':phaseID', $phaseID, PDO::PARAM_STR);
             $stmt->bindParam(':absenceType', $absenceType, PDO::PARAM_STR);
             $stmt->bindParam(':overtimeType', $overtimeType, PDO::PARAM_STR);
             $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
             $stmt->bindParam(':commentBoss', $commentBoss, PDO::PARAM_STR);
-            $stmt->bindParam(':isChanged', $isChanged, PDO::PARAM_STR);
-            $stmt->bindParam(':stampingStatus', $stampingStatus, PDO::PARAM_STR);
+            //$stmt->bindParam(':isChanged', $isChanged, PDO::PARAM_STR);
+            //$stmt->bindParam(':stampingStatus', $stampingStatus, PDO::PARAM_STR);
             $stmt->bindParam(':taskType', $taskType, PDO::PARAM_STR);
 
             $stmt->execute();
