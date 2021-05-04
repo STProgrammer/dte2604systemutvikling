@@ -106,7 +106,7 @@ class HourManager
         }
        // $startTime = date("Y-m-d H:i:s");
         //$timeWorked = 0;
-        $activated = 1;
+//        $activated = 1;
         $location = $this->request->request->get('Lokasjon');
         $phaseID = NULL;
         $absenceType = NULL;
@@ -121,7 +121,7 @@ class HourManager
             $stmt = $this->dbase->prepare("INSERT INTO Hours (`taskID`, `whoWorked`, `startTime`, 
                    `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
                    `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
-                   VALUES (:taskID, :userID, NOW(), 0, 0, 0, 
+                   VALUES (:taskID, :userID, NOW(), 1, 0, 0, 
                            :location, :phaseID, :absenceType, :overtimeType, :comment, 
                            :commentBoss, 0, 0, :taskType)");
 
@@ -129,7 +129,7 @@ class HourManager
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
            // $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
             //$stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_INT);
-            $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
+//            $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
             $stmt->bindParam(':location', $location, PDO::PARAM_STR);
             $stmt->bindParam(':phaseID', $phaseID, PDO::PARAM_STR);
             $stmt->bindParam(':absenceType', $absenceType, PDO::PARAM_STR);
