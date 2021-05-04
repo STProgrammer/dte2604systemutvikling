@@ -12,6 +12,7 @@ if ($user) {
     $tasks = $taskManager->getAllTasks();
 
     $tasksWork = $taskManager->getTasksOfUser($userID);
+    $taskCategories = $taskManager->getCategories();
 
     $hours = $hourManager->getHours(null, $userID, null, null, null,
         null, null,  null,  null,
@@ -86,8 +87,9 @@ if ($user) {
                 'sumTimeMonth' => $sumTimeMonth, 'sumPaymentMonth' => $sumPaymentMonth,
                 'sumTimeToday' => $sumTimeToday, 'sumPaymentToday' => $sumPaymentToday,
 
-                'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
+                'UserID' => $userID, 'session' => $session, 'user' => $user,
 
+                'tasks' => $tasks, 'taskCategories' => $taskCategories,
                 'TaskManager' => $taskManager, 'hourID' => $hourID, 'tasksWork' => $tasksWork));
     }
 }else {

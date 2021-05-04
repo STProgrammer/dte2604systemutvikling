@@ -13,6 +13,7 @@ if ($user) {
         $tasks = $taskManager->getAllTasks();
 
         $tasksWork = $taskManager->getTasksOfUser($userID);
+        $taskCategories = $taskManager->getCategories();
 
         $hours = $hourManager->getHours(null, $userID);
         $hoursAll = $hourManager->getAllHours();
@@ -63,7 +64,7 @@ if ($user) {
                 'UserID' => $userID, 'tasks' => $tasks,
                 'taskManager'=> $taskManager,
                 'hourID' => $hourID,
-                'tasksWork' => $tasksWork));
+                'tasksWork' => $tasksWork, 'taskCategories' => $taskCategories));
     }
 } else {
     header("location: login.php");

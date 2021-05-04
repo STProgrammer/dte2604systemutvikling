@@ -19,12 +19,9 @@
                 <form method="post" id="register_time_form">
                     <select name="Kategori" id="employee_dashboard_category">
                         <option value="" disabled selected hidden>Jobbet med hva</option>
-                        <option value="Administrativt">Administrativt</option>
-                        <option value="Kurs">Kurs</option>
-                        <option value="Møte">Møte</option>
-                        <option value="Prosjekt">Prosjekt</option>
-                        <option value="Rapportering">Rapportering</option>
-                        <option value="Selvstudie">Selvstudie</option>
+                        {% for cat in taskCategories %}
+                            <option value= {{ cat.categoryName }}> {{ cat.categoryName }}</option>
+                        {% endfor %}
                     </select>
                     <select name="taskID" id="employee_dashboard_location"></select>
                     <br><input type="text" name="Lokasjon" value="" placeholder="Sted" maxlength=30 required
@@ -81,7 +78,8 @@
         </div>
 
         {# Feilmeldinger #}
-        <div class="container container_medium_projectleader cursor snow scrollY" onclick="location.href='reports.php';">
+        <div class="container container_medium_projectleader cursor snow scrollY"
+             onclick="location.href='reports.php';">
             <h6>Feilmeldinger i dag</h6>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
@@ -233,4 +231,4 @@
 {% endblock %}
     {# REFERENCES #}
     {# Adobe XD icons #}
-    {# icon_task.png: https://icon-icons.com/icon/task/120291             #}
+    {# icon_task.png: https://icon-icons.com/icon/task/120291              #}
