@@ -1,7 +1,7 @@
 /**CSS FOR UTSKRIFTVENNLIGE SIDER----*/
 /**Utskrift css 'page' hentet fra https://stackoverflow.com/questions/16649943/css-to-set-a4-paper-size----*/
 body {
-    background: rgb(204,204,204);
+    background: rgb(204, 204, 204);
 }
 /**-------------  RAPPORT UTSKRIFT  -------------------*/
 section.rapport_utskrift {
@@ -10,20 +10,12 @@ section.rapport_utskrift {
     width: 80%;
 }
 
-page[size="A4"] {
-    background: white;
-    width: 21cm;
-    height: 29.7cm;
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 0.5cm;
-    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
-}
 @media print {
     body, page[size="A4"] {
         margin: 0;
     }
 }
+
 @media print {
     #printbtn {
         display :  none;
@@ -34,6 +26,7 @@ page[size="A4"] {
         display :  none;
     }
 }
+
 h3 {
     color: #707070;
     font-family: Segoe UI, serif;
@@ -44,6 +37,7 @@ h4 {
     font-family: Segoe UI, serif;
     font-size: 1.0rem;
 }
+
 /**----------- TABLES  ----------------------*/
 .table {
     text-align: left;

@@ -89,11 +89,6 @@ if (!is_null($user) and !is_null($project)) {
         }
     }
 
-
-
-
-
-
     $hours = $hourManager->getAllHours();
     $groups = $projectManager->getGroups($projectName);
     $groupFromUserAndGroups = $projectManager->getGroupFromUserAndGroups($projectName); //henter gruppe basert på UsersAndGroups tabell. Joiner Group tabell og sjekker prosjektname
