@@ -121,7 +121,7 @@ class HourManager
             $stmt = $this->dbase->prepare("INSERT INTO Hours (`taskID`, `whoWorked`, `startTime`, 
                    `endTime`, `timeWorked`, `activated`, `location`, `phaseID`, `absenceType`, `overtimeType`, 
                    `comment`, `commentBoss`, `isChanged`, `stampingStatus`, `taskType`)
-                   VALUES (:taskID, :userID, NOW(), 1, 0, 0, 
+                   VALUES (:taskID, :userID, NOW(), 0, 0, 1, 
                            :location, :phaseID, :absenceType, :overtimeType, :comment, 
                            :commentBoss, 0, 0, :taskType)");
 
