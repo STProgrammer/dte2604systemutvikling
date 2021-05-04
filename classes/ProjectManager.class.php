@@ -252,7 +252,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
                 $this->notifyUser("Arbeider fjernet fra prosjektet");
                 return true;
             } else {
-                $this->notifyUser("Feil ved fjernin av arbeider fra prosjektet");
+                $this->notifyUser("Feil ved fjerning av arbeider fra prosjektet");
                 return false;
             }
         } catch (Exception $e) {
@@ -544,7 +544,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
                 $this->notifyUser("Ny fase ble lagt til");
                 return true;
             } else {
-                $this->notifyUser("Feil ve registrering av fase!");
+                $this->notifyUser("Feil ved registrering av fase!");
                 return false;
             }
         } catch (Exception $e) {
@@ -581,7 +581,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
                 $this->notifyUser("Fase ble endret");
                 return true;
             } else {
-                $this->notifyUser("Feil ve endring av fase!");
+                $this->notifyUser("Feil ved endring av fase!");
                 return false;
             }
         } catch (Exception $e) {
@@ -601,7 +601,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
                 $this->notifyUser("Fase ble slettet");
                 return true;
             } else {
-                $this->notifyUser("Feil ve sletting av fase!");
+                $this->notifyUser("Feil ved sletting av fase!");
                 return false;
             }
         } catch (Exception $e) {
@@ -640,7 +640,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
             if ($phases = $sth->fetchAll(PDO::FETCH_CLASS, "Phase")) {
                 return $phases;
             } else {
-                $this->notifyUser("Feil ve henting av faser!");
+                $this->notifyUser("Feil ved henting av faser!");
                 return $phases;
             }
         } catch (Exception $e) {

@@ -14,10 +14,12 @@
                     <th>Points ferdig</th>
                     <th>Avvik (ferdig - brukt tid)</th>
                     <th>Fremdrift</th>
+                    {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
                     <th>Detaljer & utskrift</th>
+                    {% endif %}
                 </tr>
                 {% for project in projects %}
-                    {% set estimatedProgress = project.sumTimeSpent | trim %}
+                    {% set estimatedProgress = project.sumEstimateDone | trim %}
                     {% set estimatedTimeSum = project.sumEstimate | trim %}
                     <tr>
                         {# PROSJEKTNAVN #}
@@ -59,12 +61,14 @@
                                 {% endif %}
                             </div>
                         </td>
+                        {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
                         <td>
                             <button class="buttons miniButtons" id="miniButtons"
                                     onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
                                 Skriv ut
                             </button>
                         </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 {% endif %}
@@ -73,7 +77,7 @@
     </section>
 
     <section>
-        {% if user.isAdmin() or user.isProjectLeader() %}
+        {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
         <div class="openContainerNoBorder text" id="prosjektTabell">
             <h3>Bruker rapporter </h3>
             <table class="table" id="table">
@@ -103,9 +107,9 @@
                         </td>
                     </tr>
                 {% endfor %}
-                {% endif %}
             </table>
         </div>
+        {% endif %}
     </section>
     </body>
 {% endblock %}

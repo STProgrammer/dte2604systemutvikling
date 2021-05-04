@@ -43,35 +43,35 @@ if (!is_null($user) && !is_null($group) ) {
                 $request->request->set('isAdmin', 0);
             }
             if ($groupManager->editGroup($group)) {
-                header("Location: ".$requestUri. "&editedgroup=1");
+                header("Location: ".$requestUri);
                 exit();
             } else {
-                header("Location: ".$requestUri."&failedtoeditgroup=1");
+                header("Location: ".$requestUri);
                 exit();
             }
 
         } else if ($request->request->has('add_members') && XsrfProtection::verifyMac("Group add members")) {
             if ($groupManager->addEmployees($groupID)) {
-                header("Location: ".$requestUri."&addmembers=1");
+                header("Location: ".$requestUri);
                 exit();
             } else {
-                header("Location: ".$requestUri."&failedtoaddmembers=1");
+                header("Location: ".$requestUri);
                 exit();
             }
         } else if ($request->request->has('remove_members') && XsrfProtection::verifyMac("Group remove members")) {
             if ($groupManager->removeEmployees($group)) {
-                header("Location: ".$requestUri."&removemembers=1");
+                header("Location: ".$requestUri);
                 exit();
             } else {
-                header("Location: ".$requestUri."&failedtoremovemembers=1");
+                header("Location: ".$requestUri);
                 exit();
             }
         } else if ($request->request->has('add_to_project') && XsrfProtection::verifyMac("Add group to project")) {
             if ($groupManager->addToProject($group)) {
-                header("Location: ".$requestUri."&addtoproject=1");
+                header("Location: ".$requestUri);
                 exit();
             } else {
-                header("Location: ".$requestUri."&failedtoaddtoproject=1");
+                header("Location: ".$requestUri);
                 exit();
             }
         } else if ($request->request->has('group_delete') && $user->isAdmin() && XsrfProtection::verifyMac("Delete group")) {
@@ -79,7 +79,7 @@ if (!is_null($user) && !is_null($group) ) {
                 header("Location: groups.php?deleteddgroup=1");
                 exit();
             } else {
-                header("Location: ".$requestUri."&failedtodeletegroup=1");
+                header("Location: ".$requestUri);
                 exit();
             }
         } else {

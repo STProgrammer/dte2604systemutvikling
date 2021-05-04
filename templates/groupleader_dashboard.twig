@@ -19,12 +19,9 @@
                 <form method="post" id="register_time_form">
                     <select name="Kategori" id="employee_dashboard_category">
                         <option value="" disabled selected hidden>Jobbet med hva</option>
-                        <option value="Administrativt">Administrativt</option>
-                        <option value="Kurs">Kurs</option>
-                        <option value="Møte">Møte</option>
-                        <option value="Prosjekt">Prosjekt</option>
-                        <option value="Rapportering">Rapportering</option>
-                        <option value="Selvstudie">Selvstudie</option>
+                        {% for cat in taskCategories %}
+                            <option value= {{ cat.categoryName }}> {{ cat.categoryName }}</option>
+                        {% endfor %}
                     </select>
                     <select name="taskID" id="employee_dashboard_location"></select>
                     <br><input type="text" name="Lokasjon" value="" placeholder="Sted" maxlength=30 required
@@ -45,6 +42,28 @@
                 </form>
             </div>
         {% endif %}
+
+
+        {# Prosjekter og oppgaver #}
+        <div class="container container_medium_admin cursor snow" onclick="location.href='projects.php';">
+            <h6>Prosjekter og oppgaver</h6>
+            <div class="text">
+                Se prosjekter og oppgaver
+            </div>
+        </div>
+
+        {# Feilmeldinger #}
+        <div class="container container_medium_admin cursor snow scrollY" onclick="location.href='reports.php';">
+            <h6>Feilmeldinger i dag</h6>
+            {% if session.getFlashBag.has('header') %}
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <p>Header: {{ header }}</p>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>Message: {{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
 
         {# Mine siste timeregistreringer for innstemplinger #}
         <div class="openContainerNoBorder text" id="timeTabell">
@@ -106,7 +125,7 @@
                             <td> {{ hour.projectName }}</td>
                             <td> {{ hour.startTime }}</td>
                             <td> {{ hour.endTime }}</td>
-                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            <td> {{ hour.getTimeWorked() }}  </td>
                             <td> {{ hour.location }}</td>
                             <td> {{ hour.comment }}</td>
                             {% if user.isAdmin %}
@@ -121,29 +140,6 @@
                     {% endif %}
                 {% endfor %}
             </table>
-        </div>
-
-        {# Prosjekter og oppgaver #}
-        <div class="container container_medium_long scroll">
-            <img src="images/icon_task.png" width="40px" alt="Icon"/>
-            <h6>Prosjekter og oppgaver</h6>
-            <div class="text">
-                Se prosjekter og oppgaver
-            </div>
-        </div>
-
-        {# Feilmeldinger #}
-        <div class="container container_medium_long scroll">
-            <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/>
-            <h6>Feilmeldinger i dag</h6>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
         </div>
 
     </section>

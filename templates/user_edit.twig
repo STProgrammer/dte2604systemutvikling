@@ -44,24 +44,25 @@
             </div>
 
             {% if userToEdit.getUserType() > 0 %}
-            <div class="container container_menu_lang text" id="user_hours">
-                <label class="overskriftLiten"><b>Tidsbruk av brukeren:</b></label></br>
-                <table class="table">
-                    <tr>
-                        <th>Type</th>
-                        <th>Sum tidsbruk denne måned</th>
-                        <th>Sum tidsbruk totalt</th>
-                    </tr>
-
-                    {% for hour in hours %}
+                <div class="container container_menu_lang text" id="user_hours">
+                    <label class="overskriftLiten"><b>Tidsbruk av brukeren:</b></label></br>
+                    <table class="table">
                         <tr>
-                            <td>{{ hour['categoryName'] }}</td>
-                            <td>{{ hour['sumThisMonth'] }}</td>
-                            <td>{{ hour['sumTW'] }}</td>
+                            <th>Type</th>
+                            <th>Sum tidsbruk denne måned</th>
+                            <th>Sum tidsbruk totalt</th>
                         </tr>
-                    {% endfor %}
-                </table>
-            </div>
+
+                        {# TODO denne fungerer ikke helt - sign. Are #}
+                        {% for hour in hours %}
+                            <tr>
+                                <td>{{ hour['categoryName'] }}</td>
+                                <td>{{ hour['sumThisMonth'] }}</td>
+                                <td>{{ hour['sumTW'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             {% endif %}
 
             <form method="post" id="edit_form">
@@ -91,45 +92,44 @@
                            value="{{ userToEdit.getIMAddress() }}" required/>
 
 
-
-                    {% if user.isAdmin %}
-                <table>
-                    <tr>
-                        <td>
-                            {% if userToEdit.isAdmin %}
-                                Stilling er: <b> Administrator</b>
-                            {% elseif userToEdit.isProjectLeader %}
-                                Stilling / posisjon er: <b> Prosjektleder</b>
-                            {% elseif userToEdit.isGroupLeader %}
-                                Stilling / posisjon er: <b> Teamleder</b>
-                            {% elseif userToEdit.isTemporary %}
-                                Stilling er: <b> Innleid</b>
-                            {% elseif userToEdit.isCustomer %}
-                                Posisjon er: <b> Kunde</b>
-                            {% else %}
-                                Stilling er: <b> Ingen stilling</b>
-                            {% endif %}
-                        </td>
-                    </tr>
-                </table>
-                    {% endif %}
-                    <tr></tr>
-                    <tr>
-                        {% if not userToEdit.isCustomer() %}
+                {% if user.isAdmin %}
+                    <table>
+                        <tr>
+                            <td>
+                                {% if userToEdit.isAdmin %}
+                                    Stilling er: <b> Administrator</b>
+                                {% elseif userToEdit.isProjectLeader %}
+                                    Stilling / posisjon er: <b> Prosjektleder</b>
+                                {% elseif userToEdit.isGroupLeader %}
+                                    Stilling / posisjon er: <b> Teamleder</b>
+                                {% elseif userToEdit.isTemporary %}
+                                    Stilling er: <b> Innleid</b>
+                                {% elseif userToEdit.isCustomer %}
+                                    Posisjon er: <b> Kunde</b>
+                                {% else %}
+                                    Stilling er: <b> Ingen stilling</b>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                {% endif %}
+                <tr></tr>
+                <tr>
+                    {% if not userToEdit.isCustomer() %}
                         <table>
                             <tr>
                                 <th colspan="2">
                                     Endre stilling:
                                 </th>
                             </tr>
-                    <tr>
-                        <td><input type="radio" id="worker" name="userType" value="2"></td>
-                        <td><label for="worker">Fast arbeider</label></td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" id="temporary" name="userType" value="1"></td>
-                        <td><label for="temporary">Innleid arbeider</label></td>
-                    </tr>
+                            <tr>
+                                <td><input type="radio" id="worker" name="userType" value="2"></td>
+                                <td><label for="worker">Fast arbeider</label></td>
+                            </tr>
+                            <tr>
+                                <td><input type="radio" id="temporary" name="userType" value="1"></td>
+                                <td><label for="temporary">Innleid arbeider</label></td>
+                            </tr>
                             {% if user.isAdmin() %}
                                 <tr>
                                     <td><input type="radio" id="admin" name="userType" value="3"></td>
@@ -138,35 +138,35 @@
 
                             {% endif %}
                         </table>
-                        {% endif %}
-
-                {% if not userToEdit.isCustomer() %}
-                <p>Status: <b>{{ userToEdit.getStatus() }}</b><br>
-                    <br><label for="status">Endre status</label>
-                    <br><select name="status" id="status">
-                        <option value="Syk" {% if userToEdit.getStatus() == "Syk" %} selected {% endif %}>
-                            Syk
-                        </option>
-                        <option value="På reise"{% if userToEdit.getStatus() == "På reise" %} selected {% endif %}>
-                            På reise
-                        </option>
-                        <option value="Møte"{% if userToEdit.getStatus() == "Møte" %} selected {% endif %}>
-                            På møte
-                        </option>
-                        <option value="Annet"{% if userToEdit.getStatus() == "Annet" %} selected {% endif %}>
-                            Varierende
-                        </option>
-                        <option value="På jobb"{% if userToEdit.getStatus() == "På jobb" %} selected {% endif %}>
-                            På jobb
-                        </option>
-                        <option value="Fri"{% if userToEdit.getStatus() == "Fri" %} selected {% endif %}>Fri
-                        </option>
-                        <option value="N/A"{% if userToEdit.getStatus() == "N/A" %} selected {% endif %}>N/A
-                        </option>
-                    </select>
                     {% endif %}
-                    <input type="hidden" value="{{ getMac("Edit user's information") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="user_edit" id="edit_btn" value="Send inn endringer"><br>
+
+                    {% if not userToEdit.isCustomer() %}
+                    <p>Status: <b>{{ userToEdit.getStatus() }}</b><br>
+                        <br><label for="status">Endre status</label>
+                        <br><select name="status" id="status">
+                            <option value="Syk" {% if userToEdit.getStatus() == "Syk" %} selected {% endif %}>
+                                Syk
+                            </option>
+                            <option value="På reise"{% if userToEdit.getStatus() == "På reise" %} selected {% endif %}>
+                                På reise
+                            </option>
+                            <option value="Møte"{% if userToEdit.getStatus() == "Møte" %} selected {% endif %}>
+                                På møte
+                            </option>
+                            <option value="Annet"{% if userToEdit.getStatus() == "Annet" %} selected {% endif %}>
+                                Varierende
+                            </option>
+                            <option value="På jobb"{% if userToEdit.getStatus() == "På jobb" %} selected {% endif %}>
+                                På jobb
+                            </option>
+                            <option value="Fri"{% if userToEdit.getStatus() == "Fri" %} selected {% endif %}>Fri
+                            </option>
+                            <option value="N/A"{% if userToEdit.getStatus() == "N/A" %} selected {% endif %}>N/A
+                            </option>
+                        </select>
+                        {% endif %}
+                        <input type="hidden" value="{{ getMac("Edit user's information") }}" name="XSRFPreventionToken">
+                        <br><input type="submit" name="user_edit" id="edit_btn" value="Send inn endringer"><br>
             </form>
             <br>
             {% if user.isAdmin() %}

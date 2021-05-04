@@ -7,9 +7,9 @@
             $('document').ready(function(){
                 const categorySelect = document.getElementById("employee_dashboard_category"); // is null when hourId is not empty
                 if(categorySelect !== undefined && categorySelect !== null) {
-                    categorySelect.addEventListener("change", updateSelects({{ tasks|json_encode|raw }}));
-                    console.log({{ tasks|json_encode|raw }});
-                    updateSelects({{ tasks|json_encode|raw }})();
+                    categorySelect.addEventListener("change", updateSelects({{ tasksWork|json_encode|raw }}));
+                    console.log({{ tasksWork|json_encode|raw }});
+                    updateSelects({{ tasksWork|json_encode|raw }})();
                 }
             });
         </script>
@@ -19,12 +19,9 @@
                 <form method="post" id="register_time_form">
                     <select name="Kategori" id="employee_dashboard_category">
                         <option value="" disabled selected hidden>Jobbet med hva</option>
-                        <option value="Administrativt">Administrativt</option>
-                        <option value="Kurs">Kurs</option>
-                        <option value="Møte">Møte</option>
-                        <option value="Prosjekt">Prosjekt</option>
-                        <option value="Rapportering">Rapportering</option>
-                        <option value="Selvstudie">Selvstudie</option>
+                        {% for cat in taskCategories %}
+                            <option value= {{ cat.categoryName }}> {{ cat.categoryName }}</option>
+                        {% endfor %}
                     </select>
                     <select name="taskID" id="employee_dashboard_location"></select>
                     <br><input type="text" name="Lokasjon" value="" placeholder="Sted" maxlength=30 required
@@ -125,7 +122,7 @@
                             <td> {{ hour.projectName }}</td>
                             <td> {{ hour.startTime }}</td>
                             <td> {{ hour.endTime }}</td>
-                            <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                            <td> {{ hour.getTimeWorked() }}  </td>
                             <td> {{ hour.location }}</td>
                             <td> {{ hour.comment }}</td>
                             {% if user.isAdmin %}

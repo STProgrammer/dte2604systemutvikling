@@ -2,57 +2,60 @@
 {% block content %}
     <section class="admin_dashboard" id="admin_dashboard">
 
-        {# Totale lønnsutgifter i dag #}
-        <div class="container container_medium cursor" onclick="location.href='reports.php';" >
-            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
-            <h6>Totale lønnsutgifter i dag</h6>
-            <div class="text">
+        {# Totale timeregistreringer i dag #}
+        <div class="container container_medium_admin cursor snow" onclick="location.href='timeregistration.php';">
+            <h6>Totale timeregistreringer i dag</h6>
+            <div class="text_bigtime">
+                {{ sumTimeToday }}
+            </div>
+        </div>
 
+        {# Totale lønnsutgifter i dag #}
+        <div class="container container_medium_admin cursor snow" onclick="location.href='reports.php';" >
+            <h6>Totale lønnsutgifter i dag</h6>
+            <div class="text_bigtime">
+                kr {{ sumPaymentToday }}
+            </div>
+        </div>
+
+        {# Totale timer denne måned #}
+        <div class="container container_medium_admin cursor snow" onclick="location.href='timeregistration.php';">
+            <h6>Totale timer denne måned</h6>
+            <div class="text_bigtime">
+                {{ sumTimeMonth }}
             </div>
         </div>
 
         {# Totale lønnsutgifter denne måned #}
-        <div class="container container_medium cursor" onclick="location.href='reports.php';" >
-            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_admin cursor snow" onclick="location.href='reports.php';" >
             <h6>Totale lønnsutgifter denne måned</h6>
-            <div class="text">
-
-            </div>
-        </div>
-
-        {# Totale timeregistreringer i dag #}
-        <div class="container container_medium cursor" onclick="location.href='timeregistration.php';">
-            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
-            <h6>Totale timeregistreringer i dag</h6>
             <div class="text_bigtime">
-                {{ count.count }}
+                kr {{ sumPaymentMonth }}
             </div>
         </div>
-
+    </section>
+    <section>
         {# Feilmeldinger #}
-        <div class="container container_medium_long scroll cursor" onclick="location.href='reports.php';">
-            <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_admin cursor snow scrollY" onclick="location.href='reports.php';">
             <h6>Feilmeldinger i dag</h6>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
+                    <p>Header: {{ header }}</p>
                 {% endfor %}
                 {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
+                    <p>Message: {{ message }}</p>
                 {% endfor %}
             {% endif %}
         </div>
 
         {# Registrer fravær / Rediger timeføringer #}
-        <div class="container container_medium cursor" onclick="location.href='userprofiles.php';">
-            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_admin cursor snow" onclick="location.href='userprofiles.php';">
             <h6>Registrer fravær / Rediger timeføringer </h6>
             <h6></h6>
         </div>
 
         {# Prosjekter og oppgaver #}
-        <div class="container container_medium_long scroll cursor" onclick="location.href='projects.php';">
-            <img src="images/icon_task.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_admin cursor snow" onclick="location.href='projects.php';">
             <h6>Prosjekter og oppgaver</h6>
             <div class="text">
                 Se prosjekter og oppgaver
@@ -60,8 +63,7 @@
         </div>
 
         {# Nye brukere til godkjenning #}
-        <div class="container container_medium cursor" onclick="location.href='userprofiles.php?verify=1';">
-            <img src="images/icon_verify_user.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_admin cursor snow" onclick="location.href='userprofiles.php?verify=1';">
             <h6>Nye brukere til godkjenning</h6>
             <div class="text">
                 Brukere som skal godkjennes kommer her
@@ -79,7 +81,7 @@
                 {% if hour.comment is not empty %}
                     <table>
                         <tr>
-                            <td class="widthFixed"><b>{{ hour.whoWorkedName }} :</b></td>
+                            <td class="widthFixed"><b id="name">{{ hour.whoWorkedName }} :</b></td>
                             <td>{{ hour.startTime }}</td>
                         </tr>
                         <tr>
@@ -96,7 +98,7 @@
                 {% if hour.commentBoss is not empty %}
                     <table>
                         <tr>
-                            <td class="widthFixed"><b>{{ hour.whoWorkedName }} :</b></td>
+                            <td class="widthFixed"><b id="name">{{ hour.whoWorkedName }} :</b></td>
                             <td>{{ hour.startTime }}</td>
                         </tr>
                         <tr>

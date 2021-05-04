@@ -19,12 +19,9 @@
                 <form method="post" id="register_time_form">
                     <select name="Kategori" id="employee_dashboard_category">
                         <option value="" disabled selected hidden>Jobbet med hva</option>
-                        <option value="Administrativt">Administrativt</option>
-                        <option value="Kurs">Kurs</option>
-                        <option value="Møte">Møte</option>
-                        <option value="Prosjekt">Prosjekt</option>
-                        <option value="Rapportering">Rapportering</option>
-                        <option value="Selvstudie">Selvstudie</option>
+                        {% for cat in taskCategories %}
+                            <option value= {{ cat.categoryName }}> {{ cat.categoryName }}</option>
+                        {% endfor %}
                     </select>
                     <select name="taskID" id="employee_dashboard_location"></select>
                     <br><input type="text" name="Lokasjon" value="" placeholder="Sted" maxlength=30 required
@@ -46,57 +43,63 @@
             </div>
         {% endif %}
 
-        {# Totale lønnsutgifter i dag #}
-        <div class="container container_medium cursor" onclick="location.href='reports.php';" >
-            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
-            <h6>Totale lønnsutgifter i dag</h6>
-            <div class="text">
+        {# Totale timeregistreringer i dag #}
+        <div class="container container_medium_projectleader cursor snow"
+             onclick="location.href='timeregistration.php';">
+            <h6>Totale timeregistreringer i dag</h6>
+            <div class="text_bigtime">
+                {{ sumTimeToday }}
+            </div>
+        </div>
 
+        {# Totale lønnsutgifter i dag #}
+        <div class="container container_medium_projectleader cursor snow" onclick="location.href='reports.php';">
+            <h6>Totale lønnsutgifter i dag</h6>
+            <div class="text_bigtime">
+                kr {{ sumPaymentToday }}
+            </div>
+        </div>
+
+        {# Totale timer denne måned #}
+        <div class="container container_medium_projectleader cursor snow"
+             onclick="location.href='timeregistration.php';">
+            <h6>Totale timer denne måned</h6>
+            <div class="text_bigtime">
+                {{ sumTimeMonth }}
             </div>
         </div>
 
         {# Totale lønnsutgifter denne måned #}
-        <div class="container container_medium cursor" onclick="location.href='reports.php';" >
-            <img src="images/icon_databse.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_projectleader cursor snow" onclick="location.href='reports.php';">
             <h6>Totale lønnsutgifter denne måned</h6>
-            <div class="text">
-
-            </div>
-        </div>
-
-        {# Totale timeregistreringer i dag #}
-        <div class="container container_medium cursor" onclick="location.href='timeregistration.php';">
-            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
-            <h6>Totale timeregistreringer i dag</h6>
             <div class="text_bigtime">
-                {{ count.count }}
+                kr {{ sumPaymentMonth }}
             </div>
         </div>
 
         {# Feilmeldinger #}
-        <div class="container container_medium_long scroll cursor" onclick="location.href='reports.php';">
-            <img src="images/icon_feilmeldinger.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_projectleader cursor snow scrollY"
+             onclick="location.href='reports.php';">
             <h6>Feilmeldinger i dag</h6>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
+                    <p>Header: {{ header }}</p>
                 {% endfor %}
                 {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
+                    <p>Message: {{ message }}</p>
                 {% endfor %}
             {% endif %}
         </div>
 
         {# Registrer fravær / Rediger timeføringer #}
-        <div class="container container_medium cursor" onclick="location.href='userprofiles.php';">
-            <img src="images/icon_clock.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_projectleader cursor snow" onclick="location.href='userprofiles.php';">
             <h6>Registrer fravær / Rediger timeføringer </h6>
             <h6></h6>
         </div>
 
         {# Prosjekter og oppgaver #}
-        <div class="container container_medium_long scroll cursor" onclick="location.href='projects.php';">
-            <img src="images/icon_task.png" width="40px" alt="Icon"/>
+        <div class="container container_medium_projectleader cursor snow scrollY"
+             onclick="location.href='projects.php';">
             <h6>Prosjekter og oppgaver</h6>
             <div class="text">
                 Se prosjekter og oppgaver
@@ -170,7 +173,7 @@
                                 <td> {{ hour.projectName }}</td>
                                 <td> {{ hour.startTime }}</td>
                                 <td> {{ hour.endTime }}</td>
-                                <td> {{ hourManager.spentTimePhase(hour.startTime, hour.endTime) }} </td>
+                                <td> {{ hour.getTimeWorked() }} </td>
                                 <td> {{ hour.location }}</td>
                                 <td> {{ hour.comment }}</td>
                                 {% if user.isAdmin %}
@@ -228,4 +231,4 @@
 {% endblock %}
     {# REFERENCES #}
     {# Adobe XD icons #}
-    {# icon_task.png: https://icon-icons.com/icon/task/120291            #}
+    {# icon_task.png: https://icon-icons.com/icon/task/120291              #}

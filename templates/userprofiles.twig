@@ -2,6 +2,11 @@
 {% block content %}
 
     <section id="brukerprofiler" class="brukerprofiler">
+        {# TABLE ORDERING JS #}
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+
         {% if user.isAdmin or user.isProjectLeader %}
             <div class="container container_small">
                 <button id="button" class="button" title="Ny bruker"
@@ -10,83 +15,105 @@
                 </button>
             </div>
             {% if user.isADmin %}
-            <div class="container container_small">
-                <button id="button" class="button" title="Verifiser bruker"
-                onclick="window.location.href='userprofiles.php?verify=1';">
-                    <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
-                </button>
-            </div>
-                {% endif %}
+                <div class="container container_small">
+                    <button id="button" class="button" title="Verifiser bruker"
+                            onclick="window.location.href='userprofiles.php?verify=1';">
+                        <img src="images/icon_bruker_sjekk.svg" width="30em"> Verifiser bruker
+                    </button>
+                </div>
+            {% endif %}
         {% endif %}
     </section>
-        <section>
-            <h5>Alle brukere og administratorer</h5>
+    <section>
+        <h5>Alle brukere og administratorer</h5>
 
-            <div class="openContainerNoBorder text">
-                <table class="table" id="table">
-                    <tr>
-                        <th>Etternavn</th>
-                        <th>Fornavn</th>
-                        <th>Stilling</th>
+        <div class="openContainerNoBorder text scrollY">
+            <table class="table" id="table5">
+                <tr>
+                    <th>Etternavn</th>
+                    <th>Fornavn</th>
+                    <th>Stilling</th>
+
+                    <!-- if admin\leder show this  -->
+                    {% if user.isAdmin or user.isProjectLeader or user.isGroupLeader %}
+                        <th>Status</th>
+                    {% endif %}
+                    {% if user.isAdmin %}
+                        <th>Godkjent av admin</th>
+                    {% endif %}
+                    {% if user.isAdmin %}
+                        <th>Se detaljer og rediger</th>
+                    {% endif %}
+                </tr>
+                {% for usr in users %}
+                    <tr id="table5">
+                        <td>{{ usr.getLastName }}</td>
+                        <td>{{ usr.getFirstName }}</td>
+
+                        {% if usr.isAdmin %}
+                            <td>Administrator</td>
+                        {% elseif usr.isProjectLeader %}
+                            <td>Prosjektleder</td>
+                        {% elseif usr.isGroupLeader %}
+                            <td>Teamleder</td>
+                        {% elseif usr.isCustomer %}
+                            <td>Kunde</td>
+                        {% elseif usr.isTemporary %}
+                            <td>Innleid</td>
+                        {% elseif usr.isEmployee %}
+                            <td>Utvikler</td>
+                        {% else %}
+                            <td>Ingen stilling</td>
+                        {% endif %}
 
                         <!-- if admin\leder show this  -->
-                        {% if user.isAdmin or user.isProjectLeader %}
-                            <th>Status</th>
+                        {% if user.isAdmin or user.isProjectLeader or user.isGroupLeader() %}
+                            <td>{{ usr.getStatus }}</td>
                         {% endif %}
-
-                        <th>Godkjent av admin</th>
 
                         {% if user.isAdmin %}
-                            <th>Se detaljer og rediger</th>
-                        {% endif %}
-                    </tr>
-                    {% for usr in users %}
-                        <tr>
-                            <td>{{ usr.getLastName }}</td>
-                            <td>{{ usr.getFirstName }}</td>
-
-                            {% if usr.isAdmin %}
-                                <td>Administrator</td>
-                            {% elseif usr.isProjectLeader %}
-                                <td>Prosjektleder</td>
-                            {% elseif usr.isGroupLeader %}
-                                <td>Teamleder</td>
-                            {% elseif usr.isCustomer %}
-                                <td>Kunde</td>
-                            {% elseif usr.isTemporary %}
-                                <td>Innleid</td>
-                            {% elseif usr.isEmployee %}
-                                <td>Utvikler</td>
-                            {% else %}
-                                <td>Ingen stilling</td>
-                            {% endif %}
-
-                            <!-- if admin\leder show this  -->
-                            {% if user.isAdmin or user.isProjectLeader %}
-                                <td>{{ usr.getStatus }}</td>
-                            {% endif %}
-
                             <!-- Bruker godkjent av admin-->
                             {% if usr.isVerifiedByAdmin %}
                                 <td>Verifisert</td>
                             {% else %}
                                 <td>Ikke Verifisert</td>
                             {% endif %}
+                        {% endif %}
+                        <!-- if user is admin  -->
+                        {% if user.isAdmin %}
+                            <td>
+                                <button class="buttons miniButtons" id="editProject"
+                                        onclick="window.location.href='user_edit.php?userid={{ usr.getUserID() }}';">
+                                    <img src="" alt=""> Rediger
+                                </button>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
 
-                            <!-- if user is admin  -->
+        {# Table ordering JS #}
+        {# https://datatables.net/examples/basic_init/multi_col_sort.html #}
+        <script>
+            $(document).ready(function () {
+                $('#table5').DataTable({
+                    columnDefs0: [{
+                        targets0: [0],
+                        orderData0: [0, 1]
+                    }, {
+                        targets0: [1],
+                        orderData0: [1, 0]
+                    }, {
+                        targets0: [4],
+                        orderData0: [4, 0]
+                    }]
+                });
+            });
+        </script>
 
-                                <td>
-                                    <button class="buttons miniButtons" id="editProject"
-                                            onclick="window.location.href='user_edit.php?userid={{ usr.getUserID() }}';">
-                                        <img src="" alt=""> Rediger
-                                    </button>
-                                </td>
+    </section>
 
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </section>
     <div class="container container_big_long text">
         {% if session.getFlashBag.has('header') %}
             {% for header in session.getFlashBag.get('header', []) %}

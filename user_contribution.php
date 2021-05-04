@@ -11,7 +11,7 @@ $taskManager = new TaskManager($db, $request, $session);
 
 $user = $session->get('User');
 
-if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
+if ($user && ($user->isAdmin() | $user->isProjectLeader() | $user->isGroupLeader())) {
     $userID = $request->query->getInt('userID');
     $userToView = $userManager->getUser($userID);
 
@@ -21,7 +21,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
     if ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
         $hourID = $request->query->getInt('hourId');
         if ($hourManager->editCommentBoss($hourID)) {
-            header("Location: ".$requestUri."&commentbyboss=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
             header("Location: ".$requestUri."&failedtocommentbyboss=1");

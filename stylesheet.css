@@ -12,9 +12,9 @@ body { background-color: lightgray;
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #d0bcbc;
+    background-color: burlywood;
     font-family: "Segoe UI", serif;
-    border-bottom: 0.08em solid #387CB7;
+    /*border-bottom: 0.08em solid tan;*/
 }
 .header a {
     color: #707070;
@@ -41,7 +41,7 @@ body { background-color: lightgray;
 /* When the screen is less than 600 pixels wide, hide all links, except
 for the first one ("Home"). Show the link that contains should open and
 close the topnav (.icon) */
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1300px) {
     .header a:not(:first-child) {display: none;}
     .header a.icon {
         float: right;
@@ -53,7 +53,7 @@ close the topnav (.icon) */
 /* The "responsive" class is added to the topnav with JavaScript when
 the user clicks on the icon. This class makes the topnav look good on
 small screens (display the links vertically instead of horizontally) */
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1300px) {
     .header.responsive {position: fixed;}
     .header.responsive a.icon {
         position: fixed;
@@ -181,9 +181,11 @@ div.container_pause { width: 20em; height: 5em;
 }
 div.container_registrer_ut { width: 20em; height: 5em;
 }
-/*div.container_small_long { width: 24em; height: 5em;*/
-/*}*/
 div.container_medium { width: 22em; height: 10em;
+}
+div.container_medium_admin { width: 18em; height: 10em;
+}
+div.container_medium_projectleader { width: 18em; height: 10em;
 }
 div.container_medium_long { width: 30em; height: 10em;
 }
@@ -196,11 +198,6 @@ div.container_big_long { margin-top: 3em; margin-bottom: 3em; width: 40em; heigh
 }
 div.container_extra_big { width: 65em; height: 30em;
 }
-
-/*div.container_center { display:block;*/
-/*    height: 5em; box-shadow: none; border: none;*/
-/*    !**margin-left: auto; margin-right: auto; width: 50%;*!*/
-/*}*/
 div.container_addComment { width: 100%; height: 7em;
     border: none; background: none; box-shadow: none;
     padding: 0.1em; margin: 0.1em;
@@ -212,13 +209,13 @@ div#edit_commentBoss_hour { width: 100%; height: 7em;
 div.openContainerNoBorder {
     margin-left: 1em; margin-bottom: 2em; background: snow; width: auto;
 }
+
 div.container_menu { width: 30em; height: 30em; background-color: #eeeeee;
 }
 div.container_menu_form { width: auto; height: 40em; background-color: #eeeeee;
     min-height: 20em;
     /*https://stackoverflow.com/questions/3948445/how-to-make-div-on-top-of-all-other-control*/
 }
-
 div.container_menu_form_hour { width: 50em; height: 50em; background-color: #eeeeee; border: none;
     overflow-y: scroll; scroll-behavior: smooth;
 }
@@ -247,18 +244,21 @@ div.container_menu_lang_WithBorder { width: 60em; height: 40em;  border: none;
 div.noBorder_NoBackground_NoShadow {
     border: none; background: none; box-shadow: none;
 }
-div.scroll { overflow-y: scroll; scroll-behavior: smooth;
+div.scrollX { overflow-x: scroll; scroll-behavior: smooth;
 }
-div.scrollY { overflow-y: scroll; overflow-x: hidden; scroll-behavior: smooth; max-height: 40em;
+div.scrollY { overflow-y: scroll; scroll-behavior: smooth; max-height: 40em;
 }
 div.green {
-    background: green;
+    background: lightgreen;
 }
 div.red {
-    background: crimson;
+    background: lightpink;
 }
 div.blue {
-    background: dodgerblue;
+    background: lightsteelblue;
+}
+div.snow {
+    background: snow;
 }
 /**-----------  BUTTONS  -------------*/
 .buttons {
@@ -284,6 +284,7 @@ div.container_small { width: 11em; height: 4em; box-shadow: 0.1em 0.1em 0.1em #8
     cursor: pointer; border: none;
     box-shadow: 0.1em 0.1em 0.1em #888888;
 }
+
 .miniButtons_green  {
     color: white;
     font-size: 0.8rem;
@@ -370,6 +371,18 @@ label {
     margin-right: 1em;
     float: left;
 }
+input#verify_hour {
+    font-family: Segoe UI, serif;
+    color: #5b4e48;
+    font-size: 0.8rem;
+    width: 10em; height: 2em;
+    background: white;
+    padding: 0em; margin: 0em;
+    border-radius: 0.5em;
+    cursor: pointer; border: none;
+    box-shadow: 0.1em 0.1em 0.1em #888888;
+    font-weight: normal;
+}
 input#user {
     font-family: Segoe UI, serif;
     width: 70%;
@@ -390,7 +403,19 @@ input#submit {
     cursor: pointer;
     white-space: nowrap;
 }
+input#reg_btn {
+    font-family: Segoe UI, serif; color: white; font-size: 0.8rem;
+    background: #599871;
+    width: 15em;
+    padding: 2em 15em 2em 5em;
+    margin: 0.5em 0.5em 0.5em 0em;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
 
+}
 input#password {
     font-family: Segoe UI, serif;
     width: 70%;
@@ -505,7 +530,7 @@ input[type=submit] {
     font-weight: bold;
 }
 input#edit_commentBoss_hour {
-    background: #7a9c7e;
+    background: burlywood;
     width: 15em;
     float: right;
     padding: 0.2em 15em 0.2em 3em;
@@ -517,7 +542,7 @@ input#edit_commentBoss_hour {
     font-weight: bold;
 }
 input#edit_comment_hour {
-    background: #7a9c7e;
+    background: burlywood;
     width: 15em;
     float: right;
     padding: 0.2em 15em 0.2em 3em;
@@ -547,14 +572,76 @@ select{
     text-align: left;
     border-color: burlywood;
     border-spacing: 0.4em;
-    border-bottom: 1pt solid lightslategray;
+    border-bottom: 1pt solid burlywood;
     padding: 0.5em;
     margin: 0.5em;
     white-space: nowrap;
-    width: 100%;
+    width: 80%;
 
 }
-th { background-color: darkseagreen; color: white;
+/*TIME TABLES*/
+div.timeTable {
+    margin-left: 1em; margin-bottom: 3em; background: snow; /*width: 95%;*/
+}
+
+.dataTable {
+    width: 80%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.table#table0 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+.table#table1 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+.table#table2 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+.table#table3 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+.table#table4 {
+    width: 95%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: content-box;
+}
+/*slutt time tables----------------------------*/
+
+/*User profiles----------------------------*/
+tr#table5:nth-child(even) {
+    background-color: #f2f2f2;
+}
+table#table5 {
+    height: auto; max-height: 100em;
+    box-sizing: revert;
+}
+th { background-color: darkgray; color: white;
 }
 td {
     overflow: hidden;
@@ -601,6 +688,12 @@ tr:hover { background-color: #f5f5f5;
 }
 tr:nth-child(even) { background-color: #f2f2f2;
 }
+tr.noNthColor:nth-child(even) { background-color: snow;
+}
+td#backgroundColor {
+    background-color: seashell;
+}
+
 #table_edit {
     border-spacing: 0.2em;
     padding: 0.5em;
@@ -667,7 +760,7 @@ b#overskriftLiten {
     padding-bottom: 1em;
 
 }
-/*b { margin-left: 1em}*/
+b#name { color: #4c4747}
 
 p { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 
@@ -748,9 +841,6 @@ a:hover { color: lightyellow;
 
 /**-----------FOOTER---------------*/
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
     width: 100%;
     height: 2em;
     background-color: #D9D2D2;
@@ -774,6 +864,5 @@ footer p[class = rightText] {
     text-align: right;
     margin-top: 0em;
     font-family: Segoe UI, serif;
-    font-weight: bold;
 }
 /**--------------------------------------------------------------------------------------------------------*/

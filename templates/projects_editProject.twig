@@ -3,11 +3,8 @@
     <section class="edit_project" id="edit_project">
 
         {# TILBAKE KNAPP #}
-        <div class="container container_small cursor" onclick="goBack()">
-            <button id="button" class="button" title="Ny bruker"
-                    onclick="goBack()">
-                <img src="" width="30em"> Gå tilbake
-            </button>
+        <div>
+            <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
         </div>
     </section>
 
@@ -67,6 +64,9 @@
                         <td>{{ member.getUserId() }}</td>
                         <td>{{ member.getFirstName }}</td>
                         <td>{{ member.getLastName }}</td>
+
+                        {# TODO HALIL KAN DU SE PÅ DETTE. Gruppeleder får opp sine timer #}
+
                         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
                             <td>
                                 <button class="buttons miniButtons" id="contribution"
@@ -94,7 +94,7 @@
                     <th>Gruppe</th>
                     <th>Status</th>
                     <th>Hoved ansvarlig</th>
-                    {% if not user.getUserId() ==  project.getCustomer() %}
+                    {% if user.isAdmin() or user.projectLeader() or user.getUserId() == project.getCustomer() %}
                         <th>Se detaljer / endre</th>
                     {% endif %}
                 </tr>
@@ -115,7 +115,7 @@
                         {% endif %}
                         <td>{{ task.mainResponsibleName }}</td>
 
-                        {% if not user.getUserId() ==  project.getCustomer() %}
+                        {% if user.isAdmin() or user.projectLeader() or user.getUserId() == project.getCustomer() %}
                             <td>
                                 <button class="buttons miniButtons" id="contribution"
                                         onclick="window.location.href='tasks_editTask.php?taskid={{ task.getTaskID() }}';">
@@ -128,8 +128,8 @@
             </table>
         </div>
 
-        {# LEGG TIL NY OPPGAVE #}
-        {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
+        {# LEGG TIL NY OPPGAVE  - Fjernet tillatelse for gruppeleder (hadde ikke tillatelse i db)#}
+        {% if user.isAdmin() or user.isProjectLeader() %}
             <div class="container container_menu_form_project text" id="add_user_to_project">
                 <form method="post" id="new_task_form">
                     <b class="overskriftLiten">Legg til ny oppgave: </b><br>
@@ -172,7 +172,7 @@
                 <th>Start dato</th>
                 <th>Slutt date</th>
                 <th>Status</th>
-                {% if not user.getUserId() ==  project.getCustomer() %}
+                {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() or user.getUserId() == project.getCustomer() %}
                     <th>Se detaljer</th>
                 {% endif %}
             </tr>
@@ -191,7 +191,7 @@
                         <td>Avsluttet</td>
                     {% endif %}
 
-                    {% if not user.getUserId() ==  project.getCustomer() %}
+                    {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() or user.getUserId() == project.getCustomer() %}
                         <td>
                             <button class="buttons miniButtons" id="contribution"
                                     onclick="window.location.href='phases_editPhase.php?phaseid={{ phase.getPhaseID() }}';">
@@ -204,8 +204,8 @@
         </table>
     </div>
 
-    {# LEGG TIL FASE #}
-    {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
+    {# LEGG TIL FASE - Fjernet tillatelse for gruppeleder (hadde ikke tillatelse i db) #}
+    {% if user.isAdmin() or user.isProjectLeader() %}
         <div class="container container_menu_form_project text" id="add_phase_to_project">
             <b class="overskriftLiten">Legg til ny fase</b>
             <form method="post" id="phase_register_form">
@@ -312,7 +312,6 @@
     </div>
 
     {# LEGG TIL GRUPPE #}
-    {# {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %} #}
     {% if user.isAdmin() or user.isProjectLeader() %}
         <div class="container container_menu_form_project text" id="add_user_to_project">
             <div class="marginbotton">

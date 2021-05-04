@@ -11,7 +11,8 @@ $taskManager = new TaskManager($db, $request, $session);
 if ($user) {
     $userID = $user->getUserId($user);
 
-    $tasks = $taskManager->getTasksOfUser($userID);
+    $tasksWork = $taskManager->getTasksOfUser($userID);
+    $taskCategories = $taskManager->getCategories();
 
     $hourId = $request->query->getInt('hourID');
     $hour = $hourManager->getHour($hourId);
@@ -55,7 +56,8 @@ if ($user) {
 
         echo $twig->render('employee_dashboard.twig',
             array('hours' => $hours, 'hour' => $hour, 'hourManager' => $hourManager,
-                'UserID' => $userID, 'session' => $session, 'user' => $user, 'tasks' => $tasks,
+                'UserID' => $userID, 'session' => $session, 'user' => $user,
+                'tasksWork' => $tasksWork, 'taskCategories' => $taskCategories,
                 'TaskManager' => $taskManager, 'hourID' => $hourID));
     }
 }else {
