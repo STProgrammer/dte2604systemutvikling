@@ -9,13 +9,12 @@ function updateSelects(tasks) {
     const locationSelect = document.getElementById(
       "employee_dashboard_location"
     );
-    //console.log(categorySelect.value);
+
     if (
       newValue ? newValue === "Prosjekt" : categorySelect.value === "Prosjekt"
     ) {
       locationSelect.hidden = false;
       locationSelect.innerHTML = "";
-      console.log(tasks);
       tasks.forEach((value) => {
         locationSelect.innerHTML += `<option value="${value.taskID}">${
           value.taskName ? value.taskName : "-"

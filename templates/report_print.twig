@@ -5,7 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Morild Data BA</title>
     <link rel="icon" type="image/png" href="images/favicon.ico">
-    <link rel="stylesheet" media="print" href="stylesheet_print.css">
+
+    <script type="text/javascript">
+        var nAgt = navigator.userAgent;
+        var browserName  = navigator.appName;
+        var nameOffset,verOffset,ix;
+
+        // In Opera, the true version is after "Opera" or after "Version"
+        if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
+            browserName = "Opera";
+        }
+        // In Chrome, the true version is after "Chrome"
+        else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+            browserName = "Chrome";
+        }
+        // In Safari, the true version is after "Safari" or after "Version"
+        else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+            browserName = "Safari";
+        }
+        // In Firefox, the true version is after "Firefox"
+        else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+            browserName = "Firefox";
+        }
+        // In most other browsers, "name/version" is at the end of userAgent
+        else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) <
+            (verOffset=nAgt.lastIndexOf('/')) )
+        {
+            browserName = nAgt.substring(nameOffset,verOffset);
+            fullVersion = nAgt.substring(verOffset+1);
+            if (browserName.toLowerCase()==browserName.toUpperCase()) {
+                browserName = navigator.appName;
+            }
+        }
+
+        if (browserName == "Firefox") {
+            document.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"stylesheet_print_firefox.css\">");
+        }
+        else {
+            document.write("<link type=\"text/css\" rel=\"stylesheet\" href=\"stylesheet_print.css\">");
+        }
+    </script>
+
     <script type="text/javascript" charset="utf8" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script>
