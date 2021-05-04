@@ -2,9 +2,6 @@
 {% block content %}
     <section id="timeregistreringer" class="timeregistreringer">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        {# TABLE ORDERING JS #}
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
 
         {# Mine timeregistreringer fra gjeldende måned fra innstemplinger #}
@@ -726,74 +723,6 @@
                 </table>
             </div>
         {% endif %}
-
-        {# Table ordering JS #}
-        {# https://datatables.net/examples/basic_init/multi_col_sort.html #}
-        <script>
-            $(document).ready(function () { {# TODO ingen av scriptene virker når tabell har innhold #}
-                $('#table0').DataTable({
-                    columnDefs0: [{
-                        targets0: [0],
-                        orderData0: [0, 1]
-                    }, {
-                        targets0: [1],
-                        orderData0: [1, 0]
-                    }, {
-                        targets0: [4],
-                        orderData0: [4, 0]
-                    }]
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function () {
-                $('#table1').DataTable({
-                    columnDefs1: [{
-                        targets1: [0],
-                        orderData1: [0, 1]
-                    }, {
-                        targets1: [1],
-                        orderData1: [1, 0]
-                    }, {
-                        targets1: [4],
-                        orderData1: [4, 0]
-                    }]
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function () {
-                $('#table2').DataTable({
-                    columnDefs2: [{
-                        targets2: [0],
-                        orderData2: [0, 1]
-                    }, {
-                        targets2: [1],
-                        orderData2: [1, 0]
-                    }, {
-                        targets2: [4],
-                        orderData2: [4, 0]
-                    }]
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function () {
-                $('#table3').DataTable({
-                    columnDefs3: [{
-                        targets3: [0],
-                        orderData3: [0, 1]
-                    }, {
-                        targets3: [1],
-                        orderData3: [1, 0]
-                    }, {
-                        targets3: [4],
-                        orderData3: [4, 0]
-                    }]
-                });
-            });
-        </script>
-
 
         {# FEILMELDINGER FRA DATABASE #}
         <div class="container container_big_long text">
