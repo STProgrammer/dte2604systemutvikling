@@ -34,7 +34,7 @@
         <div class="container container_menu text" id="project_members">
             <label class="overskriftLiten"><b>Medlemmer i denne gruppen:</b></label></br>
             <br>
-            <br><b>Medlemmer:</b><br>
+            <!--br><b>Medlemmer:</b><br-->
             <ul>
                 {% for empl in members %}
                 <li>{{ empl.getFirstName }} {{ empl.getLastName }}
@@ -45,8 +45,8 @@
 
         {# Oppgaver til denne gruppen #}
         <div class="container container_menu_lang text" id="phase_tasks">
-            <h5 class="overskriftLiten">Oppgaver til denne gruppen</h5>
-            <label class="overskriftLiten">Oppgaver som tilhører gruppa: </label>
+            <h5 class="overskriftLiten">Oppgaver som tilhører gruppa:</h5>
+            <!--label class="overskriftLiten">Oppgaver som tilhører gruppa: </label-->
             <table class="table">
                 <tr>
                     <th>Navn</th>
@@ -86,7 +86,7 @@
     <section>
         {# Endre Gruppe #}
         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
-            <h6 class="marginleft overskrift">Endre Gruppe</h6><br>
+            <!--h6 class="marginleft overskrift">Endre Gruppe</h6><br-->
             <div class="container container_menu_high text">
                 <h5 class="overskriftLiten">Endre Gruppe</h5>
                 <form method="post" id="group_edit_form">
