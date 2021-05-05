@@ -16,30 +16,30 @@
     <section>
         {# Endre kommentar #}
         <div class="container container_menu_form text" id="edit_comment_hour">
-            <h5 id="overskrift">Endre din egen kommentar</h5>
+            <h5 id="overskrift">Endre egen kommentar:</h5>
             <form method="post" id="edit_comment_hour1">
                 <input id="hourID" type="hidden" name="hourID" value="{{ hour.hourID }}" maxlength=45
                        required/>
-                <label class="overskriftLiten" for="comment">Endre din egen kommentar: </label><br>
+                <!--label class="overskriftLiten" for="comment">Endre din egen kommentar: </label><br-->
                 <textarea id="commentbig" cols="2" rows="4" name="comment"
                           required>{{ hour.comment }}</textarea>
                 <input type="hidden" value="{{ getMac("Edit Comment") }}"
                        name="XSRFPreventionToken">
-                <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Endre kommentar">
+                <br><input type="submit" name="edit_comment_hour" id="edit_comment_hour" value="Lagre kommentar">
             </form>
         </div>
 
         {% if user.isAdmin %}
             {# Endre kommentar fra sjefen #}
             <div class="container container_menu_form text" id="edit_comment_hour">
-                <h5 id="overskrift">Endre leder kommentaren</h5>
+                <h5 id="overskrift">Endre kommentar til leder: </h5>
                 <form method="post" id="edit_comment_hour1" class="edit_comment_hour1">
                     <input id="hourID" type="hidden" name="hourID" value="{{ hour.hourID }}" maxlength=45 required/>
-                    <label class="overskriftLiten" for="commentBoss">Endre leder kommentaren: </label><br>
+                    <!--label class="overskriftLiten" for="commentBoss">Endre leder kommentaren: </label><br-->
                     <textarea id="commentbig" name="commentBoss" required>{{ hour.commentBoss }}</textarea>
                     <input type="hidden" value="{{ getMac("Edit Comment Boss") }}" name="XSRFPreventionToken">
                     <br><input type="submit" name="edit_commentBoss_hour" id="edit_commentBoss_hour"
-                               value="Endre / legg til kommentar">
+                               value="Lagre kommentar">
                 </form>
             </div>
         {% endif %}
@@ -48,9 +48,9 @@
     <section>
         {# Endre tid #}
         <div class="container container_menu_form_hour text" id="edit_hour">
-            <h5 id="overskrift">Endre Timeegistrering</h5>
+            <h5 id="overskrift">Endre Time-registrering:</h5>
             <form method="post" id="edit_hour">
-                <b class="overskriftLiten">Endre Timeegistrering:</b><br>
+                <!--b class="overskriftLiten">Endre Timeegistrering:</b><br-->
 
                 <br><label for="hourID">Timeregistrerings Id: </label>
                 <br><input type="text" name="hourID" value="{{ hour.hourID }}" disabled="disabled" maxlength=45 required
