@@ -11,7 +11,7 @@
             <table class="table" id="table0">
                 <thead>
                 <tr>
-                    <th>Task Type</th>
+                    <th>Oppgavetype</th>
                     <th>Lokasjon</th>
                     <th>Startid</th>
                     <th>Slutttid</th>
@@ -162,14 +162,14 @@
         </div>
 
         {# Mine timeregistreringer fra gjeldende måned for oppgavebidrag #}
-        {% if not user.isCustomer() %}
+        {% if not user.isAdmin() or user.isCustomer() %}
             <div class="timeTable text scrollY  scrollX" id="timeTabell">
                 <table class="table display" id="table1">
                     <h5 id="overskrift">Mine timeregistreringer for oppgavebidrag</h5>
                     <thead>
                     <tr>
-                        <th>Task Navn</th>
-                        <th>Hoved Task</th>
+                        <th>Oppgavenavn</th>
+                        <th>Oppgavetype</th>
                         <th>Prosjektnavn</th>
                         <th>Starttid</th>
                         <th>Slutttid</th>
@@ -330,7 +330,7 @@
                     <thead>
                     <tr>
                         <th>Ansatt</th>
-                        <th>Task Type</th>
+                        <th>Oppgavetype</th>
                         <th>Lokasjon</th>
                         <th>Startid</th>
                         <th>Slutttid</th>
@@ -507,8 +507,8 @@
                     <h5 id="overskrift">Timeregistreringer for alle brukere for oppgavebidrag</h5>
                     <thead>
                     <tr>
-                        <th>Task Navn</th>
-                        <th>Hoved Task</th>
+                        <th>Oppgavenavn</th>
+                        <th>TaskID</th>
                         <th>Prosjektnavn</th>
                         <th>Ansatt</th>
                         <th>Starttid</th>
@@ -688,7 +688,7 @@
         {% if user.isAdmin() or user.isProjectLeader() %}
             <div class="timeTable text scrollY scrollX" id="timeTabell">
                 <table class="table display" id="table4">
-                    <h5 id="overskrift">Slettede timeregistreringer for alle brukere</h5>
+                    <h5 id="overskrift">Deaktiverte timeregistreringer for alle brukere</h5>
                     <thead>
                     <tr>
                         <th>Tid endret</th>
@@ -699,7 +699,7 @@
                         <th>Slutttid</th>
                         <th>Total tid</th>
                         <th>Lokasjon</th>
-                        <th>Task Navn</th>
+                        <th>Oppgavetype</th>
                     </tr>
                     </thead>
                     <tbody>
