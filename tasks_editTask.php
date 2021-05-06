@@ -50,7 +50,7 @@ if (!is_null($user) and !is_null($task) and ($user->getUserType() > 0)) {
     if ($request->request->has('task_status_edit') && XsrfProtection::verifyMac("Edit task status")
     && ($isAnyLeader or $isMainResponsible)) {
         if ($taskManager->editStatus($taskId)) {
-            header("Location: ".$requestUri."&taskstatusedited=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
             header("Location: ".$requestUri."&failedtoedittaskstatus=1");

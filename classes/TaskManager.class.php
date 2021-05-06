@@ -132,7 +132,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getTask()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+//            print $e->getMessage() . PHP_EOL;
             return null;
         }
     }
@@ -422,6 +422,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             if ($stmt->execute()) {
                 $this->notifyUser("Status på oppgaven og alle tilhørende sub-oppgaver ble endret");
                 $task = $this->getTask($taskId);
+//                TODO DENNE LAGER FEIL -- Uncaught Error: Call to a member function getProjectName() --
                 $this->addToProgressTable($task->getProjectName());
                 return true;
             } else {
