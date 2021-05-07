@@ -330,7 +330,7 @@ WHERE NOT EXISTS
     {
         $nonmembers = array();
         try {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE NOT EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID) AND Users.userType > 0 ORDER BY Users.lastName;");
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE NOT EXISTS(SELECT UsersAndGroups.userID FROM UsersAndGroups WHERE UsersAndGroups.groupID = :groupID AND Users.userID = UsersAndGroups.userID) AND Users.userType > 0 AND Users.userType < 3 ORDER BY Users.lastName;");
             $stmt->bindParam(':groupID', $groupID, PDO::PARAM_INT, 100);
             $stmt->execute();
             if ($nonmembers = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
