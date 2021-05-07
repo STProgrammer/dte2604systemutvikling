@@ -132,7 +132,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             }
         } catch (Exception $e) {
             $this->NotifyUser("En feil oppstod, på getTask()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+//            print $e->getMessage() . PHP_EOL;
             return null;
         }
     }
@@ -151,8 +151,9 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
             $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
-                $this->addToProgressTable($projectName);
                 $taskId = $this->db->lastInsertId();
+                $stmt->closeCursor();
+                $this->addToProgressTable($projectName);
                 if ($this->addDependencies($taskId)) {
                     $this->NotifyUser("En oppgave ble lagt til");
                     return true;
@@ -421,6 +422,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 $this->notifyUser("Status på oppgaven og alle tilhørende sub-oppgaver ble endret");
+                $stmt->closeCursor();
                 $task = $this->getTask($taskId);
                 $this->addToProgressTable($task->getProjectName());
                 return true;
@@ -440,7 +442,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
 SELECT Projects.projectName, CASE WHEN Tasks.estimatedTime IS NULL THEN 0 ELSE SUM(Tasks.estimatedTime) END AS sumEstimate, CASE WHEN Tasks.estimatedTime IS NULL THEN 0 ELSE SUM(CASE WHEN Tasks.status = 3 THEN Tasks.estimatedTime ELSE 0 END) END AS sumEstimateDone, CASE WHEN Tasks.timeSpent IS NULL THEN 0 ELSE SUM(Tasks.timeSpent) END AS sumTimeSpent, NOW()
 FROM Projects
 LEFT JOIN Tasks on Projects.projectName = Tasks.projectName 
-WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 0 AND Projects.isAcceptedByAdmin = 1) AND Projects.projectName = :projectName GROUP BY Projects.projectName");
+WHERE (Tasks.hasSubtask = 0 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 0 AND Projects.isAcceptedByAdmin = 1) AND Projects.projectName = :projectName GROUP BY Projects.projectName");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             if ($stmt->execute()) {
                 $this->notifyUser("Fikk lagre på progress table");
@@ -489,6 +491,7 @@ WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
             $stmt->bindParam(':parentTaskID', $parentTaskId, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 $this->notifyUser("Estimate på oppgaven ble endret");
+                $stmt->closeCursor();
                 $task = $this->getTask($taskId);
                 $this->addToProgressTable($task->getProjectName());
                 return true;
@@ -515,6 +518,7 @@ WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
                 $stmt->bindParam(':parentTaskID', $parentTaskId, PDO::PARAM_INT);
                 if ($stmt->execute()) {
                     $this->notifyUser("Oppgave ble slettet");
+                    $stmt->closeCursor();
                     $this->addToProgressTable($projectName);
                     return true;
                 } else {
@@ -531,6 +535,7 @@ WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
                 $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
                 if ($stmt->execute()) {
                     $this->notifyUser("Oppgave ble slettet");
+                    $stmt->closeCursor();
                     $this->addToProgressTable($projectName);
                     return true;
                 } else {
