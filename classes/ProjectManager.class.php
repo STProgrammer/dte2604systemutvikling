@@ -121,7 +121,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
                                     FROM Projects
                                     LEFT JOIN Users as projectLeader on projectLeader.userID = Projects.projectLeader
                                     LEFT JOIN Users as customer on customer.userID = Projects.customer WHERE Projects.projectName = :projectName;');
-            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_INT, 100);
+            $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR, 100);
             $stmt->execute();
             if ($project = $stmt->fetchObject("Project")) {
                 return $project;

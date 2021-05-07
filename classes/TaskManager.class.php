@@ -442,7 +442,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
 SELECT Projects.projectName, CASE WHEN Tasks.estimatedTime IS NULL THEN 0 ELSE SUM(Tasks.estimatedTime) END AS sumEstimate, CASE WHEN Tasks.estimatedTime IS NULL THEN 0 ELSE SUM(CASE WHEN Tasks.status = 3 THEN Tasks.estimatedTime ELSE 0 END) END AS sumEstimateDone, CASE WHEN Tasks.timeSpent IS NULL THEN 0 ELSE SUM(Tasks.timeSpent) END AS sumTimeSpent, NOW()
 FROM Projects
 LEFT JOIN Tasks on Projects.projectName = Tasks.projectName 
-WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 0 AND Projects.isAcceptedByAdmin = 1) AND Projects.projectName = :projectName GROUP BY Projects.projectName");
+WHERE (Tasks.hasSubtask = 0 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 0 AND Projects.isAcceptedByAdmin = 1) AND Projects.projectName = :projectName GROUP BY Projects.projectName");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             if ($stmt->execute()) {
                 $this->notifyUser("Fikk lagre på progress table");
