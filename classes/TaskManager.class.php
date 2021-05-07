@@ -151,8 +151,9 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             $stmt->bindParam(':phaseID', $phaseId, PDO::PARAM_INT, 100);
             $stmt->bindParam(':groupID', $groupId, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
-                $this->addToProgressTable($projectName);
                 $taskId = $this->db->lastInsertId();
+                $stmt->closeCursor();
+                $this->addToProgressTable($projectName);
                 if ($this->addDependencies($taskId)) {
                     $this->NotifyUser("En oppgave ble lagt til");
                     return true;
@@ -421,8 +422,8 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 $this->notifyUser("Status på oppgaven og alle tilhørende sub-oppgaver ble endret");
+                $stmt->closeCursor();
                 $task = $this->getTask($taskId);
-//                TODO DENNE LAGER FEIL -- Uncaught Error: Call to a member function getProjectName() --
                 $this->addToProgressTable($task->getProjectName());
                 return true;
             } else {
@@ -490,6 +491,7 @@ WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
             $stmt->bindParam(':parentTaskID', $parentTaskId, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 $this->notifyUser("Estimate på oppgaven ble endret");
+                $stmt->closeCursor();
                 $task = $this->getTask($taskId);
                 $this->addToProgressTable($task->getProjectName());
                 return true;
@@ -516,6 +518,7 @@ WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
                 $stmt->bindParam(':parentTaskID', $parentTaskId, PDO::PARAM_INT);
                 if ($stmt->execute()) {
                     $this->notifyUser("Oppgave ble slettet");
+                    $stmt->closeCursor();
                     $this->addToProgressTable($projectName);
                     return true;
                 } else {
@@ -532,6 +535,7 @@ WHERE (Tasks.hasSubtask = 1 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
                 $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
                 if ($stmt->execute()) {
                     $this->notifyUser("Oppgave ble slettet");
+                    $stmt->closeCursor();
                     $this->addToProgressTable($projectName);
                     return true;
                 } else {

@@ -53,36 +53,36 @@ if (!is_null($user) and !is_null($task) and ($user->getUserType() > 0)) {
             header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoedittaskstatus=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     else if ($request->request->has('reestimate') && XsrfProtection::verifyMac("Re-estimate")) {
         if ($taskManager->reEstimate($taskId, $task->getParentTask())) {
-            header("Location: ".$requestUri."&taskreestimated=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoreestimatetask=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     else if ($request->request->has('subtask_add') && XsrfProtection::verifyMac("Add subtask")
     && $isAnyLeader) {
         if ($taskManager->addSubTask($projectName, $task->getTaskID(), $task->getGroupID())) {
-            header("Location: ".$requestUri."&subtaskadded=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoaddsubtask=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     else if ($request->request->has('group_change') && XsrfProtection::verifyMac("Change group")
     && $isAdminOrProjectLeader) {
         if ($taskManager->changeGroup($taskId)) {
-            header("Location: ".$requestUri."&groupchanged=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtochangegroup=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
@@ -90,40 +90,40 @@ if (!is_null($user) and !is_null($task) and ($user->getUserType() > 0)) {
         && XsrfProtection::verifyMac("Change main responsible or phase")
         && $isAnyLeader) {
         if ($taskManager->editTask($task)) {
-            header("Location: ".$requestUri."&taskedited=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoedittask=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     else if ($request->request->has('add_dependent_tasks') && XsrfProtection::verifyMac("Add dependent tasks")
         && ($isAnyLeader or $isMainResponsible)) {
         if ($taskManager->addDependencies($taskId)) {
-            header("Location: ".$requestUri."&dependenttasksadded=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoadddependenttasks=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     else if ($request->request->has('remove_dependent_tasks') && XsrfProtection::verifyMac("Remove dependent tasks")
     && ($isAnyLeader or $isMainResponsible)) {
         if ($taskManager->removeDependencies($taskId)) {
-            header("Location: ".$requestUri."&dependenttasksremoved=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoremovedependenttasks=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     else if ($request->request->has('task_delete') && XsrfProtection::verifyMac("Delete task")
     && $isAdminOrProjectLeader){
         if ($taskManager->deleteTask($taskId, $task->getParentTask())) {
-            header("Location: projects_editProject.php?projectid=".$projectId."&taskdeleted=1");
+            header("Location: projects_editProject.php?projectid=".$projectId);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtodeletetask=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
