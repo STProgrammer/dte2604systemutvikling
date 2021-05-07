@@ -15,7 +15,7 @@
                     <th>Avvik (ferdig - brukt tid)</th>
                     <th>Fremdrift</th>
                     {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
-                    <th>Detaljer & utskrift</th>
+                        <th>Detaljer & utskrift</th>
                     {% endif %}
                 </tr>
                 {% for project in projects %}
@@ -62,12 +62,12 @@
                             </div>
                         </td>
                         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
-                        <td>
-                            <button class="buttons miniButtons" id="miniButtons"
-                                    onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
-                                Skriv ut
-                            </button>
-                        </td>
+                            <td>
+                                <button class="buttons miniButtons" id="miniButtons"
+                                        onclick="location.href='report_print.php?projectid={{ project.getProjectID() }}';">
+                                    Skriv ut
+                                </button>
+                            </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -78,37 +78,37 @@
 
     <section>
         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
-        <div class="openContainerNoBorder text" id="prosjektTabell">
-            <h3>Bruker rapporter </h3>
-            <table class="table" id="table">
-                <tr>
-                    <th>Navn</th>
-                    <th>Status</th>
-                    <th>Registrert dato</th>
-                    <th>Sum timer hittil</th>
-                    <th>Sum timer i denne måned</th>
-                    <th>Detaljer & utskrift</th>
-                </tr>
-                {% for user in users %}
+            <div class="openContainerNoBorder text" id="prosjektTabell">
+                <h3>Bruker rapporter </h3>
+                <table class="table" id="table">
                     <tr>
-                        {# PROSJEKTNAVN #}
-                        <td>{{ user.whoWorkedName }}</td>
-
-                        <td>{{ user.getStatus() }}</td>
-
-                        <td>{{ user.getDateRegistered() }}</td>
-                        <td>{{ user.sumTW }}</td>
-                        <td>{{ user.sumThisMonth }}</td>
-                        <td>
-                            <button class="buttons miniButtons" id="miniButtons"
-                                    onclick="location.href='user_edit.php?userid={{ user.getUserID() }}';">
-                                Se profil
-                            </button>
-                        </td>
+                        <th>Navn</th>
+                        <th>Status</th>
+                        <th>Registrert dato</th>
+                        <th>Sum timer hittil</th>
+                        <th>Sum timer i denne måned</th>
+                        <th>Detaljer & utskrift</th>
                     </tr>
-                {% endfor %}
-            </table>
-        </div>
+                    {% for user in users %}
+                        <tr>
+                            {# PROSJEKTNAVN #}
+                            <td>{{ user.whoWorkedName }}</td>
+
+                            <td>{{ user.getStatus() }}</td>
+
+                            <td>{{ user.getDateRegistered() }}</td>
+                            <td>{{ user.sumTW }}</td>
+                            <td>{{ user.sumThisMonth }}</td>
+                            <td>
+                                <button class="buttons miniButtons" id="miniButtons"
+                                        onclick="location.href='user_edit.php?userid={{ user.getUserID() }}';">
+                                    Se profil
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
         {% endif %}
     </section>
     </body>

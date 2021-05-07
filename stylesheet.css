@@ -771,6 +771,7 @@ ol { font-family: Segoe UI, serif; color: #707070; font-size: 0.8rem; }
 /* -------------LINK -----------------------*/
 a { font-family: Segoe UI, serif; color: #5f5a5a; font-size: 1rem;
 }
+
 a:visited { color: #707070;
 }
 a:hover { color: lightyellow;
@@ -813,8 +814,8 @@ a:hover { color: lightyellow;
 
 #progressbar {
     border: 0.3rem solid rgba(33, 120, 55, 0.89);
-    position: relative;
-    text-align: center;
+    /*position: relative;*/
+    /*text-align: center;*/
     background-color: lightgrey;
     padding: 3px;
 }
@@ -824,16 +825,13 @@ a:hover { color: lightyellow;
     height: 20px;
 }
 
-.progress-label {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+p.progress-label {
+    margin: 0 0 0 0.5em;
+    /*transform: translateX(-50%);*/
     display: inline-flex;
-    justify-content: center;
-    align-items: center;
+    /*justify-content: center;*/
+    /*align-items: center;*/
     font-size: .9em;
-    margin: 0;
     height: 26px;
 }
 
