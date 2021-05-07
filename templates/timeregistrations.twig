@@ -21,7 +21,7 @@
                 </tr>
                 </thead>
                 {% for hour in hours %}
-                {% if hour.taskId >= null and hour.whoWorked == userID %}
+                {% if hour.taskId is null and hour.whoWorked == userID %}
                 <tbody>
                 <tr>
                     <td id="backgroundColor"><b> {{ hour.taskType }} </b></td>

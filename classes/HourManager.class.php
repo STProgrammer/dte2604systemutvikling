@@ -104,6 +104,7 @@ class HourManager
             $taskID = null;
             $phaseID = null;
         }
+
        // $startTime = date("Y-m-d H:i:s");
         //$timeWorked = 0;
 //        $activated = 1;
@@ -116,6 +117,9 @@ class HourManager
         $isChanged = 0;
         $stampingStatus = 0;
         $taskType = $this->request->request->get('Kategori');
+        if ($taskType != "Prosjekt") {
+            $taskID = null;
+        }
 
         try {
             $stmt = $this->dbase->prepare("INSERT INTO Hours (`taskID`, `whoWorked`, `startTime`, 
