@@ -18,7 +18,7 @@ if ($user) {
         $hours = $hourManager->getHours(null, $userID);
         $hoursAll = $hourManager->getAllHours();
         $hourId = $request->query->getInt('hourID');
-        $hour = $hourManager->getHour($hourId);
+
         $hourID = $hourManager->activeTimeregForUser($userID);
     if ($request->request->has('edit_comment_hour') && XsrfProtection::verifyMac("Edit Comment")) {
         if ($hourManager->editComment($hour)) {
@@ -59,7 +59,7 @@ if ($user) {
         echo $twig->render('groupleader_dashboard.twig',
             array('session' => $session, 'request' => $request,
                 'user' => $user,
-                'hours' => $hours, 'hour' => $hour, 'hoursAll' => $hoursAll,
+                'hours' => $hours,  'hoursAll' => $hoursAll,
                 'hourManager' => $hourManager,
                 'UserID' => $userID, 'tasks' => $tasks,
                 'taskManager'=> $taskManager,

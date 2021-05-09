@@ -84,7 +84,7 @@ class HourManager
             if ($hoursAll = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hoursAll;
             } else {
-                $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente oppgaver");
+                $this->notifyUser("Timer ble ikke funnet getAllHours()", "Kunne ikke hente oppgaver");
                 return $hoursAll;
             }
         } catch (Exception $e) {
@@ -173,7 +173,6 @@ class HourManager
             $stmt->execute();
             $stmt->closeCursor();
             if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Timeregistrering stoppet");
                 if (!is_null($task)) {
                     //$hour = $this->getHour($hourID);
                     //$timeStr = $hour->getTimeWorked();
@@ -201,7 +200,7 @@ class HourManager
             if ($hourID = $stmt->fetch()) {
                 return $hourID;
             } else {
-                $this->notifyUser("Kunne ikke hente aktiv timeregistrering, ", "activeTimeregForUser()");
+                $this->notifyUser("Ingen aktiv timeregistrering activeTimeregForUser() ", "activeTimeregForUser()");
                 return array();
             }
         } catch (Exception $e) {
@@ -285,7 +284,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($hour = $stmt->fetchObject("Hour")) {
                 return $hour;
             } else {
-                $this->notifyUser("Comments not found", "Kunne ikke hente kommentarer");
+                $this->notifyUser("Kunne ikke hente kommentarer getHour()", "Kunne ikke hente kommentarer");
                 //return new Project();
                 return null;
             }
@@ -381,7 +380,6 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
                     //$timeStr = $hour->getTimeWorked();
                     $this->updateTimeWorkedOnTask($task);
                 }
-                $this->notifyUser('Timeregistrering forandret!', 'editHour()');
                 return true;
             } else {
                 $this->notifyUser('Timeregistrering ikke forandret!', 'editHour()');
@@ -463,7 +461,6 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
 
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Timeregistreringen ble lagret i log.", "");
                 return true;
             } else {
                 $this->notifyUser("En feil oppstod ved lagring i log.", "");
@@ -489,7 +486,6 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
                     //$timeStr = $hour->getTimeWorked();
                     $this->updateTimeWorkedOnTask($task);
                 }
-                $this->notifyUser('Timeregistrering deaktivert!', 'editHour()');
                 return true;
             } else {
                 $this->notifyUser('Timeregistrering ikke deaktivert!', 'editHour()');
@@ -614,167 +610,14 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hours;
             } else {
-                $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente oppgaver");
+                $this->notifyUser("Timer ble ikke funnet getHours()", "");
                 return $hours;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllHours()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, på getHours()", $e->getMessage());
             print $e->getMessage() . PHP_EOL;
             return $hours;
         }
     }
-
-
-
-//    // GET ALL HOURS FOR LOGGED IN USER ------------------------------------------------------------
-//    public function getAllHoursForUser($userID): array
-//    {
-//
-//        //"SELECT * FROM Hours Where whoWorked= :userID
-//        // and MONTH(endTime) = MONTH(NOW()) and YEAR(endTime)=YEAR(now()) ORDER BY endTime DESC");
-//
-//        $allHoursForUser = null;
-//        try {
-//            $stmt = $this->dbase->prepare(query: "SELECT * FROM Hours Where whoWorked= :userID
-//                      ORDER BY startTime DESC");
-//            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-//            $stmt->execute();
-//            if ($allHoursForUser = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-//                return $allHoursForUser;
-//            } else {
-//                $this->notifyUser("Ingen timer funnet.", "getAllHoursForUser");
-//                return array();
-//            }
-//        } catch (Exception $e) {
-//            $this->NotifyUser("En feil oppstod, på getAllHoursForUser()", $e->getMessage());
-//            return array();
-//        }
-//    }
-
-    //    // GET ALL Hours With All Users FOR TODAY--------------------------------------------------------------------------------
-//    public function getAllHoursForToday()
-//    {
-//        $hoursAll = array();
-//        $query = 'SELECT Hours.*, hourTasks.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName,
-//                    hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
-//                    FROM Hours
-//                    LEFT JOIN Users as workers on workers.userID = Hours.whoWorked
-//                    LEFT JOIN Tasks as hourTasks on hourTasks.taskID = Hours.taskID
-//                    LEFT JOIN Phases as hourPhases on hourPhases.phaseID = Hours.phaseID WHERE Hours.stampingStatus = 1
-//                    ORDER BY Hours.startTime DESC';
-//        try {
-//            $stmt = $this->dbase->prepare($query);
-//            $stmt->execute();
-//            if ($hoursAll = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-//                return $hoursAll;
-//            } else {
-//                $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente oppgaver");
-//                return $hoursAll;
-//            }
-//        } catch (Exception $e) {
-//            $this->NotifyUser("En feil oppstod, på getAllHours()", $e->getMessage());
-//            print $e->getMessage() . PHP_EOL;
-//            return $hoursAll;
-//        }
-//    }
-
-
-//    // CALCULATE TIME IN PHASE -------------------------------------------------
-//    public function spentTimePhase($starTime, $endTime) { //blir brukt fra twig. Kalles fra user_contribution.twig
-//        $startTime = new DateTime($starTime);
-//        $endTime = new DateTime($endTime);
-//
-//        $hourCount = $endTime->diff($startTime);
-//        return $hourCount->format('%H:%I');
-//    }
-
-//    // COUNT HOURS SUM FROM THIS MONTH -------------------------------------------------
-//    public function countSumHoursFromThisMonth() { //antall timeføringer
-//        $hoursTimeWorked = array();
-//        try {
-//            $stmt = $this->dbase->prepare("SELECT Hours.timeWorked, Hours.whoWorked, Hours.activated, Users.firstName, Users.lastName,
-//                CONCAT(Users.firstName, ' ', Users.lastName) as whoWorkedName,
-//                CASE WHEN SUM(timeWorked) is null then '00:00:00'
-//                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i:%s') END as sumTimeWorked,
-//                CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00:00'
-//                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i:%s')
-//                END as sumThisDay FROM Hours
-//                LEFT JOIN Users on Users.userID = Hours.whoWorked
-//                WHERE Users.userType > 0 AND Users.isVerifiedByAdmin = 1 GROUP BY Users.userID ORDER BY whoWorkedName");
-//            $stmt->execute();
-//            if ($hoursTimeWorked = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-//                return $hoursTimeWorked;
-//            } else {
-//                $this->notifyUser("Kunne ikke telle antall timer, ", "countHoursFromToday()");
-//                return array();
-//            }
-//        } catch (Exception $e) {
-//            $this->NotifyUser("En feil oppstod, på countHoursFromToday()", $e->getMessage());
-//            print $e->getMessage() . PHP_EOL;
-//            //return new Project();
-//            return array();
-//        }
-//    }
-
-
-//    // COUNT HOURS FROM TODAY -------------------------------------------------
-//    public function countHoursFromToday() { //antall timer
-//        $hoursTimeWorked = array();
-//        try {
-//            $stmt = $this->dbase->prepare("SELECT Hours.timeWorked, Hours.whoWorked, Hours.activated, Users.firstName, Users.lastName,
-//                CONCAT(Users.firstName, ' ', Users.lastName) as whoWorkedName,
-//                CASE WHEN SUM(timeWorked) is null then '00:00:00'
-//                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i:%s') END as sumTimeWorked,
-//                CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-%d') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00:00'
-//                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i:%s')
-//                END as sumThisDay FROM Hours
-//                LEFT JOIN Users on Users.userID = Hours.whoWorked
-//                WHERE Users.userType > 0 AND Users.isVerifiedByAdmin = 1 GROUP BY Users.userID ORDER BY whoWorkedName");
-//            $stmt->execute();
-//            if ($hoursTimeWorked = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-//                return $hoursTimeWorked;
-//            } else {
-//                $this->notifyUser("Kunne ikke telle antall timer, ", "countHoursFromToday()");
-//                return array();
-//            }
-//        } catch (Exception $e) {
-//            $this->NotifyUser("En feil oppstod, på countHoursFromToday()", $e->getMessage());
-//            print $e->getMessage() . PHP_EOL;
-//            //return new Project();
-//            return array();
-//        }
-//    }
-
-//    // GET Total Hours Worked
-//    public function getTotalHoursWorked(): array {
-//        $timeWorkedSUM = 0;
-//
-//        try {
-//            $stmt = $this->dbase->prepare("SELECT Hours.timeWorked, Hours.whoWorked, Hours.activated, Hours.activated, Users.firstName, Users.lastName,
-//                CONCAT(Users.firstName, ' ', Users.lastName) as whoWorkedName,
-//                CASE WHEN SUM(timeWorked) is null then '00:00'
-//                    ELSE
-//                        TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i')
-//                    END as sumTimeWorked,
-//                CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00'
-//                    ELSE
-//                        TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i')
-//                    END as sumThisMonth FROM Hours
-//                LEFT JOIN Users on Users.userID = Hours.whoWorked
-//                WHERE Users.userType > 0 AND Users.isVerifiedByAdmin = 1 GROUP BY Users.userID ORDER BY whoWorkedName");
-//            $stmt->execute();
-//            if ($hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
-//                return $hours;
-//            } else {
-//                $this->notifyUser("Brukere ble ikke funnet", "Kunne ikke hente brukere");
-//                //return new Project();
-//                return array();
-//            }
-//        } catch (Exception $e) {
-//            $this->NotifyUser("En feil oppstod, på getAllUserStatistics()", $e->getMessage());
-//            //return new Project();
-//            return array();
-//        }
-//    }
 
 }

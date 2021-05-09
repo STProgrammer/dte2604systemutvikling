@@ -256,7 +256,7 @@
 
         <div class="openContainerNoBorder text" id="delete_project">
             {% if user.isAdmin() %}
-                <form method="post"
+                <form id="noBackground" method="post"
                       onsubmit="return confirm('Er du sikker på å slette fasen?\n(Kan ikke angres i etterkant!)');">
                     <input type="hidden" value="{{ getMac("Delete phase") }}" name="XSRFPreventionToken">
                     <input type="submit" name="phase_delete" value="Slett fase" class="delete"/>

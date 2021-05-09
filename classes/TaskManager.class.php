@@ -71,7 +71,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
                 return $tasks;
             }
             else {
-                $this->notifyUser("Oppgaver ble ikke funnet", "Kunne ikke hente oppgaver");
+                $this->notifyUser("Oppgaver ble ikke funnet getAllTasks()", "Kunne ikke hente oppgaver");
                 return $tasks;
             }
         } catch (Exception $e) {
@@ -98,7 +98,7 @@ WHERE groupID.userID = :userID AND Tasks.hasSubtask >= 0 AND Tasks.status < 3 AN
                 return $tasks;
             }
             else {
-                $this->notifyUser("Oppgaver ble ikke funnet", "Kunne ikke hente oppgaver");
+                $this->notifyUser("Oppgaver ble ikke funnet getTasksOfUser(userId)", "Kunne ikke hente oppgaver");
                 return $tasks;
             }
         } catch (Exception $e) {

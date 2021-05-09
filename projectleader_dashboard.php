@@ -19,7 +19,6 @@ if ($user) {
         null, false, 1, null,
         "startTime", null, $limit = 5, null );
     $hourId = $request->query->getInt('hourID');
-    $hour = $hourManager->getHour($hourId);
     $hourID = $hourManager->activeTimeregForUser($userID);
 
     //PAYMENT ---------------------------

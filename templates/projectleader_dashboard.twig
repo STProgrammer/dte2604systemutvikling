@@ -98,15 +98,15 @@
         </div>
 
         {# Feilmeldinger #}
-        <div class="container container_medium_projectleader cursor snow scrollY"
-             onclick="location.href='reports.php';">
+        <div class="container container_medium_projectleader snow scrollY"
+             onclick="">
             <h6>Feilmeldinger i dag</h6>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
-                    <p>Header: {{ header }}</p>
+                    <p>H: {{ header }}</p>
                 {% endfor %}
                 {% for message in session.getFlashBag.get('message', []) %}
-                    <p>Message: {{ message }}</p>
+                    <p>M: {{ message }}</p>
                 {% endfor %}
             {% endif %}
         </div>
