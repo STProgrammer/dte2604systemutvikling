@@ -16,10 +16,10 @@ if ($user) {
 
     if ($request->request->has('profile_edit') && XsrfProtection::verifyMac("Edit my information")) {
         if ($userManager->editMyProfile($user)) {
-            header("Location: ");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ");
+            header("Location: ".$requestUri);
             exit();
         }
     }
@@ -29,7 +29,7 @@ if ($user) {
             header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ");
+            header("Location: ".$requestUri);
             exit();
         }
     }

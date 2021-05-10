@@ -247,7 +247,6 @@ class UserManager
         $mobileNumber = $this->request->request->get('mobileNumber', $user->getMobileNumber());
         $IMAddress = $this->request->request->get('IMAddress', $user->getIMAddress());
         $status = $this->request->request->get('status', $user->getStatus());
-        $isTemporary = $this->request->request->getInt('isTemporary', $user->isTemporary());
         $isProjectLeader = $this->request->request->getInt('isProjectLeader', $user->isProjectLeader());
         $isGroupLeader = $this->request->request->getInt('isGroupLeader', $user->isGroupLeader());
         if (!$this->isUsernameAvailable($user, $username)) {
@@ -265,7 +264,7 @@ class UserManager
             $sth = $this->dbase->prepare("update Users set username = :username, firstName = :firstName, 
                         lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
                         phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, 
-                        isTemporary = :isTemporary, isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status WHERE userID = :userID;");
+                        isProjectLeader = :isProjectLeader, isGroupLeader = :isGroupLeader, status = :status WHERE userID = :userID;");
             $sth->bindParam(':username', $username, PDO::PARAM_STR);
             $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
             $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
@@ -277,7 +276,6 @@ class UserManager
             $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
             $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
             $sth->bindParam(':password', $hash, PDO::PARAM_STR);
-            $sth->bindParam(':isTemporary', $isTemporary, PDO::PARAM_INT);
             $sth->bindParam(':isProjectLeader', $isProjectLeader, PDO::PARAM_INT);
             $sth->bindParam(':isGroupLeader', $isGroupLeader, PDO::PARAM_INT);
             $sth->bindParam(':status', $status, PDO::PARAM_STR);
