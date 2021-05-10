@@ -10,11 +10,11 @@
             if (pass1 != "" && pass2 != "") {
                 if (pass1 === pass2) {
                     document.getElementById('message').style.color = 'green';
-                    document.getElementById('message').innerHTML = 'matching';
+                    document.getElementById('message').innerHTML = 'Samsvarer';
                     return true;
                 } else {
                     document.getElementById('message').style.color = 'red';
-                    document.getElementById('message').innerHTML = 'not matching';
+                    document.getElementById('message').innerHTML = 'Samsvarer ikke!';
                     return false;
                 }
             } else document.getElementById('message').innerHTML = '';
