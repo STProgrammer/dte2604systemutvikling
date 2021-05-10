@@ -355,9 +355,9 @@ class UserManager
     // END EDIT EMAIL ADDRESS
 
     // EDIT PASSWORD
-    public function editPassword(User $user) : bool {
-        $userID = $user->getUserId();
-        $password = $this->request->request->get('password', $user->getPassword());
+    public function editPassword($userId) : bool {
+        $userID = $userId;
+        $password = $this->request->request->get('password');
         try {
             $hash = password_hash($password,PASSWORD_DEFAULT);
             $sth = $this->dbase->prepare("update Users set password = :password WHERE userID = :userID;");

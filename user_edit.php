@@ -37,6 +37,14 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader()) && !is_null($userToEd
             exit();
         }
     }
+    //Edit password
+    else if ($request->request->has('user_edit_password') && XsrfProtection::verifyMac("Edit user's password") && $user->isAdmin()) {
+        if ($userManager->editPassword($userToEdit->getUserId())) {
+            header("Location: userprofiles.php");
+        } else {
+            header("Location: userprofiles.php");
+        }
+    }
     else {
         try {
             echo $twig->render('user_edit.twig', array('session' => $session,

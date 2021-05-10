@@ -234,6 +234,10 @@ div.container_menu_xlang { width: 70%; height: 30em;  border: none;
 }
 div.container_menu_high { width: 30em; height: 45em;  border: none;
 }
+div.container_useredit1 { width: 30em; height: 65em;  border: none; background-color: whitesmoke;
+}
+div.container_useredit2 { width: 30em; height: 30em;  border: none;background-color: whitesmoke;
+}
 div.container_menu_small { width: 30em; height: 35em;  border: none;
 }
 div.container_menu_xsmall { width: 28em; height: 20em;  border: none;
