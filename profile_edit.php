@@ -16,40 +16,40 @@ if ($user) {
 
     if ($request->request->has('profile_edit') && XsrfProtection::verifyMac("Edit my information")) {
         if ($userManager->editMyProfile($user)) {
-            header("Location: ?useredit=1");
+            header("Location: ");
             exit();
         } else {
-            header("Location: ?failedtoedituser=1");
+            header("Location: ");
             exit();
         }
     }
     //Change email
     elseif ($request->request->has('edit_email') && XsrfProtection::verifyMac("Edit my email address")) {
         if ($userManager->editMyEmailAddress($user)) {
-            header("Location: ".$requestUri."&emailedit=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ?failedtoeditemail=1");
+            header("Location: ");
             exit();
         }
     }
     //Change username
     elseif ($request->request->has('edit_username') && XsrfProtection::verifyMac("Edit my username")) {
         if ($userManager->editMyUsername($user)) {
-            header("Location: ".$requestUri."&usernameedit=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoeditusername=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     //Change password
     elseif ($request->request->has('edit_password') && XsrfProtection::verifyMac("Edit my password")) {
         if ($userManager->editPassword($user)) {
-            header("Location: ".$requestUri."&passwordedit=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoeditpassword=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }

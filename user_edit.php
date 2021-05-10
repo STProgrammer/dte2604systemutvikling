@@ -20,20 +20,20 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader()) && !is_null($userToEd
             $request->request->set('userType', 2);
         }
         if ($userManager->editOtherUser($userToEdit)) {
-            header("Location: ".$requestUri."&useredited=1");
+            header("Location: ".$requestUri);
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtoedituser=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
     //Delete user
     else if ($request->request->has('delete_user') && XsrfProtection::verifyMac("Delete user") && $user->isAdmin()) {
         if ($userManager->deleteUser($userToEdit->getUserId())) {
-            header("Location: userprofiles.php?userdeleted=1");
+            header("Location: userprofiles.php");
             exit();
         } else {
-            header("Location: ".$requestUri."&failedtodeleteuser=1");
+            header("Location: ".$requestUri);
             exit();
         }
     }
