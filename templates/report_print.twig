@@ -135,6 +135,7 @@
         <h4>Slutt tid : {{ project.finishTime }}</h4>
         <h4>Estimert tid : {{ project.sumEstimate }} timer</h4>
         <h4>Tid brukt : {{ project.sumTimeSpent }} timer</h4>
+        <h4>Points ferdig: {{ project.sumEstimateDone }}</h4>
         <h4>Estimert igjen : {{ project.sumEstimate - project.sumEstimateDone }} timer {%  if project.sumEstimate != 0 %}({{ project.sumEstimateDone/project.sumEstimate * 100 }} % ferdig) {% endif %}</h4>
 
         <button id="backbtn" class="button miniButtons" onclick="window.history.back()">Gå tilbake</button>
@@ -142,15 +143,11 @@
         <table class="table">
             <tr>
                 <th>Ansatte på prosjekt "{{ project.getProjectName }}"</th>
-                <th>Totalt bidrag</th>
             </tr>
             {% for member in totalTimeWorked %}
                 <tr>
                     <td>
                         {{ member.whoWorkedName }}
-                    </td>
-                    <td>
-                        {{ member.sumTW }}
                     </td>
                 </tr>
             {% endfor %}
@@ -170,7 +167,7 @@
             <th>Tid brukt</th>
             <th>Avvik</th>
             <th>Status</th>
-            <th>Hoved ansvarlig</th>
+            <th>Hovedansvarlig</th>
         </tr>
         {% set i = 0 %}
         {% for task in tasks %}
@@ -219,7 +216,7 @@
                     <th>Tid brukt</th>
                     <th>Avvik</th>
                     <th>Status</th>
-                    <th>Hoved ansvarlig</th>
+                    <th>Hovedansvarlig</th>
                 </tr>
 
     {% endif %}

@@ -366,12 +366,12 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     {
         $isChanged = 1;
         try {
-            $stmt = $this->dbase->prepare("UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime, activated = :activated WHERE hourID = :hourID;");
+            $stmt = $this->dbase->prepare("UPDATE Hours SET isChanged = :isChanged, startTime = :startTime, endTime = :endTime WHERE hourID = :hourID;");
             $stmt->bindParam(':hourID', $hourID, PDO::PARAM_INT);
             $stmt->bindParam(':startTime', $startTime);
             $stmt->bindParam(':endTime', $endTime);
             $stmt->bindParam(':isChanged', $isChanged);
-            $stmt->bindParam(':activated', $activated);
+
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
                 //$stmt->closeCursor();

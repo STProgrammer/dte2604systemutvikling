@@ -12,7 +12,7 @@
                     <th>Estimert totalt</th>
                     <th>Tid brukt</th>
                     <th>Points ferdig</th>
-                    <th>Avvik (ferdig - brukt tid)</th>
+                    <th>Avvik ((points - brukt tid) - estimert)</th>
                     <th>Fremdrift</th>
                     {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
                         <th>Detaljer & utskrift</th>
@@ -44,8 +44,11 @@
                         <td>{{ project.sumEstimate }}</td>
                         <td>{{ project.sumTimeSpent }}</td>
                         <td>{{ project.sumEstimateDone }}</td>
-                        <td>{{ project.sumEstimateDone - project.sumTimeSpent }}</td>
+
+                        <td>{{ (project.sumEstimateDone - project.sumTimeSpent) - project.sumEstimate  }}</td>
+
                         <td>
+
                             <div id="progressbar">
                                 {% if estimatedTimeSum != 0 %}
                                     <div style="width:{{ (estimatedProgress/estimatedTimeSum)*100 }}%;">
