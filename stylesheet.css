@@ -168,7 +168,7 @@ div.container{
     border: 0.1em solid #e0dbdb;
     box-sizing: border-box;
     border-radius: 0.3em;
-    background: snow;
+    background: whitesmoke;
     /**box-shadow: 0.1em 0.1em 0.1em #acabab;**/
     overflow: hidden;
 }
@@ -183,6 +183,8 @@ div.container_registrer_ut { width: 20em; height: 5em;
 }
 div.container_medium { width: 22em; height: 10em;
 }
+ div.container_medium_edit { width: 30em; height: 25em;
+ }
 div.container_medium_admin { width: 18em; height: 10em;
 }
 div.container_medium_projectleader { width: 18em; height: 10em;
@@ -216,6 +218,9 @@ div.container_menu_form { width: auto; height: 40em; background-color: #eeeeee;
     min-height: 20em;
     /*https://stackoverflow.com/questions/3948445/how-to-make-div-on-top-of-all-other-control*/
 }
+div.container_menu_profil { width: 30em; height: auto; background-color: #eeeeee;
+    min-height: 20em;
+}
 div.container_menu_form_hour { width: 50em; height: 50em; background-color: #eeeeee; border: none;
     overflow-y: scroll; scroll-behavior: smooth;
 }
@@ -237,6 +242,8 @@ div.container_menu_high { width: 30em; height: 45em;  border: none;
 div.container_useredit1 { width: 30em; height: 65em;  border: none; background-color: whitesmoke;
 }
 div.container_useredit2 { width: 30em; height: 30em;  border: none;background-color: whitesmoke;
+}
+div.container_profileedit { width: 30em; height: 45em;  border: none;background-color: whitesmoke;
 }
 div.container_menu_small { width: 30em; height: 35em;  border: none;
 }
@@ -364,6 +371,22 @@ button#buttonNoBorderOnlyGreenText {
     text-align: left;
     cursor: pointer;
     font-weight: bold;
+
+
+}
+a#buttonNoBorderOnlyGreenText {
+    display:inline-block;
+    color: #1b9448;
+    border: none;
+    background: none;
+    margin: 1em 1em 1em 2em;
+    width: 10rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: left;
+    cursor: pointer;
+    font-weight: bold;
+    text-underline: none;
 
 }
 input:focus::placeholder { color: transparent;

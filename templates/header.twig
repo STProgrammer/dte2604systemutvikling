@@ -45,7 +45,7 @@
             <a href="reports.php">Rapporter</a>
             <a href="profile_edit.php">Min profil</a>
 
-        {% elseif user.isEmployee() %}
+        {% elseif user.isUser() %}
             <a href="index.php">Ansatt: <b>{{user.getFirstName()}} </b></a>
             <a href="timeregistration.php">Mine timeregistreringer </a>
             <a href="projects.php">Prosjekter</a>
