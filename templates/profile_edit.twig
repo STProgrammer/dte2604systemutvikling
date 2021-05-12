@@ -32,7 +32,7 @@
 
         <div class="container container_menu_profil text" id="user_info">
             <h3 id="bigColoredName">{{ user.getFirstName() }} {{ user.getLastName() }}</h3>
-            Brukernavn: <b>{{ user.getUsername() }} </b>
+            Brukernavn: <b>{{ user.getUsername() }} </b><br>
             {% if user.getUserType() == 0 %}
                 <br>Type bruker: <b>Kunde</b><br>
             {% elseif user.getUserType() == 1 %}
@@ -40,21 +40,40 @@
             {% elseif user.getUserType() == 2 %}
                 <br>Type bruker: <b>Utvikler</b><br>
             {% elseif user.getUserType() == 3 %}
-                <br>Type bruker: <b>Admin</b><br>
+                <br>Type bruker: <b>Administrator</b><br>
             {% endif %}
             <br>Registrert dato: <b>{{ user.getDateRegistered() }} </b><br>
             <br>Telefon nummer: <b>{{ user.getPhoneNumber() }}</b><br>
-            <br>Addresse: <b>{{ user.getAddress() }} <br>
+            <br>Addresse: <b>{{ user.getAddress() }},
                 {{ user.getZipCode() }}  {{ user.getCity() }}</b><br>
             <br>Email: <b>{{ user.getEmailAddress() }} </b><br>
-            <br>IM: <b>{{ user.getIMAddress() }} </b><br>
             <br>Status: <b>{{ user.getStatus() }} </b>
+        </div>
+
+        <div class="container container_menu_profil text" id="table_edit">
+            <form method="post" id="edit_my_password" onsubmit="return validate();">
+                <div id="text">
+                    <h5>Endre passord</h5>
+                    <br><label for="password1">Passord: </label>
+                    <br><input type="password" name="password" required id="password1" placeholder="Passord"
+                               minlength=8 maxlength=40 value="" onkeyup='check();'>
+                    <br><label for="password2">Bekreft passord:</label>
+                    <br><input type="password" name="password2" required id="password2"
+                               placeholder="Gjenta passord" minlength=8 maxlength=40 value=""
+                               onkeyup='check();'/>
+
+                    <span id='message'></span>
+                    <input type="hidden" value="{{ getMac("Edit my password") }}" name="XSRFPreventionToken">
+
+                    <br><input type="submit" name="edit_password" id="edit_btn" value="Endre passord">
+                </div>
+            </form>
         </div>
     </section>
     <section>
         {% if user.getUserType() > 0 %}
-            <div class="container container_menu_lang text" id="user_hours">
-                <label class="overskriftLiten"><b>Tidsbruk av brukeren:</b></label></br>
+            <div class="container container_menu text scroll" id="user_hours">
+                <h5 class="overskriftLiten"><b>Tidsbruk av brukeren:</b></h5>
                 <table class="table">
                     <tr>
                         <th>Type</th>
@@ -72,6 +91,21 @@
                 </table>
             </div>
         {% endif %}
+
+        <div class="container container_medium_edit text" id="table_edit">
+            <h5>Endre E-post</h5>
+            <form method="post" id="edit_my_email">
+                <div id="text">
+                    <br><label for="emailAddress">Epost:</label>
+                    <br><input type="email" name="emailAddress" value="{{ user.getEmailAddress() }}"
+                               placeholder="Epost adddresse" maxlength=60 required id="emailAddress"/>
+                    <input type="hidden" value="{{ getMac("Edit my email address") }}"
+                           name="XSRFPreventionToken">
+                    <br><input type="submit" name="edit_email" id="edit_btn" value="Endre epost">
+                </div>
+            </form>
+        </div>
+
     </section>
     <section>
         <div class="container container_profileedit text">
@@ -106,22 +140,6 @@
                 <br><input type="submit" name="profile_edit" id="edit_btn" value="Endre personalia">
             </form>
         </div>
-    </section>
-    <section>
-
-        <div class="container container_medium_edit text" id="table_edit">
-            <h5>Endre E-post</h5>
-            <form method="post" id="edit_my_email">
-                <div id="text">
-                    <br><label for="emailAddress">Epost:</label>
-                    <br><input type="email" name="emailAddress" value="{{ user.getEmailAddress() }}"
-                               placeholder="Epost adddresse" maxlength=60 required id="emailAddress"/>
-                    <input type="hidden" value="{{ getMac("Edit my email address") }}"
-                           name="XSRFPreventionToken">
-                    <br><input type="submit" name="edit_email" id="edit_btn" value="Endre epost">
-                </div>
-            </form>
-        </div>
 
         <div class="container container_medium_edit text" id="table_edit">
             <form method="post" id="edit_my_username">
@@ -132,26 +150,6 @@
                                placeholder="Brukernavn" maxlength=45 required id="username"/>
                     <input type="hidden" value="{{ getMac("Edit my username") }}" name="XSRFPreventionToken">
                     <br><input type="submit" name="edit_username" id="edit_btn" value="Endre brukernavn">
-                </div>
-            </form>
-        </div>
-
-        <div class="container container_medium_edit text" id="table_edit">
-            <form method="post" id="edit_my_password" onsubmit="return validate();">
-                <div id="text">
-                    <h5>Endre passord</h5>
-                    <br><label for="password1">Passord: </label>
-                    <br><input type="password" name="password" required id="password1" placeholder="Passord"
-                               minlength=8 maxlength=40 value="" onkeyup='check();'>
-                    <br><label for="password2">Bekreft passord:</label>
-                    <br><input type="password" name="password2" required id="password2"
-                               placeholder="Gjenta passord" minlength=8 maxlength=40 value=""
-                               onkeyup='check();'/>
-
-                    <span id='message'></span>
-                    <input type="hidden" value="{{ getMac("Edit my password") }}" name="XSRFPreventionToken">
-
-                    <br><input type="submit" name="edit_password" id="edit_btn" value="Endre passord">
                 </div>
             </form>
         </div>

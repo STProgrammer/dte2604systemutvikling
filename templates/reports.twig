@@ -3,7 +3,7 @@
     <body>
     <section class="rapporter" id="rapporter">
         {% if projects %}
-        <div class="openContainerNoBorder text" id="prosjektTabell">
+        <div class="openContainerNoBorder text scrollX" id="prosjektTabell">
             <h3>Prosjekt rapporter </h3>
             <table class="table" id="table">
                 <tr>
@@ -78,7 +78,7 @@
 
     <section>
         {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
-            <div class="openContainerNoBorder text" id="prosjektTabell">
+            <div class="openContainerNoBorder text scrollX" id="prosjektTabell">
                 <h3>Bruker rapporter </h3>
                 <table class="table" id="table">
                     <tr>
