@@ -3,23 +3,14 @@
 
 
     <section class="edit_user" id="edit_user">
+        <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
+
         <div class="container_big_long noBorder_NoBackground_NoShadow  text" id="table_edit">
-            <h3>Profilen til {{ userToEdit.getFirstName() }}  {{ userToEdit.getLastName() }}</h3>
-            <h5 class="marginleft overskrift">Endre profil</h5>
-            <div class>
-                {% if session.getFlashBag.has('header') %}
-                    {% for header in session.getFlashBag.get('header', []) %}
-                        <h3>{{ header }}</h3>
-                    {% endfor %}
-                    {% for message in session.getFlashBag.get('message', []) %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                {% endif %}
-            </div>
+            <h6 class="marginleft overskrift">Endre profil</h6>
         </div>
-        <div class="container container_menu text" id="user_info">
-            <h3 id="bigColoredName">{{ userToEdit.getUsername() }}</h3>
-            <br>Brukernavn: <b>{{ userToEdit.getUsername() }} </b><br>
+        <div class="container container_profil text" id="user_info">
+            <h3 id="bigColoredName">{{ userToEdit.getFirstName() }} {{ userToEdit.getLastName() }}</h3>
+            Brukernavn: <b>{{ userToEdit.getUsername() }} </b><br>
             {% if user.getUserType() == 0 %}
                 <br>Type bruker: <b>Kunde</b><br>
             {% elseif userToEdit.getUserType() == 1 %}
@@ -45,8 +36,8 @@
         </div>
 
         {% if userToEdit.getUserType() > 0 %}
-            <div class="container container_menu_lang text" id="user_hours">
-                <label class="overskriftLiten"><b>Tidsbruk av brukeren:</b></label></br>
+            <div class="container container_menu text scroll" id="user_hours">
+                <h5 class="overskriftLiten"><b>Tidsbruk av brukeren:</b></h5>
                 <table class="table">
                     <tr>
                         <th>Type</th>
@@ -54,7 +45,6 @@
                         <th>Sum tidsbruk totalt</th>
                     </tr>
 
-                    {# TODO denne fungerer ikke helt - sign. Are #}
                     {% for hour in hours %}
                         <tr>
                             <td>{{ hour['categoryName'] }}</td>
@@ -203,9 +193,22 @@
                     <br><input type="submit" name="delete_user" value="Slett bruker" class="delete"/>
                 </form>
             {% endif %}
-            <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
         </div>
 
+        {# FEILMELDINGER FRA DATABASE #}
+        {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
+            <div class="container container_big_long text scroll">
+                <h5>Tilbakemeldinger fra database</h5>
+                {% if session.getFlashBag.has('header') %}
+                    {% for header in session.getFlashBag.get('header', []) %}
+                        <h6>{{ header }}</h6>
+                    {% endfor %}
+                    {% for message in session.getFlashBag.get('message', []) %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="user_register_check.js"></script>

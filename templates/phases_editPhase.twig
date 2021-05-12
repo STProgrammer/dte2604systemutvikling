@@ -12,7 +12,7 @@
 
         <h6 class="marginleft overskrift">Fase info side</h6>
         {# FASE INFO #}
-        <div class="container container_menu_form text" id="phase_info">
+        <div class="container container_menu_fase text" id="phase_info">
             <h5 class="overskriftLiten">Prosjekt detaljer: </h5>
             Prosjekt: <b>{{ project.getProjectName }}</b><br>
             <br>Prosjekt Leder: <b>{{ project.leaderName }} </b><br>
@@ -61,8 +61,8 @@
             {% endif %}
         </div>
 
-        <div class="container container_menu_lang text" id="project_members">
-            <br><label class="overskriftLiten">Medlemmer i dette prosjektet: </label></br>
+        <div class="container container_menu_form text" id="project_members">
+            <h6 class="overskriftLiten">Medlemmer i dette prosjektet: </h6>
             <table class="table">
                 <tr>
                     <th>Brukernavn</th>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="container container_menu_lang text" id="phase_tasks">
-            <br><label class="overskriftLiten">Oppgaver i denne fasen: </label>
+            <h6 class="overskriftLiten">Oppgaver i denne fasen: </h6>
             <table class="table">
                 <tr>
                     <th>Navn</th>
@@ -124,10 +124,10 @@
     </section>
 
     <section>
-        <div class="container container_menu_form text" id="add_tasks_to_phase">
+        <div class="container container_menu_xsmall text" id="add_tasks_to_phase">
             <form method="post" id="add_tasks_form">
-                <br><label class="overskriftLiten"><b>Legg til oppgaver på fasen: </b></label>
-                <br><select name="tasks[]" id="" class="form-control" multiple onfocus='this.size=10;'
+                <h6 class="overskriftLiten"><b>Legg til oppgaver på fasen: </b></h6>
+                <select name="tasks[]" id="" class="form-control" multiple onfocus='this.size=10;'
                             onblur='this.size=10;' onchange='this.size=10; this.blur();'>
                     {% for task in tasks %}
                         <option value="{{ task.getTaskID() }}">{{ task.getTaskName() }}
@@ -135,11 +135,11 @@
                     {% endfor %}
                 </select>
                 <input type="hidden" value="{{ getMac("Add tasks to phase") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="tasks_add" id="reg_btn" value="Legg til oppgaver">
+                <br><input type="submit" name="tasks_add" id="sunmenuSubmit" value="Legg til oppgaver">
             </form>
         </div>
 
-        <div class="container container_menu_form text" id="remove_tasks_from_phase">
+        <div class="container container_menu_xsmall text" id="remove_tasks_from_phase">
             <form method="post" id="remove_tasks_form">
                 <br><label class="overskriftLiten"><b>Fjern oppgaver fra fasen: </b></label>
                 <br><select name="tasks[]" id="" class="form-control" multiple onfocus='this.size=10;'
@@ -150,13 +150,13 @@
                     {% endfor %}
                 </select>
                 <input type="hidden" value="{{ getMac("Remove tasks from phase") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="tasks_remove" id="reg_btn" value="Ta bort oppgaver">
+                <br><input type="submit" name="tasks_remove" id="sunmenuSubmit" value="Ta bort oppgaver">
             </form>
         </div>
 
 
         <div class="container container_menu_lang text" id="project_phases">
-            <br><label class="overskriftLiten">Faser i dette prosjektet: </label>
+            <h6 class="overskriftLiten">Faser i dette prosjektet: </h6>
             <table class="table">
                 <tr>
                     <th>Fasenavn</th>
@@ -250,7 +250,7 @@
                     </tr>
                 </table>
                 <input type="hidden" value="{{ getMac("Edit phase") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="phase_edit" id="reg_btn" value="Endre fase detaljer">
+                <br><input type="submit" name="phase_edit" id="sunmenuSubmit" value="Endre fase detaljer">
             </form>
         </div>
 

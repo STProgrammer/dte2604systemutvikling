@@ -114,7 +114,6 @@
             {% if task.hasSubtask() %}
                 <div class="container container_menu_lang_WithBorder text" id="sub_tasks">
                     <h5 class="overskriftLiten">Del oppgaver</h5>
-                    <br><label for="sub_tasks">Deloppgaver: </label>
                     <table class="table">
                         <tr>
                             <th>Navn</th>
@@ -264,7 +263,7 @@
         </section>
         <h6 class="marginleft overskrift">Avhengighter</h6>
         <div class="container container_menu_xlang text" id="tasks_it_is_dependent_on">
-            <br><label for="tasks_it_is_dependent_on">Oppgaver denne oppgaven er avhengig av: </label>
+            <h5 for="tasks_it_is_dependent_on">Oppgaver denne oppgaven er avhengig av: </h5>
             <table class="table">
                 <tr>
                     <th>Navn</th>
@@ -304,7 +303,7 @@
 
     <section>
         <div class="container container_menu_xlang text" id="dependent_tasks">
-            <br><label for="dependent_tasks">Oppgaver som er avhengig av denne oppgaven: </label>
+            <h5 for="dependent_tasks">Oppgaver som er avhengig av denne oppgaven: </h5>
             <table class="table">
                 <tr>
                     <th>Navn</th>
@@ -320,7 +319,6 @@
                         <td>{{ task.groupName }}</td>
                         <td>{{ task.mainResponsibleName }}</td>
                         <td>{{ task.parentTaskName }}</td>
-                        <td>{{ task.groupName }}</td>
                         {% if task.getStatus() == 0 %}
                             <td>Ventende</td>
                         {% elseif task.getStatus() == 1 %}
@@ -385,7 +383,7 @@
 
     {% if user.isProjectLeader() or user.isAdmin() %}
 
-        <div class="openContainerNoBorder text" id="delete_task">
+        <div>
             <form method="post"
                   onsubmit="return confirm('Er du sikker på å slette oppgaven?\n(Kan ikke angres i etterkant!)');">
                 <input type="hidden" value="{{ getMac("Delete task") }}" name="XSRFPreventionToken">

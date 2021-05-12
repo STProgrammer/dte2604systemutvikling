@@ -47,7 +47,7 @@
 
         {# MEDLEMMER I DETTE PROSJEKTET #}
         <div class="container container_menu_lang text" id="project_members">
-            <label class="overskriftLiten"><b>Medlemmer i dette prosjektetet:</b></label></br>
+            <h6 class="overskriftLiten"><b>Medlemmer i dette prosjektetet:</b></h6>
             <table class="table">
                 <tr>
                     <th>Ansatt nr</th>
@@ -155,7 +155,7 @@
                         {% endfor %}
                     </select>
                     <input type="hidden" value="{{ getMac("New task") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="new_task" id="reg_btn" value="Ny oppgave">
+                    <br><input type="submit" name="new_task" id="sunmenuSubmit" value="Ny oppgave">
                 </form>
             </div>
         {% endif %}
@@ -165,7 +165,7 @@
     {# FASER I DETTE PROSJEKTET #}
     <!--h6 class="marginleft overskrift">Faser tilhørende dette prosjektet:</h6><br-->
     <div class="container container_menu_lang_WithBorder text" id="project_members">
-        <label class="overskriftLiten"><b>Faser i dette prosjektet:</b> </label>
+        <h5 class="overskriftLiten"><b>Faser i dette prosjektet:</b> </h5>
         <table class="table">
             <tr>
                 <th>Fasenavn</th>
@@ -236,7 +236,7 @@
                     </tr>
                 </table>
                 <input type="hidden" value="{{ getMac("Add phase") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="phase_add" id="reg_btn" value="Ny fase">
+                <br><input type="submit" name="phase_add" id="sunmenuSubmit" value="Ny fase">
             </form>
         </div>
     {% endif %}
@@ -307,7 +307,7 @@
                 </tr>
             </table>
             <input type="hidden" value="{{ getMac("Project edit") }}" name="XSRFPreventionToken">
-            <br><input type="submit" name="project_edit" id="reg_btn" value="Endre prosjekt"></br>
+            <br><input type="submit" name="project_edit" id="sunmenuSubmit" value="Endre prosjekt"></br>
         </form>
     </div>
 
@@ -337,7 +337,7 @@
                     {% endfor %}
                 </select>
                 <input type="hidden" value="{{ getMac("Add group") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="group_add" id="reg_btn" value="Ny gruppe">
+                <br><input type="submit" name="group_add" id="sunmenuSubmit" value="Ny gruppe">
             </form>
         </div>
 
@@ -357,7 +357,7 @@
                         {% endfor %}
                     </select></div>
                 <input type="hidden" value="{{ getMac("Project remove member") }}" name="XSRFPreventionToken">
-                <br><input type="submit" name="remove_member" id="reg_btn" value="Fjern medlemm">
+                <br><input type="submit" name="remove_member" id="sunmenuSubmit" value="Fjern medlem">
             </form>
             <div>
                 <br><h6>Grupper tilhørende prosjektet:</h6><br>
@@ -391,7 +391,7 @@
 
     {# SLETT PROSJEKT #}
     {% if user.isAdmin() %}
-        <div class="openContainerNoBorder text" id="delete_project">
+        <div class="text" id="delete_project">
             {% if user.isAdmin() %}
                 <form method="post"
                       onsubmit="return confirm('Er du sikker på å slette prosjektet?\n(Kan ikke angres i etterkant!)');">
@@ -404,7 +404,7 @@
 
 
     {# FEILMELDINGER FRA DATABASE #}
-    {# {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %} #}
+    {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
     <div class="container container_big_long text scroll">
         <h5>Tilbakemeldinger fra database</h5>
         {% if session.getFlashBag.has('header') %}
@@ -416,7 +416,7 @@
             {% endfor %}
         {% endif %}
     </div>
-    {# {% endif %} #}
+    {% endif %}
 
     <section id="paddingFromBotton" class="paddingFromBotton"></section>
 

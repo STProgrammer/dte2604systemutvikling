@@ -128,24 +128,19 @@ section.innstillinger { margin-top: 6em; }
 
 /**-------------  LOGINN  ----------------------*/
 section.loginn {
-    margin-top: 10em;
-    /* HTML 5 syntax */
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
+    position: center;
+    margin: 10% 20% 0 10%;
     text-align: center;
 }
 
 /**-------------  EDIT_USER  ----------------------*/
-section.edit_user { margin-top: 6em; margin-bottom: 4em; }
+section.edit_user { margin-top: 6em; }
 
 /**-------------  REGISTER_USER  ----------------------*/
 section.register_user { margin-top: 6em; margin-bottom: 4em; }
 
 /**-------------  PROFILE_EDIT  ----------------------*/
-section.profile_edit { margin-top: 6em; margin-bottom: 4em; }
+section.profile_edit { margin-top: 6em;  }
 
 /**-------------  ERROR  -----------------------*/
 section.error { margin-top: 6em; margin-left: 5em; }
@@ -164,7 +159,7 @@ div.container{
     width: 12em;
     height: 5em;
     padding: 1em;
-    margin: 1em;
+    margin: 1em 1em 0em 1em;
     border: 0.1em solid #e0dbdb;
     box-sizing: border-box;
     border-radius: 0.3em;
@@ -209,12 +204,17 @@ div#edit_commentBoss_hour { width: 100%; height: 7em;
     padding: 0.1em; margin: 0.1em;
 }
 div.openContainerNoBorder {
-    margin-left: 1em; margin-bottom: 2em; background: snow; width: auto;
+    background: snow; width: auto;
+    margin: 1em 1em 2em 1em;
 }
 
-div.container_menu { width: 30em; height: 30em; background-color: #eeeeee;
+div.container_menu { width: 30em; height: 32em; background-color: #eeeeee;
 }
-div.container_menu_form { width: auto; height: 40em; background-color: #eeeeee;
+ div.container_profil { width: 30em; height: 32em; background-color: #eeeeee;
+ }
+div.container_menu_fase { width: 30em; height: 38em; background-color: #eeeeee;
+}
+div.container_menu_form { width: auto; height: 38em; background-color: #eeeeee;
     min-height: 20em;
     /*https://stackoverflow.com/questions/3948445/how-to-make-div-on-top-of-all-other-control*/
 }
@@ -330,7 +330,7 @@ div.container_small { width: 11em; height: 4em; box-shadow: 0.1em 0.1em 0.1em #8
     border: none;
     color: #cac6c6;
     padding: 1em 1em 1em 1em;
-    margin: 1em 1em 1em 2em;
+    margin: 1em 1em 1em 1em;
     width: 25em;
     height: 1.7em;
     text-align: center;
@@ -422,11 +422,20 @@ input#submit {
     padding: 1em;
     margin: 1em;
     background: white;
-    border: 0.1em solid #888888;
     box-sizing: border-box;
     width: 15em; /*height: 3em;*/
     border-radius: 1em;
     box-shadow: 0.2em 0.2em 0.4em #888888;
+    cursor: pointer;
+    white-space: nowrap;
+}
+input#sunmenuSubmit {
+    font-family: Segoe UI, serif;
+    color: #5b4e48;
+    padding: 1em;
+    background: snow;
+    width: 15em; /*height: 3em;*/
+    box-shadow: 0.2em 0.2em 0.2em #c4c3c3;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -602,8 +611,9 @@ select{
     border-bottom: 1pt solid burlywood;
     padding: 0.5em;
     margin: 0.5em;
-    white-space: nowrap;
-    width: 80%;
+    width: auto;
+    max-height: 100em;
+    box-sizing: revert
 
 }
 /*TIME TABLES*/
@@ -730,7 +740,7 @@ td#backgroundColor {
     text-align: left;
     font-family: Segoe UI, serif;
     font-size: 0.8rem;
-    margin: 0.5em;
+    margin: 1em 1em 0em 1em;
 }
 
 /**-----------  TEXT  -----------------------*/
@@ -772,11 +782,12 @@ br#overskriftLiten {
 .marginbotton{
     margin-bottom: 2em;
 }
-.greenText {color: darkgreen;
+.greenText {
+    color: darkgreen;
 }
-.overskrift {color: darkolivegreen; padding-left: 1em;
-    border-left: 0.5em solid lightgray;
-    border-bottom: 0.2em solid lightgray;
+.overskrift {
+    color: darkolivegreen;
+    border-bottom: 0.2em solid snow;
     width: 100%;
     margin-top: 1em;
     margin-bottom: 0.1em;
