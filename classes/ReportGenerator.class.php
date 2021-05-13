@@ -153,7 +153,7 @@ WHERE Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL GROUP BY Projects.project
     {
         try {
             $stmt = $this->db->prepare("SELECT DISTINCT Hours.whoWorked, Hours.timeWorked, Users.*, 
-                CONCAT(Users.firstName, ' ', Users.lastName, ' (', Users.username, ')') as whoWorkedName, 
+                CONCAT(Users.firstName, ' ', Users.lastName) as whoWorkedName, 
                 IFNULL(SEC_TO_TIME(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE 0 END)), '00:00:00') as sumTW, 
                 IFNULL(SEC_TO_TIME(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-%d') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE 0 END)), '00:00:00') as sumThisDay,
                 IFNULL(SEC_TO_TIME(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE 0 END)), '00:00:00') as sumThisMonth 

@@ -195,11 +195,13 @@ div.container_big_long { margin-top: 3em; margin-bottom: 3em; width: 40em; heigh
 }
 div.container_extra_big { width: 65em; height: 30em;
 }
-div.container_addComment { width: 100%; height: 7em;
+div.container_addComment {
+    width: 100%; height: 4em;
     border: none; background: none; box-shadow: none;
     padding: 0.1em; margin: 0.1em;
 }
-div#edit_commentBoss_hour { width: 100%; height: 7em;
+div#edit_commentBoss_hour {
+    width: 100%; height: 4em;
     border: none; background: none; box-shadow: none;
     padding: 0.1em; margin: 0.1em;
 }
@@ -477,18 +479,16 @@ input[type=text] {
 /*}*/
 textarea#comment {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    width: 90%;
+    width: 60%;
     padding: 0.1em 0.1em;
-    margin-left: 1em;
     border: lightyellow;
     background: white;
 
 }
 textarea#commentBoss {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
-    width: 90%;
+    width: 60%;
     padding: 0.1em 0.1em;
-    margin-left: 1em;
     border: lightyellow;
     background: white;
 
@@ -569,7 +569,7 @@ input#edit_commentBoss_hour {
     background: burlywood;
     width: 15em;
     float: right;
-    padding: 0.2em 15em 0.2em 3em;
+    padding: 0.5em 14em 0.5em 1em;
     margin: 0.2em;
     box-sizing: border-box;
     border-radius: 0.5em;
@@ -581,7 +581,7 @@ input#edit_comment_hour {
     background: burlywood;
     width: 15em;
     float: right;
-    padding: 0.2em 15em 0.2em 3em;
+    padding: 0.5em 14em 0.5em 1em;
     margin: 0.2em;
     box-sizing: border-box;
     border-radius: 0.5em;
@@ -701,18 +701,14 @@ td#commentar {
     height: 2em;
     padding-left: 3em;
 }
-
 form#edit_comment_hour {
-    width: 65%;
-    margin-left: 12em;
-    margin-right: 5em;
+    width: 98%;
 }
- form#noBackground {
+form#noBackground {
    background: lightgray;
- }
-
+}
 form#edit_comment_hour1 {
-    width: auto;
+    width: 98%;
 }
 .style_CommentBackBtnUser {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
@@ -722,8 +718,6 @@ form#edit_comment_hour1 {
     font-family: Segoe UI, serif; color: #606060; font-size: 0.8rem;
     cursor: pointer;margin-left: 2em; padding-left: 2em; background: #e7dada;
 }
-
-
 tr:hover { background-color: #f5f5f5;
 }
 tr:nth-child(even) { background-color: #f2f2f2;
