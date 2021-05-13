@@ -71,7 +71,7 @@ class HourManager
     public function getAllHours()
     {
         $hoursAll = array();
-        $query = 'SELECT Hours.*, hourTasks.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName, 
+        $query = 'SELECT SEC_TO_TIME(timeWorked) as tw, Hours.*, hourTasks.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName, 
                     hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
                     FROM Hours
                     LEFT JOIN Users as workers on workers.userID = Hours.whoWorked
@@ -500,7 +500,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
     public function getDeletedHours()
     {
         $deletedHours = array();
-        $query = 'SELECT HoursLogs.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName
+        $query = 'SELECT SEC_TO_TIME(timeWorked) as tw, HoursLogs.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName
                     FROM HoursLogs
                     LEFT JOIN Users as workers on workers.userID = HoursLogs.whoWorked      
                     ORDER BY HoursLogs.whoWorked DESC';
@@ -527,7 +527,7 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
                              $orderBy = null, $offset = null, $limit = null, $projectName = null): array
     {
         $hours = array();
-        $query = 'SELECT Hours.*, hourTasks.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName, 
+        $query = 'SELECT SEC_TO_TIME(timeWorked) as tw, Hours.*, hourTasks.*, CONCAT(workers.firstName, " ", workers.lastName) as whoWorkedName, 
                     hourTasks.taskName as taskName, hourPhases.phaseName as phaseName
                     FROM Hours
                     LEFT JOIN Users as workers on workers.userID = Hours.whoWorked

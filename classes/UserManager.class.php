@@ -524,13 +524,11 @@ class UserManager
     {
         try {
             $stmt = $this->dbase->prepare("SELECT *, 
-                CASE WHEN sumTW IS NULL THEN '00:00' ELSE sumTW END AS sumTW, 
-                CASE WHEN sumThisMonth IS NULL THEN '00:00' ELSE sumThisMonth END AS sumThisMonth FROM TaskCategories
+                IFNULL(sumTW, '00:00:00') AS sumTW, 
+                IFNULL(sumThisMonth, '00:00:00') AS sumThisMonth FROM TaskCategories
                 LEFT JOIN (SELECT DISTINCT CASE WHEN Hours.whoWorked = :userID THEN Hours.whoWorked ELSE NULL END as whoWorked, Hours.taskType, Hours.timeWorked, 
-                CASE WHEN SUM(timeWorked) is null then '00:00' 
-                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE NULL END), '%H:%i') END as sumTW, 
-                CASE WHEN SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() THEN Hours.timeWorked ELSE NULL END) IS NULL THEN '00:00'
-                ELSE TIME_FORMAT(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE NULL END), '%H:%i') END as sumThisMonth 
+                IFNULL(SEC_TO_TIME(SUM(CASE WHEN Hours.stampingStatus = 1 THEN timeWorked ELSE 0 END)), '00:00:00') as sumTW, 
+                IFNULL(SEC_TO_TIME(SUM(CASE WHEN Hours.endTime between DATE_FORMAT(NOW(), '%Y-%m-01') AND NOW() AND Hours.stampingStatus = 1 THEN Hours.timeWorked ELSE 0 END)), '00:00:00') as sumThisMonth 
                 FROM Hours
                 WHERE Hours.whoWorked = :userID OR whoWorked is NULL GROUP BY Hours.taskType) as Hours on Hours.taskType = TaskCategories.categoryName WHERE 1;");
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);

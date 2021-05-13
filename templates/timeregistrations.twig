@@ -28,7 +28,7 @@
                     <td id="backgroundColor"> {{ hour.location }}</td>
                     <td id="backgroundColor"> {{ hour.startTime }}</td>
                     <td id="backgroundColor"> {{ hour.endTime }}</td>
-                    <td id="backgroundColor"> {{ hour.timeWorked }}</td>
+                    <td id="backgroundColor"> {{ hour.tw }}</td>
                     {% if hour.activated == true %}
                         <td id="backgroundColor">Godkjent</td>
                     {% else %}
@@ -189,7 +189,7 @@
                                 <td id="backgroundColor"> {{ hour.projectName }} </td>
                                 <td id="backgroundColor"> {{ hour.startTime }} </td>
                                 <td id="backgroundColor"> {{ hour.endTime }} </td>
-                                <td id="backgroundColor"> {{ hour.timeWorked }} </td>
+                                <td id="backgroundColor"> {{ hour.tw }} </td>
                                 <td id="backgroundColor"> {{ hour.getLocation }} </td>
                                 {% if hour.isActivated %}
                                     <td id="backgroundColor"> Godkjent</td>
@@ -349,7 +349,7 @@
                                 <td id="backgroundColor"> {{ hour.location }}</td>
                                 <td id="backgroundColor"> {{ hour.startTime }}</td>
                                 <td id="backgroundColor"> {{ hour.endTime }}</td>
-                                <td id="backgroundColor"> {{ hour.timeWorked }}</td>
+                                <td id="backgroundColor"> {{ hour.tw }}</td>
                                 {% if hour.activated == true %}
                                     <td id="backgroundColor">Godkjent</td>
                                 {% else %}
@@ -531,7 +531,7 @@
                                     <td id="backgroundColor"> {{ hour.whoWorkedName }}</td>
                                     <td id="backgroundColor"> {{ hour.startTime }}</td>
                                     <td id="backgroundColor"> {{ hour.endTime }}</td>
-                                    <td id="backgroundColor">{{ hour.timeWorked }}</td>
+                                    <td id="backgroundColor">{{ hour.tw }}</td>
                                     <td id="backgroundColor"> {{ hour.getLocation }}</td>
                                     {% if hour.isActivated %}
                                         <td id="backgroundColor">Godkjent</td>
@@ -712,7 +712,7 @@
                                 <td> {{ hour.whoWorkedName }}</td>
                                 <td> {{ hour.startTime }}</td>
                                 <td> {{ hour.endTime }}</td>
-                                <td> {{ hour.timeWorked }}</td>
+                                <td> {{ hour.tw }}</td>
                                 <td> {{ hour.getLocation }}</td>
                                 <td> {{ hour.getTaskType }}</td>
                             </tr>

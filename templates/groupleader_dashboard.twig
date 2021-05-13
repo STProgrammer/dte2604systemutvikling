@@ -86,7 +86,7 @@
                             <td> {{ hour.location }}</td>
                             <td> {{ hour.startTime }}</td>
                             <td> {{ hour.endTime }}</td>
-                            <td> {{ hour.getTimeWorked() }} </td>
+                            <td> {{ hour.tw }} </td>
                             {% if hour.activated == true %}
                                 <td>Godkjent</td>
                             {% else %}
@@ -125,7 +125,7 @@
                             <td> {{ hour.projectName }}</td>
                             <td> {{ hour.startTime }}</td>
                             <td> {{ hour.endTime }}</td>
-                            <td> {{ hour.getTimeWorked() }}  </td>
+                            <td> {{ hour.tw }}  </td>
                             <td> {{ hour.location }}</td>
                             <td> {{ hour.comment }}</td>
                             {% if user.isAdmin %}
