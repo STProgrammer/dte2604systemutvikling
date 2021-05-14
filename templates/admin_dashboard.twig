@@ -108,6 +108,14 @@
                 {% endif %}
             {% endfor %}
         </div>
+        {# Dette er en prøve versjon på hvordan en fremdtidlig kalender kan integres i systemt vårt. Test bruker: nicholai #}
+        {% if user.getUserId == 6 %}
+        <div>
+            <iframe src = "https://outlook.live.com/owa/calendar/2680ae65-ae82-411a-baf8-5d5b80a0283e/f325ec95-56cf-4e7e-886d-e6f5f0cd9fa3/cid-870B49AEE0A72671/index.html" scrolling="no"
+            width="1270px"  height="700" frameborder="()"></iframe>
+        </div>
+            <br><input type="submit" name="epost_link" value="Til epost" onclick="window.location.href='https://outlook.office.com/'">
+        {% endif %}
     </section>
 {% endblock %}
     {# REFERENCES #}
