@@ -140,19 +140,4 @@
         </div>
 
     </section>
-
-    <section>
-        {# Feilmeldinger #}
-        <div class="container container_big_long text scroll">
-            <h5>Tilbakemeldinger fra database</h5>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </section>
 {% endblock %}
