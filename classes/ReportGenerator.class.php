@@ -19,7 +19,7 @@ class ReportGenerator
     /// ERROR
     /////////////////////////////////////////////////////////////////////////////
 
-    private function NotifyUser($strHeader, $strMessage = "")
+    private function NotifyUser($strHeader, $strMessage = null)
     {
         //$this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
@@ -38,12 +38,10 @@ WHERE Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL GROUP BY Projects.project
             if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
             } else {
-                $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
-                //return new Project();
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllProjectsForReport()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av prosjekter");
             //return new Project();
             return array();
         }
@@ -65,12 +63,10 @@ WHERE (Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL) AND (UsersAndGroups.use
             if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
             } else {
-                $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
-                //return new Project();
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getProjectsForUserForRerpot(userId)", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av dine prosjekter");
             //return new Project();
             return array();
         }
@@ -95,11 +91,10 @@ WHERE Projects.projectID = :projectID AND (Tasks.hasSubtask = 1 OR Tasks.hasSubt
             if ($project = $stmt->fetchObject("Project")) {
                 return $project;
             } else {
-                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
                 return null;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av prosjektet");
             return null;
         }
     }
@@ -112,14 +107,12 @@ WHERE Projects.projectID = :projectID AND (Tasks.hasSubtask = 1 OR Tasks.hasSubt
             $sth->bindParam(":projectName", $projectName, PDO::PARAM_STR);
             $sth->execute();
             if ($datas = $sth->fetchAll()) {
-                $this->notifyUser("Progress data hentent ");
                 return $datas;
             } else {
-                $this->notifyUser("Feil ved henting av progress data!");
                 return $datas;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil ved henting av progress data!", $e->getMessage());
+            $this->notifyUser("Feil ved henting av progress data!");
             return $datas;
         }
     }
@@ -137,13 +130,10 @@ WHERE Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL GROUP BY Projects.project
             if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
             } else {
-                $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
-                //return new Project();
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getallProjectsForReport()", $e->getMessage());
-            //return new Project();
+            $this->NotifyUser("En feil oppstod ved henting av grupper");
             return array();
         }
     }
@@ -164,12 +154,11 @@ WHERE Tasks.hasSubtask = 1 or Tasks.hasSubtask IS NULL GROUP BY Projects.project
             if ($users = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
                 return $users;
             } else {
-                $this->notifyUser("Brukere ble ikke funnet", "getAllUserStatistics()");
                 //return new Project();
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllUserStatistics()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av statistikk over brukere");
             //return new Project();
             return array();
         }
@@ -193,11 +182,10 @@ WHERE Projects.projectID = :projectID AND (Tasks.hasSubtask = 1 OR Tasks.hasSubt
             if ($project = $stmt->fetchObject("Project")) {
                 return $project;
             } else {
-                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
                 return null;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av gruppe for rapport");
             return null;
         }
     }

@@ -10,7 +10,7 @@ include('user_register_check.php');
 $userManager = new UserManager($db, $request, $session);
 
 
-if ($user) {
+if (!is_null($user)) {
     // Change user details
     $hours = $userManager->getUserStatistics($user->getUserID());
 
@@ -58,7 +58,6 @@ if ($user) {
             echo $twig->render('profile_edit.twig', array('session' => $session,
                 'request' => $request, 'user' => $user, 'hours' => $hours));
         } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-            echo $e->getMessage();
         }
     }
 } else {

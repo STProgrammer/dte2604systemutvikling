@@ -18,7 +18,7 @@ class HourManager
     // FEILMELDINGER -------------------------------------------------
     private function notifyUser($strHeader, $strMessage = "")
     {
-        //$this->session->getFlashBag()->clear();
+        $this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
         $this->session->getFlashBag()->add('message', $strMessage);
     }
@@ -84,11 +84,10 @@ class HourManager
             if ($hoursAll = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hoursAll;
             } else {
-                $this->notifyUser("Timer ble ikke funnet getAllHours()", "Kunne ikke hente oppgaver");
                 return $hoursAll;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllHours()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av timer!");
             print $e->getMessage() . PHP_EOL;
             return $hoursAll;
         }
@@ -105,9 +104,6 @@ class HourManager
             $phaseID = null;
         }
 
-       // $startTime = date("Y-m-d H:i:s");
-        //$timeWorked = 0;
-//        $activated = 1;
         $location = $this->request->request->get('Lokasjon');
         $phaseID = NULL;
         $absenceType = NULL;
@@ -131,9 +127,6 @@ class HourManager
 
             $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-           // $stmt->bindParam(':startTime', $startTime, PDO::PARAM_STR);
-            //$stmt->bindParam(':timeWorked', $timeWorked, PDO::PARAM_INT);
-//            $stmt->bindParam(':activated', $activated, PDO::PARAM_STR);
             $stmt->bindParam(':location', $location, PDO::PARAM_STR);
             $stmt->bindParam(':phaseID', $phaseID, PDO::PARAM_STR);
             $stmt->bindParam(':absenceType', $absenceType, PDO::PARAM_STR);
@@ -146,14 +139,13 @@ class HourManager
 
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Ny timereg ble registrert", "");
                 return true;
             } else {
-                $this->notifyUser("Failed to register time!", "");
+                $this->notifyUser("Registrering av time ble ikke startet");
                 return false;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på registerTimeForUser()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved registrering av ny time");
             return false;
         }
     }
@@ -174,17 +166,15 @@ class HourManager
             $stmt->closeCursor();
             if ($stmt->rowCount() == 1) {
                 if (!is_null($task)) {
-                    //$hour = $this->getHour($hourID);
-                    //$timeStr = $hour->getTimeWorked();
                     $this->updateTimeWorkedOnTask($task);
                 }
                 return true;
             } else {
-                $this->notifyUser("Failed to stop timereg", "stopTimeForUser()");
+                $this->notifyUser("Fikk ikke stemple ut time");
                 return false;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på stopTimeForUser()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved stempling ut av time");
             return false;
         }
     }
@@ -200,13 +190,10 @@ class HourManager
             if ($hourID = $stmt->fetch()) {
                 return $hourID;
             } else {
-                $this->notifyUser("Ingen aktiv timeregistrering activeTimeregForUser() ", "activeTimeregForUser()");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på activeTimeregForUser()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
-            //return new Project();
+            $this->NotifyUser("En feil oppstod på ved sjekk av aktiv time");
             return array();
         }
     }
@@ -226,45 +213,38 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($totalTimeWorked = $stmt->fetchAll()) {
                 return $totalTimeWorked;
             } else {
-                $this->notifyUser("Ingen brukere hentet");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("Feil ved henting av brukere totalTimeWorked()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av total tidsbruk");
             return array();
         }
     }
-
     // TOTAL TIME USERS
 
 
 
-
-    private function updateTimeWorkedOnTask(?Task $task, $timeStr = null)
+    private function updateTimeWorkedOnTask(?Task $task)
     {
         if (is_null($task)) {
             return false;
         } else {
             $taskID = $task->getTaskID();
             $parentTaskID = $task->getParentTask();
-            // $timestamp = strtotime($timeStr);
-            // $hours = date('h', $timestamp) - 12;
             try {
                 $stmt = $this->dbase->prepare("UPDATE Tasks SET timeSpent = (SELECT SUM(TIME_TO_SEC(timeWorked)/3600) total FROM Hours WHERE taskID = :taskID) WHERE taskID = :taskID;
                                  UPDATE Tasks SET timeSpent = (SELECT SUM(timeSpent) total FROM Tasks WHERE parentTask = :parentTaskID) WHERE taskID = :parentTaskID;");
-                //$stmt->bindParam(':hours', $hours, PDO::PARAM_INT);
                 $stmt->bindParam(':taskID', $taskID, PDO::PARAM_INT);
                 $stmt->bindParam(':parentTaskID', $parentTaskID, PDO::PARAM_INT);
                 //   $stmt->closeCursor();
                 if ($stmt->execute()) {
-                    $this->notifyUser("Tidsbrukt på task oppdatert");
                     return true;
                 } else {
-                    $this->notifyUser("Tidsbrukt på task ble ikke oppdatert", "updateTimeWorkedOnTask()");
+                    $this->notifyUser("Tid brukt på oppgave ble ikke oppdatert");
                     return false;
                 }
             } catch (Exception $e) {
-                $this->NotifyUser("En feil oppstod på updateTimeWorkedOnTask()", $e->getMessage());
+                $this->NotifyUser("En feil oppstod ved oppdatering av tidsbruk på oppgave");
                 return false;
             }
 
@@ -284,12 +264,10 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($hour = $stmt->fetchObject("Hour")) {
                 return $hour;
             } else {
-                $this->notifyUser("Kunne ikke hente kommentarer getHour()", "Kunne ikke hente kommentarer");
-                //return new Project();
                 return null;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getHour()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, kunne ikke hente økt");
             return null;
         }
     }
@@ -305,14 +283,14 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             $stmt->bindParam(':comment', $comment);
             if ($stmt->execute()) {
                 $stmt->closeCursor();
-                $this->notifyUser('Comment changed', 'editComment()');
+                $this->notifyUser('Kommentar endret');
                 return true;
             } else {
-                $this->notifyUser('Comment not changed, failed!', 'editComment()');
+                $this->notifyUser('Kommentar ble ikke endret');
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change comment, exeption on 'editComment()': ", $e->getMessage());
+            $this->notifyUser("En feil oppstod, kommentar ble ikke endret");
             return false;
         }
     }
@@ -328,14 +306,14 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             $stmt->bindParam(':commentBoss', $commentBoss);
             if ($stmt->execute()) {
                 $stmt->closeCursor();
-                $this->notifyUser('Boss comment changed', 'editCommentBoss()');
+                $this->notifyUser('Leder endret kommentar');
                 return true;
             } else {
-                $this->notifyUser('Comment not changed, failed!', 'editCommentBoss()');
+                $this->notifyUser('Kommentar ble ikke endret');
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change comment, exeption on 'editCommentBoss()': ", $e->getMessage());
+            $this->notifyUser("En feil oppstod, kommentar ble ikke endret");
             return false;
         }
     }
@@ -349,14 +327,9 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($timeregCheck = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $timeregCheck;
             } else {
-                $this->notifyUser("Kunne ikke hente status, ", "checkIfActiveTimereg()");
-                //return new Project();
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på checkIfActiveTimereg()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
-            //return new Project();
             return array();
         }
     }
@@ -382,11 +355,10 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
                 }
                 return true;
             } else {
-                $this->notifyUser('Timeregistrering ikke forandret!', 'editHour()');
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Endring misslykkes, feil på 'editHour()': ", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved endring av time");
             return false;
         }
     }
@@ -402,14 +374,14 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             $stmt->execute();
             if ($stmt->execute()) {
                 $stmt->closeCursor();
-                $this->notifyUser('Hour verifyed by admin', 'verifyHour()');
+                $this->notifyUser('Time er verifisert av administrator');
                 return true;
             } else {
-                $this->notifyUser('Not veryfied, failed!', 'verifyHour()');
+                $this->notifyUser('Time ble ikke verifisert');
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Not veryfied, exeption on verifyHour()", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved verifisering av time");
             return false;
         }
     }
@@ -463,11 +435,10 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($stmt->rowCount() == 1) {
                 return true;
             } else {
-                $this->notifyUser("En feil oppstod ved lagring i log.", "");
                 return false;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på duplicateToLog()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved lagring på deaktiverte timer");
             return false;
         }
     }
@@ -488,11 +459,11 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
                 }
                 return true;
             } else {
-                $this->notifyUser('Timeregistrering ikke deaktivert!', 'editHour()');
+                $this->notifyUser('Timeregistrering ikke deaktivert!',);
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Endring misslykkes, feil på 'deleteTimeForUser()': ", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved deaktivering av timer");
             return false;
         }
     }
@@ -510,12 +481,9 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($deletedHours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $deletedHours;
             } else {
-                $this->notifyUser("Logger ble ikke funnet", "Kunne ikke hente oppgaver");
                 return $deletedHours;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getDeletedHours()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
             return $deletedHours;
         }
     }
@@ -610,12 +578,10 @@ WHERE Groups.projectName = :projectName ORDER BY whoWorkedName");
             if ($hours = $stmt->fetchAll(PDO::FETCH_CLASS, "Hour")) {
                 return $hours;
             } else {
-                $this->notifyUser("Timer ble ikke funnet getHours()", "");
                 return $hours;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getHours()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+            $this->NotifyUser("En feil oppstod ved henting av timer");
             return $hours;
         }
     }

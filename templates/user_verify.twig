@@ -18,6 +18,16 @@
             </div>
                 {% endif %}
         {% endif %}
+        {% if session.getFlashBag.has('header') %}
+            <div class="container container_big_long text">
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         <section>
             <h5>Uveriviserte brukere</h5>
             {% if session.getFlashBag.has('header') %}

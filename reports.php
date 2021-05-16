@@ -2,7 +2,7 @@
 
 require_once "includes.php";
 
-if ($user) {
+if (!is_null($user)) {
     $hourManager = new HourManager($db, $request, $session);
     $userManager = new UserManager($db, $request, $session);
     $reportGenerator = new ReportGenerator($db, $request, $session);

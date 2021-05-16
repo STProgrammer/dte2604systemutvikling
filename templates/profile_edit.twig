@@ -30,6 +30,17 @@
             <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
         </div>
 
+        {% if session.getFlashBag.has('header') %}
+            <div class="container container_big_long text">
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <div class="container container_menu_profil text" id="user_info">
             <h3 id="bigColoredName">{{ user.getFirstName() }} {{ user.getLastName() }}</h3>
             Brukernavn: <b>{{ user.getUsername() }} </b><br>
@@ -157,15 +168,6 @@
     </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="javascript/user_register_check.js"></script>
-    <div class>
-        {% if session.getFlashBag.has('header') %}
-            {% for header in session.getFlashBag.get('header', []) %}
-                <h3>{{ header }}</h3>
-            {% endfor %}
-            {% for message in session.getFlashBag.get('message', []) %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    </div>
+
 
 {% endblock %}

@@ -28,7 +28,7 @@ elseif ($request->request->has('login')) {
 }
 
 // if logged in
-elseif ($user) {
+elseif (!is_null($user)) {
     header('location: index.php');
     exit();
 }
@@ -38,7 +38,6 @@ else {
     try {
         echo $twig->render('login.twig', array('session' => $session));
     } catch (LoaderError | RuntimeError | SyntaxError $e) {
-        echo $e->getMessage();
     }
 
 }

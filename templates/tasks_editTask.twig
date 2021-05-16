@@ -10,6 +10,17 @@
         </div>
     </section>
 
+    {% if session.getFlashBag.has('header') %}
+        <div class="container container_big_long text">
+            {% for header in session.getFlashBag.get('header', []) %}
+                <h6>{{ header }}</h6>
+            {% endfor %}
+            {% for message in session.getFlashBag.get('message', []) %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <section>
         {# Oppgave detaljer #}
         <h6 class="marginleft overskrift">Oppgave info side</h6>
@@ -393,16 +404,7 @@
 
     {% endif %}
 
-    <div class="container container_big_long text">
-        <h5>Tilbakemeldinger fra database</h5>
-        {% if session.getFlashBag.has('header') %}
-            {% for header in session.getFlashBag.get('header', []) %}
-                <h6>{{ header }}</h6>
-            {% endfor %}
-            {% for message in session.getFlashBag.get('message', []) %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    </div>
+
+
 
 {% endblock %}

@@ -46,13 +46,10 @@ class ProjectManager
             if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
             } else {
-                $this->notifyUser("Projects not found", "Kunne ikke hente prosjekter");
-                //return new Project();
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllProjects()", $e->getMessage());
-            //return new Project();
+            $this->NotifyUser("En feil oppstod, ved henting av prosjekter");
             return array();
         }
     }
@@ -75,13 +72,10 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
             if ($projects = $stmt->fetchAll(PDO::FETCH_CLASS, "Project")) {
                 return $projects;
             } else {
-                $this->notifyUser("Projects not found", "Kunne ikke hente mine prosjekter");
-                //return new Project();
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getProjectsOfUser()", $e->getMessage());
-            //return new Project();
+            $this->NotifyUser("En feil oppstod ved henting av dine prosjekter");
             return array();
         }
     }
@@ -102,11 +96,10 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
             if ($project = $stmt->fetchObject("Project")) {
                 return $project;
             } else {
-                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
                 return null;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av prosjektet");
             return null;
         }
     }
@@ -126,11 +119,10 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
             if ($project = $stmt->fetchObject("Project")) {
                 return $project;
             } else {
-                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
                 return null;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av prosjekt");
             return null;
         }
     }
@@ -173,7 +165,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
             $stmt->bindParam(':isAcceptedByAdmin', $isAcceptedByAdmin, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
-                $this->notifyUser("Nytt prosjekt ble opprettet", "Fullført!");
+                $this->notifyUser("Nytt prosjekt ble opprettet");
 
                 return true;
             } else {
@@ -181,7 +173,7 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil ved opprettelse av nytt prosjekt!", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved opprettelse av nytt prosjekt!");
             return false;
         }
     }
@@ -215,14 +207,14 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
             $stmt->bindParam(':oldProjectLeader', $oldProjectLeader, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 $stmt->closeCursor();
-                $this->notifyUser('Project details changed');
+                $this->notifyUser('Prosjekt ble endret');
                 return true;
             } else {
-                $this->notifyUser('Failed to change project details');
+                $this->notifyUser('Feil ved endring av prosjekt');
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change project details", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved endring av prosjektet");
             return false;
         }
     }
@@ -249,14 +241,14 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
             $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
             $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
             if ($stmt->execute()) {
-                $this->notifyUser("Arbeider fjernet fra prosjektet");
+                $this->notifyUser("Ansatt fjernet fra prosjektet");
                 return true;
             } else {
-                $this->notifyUser("Feil ved fjerning av arbeider fra prosjektet");
+                $this->notifyUser("Feil ved fjerning av ansatt fra prosjektet");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Arbeider fjernet fra prosjektet", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved fjerning av ansatt fra prosjektet");
             return false;
         }
     }
@@ -273,11 +265,10 @@ WHERE UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = :
             if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
                 return $members;
             } else {
-                $this->notifyUser("Ingen medlemmer funnet", "getProjectMembers()");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getProjectMembers()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av ansatte i prosjektet");
             return array();
         }
     }
@@ -299,7 +290,7 @@ WHERE (UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = 
                 return false;
             }
         }  catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på checkIfMemberOfProject(projectName, userId)", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved sjekking av medlemskap til prosjektet");
             return false;
         }
     }
@@ -326,11 +317,11 @@ WHERE (UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = 
                     return false;
                 }
             } else {
-                $this->NotifyUser("Feil ved å legge til gruppe");
+                $this->NotifyUser("Fikk ikke legge til gruppe");
                 return false;
             }
         } catch (PDOException $e) {
-            $this->NotifyUser("Feil ved å legge til gruppe", $e->getMessage());
+            $this->NotifyUser("En feil oppståd, fikk ikke legge til gruppe");
             return false;
         }
     }
@@ -347,13 +338,13 @@ WHERE (UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = 
                     $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
                     $stmt->execute();
                 }
-                $this->notifyUser("Medlemmer ble lagt til");
+                $this->notifyUser("Ansatte ble lagt til");
             } else {
-                $this->notifyUser("Fikk ikke legge til brukere");
+                $this->notifyUser("Fikk ikke legge til ansatte");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke legge til brukere", $e->getMessage());
+            $this->notifyUser("En feil oppstod, fikk ikke legge til ansatte");
             return false;
         }
         return true;
@@ -373,11 +364,10 @@ WHERE (UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = 
                 $groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group");
                 return $groups;
             } else {
-                $this->notifyUser("Feil i getGroups()");
                 return $groups;
             }
         } catch (Exceptopn $e) {
-            $this->notifyUser("Feil i getGroups()", $e->getMessage());
+            $this->notifyUser("Feil ved henting av grupper");
             return $groups;}
     }
 
@@ -393,11 +383,10 @@ WHERE (UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = 
                 $groupsFromUsersAndGroups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group");
                 return $groupsFromUsersAndGroups;
             } else {
-                $this->notifyUser("Feil i getGroupFromUserAndGroups");
                 return $groupsFromUsersAndGroups;
             }
         } catch (Exceptopn $e) {
-            $this->notifyUser("Feil i getGroupFromUserAndGroups", $e->getMessage());
+            $this->notifyUser("Feil ved henting av grupper");
             return $groupsFromUsersAndGroups;}
     }
 
@@ -418,75 +407,13 @@ WHERE (UsersAndGroups.userID = :userID OR projectLeader = :userID OR customer = 
             if ($candidates = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
                 return $candidates;
             } else {
-                $this->notifyUser("Ingen kandidater funnet", "Kunne ikke hente kandidater for gruppeleder");
                 return $candidates;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getLeaderCandidates()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av leder kandidater");
             return $candidates;
         }
     }
-
-    /*
-    public function getAllMembers($projectName) : array
-
-
-    // REMOVE GROUPS ------------------------------------------------------------------------------------------------
-    public function removeGroups(Project $project) : bool
-    {
-        $members = array();
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM Users
-LEFT JOIN UsersAndGroups as usg on usg.userID = Users.userID
-LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :projectName ORDER BY Users.lastName;");
-            $stmt->bindPara(':projectName', $projectName, PDO::PARAM_STR);
-            $stmt->execute();
-            if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, "User")) {
-                return $members;
-            } else {
-                $this->notifyUser("Brukere ble ikke funnet");
-                return $members;
-            }
-        } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllMembers()", $e->getMessage());
-            return $members;
-        }
-        return $members;
-
-
-    // REMOVE GROUPS ------------------------------------------------------------------------------------------------
-    public function removeGroups(Project $project) : bool
-    {
-        $users = $this->request->request->get('projectMembers');
-        $projectName = $project->getProjectName();
-        $projectLeader = $project->getProjectLeader();
-        try {
-            $stmt = $this->db->prepare(query: "DELETE FROM UsersAndProjects
-                    WHERE projectName = :projectName AND userId = :userID;
-                    UPDATE Projects SET Projects.projectLeader = NULL
-                    WHERE projectName = :projectName AND Projects.projectLeader = :userID;
-                    UPDATE Users SET Users.isProjectLeader = 0
-                    WHERE NOT EXISTS
-                    (SELECT projectLeader FROM Projects WHERE projectLeader = :projectLeader) AND Users.userID = :projectLeader;");
-            if (is_array($users)) {
-                foreach ($users as $userID) {
-                    $stmt->bindParam(':projectName', $projectName);
-                    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
-                    $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                }
-                return true;
-            } else {
-                $this->notifyUser("Failed to remove employee", '..........');
-                return false;
-            }
-        } catch (Exception $e) {
-            $this->notifyUser("Failed to remove employee", $e->getMessage());
-            return false;
-        }
-    }
-}*/
 
 
     //DELETE PROJECT ------------------------------------------------------------------------------------------------
@@ -502,14 +429,14 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
             $stmt->bindParam(':projectLeader', $projectLeader, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() >= 1) {
-                $this->notifyUser("Project deleted", "Det var ikke noe svar fra databasen");
+                $this->notifyUser("Prosjekt ble slettet");
                 return true;
             } else {
-                $this->notifyUser("Failed to delete group!", "Det var ikke noe svar fra databasen");
+                $this->notifyUser("Prosjektet ble ikke slettet!");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to delete project!", $e->getMessage());
+            $this->notifyUser("En feil oppstod, prosjektet ble ikke slettet");
             return false;
         }
     }
@@ -544,11 +471,11 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
                 $this->notifyUser("Ny fase ble lagt til");
                 return true;
             } else {
-                $this->notifyUser("Feil ved registrering av fase!");
+                $this->notifyUser("Feil ved registrering av ny fase!");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil ved registrering av fase!", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved registrering av ny fase!");
             return false;
         }
     }
@@ -585,7 +512,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil ved endring av fase!", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved endring av fase!");
             return false;
         }
     }
@@ -605,7 +532,7 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil ved sletting av fase!", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved sletting av fase!");
             return false;
         }
     }
@@ -620,11 +547,10 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
             if ($phase = $stmt->fetchObject("Phase")) {
                 return $phase;
             } else {
-                $this->notifyUser("Ingen prosjekt funnet med dette navnet.", "Kunne ikke hente prosjektet.");
                 return null;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getProject()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av fase");
             return null;
         }
     }
@@ -640,11 +566,10 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
             if ($phases = $sth->fetchAll(PDO::FETCH_CLASS, "Phase")) {
                 return $phases;
             } else {
-                $this->notifyUser("Feil ved henting av faser!");
                 return $phases;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil ved henting av faser!", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved henting av faser!");
             return $phases;
         }
     }
@@ -656,14 +581,14 @@ LEFT JOIN Groups as grp on grp.groupID = usg.groupID WHERE grp.projectName = :pr
             $sth->bindParam(':projectID', $projectID, PDO::PARAM_STR);
             $sth->execute();
             if($sth->rowCount() == 1) {
-                $this->notifyUser("Prosjekt godkjent av admin");
+                $this->notifyUser("Prosjektet er godkjent av admin");
                 return true;
             } else {
-                $this->notifyUser("Feil ved godkjenning av prosjekt");
+                $this->notifyUser("Feil ved godkjenning av prosjektet!");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil ved godkjenning av prosjekt", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved godkjenning av prosjektet!");
             return false;
         }
     }

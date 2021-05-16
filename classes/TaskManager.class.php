@@ -15,8 +15,8 @@ class TaskManager {
         $this->session = $session;
     }
 
-    private function NotifyUser($strHeader, $strMessage = "") {
-        //$this->session->getFlashBag()->clear();
+    private function NotifyUser($strHeader, $strMessage = null) {
+        $this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
         $this->session->getFlashBag()->add('message', $strMessage);
     }
@@ -71,12 +71,10 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE 1'
                 return $tasks;
             }
             else {
-                $this->notifyUser("Oppgaver ble ikke funnet getAllTasks()", "Kunne ikke hente oppgaver");
                 return $tasks;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllTasks()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+            $this->NotifyUser("Feil ved henting av oppgaver");
             return $tasks;
         }
     }
@@ -98,12 +96,10 @@ WHERE groupID.userID = :userID AND Tasks.hasSubtask >= 0 AND Tasks.status < 3 AN
                 return $tasks;
             }
             else {
-                $this->notifyUser("Oppgaver ble ikke funnet getTasksOfUser(userId)", "Kunne ikke hente oppgaver");
                 return $tasks;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getTasksOfUser()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+            $this->NotifyUser("Feil ved henting av dine oppgaver");
             return $tasks;
         }
     }
@@ -127,12 +123,10 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return $task;
             }
             else {
-                $this->notifyUser("Oppgaver ble ikke funnet", "Kunne ikke hente oppgaver");
                 return null;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getTask()", $e->getMessage());
-//            print $e->getMessage() . PHP_EOL;
+            $this->NotifyUser("En feil oppstod ved henting av oppgave");
             return null;
         }
     }
@@ -155,18 +149,18 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 $stmt->closeCursor();
                 $this->addToProgressTable($projectName);
                 if ($this->addDependencies($taskId)) {
-                    $this->NotifyUser("En oppgave ble lagt til");
+                    $this->NotifyUser("En oppgave ble lagt til med avhengigheter");
                     return true;
                 } else {
                     $this->NotifyUser("En oppgave ble lagt til");
                     return true;
                 }
             } else {
-                $this->NotifyUser("Oppgave ble ikke oprettet");
+                $this->NotifyUser("Oppgave ble ikke lagt til");
                 return false;
             }
         } catch (PDOException $e) {
-            $this->NotifyUser("Oppgave ble ikke opprettet", $e->getMessage());
+            $this->NotifyUser("Feil ved opprettelse av ny oppgave");
             return false;
         }
     }
@@ -189,7 +183,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return false;
             }
         } catch (PDOException $e) {
-            $this->NotifyUser("Oppgave ble ikke endret", $e->getMessage());
+            $this->NotifyUser("Feil ved endring av oppgave");
             return false;
         }
     }
@@ -213,7 +207,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 $stmt->closeCursor();
                 $this->addToProgressTable($projectName);
                 if ($this->addDependencies($taskId)) {
-                    $this->NotifyUser("En deloppgave ble lagt til");
+                    $this->NotifyUser("En deloppgave ble lagt til med avhengigheter");
                     return true;
                 } else {
                     $this->NotifyUser("En deloppgave ble lagt til");
@@ -224,7 +218,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return false;
             }
         } catch (PDOException $e) {
-            $this->NotifyUser("Deloppgave ble ikke opprettet", $e->getMessage());
+            $this->NotifyUser("Feil ved opprettelse av ny deloppgave");
             return false;
         }
     }
@@ -249,7 +243,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke legge til avhengigheter", $e->getMessage());
+            $this->notifyUser("Feil ved opprettelse av avhengigheter");
             return false;
         }
     }
@@ -273,7 +267,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke fjerne avhengigheter", $e->getMessage());
+            $this->notifyUser("Feil ved fjerning av avhengigheter");
             return false;
         }
     }
@@ -299,15 +293,15 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return $tasksItIsDependentOn;
             }
             else {
-                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
                 return $tasksItIsDependentOn;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getTasksItIsDependentOn()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+            $this->NotifyUser("En feil oppstod ved henting av avhengige oppgaver");
             return $tasksItIsDependentOn;
         }
     }
+
+
 
     // GET SECOND TASKS
     public function getDependentTasks($taskId) : array {
@@ -327,12 +321,10 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return $dependentTasks;
             }
             else {
-                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
                 return $dependentTasks;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getDependentTasks()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+            $this->NotifyUser("En feil oppstod ved henting av avhengige oppgaver");
             return $dependentTasks;
         }
     }
@@ -355,15 +347,15 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return $dependentTasks;
             }
             else {
-                $this->notifyUser("Tasks ble ikke funnet", "Kunne ikke hente tasks");
                 return $dependentTasks;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getDependentTasks()", $e->getMessage());
-            print $e->getMessage() . PHP_EOL;
+            $this->NotifyUser("En feil oppstod ved henting av ikke-avhengige oppgaver");
             return $dependentTasks;
         }
     }
+
+
 
     public function addTasksToPhase($phaseId) : bool
     {
@@ -383,7 +375,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke legge til oppgaver på fasen (feil på addTasksToPhase())", $e->getMessage());
+            $this->notifyUser("En feil oppstod, fikk ikke legge til oppgaver på fasen");
             return false;
         }
     }
@@ -400,14 +392,14 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                     $stmt->bindParam(':taskID', $task, PDO::PARAM_INT);
                     $stmt->execute();
                 }
-                $this->notifyUser("Oppgave ble lagt til på fasen");
+                $this->notifyUser("Oppgave fjernet fra fasen");
                 return true;
             } else {
-                $this->notifyUser("Fikk ikke legge til oppgaver på fasen");
+                $this->notifyUser("Fikk ikke fjerne oppgaver fra fasen");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke legge til oppgaver på fasen (feil på removeTasksFromPhase())", $e->getMessage());
+            $this->notifyUser("En feil oppstod, fikk ikke fjerne oppgaver fra fasen");
             return false;
         }
     }
@@ -421,7 +413,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
             $stmt->bindParam(':taskID', $taskId, PDO::PARAM_INT);
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
             if ($stmt->execute()) {
-                $this->notifyUser("Status på oppgaven og alle tilhørende sub-oppgaver ble endret");
+                $this->notifyUser("Status på oppgaven ble endret");
                 $stmt->closeCursor();
                 $task = $this->getTask($taskId);
                 $this->addToProgressTable($task->getProjectName());
@@ -431,7 +423,7 @@ LEFT JOIN Tasks as parentTasks on parentTasks.taskID = Tasks.parentTask WHERE Ta
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke endre status til oppgaver (feil på editStatus())", $e->getMessage());
+            $this->notifyUser("Feil ved endring av status på oppgaven");
             return false;
         }
     }
@@ -445,14 +437,11 @@ LEFT JOIN Tasks on Projects.projectName = Tasks.projectName
 WHERE (Tasks.hasSubtask = 0 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 0 AND Projects.isAcceptedByAdmin = 1) AND Projects.projectName = :projectName GROUP BY Projects.projectName");
             $stmt->bindParam(':projectName', $projectName, PDO::PARAM_STR);
             if ($stmt->execute()) {
-                $this->notifyUser("Fikk lagre på progress table");
                 return true;
             } else {
-                $this->notifyUser("Fikk ikke lagre på progress table");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke lagre på progress table", $e->getMessage());
             return false;
         }
     }
@@ -473,7 +462,7 @@ WHERE (Tasks.hasSubtask = 0 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
                 return false;
             }
         } catch (PDOException $e) {
-            $this->NotifyUser("Gruppe ble ikke endret", $e->getMessage());
+            $this->NotifyUser("Feil ved endring av gruppe ble");
             return false;
         }
     }
@@ -490,17 +479,17 @@ WHERE (Tasks.hasSubtask = 0 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
             $stmt->bindParam(':estimatedTime', $estimatedTime, PDO::PARAM_INT);
             $stmt->bindParam(':parentTaskID', $parentTaskId, PDO::PARAM_INT);
             if ($stmt->execute()) {
-                $this->notifyUser("Estimate på oppgaven ble endret");
+                $this->notifyUser("Estimert tid på oppgaven ble endret");
                 $stmt->closeCursor();
                 $task = $this->getTask($taskId);
                 $this->addToProgressTable($task->getProjectName());
                 return true;
             } else {
-                $this->notifyUser("Fikk ikke endre estimat til oppgaver");
+                $this->notifyUser("Fikk ikke endre estimert tid til oppgaver");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke endre estimat til oppgaver (feil på reEstimate())", $e->getMessage());
+            $this->notifyUser("Feil ved re-estimering av oppgaven");
             return false;
         }
     }
@@ -526,7 +515,7 @@ WHERE (Tasks.hasSubtask = 0 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
                     return false;
                 }
             } catch (Exception $e) {
-                $this->notifyUser("Fikk ikke slette oppgave", $e->getMessage());
+                $this->notifyUser("Feil ved sletting av oppgave");
                 return false;
             }
         } else {
@@ -543,7 +532,7 @@ WHERE (Tasks.hasSubtask = 0 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
                     return false;
                 }
             } catch (Exception $e) {
-                $this->notifyUser("Fikk ikke slette oppgave", $e->getMessage());
+                $this->notifyUser("Feil ved sletting av oppgave");
                 return false;
             }
         }
@@ -559,12 +548,11 @@ WHERE (Tasks.hasSubtask = 0 OR Tasks.hasSubtask IS NULL) AND (Projects.status > 
                 return $categories;
             }
             else {
-                $this->notifyUser("categories not found", "Kunne ikke hente kategorier");
-                return $categories;
+                return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getCategoryName()", $e->getMessage());
-            return $categories();
+            $this->NotifyUser("Feil ved henting av kategorier");
+            return array();
         }
     }
 

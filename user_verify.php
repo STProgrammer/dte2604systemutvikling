@@ -8,7 +8,7 @@ require_once('includes.php');
 $userManager = new UserManager($db, $request, $session);
 
 
-if ($user && $user->isAdmin()) {
+if (!is_null($user) && $user->isAdmin()) {
     // Change user details
     $userToVerify = $userManager->getUser($request->query->getInt('userid'));
     if ($request->request->has('user_verify') && XsrfProtection::verifyMac("Verify user")) {
@@ -17,12 +17,12 @@ if ($user && $user->isAdmin()) {
             header("Location: ".$request->server->get('REQUEST_URI'));
             exit();
         } else {
-            header("Location: userprofiles.php?verify=1&failedtoverify=1");
+            header("Location: userprofiles.php");
             exit();
         }
     }
     else {
-        header("Location: userprofiles.php?verify=1");
+        header("Location: userprofiles.php");
         exit();
     }
 } else {

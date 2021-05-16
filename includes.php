@@ -31,8 +31,6 @@
 
     $requestUri = $request->server->get('REQUEST_URI');
 
-    error_reporting(E_ALL);
-
 
     // Twig templates
     $loader = new FilesystemLoader($homedir . 'templates');

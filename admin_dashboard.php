@@ -2,7 +2,7 @@
 
 require_once "includes.php";
 
-if ($user) {
+if (!is_null($user)) {
 
     $hourManager = new HourManager($db, $request, $session);
     $userManager = new UserManager($db, $request, $session);
@@ -40,9 +40,12 @@ if ($user) {
         try {
             echo $twig->render('admin_dashboard.twig', $array);
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
-            echo $e->getMessage();
+
         }
     }
+} else {
+    header("location: index.php");
+    exit();
 }
 
 

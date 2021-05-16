@@ -17,7 +17,7 @@ if ($request->request->has('username_check')) {
             echo 'not_taken';
         }
     } catch (Exception $e) {
-        $this->notifyUser("Something went wrong", $e->getMessage() . PHP_EOL);
+
     }
     exit();
 }
@@ -34,7 +34,7 @@ if ($request->request->has('email_check')) {
             echo 'not_taken';
         }
     } catch (Exception $e) {
-        $this->notifyUser("Something went wrong", $e->getMessage() . PHP_EOL);
+
     }
     exit();
 }

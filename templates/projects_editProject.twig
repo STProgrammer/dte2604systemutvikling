@@ -8,6 +8,20 @@
         </div>
     </section>
 
+    {# FEILMELDINGER FRA DATABASE #}
+    {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
+        {% if session.getFlashBag.has('header') %}
+            <div class="container container_big_long text">
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
     <section>
         <h6 class="marginleft overskrift">Prosjekt info side</h6>
         {# PROSJEKT INFO #}
@@ -400,22 +414,6 @@
                 </form>
             {% endif %}
         </div>
-    {% endif %}
-
-
-    {# FEILMELDINGER FRA DATABASE #}
-    {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %}
-    <div class="container container_big_long text scroll">
-        <h5>Tilbakemeldinger fra database</h5>
-        {% if session.getFlashBag.has('header') %}
-            {% for header in session.getFlashBag.get('header', []) %}
-                <h6>{{ header }}</h6>
-            {% endfor %}
-            {% for message in session.getFlashBag.get('message', []) %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    </div>
     {% endif %}
 
     <section id="paddingFromBotton" class="paddingFromBotton"></section>

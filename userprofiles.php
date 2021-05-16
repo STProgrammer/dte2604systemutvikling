@@ -12,7 +12,7 @@ if (!is_null($user)) {
             echo $twig->render('user_verify.twig',
                 array('user' => $user, 'users' => $users, 'session' => $session, 'request' => $request));
 
-        } catch (LoaderError | RuntimeError | SyntaxError $e) { echo $e->getMessage(); }
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {  }
     }
     else {
         $users = $userManager->getAllUsers("lastName");
@@ -20,7 +20,7 @@ if (!is_null($user)) {
             echo $twig->render('userprofiles.twig',
                 array('user' => $user, 'users' => $users, 'session' => $session, 'request' => $request));
 
-        } catch (LoaderError | RuntimeError | SyntaxError $e) { echo $e->getMessage(); }
+        } catch (LoaderError | RuntimeError | SyntaxError $e) { }
     }
 }
 else {

@@ -16,9 +16,9 @@ class UserManager
 
 
 
-    private function notifyUser($strHeader, $strMessage = "")
+    private function notifyUser($strHeader, $strMessage = null)
     {
-        $this->session->getFlashBag()->clear();
+        //$this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
         $this->session->getFlashBag()->add('message', $strMessage);
     }
@@ -64,16 +64,16 @@ class UserManager
             $sth->bindParam(':status', $status, PDO::PARAM_STR);
             $sth->execute();
             if ($sth->rowCount() == 1) {
-                $this->notifyUser("Ny bruker ble registrert", "");
+                $this->notifyUser("Ny bruker ble registrert");
                 return true;
             } else {
-                $this->notifyUser("Failed to register user!", "");
+                $this->notifyUser("Feil ved registrering av ny bruker!");
                 return false;
             }
             /*if ($this->sendEmail($email)) { $this->notifyUser("User registered", "");}
             else {$this->notifyUser("Failed to send email to verify!", ""); }*/
         } catch (Exception $e) {
-            $this->notifyUser("Failed to register user!", $e->getMessage());
+            $this->notifyUser("Feil ved registrering av ny bruker!");
             return false;
         }
     }
@@ -88,14 +88,13 @@ class UserManager
                 $sth->bindParam(':UserID', $userID, PDO::PARAM_INT);
                 $sth->execute();
                 if($sth->rowCount() == 1) {
-                    $this->notifyUser("User verified by admin", "");
+                    $this->notifyUser("Bruker verifisert av admin");
                     return true;
                 } else {
-                    $this->notifyUser("Failed to verify user", "");
                     return false;
                 }
             } catch (Exception $e) {
-                $this->notifyUser("Failed to verify user", $e->getMessage());
+                $this->notifyUser("En feil oppstod, bruker ble ikke verifisert!");
                 return false;
             }
         } else {return false; }
@@ -111,78 +110,20 @@ class UserManager
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount()==1) {
-                $this->notifyUser( "User deleted", "");
+                $this->notifyUser( "Bruker slettet");
                 return true;
             } else {
-                $this->notifyUser( "Failed to delete user!", "");
+                $this->notifyUser( "Fikk ikke slette bruker!");
                 return false;
             }
         }
         catch (Exception $e) {
-            $this->notifyUser( "Failed to delete user!", $e->getMessage());
+            $this->notifyUser( "Feil ved sletting av bruker!");
             return false;
         }
     }
     // END DELETE USER
 
-
-    // EDIT USER
-    public function editUser(User $user) : bool {
-        $userID = $user->getUserId();
-        $username = $this->request->request->get('username', $user->getUsername());
-        $firstName = $this->request->request->get('firstName', $user->getFirstName());
-        $lastName = $this->request->request->get('lastName', $user->getLastName());
-        $emailAddress = $this->request->request->get('emailAddress', $user->getEmailAddress());
-        $password = $this->request->request->get('password', $user->getPassword());
-        $address = $this->request->request->get('address', $user->getAddress());
-        $city = $this->request->request->get('city', $user->getCity());
-        $zipCode = $this->request->request->get('zipCode', $user->getZipCode());
-        $phoneNumber = $this->request->request->get('phoneNumber', $user->getPhoneNumber());
-        $mobileNumber = $this->request->request->get('mobileNumber', $user->getMobileNumber());
-        $IMAddress = $this->request->request->get('IMAddress', $user->getIMAddress());
-        $status = $this->request->request->get('status', $user->getStatus());
-        if (!$this->isUsernameAvailable($user, $username)) {
-            $this->notifyUser("Failed to edit, username was already taken");
-            return false;
-        }
-        if (!$this->isEmailAvailable($user, $emailAddress)) {
-            {
-                $this->notifyUser("Failed to edit, email was already taken");
-                return false;
-            }
-        }
-        try {
-            $hash = password_hash($password,PASSWORD_DEFAULT);
-            $sth = $this->dbase->prepare("update Users set username = :username, firstName = :firstName, 
-    lastName = :lastName, emailAddress = :emailAddress, address = :address, city = :city, zipCode = :zipCode, 
-    phoneNumber = :phoneNumber, mobileNumber = :mobileNumber, IMAddress = :IMAddress, password = :password, status = :status WHERE userID = :userID;");
-            $sth->bindParam(':username', $username, PDO::PARAM_STR);
-            $sth->bindParam(':firstName', $firstName, PDO::PARAM_STR);
-            $sth->bindParam(':lastName',  $lastName, PDO::PARAM_STR);
-            $sth->bindParam(':emailAddress', $emailAddress, PDO::PARAM_STR);
-            $sth->bindParam(':address', $address, PDO::PARAM_STR);
-            $sth->bindParam(':city', $city, PDO::PARAM_STR);
-            $sth->bindParam(':zipCode',  $zipCode, PDO::PARAM_STR);
-            $sth->bindParam(':phoneNumber', $phoneNumber, PDO::PARAM_STR);
-            $sth->bindParam(':mobileNumber', $mobileNumber, PDO::PARAM_STR);
-            $sth->bindParam(':IMAddress', $IMAddress, PDO::PARAM_STR);
-            $sth->bindParam(':password', $hash, PDO::PARAM_STR);
-            $sth->bindParam(':status', $status, PDO::PARAM_STR);
-            $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
-            $sth->execute();
-            if ($sth->rowCount() == 1) {
-                $this->notifyUser('User details changed', '');
-                return true;
-            } else {
-                $this->notifyUser('Failed to change user details', "");
-                return false;
-            }
-        } catch (Exception $e) {
-            $this->notifyUser("Failed to change user details", $e->getMessage());
-            return false;
-        }
-    }
-    // END EDIT USER
 
 
     // EDIT OTHER USER
@@ -218,14 +159,14 @@ class UserManager
             $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
             if ($sth->rowCount() == 1) {
-                $this->notifyUser('User details changed', '');
+                $this->notifyUser("Brukerdetlajer ble endret!");
                 return true;
             } else {
-                $this->notifyUser('Failed to change user details', "");
+                $this->notifyUser("Feilet endring av brukerdetaljer!");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change user details", $e->getMessage());
+            $this->notifyUser("Feilet endring av brukerdetaljer!");
             return false;
         }
     }
@@ -250,12 +191,12 @@ class UserManager
         $isProjectLeader = $this->request->request->getInt('isProjectLeader', $user->isProjectLeader());
         $isGroupLeader = $this->request->request->getInt('isGroupLeader', $user->isGroupLeader());
         if (!$this->isUsernameAvailable($user, $username)) {
-            $this->notifyUser("Failed to edit, username was already taken", "");
+            $this->notifyUser("Feilet ved endring, brukernavnet var allerede tatt!");
             return false;
         }
         if (!$this->isEmailAvailable($user, $emailAddress)) {
             {
-                $this->notifyUser("Failed to edit, email was already taken", "");
+                $this->notifyUser("Feilet ved endring, epost addressen var allerede tatt!");
                 return false;
             }
         }
@@ -282,14 +223,14 @@ class UserManager
             $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
             if ($sth->rowCount() == 1) {
-                $this->notifyUser('User details changed', '');
+                $this->notifyUser("Brukerdetaljer ble endret");
                 return true;
             } else {
-                $this->notifyUser('Failed to change user details', "");
+                $this->notifyUser("Feilet endring av brukerdetaljer!");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change user details", $e->getMessage());
+            $this->notifyUser("Feilet endring av brukerdetaljer!");
             return false;
         }
     }
@@ -301,7 +242,7 @@ class UserManager
         $userID = $user->getUserId();
         $username = $this->request->request->get('username', $user->getUsername());
         if (!$this->isUsernameAvailable($user, $username)) {
-            $this->notifyUser("Failed to edit, username was already taken", "");
+            $this->notifyUser("Feilet endring, brukernavn var allerede tatt!");
             return false;
         }
         try {
@@ -310,18 +251,20 @@ class UserManager
             $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
             if ($sth->rowCount() == 1) {
-                $this->notifyUser('Username changed', '');
+                $this->notifyUser("Brukernavn ble endret");
                 return true;
             } else {
-                $this->notifyUser('Failed to change username', "");
+                $this->notifyUser("Feilet endring av brukernavn!");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change username", $e->getMessage());
+            $this->notifyUser("Feilet endring av brukernavn!");
             return false;
         }
     }
     // END EDIT USERNAME
+
+
 
     // EDIT EMAIL ADDRESS
     public function editMyEmailAddress(User $user) : bool {
@@ -329,7 +272,7 @@ class UserManager
         $emailAddress = $this->request->request->get('emailAddress', $user->getEmailAddress());
         if (!$this->isEmailAvailable($user, $emailAddress)) {
             {
-                $this->notifyUser("Failed to edit, email was already taken", "");
+                $this->notifyUser("Feilet endring, epost addressen var allerede tatt");
                 return false;
             }
         }
@@ -339,14 +282,14 @@ class UserManager
             $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
             if ($sth->rowCount() == 1) {
-                $this->notifyUser('Email address changed', '');
+                $this->notifyUser("Epost addressen ble endret");
                 return true;
             } else {
-                $this->notifyUser('Failed to change email address', "");
+                $this->notifyUser("Feilet endring av epost addressen");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change email address", $e->getMessage());
+            $this->notifyUser("Feilet endring av epost addressen");
             return false;
         }
     }
@@ -363,14 +306,14 @@ class UserManager
             $sth->bindParam(':userID', $userID, PDO::PARAM_INT);
             $sth->execute();
             if ($sth->rowCount() == 1) {
-                $this->notifyUser('Password changed', '');
+                $this->notifyUser("Passordet er endret");
                 return true;
             } else {
-                $this->notifyUser('Failed to change password', "");
+                $this->notifyUser("Feilet endring av passord");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change password", $e->getMessage());
+            $this->notifyUser("Feilet endring av passord");
             return false;
         }
     }
@@ -394,7 +337,6 @@ class UserManager
                     return true;
                 }
             } catch (Exception $e) {
-                $this->notifyUser("Something went wrong with isUserNameAvailable()", $e->getMessage());
                 return false;
             }
         }
@@ -418,7 +360,6 @@ class UserManager
                     return true;
                 }
             } catch (Exception $e) {
-                $this->notifyUser("Something went wrong with isEmailAvailable()", $e->getMessage());
             }
         }
     }
@@ -436,11 +377,10 @@ class UserManager
                 return $user;
             }
             else {
-                $this->notifyUser("User not found", "");
                 return null;
             }
         }
-        catch(Exception $e) { $this->notifyUser("Something went wrong!", $e->getMessage());
+        catch(Exception $e) { $this->notifyUser("En feil oppstod ved henting av bruker!");
             return null;
         }
     }
@@ -459,11 +399,10 @@ class UserManager
                 return $allUsers;
             }
             else {
-                $this->notifyUser("User not found", "");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllUsers()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av alle brukere");
             return array();
         }
         return array();
@@ -484,16 +423,16 @@ class UserManager
                 return $allUsers;
             }
             else {
-                $this->notifyUser("Ingen registrert kunde ble funnet");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod på getAllCustomers()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av registrerte kunder");
             return array();
         }
         return array();
     }
     // END GET ALL CUSTOMERS
+
 
     // GET ALL EMPLOYEES
     public function getAllEmployees($colName) : array {
@@ -507,11 +446,10 @@ class UserManager
                 return $allUsers;
             }
             else {
-                $this->notifyUser("User not found", "");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllEmployees()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av alle ansatte");
             return array();
         }
         return array();
@@ -536,13 +474,10 @@ class UserManager
             if ($hours = $stmt->fetchAll()) {
                 return $hours;
             } else {
-                $this->notifyUser("Timer ble ikke funnet", "Kunne ikke hente timer");
-                //return new Project();
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getUserStatistics()", $e->getMessage());
-            //return new Project();
+            $this->NotifyUser("En feil oppstod ved henting tidsbruk for bruker!");
             return array();
         }
     }
@@ -560,98 +495,16 @@ class UserManager
                 return $allUsers;
             }
             else {
-                $this->notifyUser("User not found", "");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getUnverifiedUsers()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av uverifiserte brukere");
             return array();
         }
         return array();
     }
     // END GET ALL UNVERIFIED USERS
 
-
-
-/*
-
-    public function sendEmail(string $email) : bool {
-        $ch = curl_init();
-        //Koden for å hente URL adresse er tatt og modifisert fra https://www.javatpoint.com/how-to-get-current-page-url-in-php
-        if($this->request->server->get('HTTPS') === 'on')
-            $url = "https://";
-        else
-            $url = "http://";
-        // Append the host(domain name, ip) to the URL.
-        $url .= $this->request->server->get('HTTP_HOST');
-        // Append the requested resource location to the URL
-        $url .= dirname($this->request->server->get('PHP_SELF'));
-        $url .= "/verify.php";
-        $timestamp = time();
-
-        $id = md5(uniqid(rand(), 1));
-        try{
-            $sth = $this->dbase->prepare("update Users set verCode = :id, verified = 0, timestamp = :timestamp where email = :email;");
-            $sth->bindParam(':email', $email, PDO::PARAM_STR);
-            $sth->bindParam(':id',  $id, PDO::PARAM_STR);
-            $sth->bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
-            $sth->execute();
-            if ($sth->rowCount() == 1) {
-                $this->notifyUser("Email sent, check your inbox for verification","");
-            } else {
-                $this->notifyUser("Failed to send verification email, email not found","");
-                return false;
-            }
-        } catch (Exception $e) {
-            $this->notifyUser("Failed to send verification email","");
-            return false;
-        }
-        curl_setopt($ch, CURLOPT_URL, "https://kark.uit.no/internett/php/mailer/mailer.php?address=".$email."&url=".$url ."?id=". $id);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
-        curl_close($ch);
-        return true;
-    } //END send Email
-
-
-
-
-
-    public function verifyUser() : bool {
-        $timeLimit = 86400;  //86,400 seconds is one day
-
-        if($id = $this->request->query->get('id')) {
-            try {
-                $sth = $this->dbase->prepare("select timestamp from Users where vercode = :id");
-                $sth->bindParam(':id', $id, PDO::PARAM_STR);
-                $sth->execute();
-                $timestamp = $sth->fetchColumn();
-                if (time() - $timestamp > $timeLimit) {
-                    $this->notifyUser("Verification code has expired", "");
-                    return false;
-                } else {
-                    $sth = $this->dbase->prepare("update Users set verified = 1 where verCode = :id");
-                    $sth->bindParam(':id', $id, PDO::PARAM_STR);
-                    $sth->execute();
-                    if($sth->rowCount() == 1) {
-                        $this->notifyUser("Email verified", "");
-                        return true;
-                    }
-                    else {
-                        $this->notifyUser("Failed to verify email", "");
-                        return false;
-                    }
-                }
-
-
-            } catch (Exception $e) {
-                $this->notifyUser("Failed to verify email", "");
-                return false;
-            }
-        } return false;
-    }
-*/
 
 }
 

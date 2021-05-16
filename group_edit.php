@@ -20,12 +20,6 @@ if (!is_null($user) && !is_null($group) ) {
 
     $isMember = $groupManager->checkIfMemberOfGroup($group->getGroupID(), $user->getUserID());
 
-    /*$member = null;
-    foreach ($members as $member) {
-        if ($user->getUserId() == $member->getUserId()) {
-            $isMember = true;
-        }
-    }*/
 
     if ($isMember or $user->isAdmin() or $user->isProjectLeader() or ($user->getUserID() == $group->getGroupLeader())) {
         $groupID = $group->getGroupID();
@@ -90,7 +84,6 @@ if (!is_null($user) && !is_null($group) ) {
                         'group' => $group, 'members' => $members, 'candidates' => $candidates,
                         'projects' => $projects, 'tasks' => $tasks));
                 } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-                    echo $e->getMessage();
                 }
             }
         }

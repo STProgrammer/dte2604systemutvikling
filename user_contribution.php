@@ -11,12 +11,12 @@ $taskManager = new TaskManager($db, $request, $session);
 
 $user = $session->get('User');
 
-if ($user && ($user->isAdmin() | $user->isProjectLeader() | $user->isGroupLeader())) {
+if (!is_null($user) && ($user->isAdmin() | $user->isProjectLeader() | $user->isGroupLeader())) {
     $userID = $request->query->getInt('userID');
     $userToView = $userManager->getUser($userID);
 
     $hours = $hourManager->getHours(null, $userID);
-//    $hour = $hourManager->getHour($userID);
+
 
     if ($request->request->has('edit_commentBoss_hour') && XsrfProtection::verifyMac("Edit Comment Boss")) {
         $hourID = $request->query->getInt('hourId');

@@ -4,7 +4,7 @@ require_once "includes.php";
 
 
 
-if ($user) {
+if (!is_null($user)) {
 
     if ($user->isAdmin()) {
         header("location: admin_dashboard.php");

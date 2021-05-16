@@ -37,7 +37,7 @@
     <section>
         {# Feilmeldinger #}
         <div class="container container_medium_admin snow scrollY" onclick="">
-            <h6>Feilmeldinger i dag</h6>
+            <h6>Meldinger: </h6>
             {% if session.getFlashBag.has('header') %}
                 {% for header in session.getFlashBag.get('header', []) %}
                     <p>H: {{ header }}</p>

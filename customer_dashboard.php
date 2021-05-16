@@ -11,7 +11,7 @@ $reportGenerator = new ReportGenerator($db, $request, $session);
 
 $projects = array();
 
-if ($user->isCustomer()) {
+if (!is_null($user) && $user->isCustomer()) {
     $tasks = $taskManager->getAllTasks();
 
     $projectsOfUser = $projectManager->getProjectsOfUser($user->getUserID());

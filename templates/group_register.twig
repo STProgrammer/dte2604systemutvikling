@@ -2,6 +2,18 @@
 {% block content %}
 
     <section class="register_group" id="register_group">
+        <section>
+            {% if session.getFlashBag.has('header') %}
+                <div class="container container_big_long text">
+                    {% for header in session.getFlashBag.get('header', []) %}
+                        <h6>{{ header }}</h6>
+                    {% endfor %}
+                    {% for message in session.getFlashBag.get('message', []) %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
         <div class="openContainerNoBorder text" id="table_register">
             <h3>Lag ny bruker</h3>
 
@@ -25,18 +37,7 @@
         </div>
     </section>
 
-    <section>
-        <div class>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h3>{{ header }}</h3>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </section>
+
 
 
 {% endblock %}

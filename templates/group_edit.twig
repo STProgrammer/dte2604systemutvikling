@@ -11,6 +11,17 @@
         </div>
     </section>
 
+    {% if session.getFlashBag.has('header') %}
+        <div class="container container_big_long text">
+            {% for header in session.getFlashBag.get('header', []) %}
+                <h6>{{ header }}</h6>
+            {% endfor %}
+            {% for message in session.getFlashBag.get('message', []) %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <section>
         <h6 class="marginleft overskrift">Gruppeinfo side</h6><br>
         {# GROUP INFO #}
@@ -162,57 +173,7 @@
         {% endif %}
 
     </section>
-    <!--
-        {# Endre prosjekt #}
-        {% if user.isAdmin() %}
-            <div class="container container_menu_small text">
-                <h5 class="overskriftLiten">Endre prosjekt</h5>
-                <form method="post" id="add_to_project">
-                    <br><label>Velg prosjekt:</label>
-                    <br>
-                    <div class="wrapper">
-                        <select name="projectName" id="" class="form-control" onfocus='this.size=10;'
-                                onblur='this.size=10;'
-                                onchange='this.size=10; this.blur();'>
-                            {% for project in projects %}
-                                <option value="{{ project.getProjectName() }}" {% if project.getProjectName() == group.getProjectName() %} selected {% endif %}>{{ project.getProjectName() }}
-                                </option>
-                            {% endfor %}
-                        </select></div>
-                    <input type="hidden" value="{{ getMac("Add group to project") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="add_to_project" id="reg_btn" value="Endre prosjekt">
-                </form>
-            </div>
 
-            <div id="text">
-                <form method="post"
-                      onsubmit="return confirm('Er du sikker på å slette gruppen? \n(Kan ikke angres etterpå)');">
-                    <input type="hidden" value="{{ getMac("Delete group") }}" name="XSRFPreventionToken">
-                    <br><input type="submit" name="group_delete" value="Slett gruppe" class="delete"/>
-                </form>
-            </div>
-        {% endif %}
-
-        <div id="text">
-            <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
-        </div>
-    </section>
-    -->
-
-    {# FEILMELDINGER FRA DATABASE #}
-    {# {% if user.isAdmin() or user.isProjectLeader() or user.isGroupLeader() %} #}
-    <div class="container container_big_long text scroll">
-        <h5>Tilbakemeldinger fra database</h5>
-        {% if session.getFlashBag.has('header') %}
-            {% for header in session.getFlashBag.get('header', []) %}
-                <h6>{{ header }}</h6>
-            {% endfor %}
-            {% for message in session.getFlashBag.get('message', []) %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    </div>
-    {# {% endif %} #}
 
     <section id="paddingFromBotton" class="paddingFromBotton"></section>
 

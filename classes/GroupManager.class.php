@@ -18,7 +18,7 @@ class GroupManager
         $this->session = $session;
     }
 
-    private function NotifyUser($strHeader, $strMessage = "")
+    private function NotifyUser($strHeader, $strMessage = null)
     {
         //$this->session->getFlashBag()->clear();
         $this->session->getFlashBag()->add('header', $strHeader);
@@ -41,11 +41,10 @@ LEFT JOIN Users as groupLeader on groupLeader.userID = Groups.groupLeader GROUP 
             if ($groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
                 return $groups;
             } else {
-                $this->notifyUser("Groups not found", "Kunne ikke hente grupper");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllGroups()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, kunne ikke hente grupper");
             return array();
         }
     }
@@ -66,11 +65,10 @@ GROUP BY Groups.groupID ORDER BY Groups.groupName ASC;');
             if ($groups = $stmt->fetchAll(PDO::FETCH_CLASS, "Group")) {
                 return $groups;
             } else {
-                $this->notifyUser("Groups not found", "Kunne ikke hente mine grupper");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getGroupsOfUser()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, kunne ikke hente mine grupper");
             return array();
         }
     }
@@ -88,14 +86,14 @@ GROUP BY Groups.groupID ORDER BY Groups.groupName ASC;');
             $stmt->bindParam(':groupName', $groupName, PDO::PARAM_STR, 100);
             $stmt->bindParam(':isAdmin', $isAdmin, PDO::PARAM_INT, 100);
             if ($stmt->execute()) {
-                $this->NotifyUser("Group added");
+                $this->NotifyUser("Ny gruppe ble lagt til");
                 return true;
             } else {
-                $this->NotifyUser("Failed to add group");
+                $this->NotifyUser("Gruppe ble ikke lagt til");
                 return false;
             }
         } catch (PDOException $e) {
-            $this->NotifyUser("Failed to add group", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, gruppe ble ikke lagt til");
             return false;
         }
     }
@@ -125,14 +123,14 @@ WHERE NOT EXISTS
             $sth->bindParam(':oldGroupLeader', $oldGroupLeader, PDO::PARAM_INT);
             if ($sth->execute()) {
                 $sth->closeCursor();
-                $this->notifyUser('Group details changed');
+                $this->notifyUser('Gruppe detaljer ble endret');
                 return true;
             } else {
-                $this->notifyUser('Failed to change group details');
+                $this->notifyUser('Gruppe detaljer ble ikke endret');
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to change group details", $e->getMessage());
+            $this->notifyUser("En feil oppstod, gruppe detaljher ble ikke endret");
             return false;
         }
     }
@@ -152,14 +150,14 @@ WHERE NOT EXISTS
             $stmt->bindParam(':groupLeader', $groupLeader, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() >= 1) {
-                $this->notifyUser("Group deleted");
+                $this->notifyUser("Gruppe ble slettet");
                 return true;
             } else {
-                $this->notifyUser("Failed to delete group!");
+                $this->notifyUser("Gruppe ble ikke slettet!");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Failed to delete group!", $e->getMessage());
+            $this->notifyUser("En feil oppståd, gruppe ble ikke slettet!");
             return false;
         }
 
@@ -175,11 +173,10 @@ WHERE NOT EXISTS
             if ($group = $stmt->fetchObject("Group")) {
                 return $group;
             } else {
-                $this->notifyUser("Ingen grupper funnet", "Kunne ikke hente gruppe");
                 return null;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getAllGroups()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, kunne ikke hente gruppe");
             return null;
         }
     }
@@ -201,7 +198,7 @@ WHERE NOT EXISTS
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke legge til brukere", $e->getMessage());
+            $this->notifyUser("En feil oppstod: fikk ikke legge til brukere");
             return false;
         }
         return true;
@@ -223,7 +220,7 @@ WHERE (UsersAndGroups.userID = :userID OR groupLeader = :userID) AND Groups.Grou
                 return false;
             }
         }  catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på checkIfMemberOfGroup(groupId, userId)", $e->getMessage());
+            $this->NotifyUser("En feil oppstod");
             return false;
         }
     }
@@ -247,11 +244,11 @@ UPDATE Groups SET groupLeader = null WHERE EXISTS (SELECT projectLeader FROM Pro
                 $this->notifyUser("Gruppe ble lagt til prosjektet");
                 return true;
             } else {
-                $this->notifyUser("Fikk ikke legge til prosjektet");
+                $this->notifyUser("Fikk ikke legge gruppe til prosjektet");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Fikk ikke legge til prosjektet", $e->getMessage());
+            $this->notifyUser("En feil oppstod: fikk ikke legge gruppe til prosjektet");
             return false;
         }
     }
@@ -296,12 +293,13 @@ WHERE NOT EXISTS
                     $stmt->execute();
                     $stmt->closeCursor();
                 }
+                $this->notifyUser("Brukere fjernet fra gruppa");
             } else {
-                $this->notifyUser("Ikke klarte å fjerning brukere");
+                $this->notifyUser("Ikke klarte å fjerne brukere fra gruppa");
                 return false;
             }
         } catch (Exception $e) {
-            $this->notifyUser("Feil med fjerning av brukere", $e->getMessage());
+            $this->notifyUser("En feil oppstod ved fjerning av brukere fra gruppa");
             return false;
         }
         return true;
@@ -317,11 +315,10 @@ WHERE NOT EXISTS
             if ($members = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
                 return $members;
             } else {
-                $this->notifyUser("Ingen medlemmer funnet", "Kunne ikke hente medlemmer av gruppa");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getGroupMembers()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod, verd henting av gruppemedlemmer");
             return array();
         }
     }
@@ -336,11 +333,10 @@ WHERE NOT EXISTS
             if ($nonmembers = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
                 return $nonmembers;
             } else {
-                $this->notifyUser("Ingen medlemmer funnet", "Kunne ikke hente medlemmer av gruppa");
                 return array();
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getGroupMembers()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av alle ikke-medlemmer");
             return array();
         }
     }
@@ -361,11 +357,10 @@ AND NOT EXISTS (SELECT Projects.projectLeader FROM Projects WHERE Projects.proje
             if ($candidates = $stmt->fetchAll(PDO::FETCH_CLASS, 'User')) {
                 return $candidates;
             } else {
-                $this->notifyUser("Ingen kandidater funnet", "Kunne ikke hente kandidater for gruppeleder");
                 return $candidates;
             }
         } catch (Exception $e) {
-            $this->NotifyUser("En feil oppstod, på getLeaderCandidates()", $e->getMessage());
+            $this->NotifyUser("En feil oppstod ved henting av gruppe-leder kandidater");
             return $candidates;
         }
     }

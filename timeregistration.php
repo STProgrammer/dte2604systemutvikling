@@ -9,7 +9,7 @@ $userManager = new UserManager($db, $request, $session);
 $taskManager = new TaskManager($db, $request, $session);
 
 
-if ($user) {
+if (!is_null($user)) {
     $userID = $user->getUserId($user);
     $tasks = $taskManager->getAllTasks();
 

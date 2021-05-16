@@ -10,6 +10,17 @@
 </head>
 <body>
     <section class="loginn">
+        {# FEILMELDINGER FRA DATABASE #}
+        {% if session.getFlashBag.has('header') %}
+            <div class="container container_big_long text">
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         <form action="login.php" method="post">
             <div>
                 <img id="innloggLogo" src="images/morild_logo_150px.png" alt="Logo"/>

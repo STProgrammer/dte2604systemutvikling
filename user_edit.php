@@ -8,7 +8,7 @@ require_once('includes.php');
 $userManager = new UserManager($db, $request, $session);
 $userToEdit = $userManager->getUser($request->query->getInt('userid', 0));
 
-if ($user && ($user->isAdmin() | $user->isProjectLeader()) && !is_null($userToEdit)) {
+if (!is_null($user) && ($user->isAdmin() | $user->isProjectLeader()) && !is_null($userToEdit)) {
     // Change user details
     $hours = $userManager->getUserStatistics($userToEdit->getUserID());
 
@@ -50,7 +50,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader()) && !is_null($userToEd
             echo $twig->render('user_edit.twig', array('session' => $session,
                 'request' => $request, 'user' => $user, 'userToEdit' => $userToEdit,
                 'hours' => $hours));
-        } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) { echo $e->getMessage(); }
+        } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) { }
     }
 } else {
     header("location: userprofiles.php");

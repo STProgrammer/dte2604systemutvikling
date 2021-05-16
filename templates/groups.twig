@@ -1,14 +1,17 @@
 {% extends "layout.twig" %}
 {% block content %}
 
-    <section id="brukerprofiler" class="brukerprofiler">
-        {% if user.isAdmin or user.isProjectLeader %}
-            <!--<div class="container container_small cursor" onclick="window.location.href='group_register.php';">
-                <button id="button" class="button" title="Ny bruker"
-                        onclick="window.location.href='group_register.php';">
-                    <img src="images/icon_legg_til_bruker.svg" width="30em"> Legg til ny gruppe
-                </button>
-            </div> -->
+    <section>
+        {# FEILMELDINGER FRA DATABASE #}
+        {% if session.getFlashBag.has('header') %}
+            <div class="container container_big_long text">
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
         {% endif %}
     </section>
 
@@ -40,7 +43,7 @@
                         <td>
                             <button class="buttons miniButtons" id="miniButtons"
                                     onclick="location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
-                                Se Grupper
+                                Se detaljer
                             </button>
                         </td>
 
@@ -78,7 +81,7 @@
                         <td>
                             <button class="buttons miniButtons" id="miniButtons"
                                     onclick="window.location.href='group_edit.php?groupid={{ grp.getGroupID() }}';">
-                                Se Grupper
+                                Se detaljer
                             </button>
                         </td>
                         {% endif %}
@@ -88,18 +91,5 @@
         </div>
     </section>
 
-    <section>
-        {# FEILMELDINGER FRA DATABASE #}
-        <div class="container container_big_long text">
-            <h5>Tilbakemeldinger fra database</h5>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </section>
+
 {% endblock %}

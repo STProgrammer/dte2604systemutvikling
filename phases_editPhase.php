@@ -78,7 +78,7 @@ if (!is_null($user) && !is_null($phase) && ($user->isAdmin() or $user->isProject
                         'employees' => $employees, 'phase' => $phase,
                         'phases' => $phases, 'tasks' => $tasks, 'phaseTasks' => $phaseTasks));
             } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-                echo $e->getMessage();
+
             }
         }else {
             header("location: projects.php");

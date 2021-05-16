@@ -10,8 +10,9 @@
         <h2>Session hijaked.....</h2>
         {% else %}
         <h2>En feil har oppstått:</h2>
+          {% if msg %}
         <h3>{{msg}}</h3>
-          <p>{{ errorMsg }}</p>
+            {% endif %}
         {% endif %}
         <button id="button_small" class="button_small">
             <a href = "javascript:history.back()">Gå tilbake</a>

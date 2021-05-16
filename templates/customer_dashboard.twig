@@ -3,6 +3,19 @@
 {% block content %}
 
     <section class="customer_dashboard" id="customer_dashboard">
+        <section>
+            {# Feilmeldinger #}
+            {% if session.getFlashBag.has('header') %}
+                <div class="container container_big_long text">
+                    {% for header in session.getFlashBag.get('header', []) %}
+                        <h6>{{ header }}</h6>
+                    {% endfor %}
+                    {% for message in session.getFlashBag.get('message', []) %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
         {# Siste kommentarer fra brukere og ledere #}
         <div class="container_customerDashboard text">
             <h5>Fremgang på mine prosjekter som kunde</h5>
@@ -134,19 +147,6 @@
         </div>
     </section>
 
-    <section>
-        {# Feilmeldinger #}
-        <div class="container container_big_long text scroll">
-            <h5>Tilbakemeldinger fra database</h5>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h6>{{ header }}</h6>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </section>
+
 {% endblock %}
 

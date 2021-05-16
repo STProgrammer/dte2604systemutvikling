@@ -1,7 +1,6 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    {# TICKET 5.3.4 Det skal være en kommentar boks knyttet opp mot hver timeregistrering. Kommentarer er forbeholdt den som registrerer timen, men kan ses av flere. #}
 
     <section class="edit_hour" id="edit_hour">
         {# TILBAKE KNAPP #}
@@ -12,6 +11,17 @@
             </button>
         </div>
     </section>
+
+    {% if session.getFlashBag.has('header') %}
+        <div class="container container_big_long text">
+            {% for header in session.getFlashBag.get('header', []) %}
+                <h6>{{ header }}</h6>
+            {% endfor %}
+            {% for message in session.getFlashBag.get('message', []) %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <section>
         {# Endre kommentar #}
@@ -92,17 +102,6 @@
         </div>
 
     </section>
-    {# FEILMELDINGER FRA DATABASE #}
-    <div class="container container_big_long text">
-        <h5>Tilbakemeldinger fra database</h5>
-        {% if session.getFlashBag.has('header') %}
-            {% for header in session.getFlashBag.get('header', []) %}
-                <h6>{{ header }}</h6>
-            {% endfor %}
-            {% for message in session.getFlashBag.get('message', []) %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    </div>
+
 {% endblock %}
 

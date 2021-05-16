@@ -11,7 +11,7 @@ $user = $session->get('User');
 $userManager = new UserManager($db, $request, $session);
 $customers = $userManager->getAllCustomers("lastName");
 
-if ($user) {
+if (!is_null($user)) {
     if ($request->request->has('addProject') && $user->isAdmin() | $user->isProjectLeader()
         && XsrfProtection::verifyMac("addProject")) {
         if ($ProjectManager->addProject()) {

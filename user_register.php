@@ -7,14 +7,14 @@ include('user_register_check.php');
 $userManager = new UserManager($db, $request, $session);
 
 
-if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
+if (!is_null($user) && ($user->isAdmin() | $user->isProjectLeader())) {
     if ($request->request->has('register') && XsrfProtection::verifyMac("user_register")) {
-        //Bare admin kan registrere admin
+
         if ($userManager->registerUser($user)) {
-            header("Location: userprofiles.php?registereduser=1");
+            header("Location: userprofiles.php");
             exit();
         } else {
-            header("Location: userprofiles.php?failedtoregisteruser=1");
+            header("Location: userprofiles.php");
             exit();
         }
 
@@ -23,7 +23,7 @@ if ($user && ($user->isAdmin() | $user->isProjectLeader())) {
             echo $twig->render('user_register.twig', array('session' => $session,
                 'request' => $request, 'user' => $user));
         } catch (LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-            echo $e->getMessage();
+
         }
     }
 } else {

@@ -134,7 +134,7 @@ if (!is_null($user) and !is_null($task) and ($user->getUserType() > 0)) {
                 'phases' => $phases, 'subTasks' => $subTasks, 'tasksItIsDependentOn' => $tasksItIsDependentOn,
                 'dependentTasks' => $dependentTasks, 'nonDependentTasks' => $nonDependentTasks));
         } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-            echo $e->getMessage();
+
         }
     }
 } else {

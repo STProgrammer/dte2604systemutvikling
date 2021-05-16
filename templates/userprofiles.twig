@@ -6,6 +6,16 @@
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
+        {% if session.getFlashBag.has('header') %}
+            <div class="container container_big_long text">
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         {% if user.isAdmin or user.isProjectLeader %}
             <div class="container container_small">
@@ -112,16 +122,4 @@
         </script>
 
     </section>
-
-    <div class="container container_big_long text">
-        {% if session.getFlashBag.has('header') %}
-            {% for header in session.getFlashBag.get('header', []) %}
-                <h3>{{ header }}</h3>
-            {% endfor %}
-            {% for message in session.getFlashBag.get('message', []) %}
-                <p>{{ message }}</p>
-            {% endfor %}
-            {# session->getFlashBag->clear(); //sletter flashbagmeldinger #}
-        {% endif %}
-    </div>
 {% endblock %}

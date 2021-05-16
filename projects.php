@@ -3,7 +3,7 @@
 require_once "includes.php";
 
 
-if ($user) {
+if (!is_null($user)) {
     $ProjectManager = new ProjectManager($db, $request, $session);
     $projects = $ProjectManager->getAllProjects();
 

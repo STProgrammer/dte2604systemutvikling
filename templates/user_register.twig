@@ -27,6 +27,16 @@
     </script>
 
     <section class="register_user" id="register_user">
+        {% if session.getFlashBag.has('header') %}
+            <div class="container container_big_long text">
+                {% for header in session.getFlashBag.get('header', []) %}
+                    <h6>{{ header }}</h6>
+                {% endfor %}
+                {% for message in session.getFlashBag.get('message', []) %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="container container_big_long text" id="table_edit">
             <h3>Lag ny bruker</h3>
             <form method="post" id="user_register_form" onsubmit="return validate();">
@@ -116,16 +126,6 @@
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
                 <script src="javascript/user_register_check.js"></script>
             </form>
-        </div>
-        <div>
-            {% if session.getFlashBag.has('header') %}
-                {% for header in session.getFlashBag.get('header', []) %}
-                    <h3>{{ header }}</h3>
-                {% endfor %}
-                {% for message in session.getFlashBag.get('message', []) %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            {% endif %}
         </div>
         <button class="button miniButtons" onclick="goBack()">Gå tilbake</button>
 
