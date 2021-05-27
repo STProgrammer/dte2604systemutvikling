@@ -1,7 +1,7 @@
 {% extends "layout.twig" %}
 {% block content %}
 
-    <section>
+    <section class="grupper" id="grupper">
         {# FEILMELDINGER FRA DATABASE #}
         {% if session.getFlashBag.has('header') %}
             <div class="container container_big_long text">
