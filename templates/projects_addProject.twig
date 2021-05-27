@@ -1,12 +1,10 @@
 {% extends "layout.twig" %}
 {% block content %}
     <section id="prosjekter" class="prosjekter">
-
         <div>
             {#GÅ TILBAKE KNAPP#}
                 <button class="button buttons" id="prosjektKnapper" onclick="goBack()"> <img src="" alt=""> Gå tilbake</button>
         </div>
-
     </section>
 
     {% if session.getFlashBag.has('header') %}

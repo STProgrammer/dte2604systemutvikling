@@ -39,7 +39,7 @@
             </form>
         </div>
 
-        {% if user.isAdmin %}
+        {% if user.isAdmin or user.isProjectLeader %}
             {# Endre kommentar fra sjefen #}
             <div class="container container_menu_form text" id="edit_comment_hour">
                 <h5 id="overskrift">Endre kommentar til leder: </h5>
