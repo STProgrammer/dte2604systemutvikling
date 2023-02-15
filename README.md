@@ -1,4 +1,4 @@
-# DTE-2604-1 21V Systemutvikling
+# DTE-2604-1 21 Spring Systemutvikling (Software engineering course)
 
 This project was part of "software engineering" course, DTE-2604-1 21 Spring, UiT The Arctic University of Norway.
 
