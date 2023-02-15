@@ -2,6 +2,8 @@
 
 This project was part of "software engineering" course, DTE-2604-1 21 Spring, UiT The Arctic University of Norway.
 
+This project is built with me and 6 other developers.
+
 It requires PHP, Twig and MySQL.
 
 In this platform you can register workers, projects, groups, tasks.
