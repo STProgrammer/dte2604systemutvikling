@@ -2,6 +2,8 @@
 
 This project was part of "software engineering" course, DTE-2604-1 21 Spring, UiT The Arctic University of Norway.
 
+The language of the software is in Norwegian.
+
 This project is built with me and 6 other developers.
 
 It requires PHP, Twig and MySQL.
@@ -16,3 +18,5 @@ AnyOne's TimeRegistreringsSystem
 
 Username / Brukernavn: tanita
 Password / Passord: asdfgh1234
+
+See MorildDataDB.sql for the sql database file and MorildDataDB-ERPModell.mwb for the ERP model.
